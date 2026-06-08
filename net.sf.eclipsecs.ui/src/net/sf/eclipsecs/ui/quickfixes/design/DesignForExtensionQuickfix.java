@@ -41,46 +41,58 @@ import net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix;
  */
 public class DesignForExtensionQuickfix extends AbstractASTResolution {
 
-  /** The length of the javadoc comment declaration. */
-  private static final int JAVADOC_COMMENT_LENGTH = 6;
+    /** The length of the javadoc comment declaration. */
+    private static final int JAVADOC_COMMENT_LENGTH = 6;
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new ASTVisitor() {
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(MethodDeclaration node) {
-        // recalculate start position because optional javadoc is mixed
-        // into the original start position
-        int pos = node.getStartPosition() + (node.getJavadoc() != null
-                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH : 0);
-        if (containsPosition(lineInfo, pos) && !Modifier.isFinal(node.getModifiers())) {
-          Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
-          node.modifiers().add(finalModifier);
-          // reorder modifiers into their correct order
-          List<ASTNode> reorderedModifiers = ModifierOrderQuickfix
-                  .reOrderModifiers(node.modifiers());
-          node.modifiers().clear();
-          node.modifiers().addAll(reorderedModifiers);
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new DesignForExtensionQuickfixAstVisitor(lineInfo);
+    }
+
+    @Override
+    public String getDescription() {
+        return Messages.DesignForExtensionQuickfix_description;
+    }
+
+    @Override
+    public String getLabel() {
+        return Messages.DesignForExtensionQuickfix_label;
+    }
+
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
+    }
+
+    private final class DesignForExtensionQuickfixAstVisitor extends ASTVisitor {
+
+        /** The line info region. */
+        private final IRegion lineInfo;
+
+        private DesignForExtensionQuickfixAstVisitor(IRegion lineInfo) {
+            this.lineInfo = lineInfo;
         }
-        return true;
-      }
-    };
-  }
 
-  @Override
-  public String getDescription() {
-    return Messages.DesignForExtensionQuickfix_description;
-  }
-
-  @Override
-  public String getLabel() {
-    return Messages.DesignForExtensionQuickfix_label;
-  }
-
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
-  }
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean visit(MethodDeclaration node) {
+            // recalculate start position because optional javadoc is mixed
+            // into the original start position
+            int pos = node.getStartPosition() + (node.getJavadoc() != null
+                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
+                : 0);
+            if (containsPosition(lineInfo, pos) && !Modifier.isFinal(node.getModifiers())) {
+                Modifier finalModifier =
+                    node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
+                node.modifiers().add(finalModifier);
+                // reorder modifiers into their correct order
+                List<ASTNode> reorderedModifiers =
+                    ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
+                node.modifiers().clear();
+                node.modifiers().addAll(reorderedModifiers);
+            }
+            return true;
+        }
+    }
 }

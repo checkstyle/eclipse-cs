@@ -30,10 +30,10 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class TabCharacterTransformer extends AbstractCTransformationClass {
 
-  @Override
-  public FormatterConfiguration transformRule() {
-    userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
-    return getFormatterSetting();
-  }
+    @Override
+    public FormatterConfiguration transformRule() {
+        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+        return getFormatterSetting();
+    }
 
 }

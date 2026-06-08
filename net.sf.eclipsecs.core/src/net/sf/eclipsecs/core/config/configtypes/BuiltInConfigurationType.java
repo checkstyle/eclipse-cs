@@ -39,44 +39,44 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  */
 public class BuiltInConfigurationType extends AbstractConfigurationType {
 
-  /**
-   * Constant for the contributor key. It stores the id of the plugin which contributes the built in
-   * configuration, so that the file can be retrieved properly.
-   */
-  public static final String CONTRIBUTOR_KEY = "contributor";
+    /**
+     * Constant for the contributor key. It stores the id of the plugin which contributes the built
+     * in configuration, so that the file can be retrieved properly.
+     */
+    public static final String CONTRIBUTOR_KEY = "contributor";
 
-  @Override
-  protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
+    @Override
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
 
-    String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
+        String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
 
-    Bundle contributor = Platform.getBundle(contributorName);
-    URL locationUrl = FileLocator.find(contributor, new Path(checkConfiguration.getLocation()),
-            null);
+        Bundle contributor = Platform.getBundle(contributorName);
+        URL locationUrl =
+            FileLocator.find(contributor, new Path(checkConfiguration.getLocation()), null);
 
-    // suggested by https://sourceforge.net/p/eclipse-cs/bugs/410/
-    if (locationUrl == null) {
-      locationUrl = contributor.getResource(checkConfiguration.getLocation());
+        // suggested by https://sourceforge.net/p/eclipse-cs/bugs/410/
+        if (locationUrl == null) {
+            locationUrl = contributor.getResource(checkConfiguration.getLocation());
+        }
+
+        return locationUrl;
     }
 
-    return locationUrl;
-  }
+    @Override
+    protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
+        // just returns empty since additional property file is not needed nor
+        // supported
+        return Optional.empty();
+    }
 
-  @Override
-  protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
-    // just returns empty since additional property file is not needed nor
-    // supported
-    return Optional.empty();
-  }
-
-  @Override
-  protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
-          CheckstyleConfigurationFile configFile) {
-    MultiPropertyResolver resolver = new MultiPropertyResolver();
-    resolver.addPropertyResolver(new ResolvablePropertyResolver(config));
-    resolver.addPropertyResolver(
+    @Override
+    protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
+        CheckstyleConfigurationFile configFile) {
+        MultiPropertyResolver resolver = new MultiPropertyResolver();
+        resolver.addPropertyResolver(new ResolvablePropertyResolver(config));
+        resolver.addPropertyResolver(
             new BuiltInFilePropertyResolver(resolveLocation(config).toString()));
 
-    return resolver;
-  }
+        return resolver;
+    }
 }

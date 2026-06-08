@@ -26,13 +26,13 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class EmptyStatementTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void emptyStatement() throws Exception {
-    testQuickfix("EmptyStatementInput.xml", new EmptyStatementQuickfix());
-  }
+    @Test
+    void emptyStatement() throws Exception {
+        testQuickfix("EmptyStatementInput.xml", new EmptyStatementQuickfix());
+    }
 
-  @Test
-  void emptyStatementNeg() throws Exception {
-    testQuickfix("EmptyStatementInputNeg.xml", new EmptyStatementQuickfix());
-  }
+    @Test
+    void emptyStatementNeg() throws Exception {
+        testQuickfix("EmptyStatementInputNeg.xml", new EmptyStatementQuickfix());
+    }
 }

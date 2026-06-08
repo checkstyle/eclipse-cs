@@ -49,166 +49,167 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class FileTypesFilterEditor implements IFilterEditor {
 
-  /** the dialog for this editor. */
-  private FileTypesDialog mDialog;
+    /** the dialog for this editor. */
+    private FileTypesDialog mDialog;
 
-  /** the filter data. */
-  private List<String> mFilterData;
+    /** the filter data. */
+    private List<String> mFilterData;
 
-  @Override
-  public int openEditor(Shell parent) {
-    this.mDialog = new FileTypesDialog(parent, mFilterData);
+    @Override
+    public int openEditor(Shell parent) {
+        this.mDialog = new FileTypesDialog(parent, mFilterData);
 
-    // open the dialog
-    int retCode = this.mDialog.open();
+        // open the dialog
+        int retCode = this.mDialog.open();
 
-    // actualize the filter data
-    if (Window.OK == retCode) {
-      this.mFilterData = this.getFilterDataFromDialog();
+        // actualize the filter data
+        if (Window.OK == retCode) {
+            this.mFilterData = this.getFilterDataFromDialog();
+        }
+
+        return retCode;
     }
 
-    return retCode;
-  }
+    @Override
+    public void setInputProject(IProject input) {
+        // NOOP
+    }
 
-  @Override
-  public void setInputProject(IProject input) {
-    // NOOP
-  }
+    @Override
+    public void setFilterData(List<String> filterData) {
+        this.mFilterData = new ArrayList<>(filterData);
+    }
 
-  @Override
-  public void setFilterData(List<String> filterData) {
-    this.mFilterData = new ArrayList<>(filterData);
-  }
-
-  @Override
-  public List<String> getFilterData() {
-    return this.mFilterData;
-  }
-
-  /**
-   * Helper method to extract the edited data from the dialog.
-   *
-   * @return the filter data
-   */
-  private List<String> getFilterDataFromDialog() {
-    return mFilterData;
-  }
-
-  /**
-   * Dialog to edit file types to check.
-   *
-   */
-  private class FileTypesDialog extends Dialog {
-
-    /** The list viewer for file types. */
-    private ListViewer mListViewer;
-
-    /** The add button. */
-    private Button mAddButton;
-
-    /** The remove button. */
-    private Button mRemoveButton;
-
-    /** The text field for file type input. */
-    private Text mFileTypeText;
-
-    /** The list of file types. */
-    private List<String> mFileTypesList;
+    @Override
+    public List<String> getFilterData() {
+        return this.mFilterData;
+    }
 
     /**
-     * Creates a file matching pattern editor dialog.
+     * Helper method to extract the edited data from the dialog.
      *
-     * @param parentShell
-     *          the parent shell
-     * @param fileTypes
-     *          the file types
+     * @return the filter data
      */
-    public FileTypesDialog(Shell parentShell, List<String> fileTypes) {
-      super(parentShell);
-      mFileTypesList = fileTypes;
-    }
-
-    @Override
-    protected Control createDialogArea(Composite parent) {
-      Composite composite = (Composite) super.createDialogArea(parent);
-
-      Composite main = new Composite(composite, SWT.NONE);
-      GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(main);
-      GridData gridData = new GridData(GridData.FILL_BOTH);
-      main.setLayoutData(gridData);
-
-      mFileTypeText = new Text(main, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-      gridData = new GridData(GridData.FILL_HORIZONTAL);
-      mFileTypeText.setLayoutData(gridData);
-
-      mAddButton = new Button(main, SWT.PUSH);
-      mAddButton.setText(Messages.FileTypesFilterEditor_btnAdd);
-      gridData = new GridData(GridData.FILL_HORIZONTAL);
-      gridData.verticalAlignment = SWT.TOP;
-      mAddButton.setLayoutData(gridData);
-      mAddButton.addSelectionListener(new SelectionListener() {
-
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-          String text = mFileTypeText.getText();
-          if (text.trim().length() > 0) {
-            mFileTypesList.add(mFileTypeText.getText());
-            mListViewer.refresh();
-            mFileTypeText.setText(""); //$NON-NLS-1$
-          }
-        }
-
-        @Override
-        public void widgetDefaultSelected(SelectionEvent e) {
-          // NOOP
-        }
-      });
-
-      mListViewer = new ListViewer(main, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-      mListViewer.setLabelProvider(new LabelProvider());
-      mListViewer.setContentProvider(ArrayContentProvider.getInstance());
-      mListViewer.setInput(mFileTypesList);
-      gridData = new GridData(GridData.FILL_BOTH);
-      gridData.heightHint = 100;
-      gridData.widthHint = 150;
-      gridData.grabExcessVerticalSpace = true;
-      mListViewer.getControl().setLayoutData(gridData);
-
-      mRemoveButton = new Button(main, SWT.PUSH);
-      mRemoveButton.setText(Messages.FileTypesFilterEditor_btnRemove);
-      gridData = new GridData(GridData.FILL_HORIZONTAL);
-      gridData.verticalAlignment = SWT.TOP;
-      mRemoveButton.setLayoutData(gridData);
-      mRemoveButton.addSelectionListener(new SelectionListener() {
-
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-          IStructuredSelection selection = (IStructuredSelection) mListViewer.getSelection();
-          mFileTypesList.remove(selection.getFirstElement());
-          mListViewer.refresh();
-        }
-
-        @Override
-        public void widgetDefaultSelected(SelectionEvent e) {
-          // NOOP
-        }
-      });
-      return main;
-    }
-
-    @Override
-    protected void okPressed() {
-      super.okPressed();
+    private List<String> getFilterDataFromDialog() {
+        return mFilterData;
     }
 
     /**
-     * Over-rides method from Window to configure the shell (e.g. the enclosing
-     * window).
+     * Dialog to edit file types to check.
+     *
      */
-    @Override
-    protected void configureShell(Shell shell) {
-      super.configureShell(shell);
-      shell.setText(Messages.FileTypesFilterEditor_title);
+    private class FileTypesDialog extends Dialog {
+
+        /** The list viewer for file types. */
+        private ListViewer mListViewer;
+
+        /** The add button. */
+        private Button mAddButton;
+
+        /** The remove button. */
+        private Button mRemoveButton;
+
+        /** The text field for file type input. */
+        private Text mFileTypeText;
+
+        /** The list of file types. */
+        private List<String> mFileTypesList;
+
+        /**
+         * Creates a file matching pattern editor dialog.
+         *
+         * @param parentShell
+         *            the parent shell
+         * @param fileTypes
+         *            the file types
+         */
+        public FileTypesDialog(Shell parentShell, List<String> fileTypes) {
+            super(parentShell);
+            mFileTypesList = fileTypes;
+        }
+
+        @Override
+        protected Control createDialogArea(Composite parent) {
+            Composite composite = (Composite) super.createDialogArea(parent);
+
+            Composite main = new Composite(composite, SWT.NONE);
+            GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(main);
+            GridData gridData = new GridData(GridData.FILL_BOTH);
+            main.setLayoutData(gridData);
+
+            mFileTypeText = new Text(main, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+            gridData = new GridData(GridData.FILL_HORIZONTAL);
+            mFileTypeText.setLayoutData(gridData);
+
+            mAddButton = new Button(main, SWT.PUSH);
+            mAddButton.setText(Messages.FileTypesFilterEditor_btnAdd);
+            gridData = new GridData(GridData.FILL_HORIZONTAL);
+            gridData.verticalAlignment = SWT.TOP;
+            mAddButton.setLayoutData(gridData);
+            mAddButton.addSelectionListener(new SelectionListener() {
+
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    String text = mFileTypeText.getText();
+                    if (text.trim().length() > 0) {
+                        mFileTypesList.add(mFileTypeText.getText());
+                        mListViewer.refresh();
+                        mFileTypeText.setText(""); //$NON-NLS-1$
+                    }
+                }
+
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
+                    // NOOP
+                }
+            });
+
+            mListViewer =
+                new ListViewer(main, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
+            mListViewer.setLabelProvider(new LabelProvider());
+            mListViewer.setContentProvider(ArrayContentProvider.getInstance());
+            mListViewer.setInput(mFileTypesList);
+            gridData = new GridData(GridData.FILL_BOTH);
+            gridData.heightHint = 100;
+            gridData.widthHint = 150;
+            gridData.grabExcessVerticalSpace = true;
+            mListViewer.getControl().setLayoutData(gridData);
+
+            mRemoveButton = new Button(main, SWT.PUSH);
+            mRemoveButton.setText(Messages.FileTypesFilterEditor_btnRemove);
+            gridData = new GridData(GridData.FILL_HORIZONTAL);
+            gridData.verticalAlignment = SWT.TOP;
+            mRemoveButton.setLayoutData(gridData);
+            mRemoveButton.addSelectionListener(new SelectionListener() {
+
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    IStructuredSelection selection =
+                        (IStructuredSelection) mListViewer.getSelection();
+                    mFileTypesList.remove(selection.getFirstElement());
+                    mListViewer.refresh();
+                }
+
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
+                    // NOOP
+                }
+            });
+            return main;
+        }
+
+        @Override
+        protected void okPressed() {
+            super.okPressed();
+        }
+
+        /**
+         * Over-rides method from Window to configure the shell (e.g. the enclosing window).
+         */
+        @Override
+        protected void configureShell(Shell shell) {
+            super.configureShell(shell);
+            shell.setText(Messages.FileTypesFilterEditor_title);
+        }
     }
-  }
 }

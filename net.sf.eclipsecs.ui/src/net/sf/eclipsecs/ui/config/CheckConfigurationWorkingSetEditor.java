@@ -52,267 +52,276 @@ import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
  */
 public final class CheckConfigurationWorkingSetEditor extends Composite {
 
-  //
-  // attributes
-  //
+    //
+    // attributes
+    //
 
-  /** The working set being edited. */
-  private final ICheckConfigurationWorkingSet mWorkingSet;
-  /** The editor view. */
-  private final CheckConfigurationWorkingSetEditorView editorView;
+    /** The working set being edited. */
+    private final ICheckConfigurationWorkingSet mWorkingSet;
+    /** The editor view. */
+    private final CheckConfigurationWorkingSetEditorView editorView;
 
-  //
-  // constructors
-  //
+    //
+    // constructors
+    //
 
-  /**
-   * Creates the configuration working set editor.
-   *
-   * @param parent the parent composite
-   * @param style the style bits
-   * @param workingSet
-   *          the configuration working set to edit
-   */
-  public CheckConfigurationWorkingSetEditor(Composite parent, int style,
-          ICheckConfigurationWorkingSet workingSet) {
-    super(parent, style);
+    /**
+     * Creates the configuration working set editor.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the style bits
+     * @param workingSet
+     *            the configuration working set to edit
+     */
+    public CheckConfigurationWorkingSetEditor(Composite parent, int style,
+        ICheckConfigurationWorkingSet workingSet) {
+        super(parent, style);
 
-    mWorkingSet = workingSet;
+        mWorkingSet = workingSet;
 
-    GridLayoutFactory.fillDefaults().applyTo(this);
+        GridLayoutFactory.fillDefaults().applyTo(this);
 
-    boolean global = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
+        boolean global = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
 
-    editorView = new CheckConfigurationWorkingSetEditorView(this, SWT.NONE,
+        editorView = new CheckConfigurationWorkingSetEditorView(this, SWT.NONE,
             mWorkingSet.getWorkingCopies(), global,
             new ButtonBarActions(this::addCheckConfig, this::editCheckConfig,
-                    this::configureCheckConfig, this::copyCheckConfig, this::removeCheckConfig,
-                    this::setDefaultCheckConfig, this::exportCheckstyleCheckConfig),
+                this::configureCheckConfig, this::copyCheckConfig, this::removeCheckConfig,
+                this::setDefaultCheckConfig, this::exportCheckstyleCheckConfig),
             this::isDefaultConfig, new ConfigurationLabelProvider(workingSet));
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(editorView);
-  }
-
-  private boolean isDefaultConfig(CheckConfigurationWorkingCopy config) {
-    boolean configDefault = false;
-    if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet) {
-      CheckConfigurationWorkingCopy defaultConfig = globalWorkingSet.getDefaultCheckConfig();
-      configDefault = defaultConfig != null && defaultConfig.equals(config);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(editorView);
     }
-    return configDefault;
-  }
 
-  /**
-   * Create a new Check configuration.
-   */
-  private void addCheckConfig() {
-    CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(),
-            null, mWorkingSet);
-    dialog.setBlockOnOpen(true);
-    if (Window.OK == dialog.open()) {
-
-      CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
-      mWorkingSet.addCheckConfiguration(newConfig);
-
-      editorView.setConfigs(mWorkingSet.getWorkingCopies());
-      editorView.setSelection(newConfig);
+    private boolean isDefaultConfig(CheckConfigurationWorkingCopy config) {
+        boolean configDefault = false;
+        if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet) {
+            CheckConfigurationWorkingCopy defaultConfig = globalWorkingSet.getDefaultCheckConfig();
+            configDefault = defaultConfig != null && defaultConfig.equals(config);
+        }
+        return configDefault;
     }
-  }
 
-  /**
-   * Edit the properties of a check configuration.
-   */
-  private void editCheckConfig() {
-    CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
-    if (config != null) {
-      CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(getShell(),
-              config, mWorkingSet);
-      dialog.setBlockOnOpen(true);
-      if (Window.OK == dialog.open()) {
-        editorView.refresh();
-      }
-    }
-  }
-
-  private void configureCheckConfig() {
-    CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
-
-    if (config != null) {
-
-      try {
-        // test if file exists
-        config.getCheckstyleConfiguration();
-
-        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(getShell(),
-                config);
-        dialog.setBlockOnOpen(true);
-        dialog.open();
-      } catch (CheckstylePluginException ex) {
-        CheckstyleUIPlugin.warningDialog(getShell(),
-                NLS.bind(Messages.errorCannotResolveCheckLocation, config.getLocation(),
-                        config.getName()),
-                ex);
-      }
-    }
-  }
-
-  /**
-   * Copy an existing config.
-   */
-  private void copyCheckConfig() {
-    ICheckConfiguration sourceConfig = editorView.getSelectedConfig();
-    if (sourceConfig != null) {
-      try {
-
-        // Open the properties dialog to change default name and description
-        CheckConfigurationPropertiesDialog dialog = new CheckConfigurationPropertiesDialog(
-                getShell(), null, mWorkingSet);
-        dialog.setTemplateConfiguration(sourceConfig);
-
+    /**
+     * Create a new Check configuration.
+     */
+    private void addCheckConfig() {
+        CheckConfigurationPropertiesDialog dialog =
+            new CheckConfigurationPropertiesDialog(getShell(), null, mWorkingSet);
         dialog.setBlockOnOpen(true);
         if (Window.OK == dialog.open()) {
 
-          CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
+            CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
+            mWorkingSet.addCheckConfiguration(newConfig);
 
-          // Copy the source configuration into the new internal config
-          sourceConfig.copyConfiguration(newConfig);
-
-          mWorkingSet.addCheckConfiguration(newConfig);
-
-          editorView.setConfigs(mWorkingSet.getWorkingCopies());
+            editorView.setConfigs(mWorkingSet.getWorkingCopies());
+            editorView.setSelection(newConfig);
         }
-      } catch (CheckstylePluginException ex) {
-        CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
-      }
     }
-  }
 
-  /**
-   * Remove a config.
-   */
-  private void removeCheckConfig() {
-    CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
-    if (checkConfig != null && checkConfig.isEditable()) {
-      boolean confirm = MessageDialog.openQuestion(getShell(),
-              Messages.CheckstylePreferencePage_titleDelete,
-              NLS.bind(Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
-      if (confirm) {
-
-        //
-        // Make sure the check config is not in use. Don't let it be
-        // deleted if it is.
-        //
-        if (mWorkingSet.removeCheckConfiguration(checkConfig)) {
-
-          editorView.setConfigs(mWorkingSet.getWorkingCopies());
-        } else {
-          MessageDialog.openInformation(getShell(),
-                  Messages.CheckstylePreferencePage_titleCantDelete,
-                  NLS.bind(Messages.CheckstylePreferencePage_msgCantDelete, checkConfig.getName()));
+    /**
+     * Edit the properties of a check configuration.
+     */
+    private void editCheckConfig() {
+        CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
+        if (config != null) {
+            CheckConfigurationPropertiesDialog dialog =
+                new CheckConfigurationPropertiesDialog(getShell(), config, mWorkingSet);
+            dialog.setBlockOnOpen(true);
+            if (Window.OK == dialog.open()) {
+                editorView.refresh();
+            }
         }
-      }
     }
-  }
 
-  private void setDefaultCheckConfig() {
-    CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
-    if (checkConfig != null) {
-      if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
-        ((GlobalCheckConfigurationWorkingSet) mWorkingSet).setDefaultCheckConfig(checkConfig);
-      }
+    private void configureCheckConfig() {
+        CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
 
-      editorView.refresh();
-    }
-  }
+        if (config != null) {
 
-  /**
-   * Export a configuration.
-   */
-  private void exportCheckstyleCheckConfig() {
-    ICheckConfiguration config = editorView.getSelectedConfig();
-    if (config != null) {
-      FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
-      dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
-      String path = dialog.open();
-      if (path != null) {
-        File file = new File(path);
+            try {
+                // test if file exists
+                config.getCheckstyleConfiguration();
 
-        try {
-          config.exportConfiguration(file);
-        } catch (CheckstylePluginException ex) {
-          CheckstyleUIPlugin.errorDialog(getShell(), Messages.msgErrorFailedExportConfig, ex, true);
+                CheckConfigurationConfigureDialog dialog =
+                    new CheckConfigurationConfigureDialog(getShell(), config);
+                dialog.setBlockOnOpen(true);
+                dialog.open();
+            }
+            catch (CheckstylePluginException ex) {
+                CheckstyleUIPlugin.warningDialog(getShell(),
+                    NLS.bind(Messages.errorCannotResolveCheckLocation, config.getLocation(),
+                        config.getName()),
+                    ex);
+            }
         }
-      }
-    }
-  }
-
-  /**
-   * Label provider for the check configuration table. Implements also support for table sorting and
-   * storing of the table settings.
-   *
-   */
-  public static final class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
-          implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
-
-    /** The working set. */
-    private final ICheckConfigurationWorkingSet mWorkingSet;
-
-    private ConfigurationLabelProvider(ICheckConfigurationWorkingSet mWorkingSet) {
-      this.mWorkingSet = mWorkingSet;
     }
 
-    @Override
-    public String getColumnText(Object element, int columnIndex) {
-      String result = element.toString();
-      if (element instanceof ICheckConfiguration cfg) {
-        if (columnIndex == 0) {
-          result = cfg.getName();
+    /**
+     * Copy an existing config.
+     */
+    private void copyCheckConfig() {
+        ICheckConfiguration sourceConfig = editorView.getSelectedConfig();
+        if (sourceConfig != null) {
+            try {
+
+                // Open the properties dialog to change default name and description
+                CheckConfigurationPropertiesDialog dialog =
+                    new CheckConfigurationPropertiesDialog(getShell(), null, mWorkingSet);
+                dialog.setTemplateConfiguration(sourceConfig);
+
+                dialog.setBlockOnOpen(true);
+                if (Window.OK == dialog.open()) {
+
+                    CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
+
+                    // Copy the source configuration into the new internal config
+                    sourceConfig.copyConfiguration(newConfig);
+
+                    mWorkingSet.addCheckConfiguration(newConfig);
+
+                    editorView.setConfigs(mWorkingSet.getWorkingCopies());
+                }
+            }
+            catch (CheckstylePluginException ex) {
+                CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+            }
         }
-        if (columnIndex == 1) {
-          result = cfg.getLocation();
-        }
-        if (columnIndex == 2) {
-          result = cfg.getType().getName();
-        }
-        if (columnIndex == 3) {
-          result = "";
-        }
-      }
-      return result;
     }
 
-    @Override
-    public Image getColumnImage(Object element, int columnIndex) {
-      return switch (columnIndex) {
-        case 0 -> getImage(element);
-        case 3 -> {
-          ICheckConfiguration cfg = (ICheckConfiguration) element;
-          if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet
-                  && globalWorkingSet.getDefaultCheckConfig() == cfg) {
-            yield CheckstyleUIPluginImages.TICK_ICON.getImage();
-          }
-          yield null;
+    /**
+     * Remove a config.
+     */
+    private void removeCheckConfig() {
+        CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
+        if (checkConfig != null && checkConfig.isEditable()) {
+            boolean confirm = MessageDialog.openQuestion(getShell(),
+                Messages.CheckstylePreferencePage_titleDelete,
+                NLS.bind(Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
+            if (confirm) {
+
+                //
+                // Make sure the check config is not in use. Don't let it be
+                // deleted if it is.
+                //
+                if (mWorkingSet.removeCheckConfiguration(checkConfig)) {
+
+                    editorView.setConfigs(mWorkingSet.getWorkingCopies());
+                }
+                else {
+                    MessageDialog.openInformation(getShell(),
+                        Messages.CheckstylePreferencePage_titleCantDelete,
+                        NLS.bind(Messages.CheckstylePreferencePage_msgCantDelete,
+                            checkConfig.getName()));
+                }
+            }
         }
-        default -> null;
-      };
     }
 
-    @Override
-    public Comparable<String> getComparableValue(Object element, int col) {
-      return getColumnText(element, col);
+    private void setDefaultCheckConfig() {
+        CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
+        if (checkConfig != null) {
+            if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
+                ((GlobalCheckConfigurationWorkingSet) mWorkingSet)
+                    .setDefaultCheckConfig(checkConfig);
+            }
+
+            editorView.refresh();
+        }
     }
 
-    @Override
-    public IDialogSettings getTableSettings() {
-      String concreteViewId = mWorkingSet.getClass().getName();
+    /**
+     * Export a configuration.
+     */
+    private void exportCheckstyleCheckConfig() {
+        ICheckConfiguration config = editorView.getSelectedConfig();
+        if (config != null) {
+            FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+            dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
+            String path = dialog.open();
+            if (path != null) {
+                File file = new File(path);
 
-      IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
-      IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
-
-      if (settings == null) {
-        settings = workbenchSettings.addNewSection(concreteViewId);
-      }
-
-      return settings;
+                try {
+                    config.exportConfiguration(file);
+                }
+                catch (CheckstylePluginException ex) {
+                    CheckstyleUIPlugin.errorDialog(getShell(), Messages.msgErrorFailedExportConfig,
+                        ex, true);
+                }
+            }
+        }
     }
-  }
+
+    /**
+     * Label provider for the check configuration table. Implements also support for table sorting
+     * and storing of the table settings.
+     *
+     */
+    public static final class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
+        implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+
+        /** The working set. */
+        private final ICheckConfigurationWorkingSet mWorkingSet;
+
+        private ConfigurationLabelProvider(ICheckConfigurationWorkingSet mWorkingSet) {
+            this.mWorkingSet = mWorkingSet;
+        }
+
+        @Override
+        public String getColumnText(Object element, int columnIndex) {
+            String result = element.toString();
+            if (element instanceof ICheckConfiguration cfg) {
+                if (columnIndex == 0) {
+                    result = cfg.getName();
+                }
+                if (columnIndex == 1) {
+                    result = cfg.getLocation();
+                }
+                if (columnIndex == 2) {
+                    result = cfg.getType().getName();
+                }
+                if (columnIndex == 3) {
+                    result = "";
+                }
+            }
+            return result;
+        }
+
+        @Override
+        public Image getColumnImage(Object element, int columnIndex) {
+            return switch (columnIndex) {
+                case 0 -> getImage(element);
+                case 3 -> {
+                    ICheckConfiguration cfg = (ICheckConfiguration) element;
+                    if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet
+                        && globalWorkingSet.getDefaultCheckConfig() == cfg) {
+                        yield CheckstyleUIPluginImages.TICK_ICON.getImage();
+                    }
+                    yield null;
+                }
+                default -> null;
+            };
+        }
+
+        @Override
+        public Comparable<String> getComparableValue(Object element, int col) {
+            return getColumnText(element, col);
+        }
+
+        @Override
+        public IDialogSettings getTableSettings() {
+            String concreteViewId = mWorkingSet.getClass().getName();
+
+            IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
+            IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
+
+            if (settings == null) {
+                settings = workbenchSettings.addNewSection(concreteViewId);
+            }
+
+            return settings;
+        }
+    }
 }

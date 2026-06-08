@@ -42,165 +42,164 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class CheckstylePropertyPageMainTab extends Composite {
 
-  /** The property page context. */
-  private final PropertyPageContext propertyPageContext;
-  /** The checkbox for simple configuration. */
-  private final Button mChkSimpleConfig;
-  /** The checkbox to enable checkstyle. */
-  private final Button mChkEnable;
-  /** The container for file sets editor. */
-  private final Composite mFileSetsContainer;
+    /** The property page context. */
+    private final PropertyPageContext propertyPageContext;
+    /** The checkbox for simple configuration. */
+    private final Button mChkSimpleConfig;
+    /** The checkbox to enable checkstyle. */
+    private final Button mChkEnable;
+    /** The container for file sets editor. */
+    private final Composite mFileSetsContainer;
 
-  /** The file sets editor. */
-  private IFileSetsEditor mFileSetsEditor;
+    /** The file sets editor. */
+    private IFileSetsEditor mFileSetsEditor;
 
-  public CheckstylePropertyPageMainTab(Composite parent, int style,
-          PropertyPageContext propertyPageContext, boolean mCheckstyleInitiallyActivated) {
-    super(parent, style);
-    this.propertyPageContext = propertyPageContext;
+    public CheckstylePropertyPageMainTab(Composite parent, int style,
+        PropertyPageContext propertyPageContext, boolean mCheckstyleInitiallyActivated) {
+        super(parent, style);
+        this.propertyPageContext = propertyPageContext;
 
-    setLayout(new FormLayout());
+        setLayout(new FormLayout());
 
-    // create the checkbox to enable/disable the simple configuration
-    this.mChkSimpleConfig = new Button(this, SWT.CHECK);
-    this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
-    this.mChkSimpleConfig.addSelectionListener(new ChkSimpleConfigController());
-    this.mChkSimpleConfig.setSelection(propertyPageContext.configuration().isUseSimpleConfig());
+        // create the checkbox to enable/disable the simple configuration
+        this.mChkSimpleConfig = new Button(this, SWT.CHECK);
+        this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
+        this.mChkSimpleConfig.addSelectionListener(new ChkSimpleConfigController());
+        this.mChkSimpleConfig.setSelection(propertyPageContext.configuration().isUseSimpleConfig());
 
-    this.mChkSimpleConfig.setLayoutData(formData(formData -> {
-      formData.top = new FormAttachment(0, 3);
-      formData.right = new FormAttachment(100, -3);
-    }));
+        this.mChkSimpleConfig.setLayoutData(formData(formData -> {
+            formData.top = new FormAttachment(0, 3);
+            formData.right = new FormAttachment(100, -3);
+        }));
 
-    // create the checkbox to enable/disable checkstyle
-    this.mChkEnable = new Button(this, SWT.CHECK);
-    this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
-    this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
+        // create the checkbox to enable/disable checkstyle
+        this.mChkEnable = new Button(this, SWT.CHECK);
+        this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
+        this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
 
-    this.mChkEnable.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0, 3);
-      formData.top = new FormAttachment(0, 3);
-      formData.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
-    }));
+        this.mChkEnable.setLayoutData(formData(formData -> {
+            formData.left = new FormAttachment(0, 3);
+            formData.top = new FormAttachment(0, 3);
+            formData.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
+        }));
 
-    // create the checkbox for formatter syncing
-    Button mChkSyncFormatter = new Button(this, SWT.CHECK);
-    mChkSyncFormatter.setText(Messages.CheckstylePropertyPage_btnSyncFormatter);
-    mChkSyncFormatter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      propertyPageContext.configuration().setSyncFormatter(mChkSyncFormatter.getSelection());
-    }));
-    mChkSyncFormatter.setSelection(propertyPageContext.configuration().isSyncFormatter());
+        // create the checkbox for formatter syncing
+        Button mChkSyncFormatter = new Button(this, SWT.CHECK);
+        mChkSyncFormatter.setText(Messages.CheckstylePropertyPage_btnSyncFormatter);
+        mChkSyncFormatter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            propertyPageContext.configuration().setSyncFormatter(mChkSyncFormatter.getSelection());
+        }));
+        mChkSyncFormatter.setSelection(propertyPageContext.configuration().isSyncFormatter());
 
-    mChkSyncFormatter.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0, 3);
-      formData.top = new FormAttachment(this.mChkEnable, 3, SWT.BOTTOM);
-    }));
+        mChkSyncFormatter.setLayoutData(formData(formData -> {
+            formData.left = new FormAttachment(0, 3);
+            formData.top = new FormAttachment(this.mChkEnable, 3, SWT.BOTTOM);
+        }));
 
-    // create the configuration area
-    mFileSetsContainer = new Composite(this, SWT.NULL);
-    final Control configArea = createFileSetsArea(mFileSetsContainer);
-    configArea.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0, 3);
-      formData.top = new FormAttachment(mChkSyncFormatter, 6, SWT.BOTTOM);
-      formData.right = new FormAttachment(100, -3);
-      formData.bottom = new FormAttachment(45);
-    }));
+        // create the configuration area
+        mFileSetsContainer = new Composite(this, SWT.NULL);
+        final Control configArea = createFileSetsArea(mFileSetsContainer);
+        configArea.setLayoutData(formData(formData -> {
+            formData.left = new FormAttachment(0, 3);
+            formData.top = new FormAttachment(mChkSyncFormatter, 6, SWT.BOTTOM);
+            formData.right = new FormAttachment(100, -3);
+            formData.bottom = new FormAttachment(45);
+        }));
 
-    // create the filter area
-    final Control filterArea = new FilterSettings(this, SWT.NONE,
+        // create the filter area
+        final Control filterArea = new FilterSettings(this, SWT.NONE,
             propertyPageContext.configuration().getProject(),
             propertyPageContext.configuration().getFilters(), propertyPageContext.updateButtons());
-    filterArea.setLayoutData(formData(formData -> {
-      formData.left = new FormAttachment(0, 3);
-      formData.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
-      formData.right = new FormAttachment(100, -3);
-      formData.bottom = new FormAttachment(100, -3);
-      formData.width = 500;
-    }));
-  }
-
-  private static FormData formData(Consumer<FormData> custom) {
-    FormData formData = new FormData();
-    custom.accept(formData);
-    return formData;
-  }
-
-  public boolean isCheckstyleEnabled() {
-    return mChkEnable.getSelection();
-  }
-
-  public void refreshFileSetEditor() {
-    mFileSetsEditor.refresh();
-  }
-
-  /**
-   * Creates the file sets area.
-   *
-   * @param fileSetsContainer
-   *          the container to add the file sets area to
-   * @return the created control
-   */
-  private Control createFileSetsArea(Composite fileSetsContainer) {
-    Control[] controls = fileSetsContainer.getChildren();
-    for (int i = 0; i < controls.length; i++) {
-      controls[i].dispose();
+        filterArea.setLayoutData(formData(formData -> {
+            formData.left = new FormAttachment(0, 3);
+            formData.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
+            formData.right = new FormAttachment(100, -3);
+            formData.bottom = new FormAttachment(100, -3);
+            formData.width = 500;
+        }));
     }
 
-    this.mFileSetsEditor = FileSetsEditorFactory.createEditor(getShell(), propertyPageContext,
+    private static FormData formData(Consumer<FormData> custom) {
+        FormData formData = new FormData();
+        custom.accept(formData);
+        return formData;
+    }
+
+    public boolean isCheckstyleEnabled() {
+        return mChkEnable.getSelection();
+    }
+
+    public void refreshFileSetEditor() {
+        mFileSetsEditor.refresh();
+    }
+
+    /**
+     * Creates the file sets area.
+     *
+     * @param fileSetsContainer
+     *            the container to add the file sets area to
+     * @return the created control
+     */
+    private Control createFileSetsArea(Composite fileSetsContainer) {
+        Control[] controls = fileSetsContainer.getChildren();
+        for (int i = 0; i < controls.length; i++) {
+            controls[i].dispose();
+        }
+
+        this.mFileSetsEditor = FileSetsEditorFactory.createEditor(getShell(), propertyPageContext,
             propertyPageContext.configuration().isUseSimpleConfig());
-    mFileSetsEditor.setFileSets(propertyPageContext.configuration().getFileSets());
+        mFileSetsEditor.setFileSets(propertyPageContext.configuration().getFileSets());
 
-    final Control editor = mFileSetsEditor.createContents(mFileSetsContainer);
+        final Control editor = mFileSetsEditor.createContents(mFileSetsContainer);
 
-    fileSetsContainer.setLayout(new FormLayout());
-    FormData formData = new FormData();
-    formData.left = new FormAttachment(0);
-    formData.top = new FormAttachment(0);
-    formData.right = new FormAttachment(100);
-    formData.bottom = new FormAttachment(100);
-    editor.setLayoutData(formData);
+        fileSetsContainer.setLayout(new FormLayout());
+        FormData formData = new FormData();
+        formData.left = new FormAttachment(0);
+        formData.top = new FormAttachment(0);
+        formData.right = new FormAttachment(100);
+        formData.bottom = new FormAttachment(100);
+        editor.setLayoutData(formData);
 
-    return fileSetsContainer;
-  }
-
-  private final class ChkSimpleConfigController extends SelectionAdapter {
-
-    @Override
-    public void widgetSelected(SelectionEvent e) {
-      propertyPageContext.configuration().setUseSimpleConfig(mChkSimpleConfig.getSelection());
-
-      boolean showWarning = CheckstyleUIPluginPrefs
-              .getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
-      if (showWarning && propertyPageContext.configuration().isUseSimpleConfig()) {
-        MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
-                Messages.CheckstylePropertyPage_titleWarnFilesets, null,
-                Messages.CheckstylePropertyPage_msgWarnFilesets, MessageDialog.WARNING,
-                new String[] {
-                    IDialogConstants.OK_LABEL,
-                }, 0,
-                Messages.CheckstylePropertyPage_mgsWarnFileSetNagOption, showWarning) {
-          /**
-           * Overwritten because we don't want to store which button the user pressed but the
-           * state of the toggle.
-           */
-          @Override
-          protected void buttonPressed(int buttonId) {
-            getPrefStore().setValue(getPrefKey(), getToggleState());
-            setReturnCode(buttonId);
-            close();
-          }
-
-        };
-        dialog.setPrefStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
-        dialog.setPrefKey(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
-        dialog.open();
-
-      }
-
-      createFileSetsArea(mFileSetsContainer);
-      mFileSetsContainer.redraw();
-      mFileSetsContainer.update();
-      mFileSetsContainer.layout();
+        return fileSetsContainer;
     }
-  }
+
+    private final class ChkSimpleConfigController extends SelectionAdapter {
+
+        @Override
+        public void widgetSelected(SelectionEvent e) {
+            propertyPageContext.configuration().setUseSimpleConfig(mChkSimpleConfig.getSelection());
+
+            boolean showWarning =
+                CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
+            if (showWarning && propertyPageContext.configuration().isUseSimpleConfig()) {
+                MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
+                    Messages.CheckstylePropertyPage_titleWarnFilesets, null,
+                    Messages.CheckstylePropertyPage_msgWarnFilesets, MessageDialog.WARNING,
+                    new String[] {
+                        IDialogConstants.OK_LABEL,
+                    }, 0, Messages.CheckstylePropertyPage_mgsWarnFileSetNagOption, showWarning) {
+                    /**
+                     * Overwritten because we don't want to store which button the user pressed but
+                     * the state of the toggle.
+                     */
+                    @Override
+                    protected void buttonPressed(int buttonId) {
+                        getPrefStore().setValue(getPrefKey(), getToggleState());
+                        setReturnCode(buttonId);
+                        close();
+                    }
+
+                };
+                dialog.setPrefStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
+                dialog.setPrefKey(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
+                dialog.open();
+
+            }
+
+            createFileSetsArea(mFileSetsContainer);
+            mFileSetsContainer.redraw();
+            mFileSetsContainer.update();
+            mFileSetsContainer.layout();
+        }
+    }
 }

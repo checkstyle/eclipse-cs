@@ -55,162 +55,165 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
  * Configuration widget for selecting multiple values with check boxes.
  */
 public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigPropertyWidget
-        implements IPreferenceChangeListener {
+    implements IPreferenceChangeListener {
 
-  /** Resource bundle containing the token translations. */
-  private static final ResourceBundle TOKEN_BUNDLE = PropertyResourceBundle
-          .getBundle("net.sf.eclipsecs.ui.config.token"); //$NON-NLS-1$
+    /** Resource bundle containing the token translations. */
+    private static final ResourceBundle TOKEN_BUNDLE =
+        PropertyResourceBundle.getBundle("net.sf.eclipsecs.ui.config.token"); //$NON-NLS-1$
 
-  /** The checkbox table viewer. */
-  private CheckboxTableViewer mTable;
+    /** The checkbox table viewer. */
+    private CheckboxTableViewer mTable;
 
-  /** Whether to translate tokens. */
-  private boolean mTranslateTokens;
+    /** Whether to translate tokens. */
+    private boolean mTranslateTokens;
 
-  /** Whether to sort tokens. */
-  private boolean mSortTokens = true;
+    /** Whether to sort tokens. */
+    private boolean mSortTokens = true;
 
-  /** The tokens list. */
-  private List<String> mTokens;
+    /** The tokens list. */
+    private List<String> mTokens;
 
-  /**
-   * Creates the widget.
-   *
-   * @param parent
-   *          the parent composite
-   * @param prop
-   *          the property
-   */
-  private ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-    mTokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
-  }
-
-  public static ConfigPropertyWidgetMultiCheck create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetMultiCheck(parent, prop);
-  }
-
-  @Override
-  protected Control getValueWidget(Composite parent) {
-
-    if (mTable == null) {
-
-      mTranslateTokens = CheckstyleUIPluginPrefs
-              .getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS);
-      mSortTokens = CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS);
-
-      IEclipsePreferences instanceScope = InstanceScope.INSTANCE
-              .getNode(CheckstyleUIPlugin.PLUGIN_ID);
-      instanceScope.addPreferenceChangeListener(this);
-
-      mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
-      mTable.setContentProvider(new ArrayContentProvider());
-      mTable.setLabelProvider(new TokenLabelProvider());
-
-      installSorter(mSortTokens);
-
-      mTable.setInput(mTokens);
-      mTable.setCheckedElements(getInitialValues().toArray());
-
-      GridData gridData = new GridData(GridData.FILL_BOTH);
-      gridData.heightHint = 150;
-      mTable.getControl().setLayoutData(gridData);
-
-      // deregister the listener on widget dipose
-      mTable.getControl().addDisposeListener(new DisposeListener() {
-
-        @Override
-        public void widgetDisposed(DisposeEvent e) {
-          IEclipsePreferences prefStore = InstanceScope.INSTANCE
-                  .getNode(CheckstyleUIPlugin.PLUGIN_ID);
-          prefStore.removePreferenceChangeListener(ConfigPropertyWidgetMultiCheck.this);
-        }
-      });
+    /**
+     * Creates the widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     */
+    private ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
+        mTokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
     }
 
-    return mTable.getControl();
-  }
-
-  @Override
-  public String getValue() {
-    return Arrays.stream(mTable.getCheckedElements())
-            .map(Object::toString)
-            .collect(Collectors.joining(", "));
-  }
-
-  private List<String> getInitialValues() {
-    List<String> result = new LinkedList<>();
-    StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ","); //$NON-NLS-1$
-    while (tokenizer.hasMoreTokens()) {
-      result.add(tokenizer.nextToken().trim());
+    public static ConfigPropertyWidgetMultiCheck create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetMultiCheck(parent, prop);
     }
-
-    return result;
-  }
-
-  private void installSorter(boolean sort) {
-    if (sort) {
-      Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
-      mTable.setComparator(new ViewerComparator(collator));
-    } else {
-      mTable.setComparator(null);
-    }
-    mTable.refresh();
-  }
-
-  @Override
-  public void restorePropertyDefault() {
-    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-            : metadata.getDefaultValue();
-    List<String> result = new LinkedList<>();
-
-    if (defaultValue != null) {
-      StringTokenizer tokenizer = new StringTokenizer(defaultValue, ","); //$NON-NLS-1$
-      while (tokenizer.hasMoreTokens()) {
-        result.add(tokenizer.nextToken().trim());
-      }
-    }
-
-    // clear current checked state
-    mTable.setCheckedElements(new Object[0]);
-
-    mTable.setCheckedElements(result.toArray());
-  }
-
-  @Override
-  public void preferenceChange(PreferenceChangeEvent event) {
-    if (CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS.equals(event.getKey())) {
-      mTranslateTokens = Boolean.parseBoolean((String) event.getNewValue());
-      mTable.refresh(true);
-    }
-    if (CheckstyleUIPluginPrefs.PREF_SORT_TOKENS.equals(event.getKey())) {
-      mSortTokens = Boolean.parseBoolean((String) event.getNewValue());
-      installSorter(mSortTokens);
-    }
-  }
-
-  /**
-   * Label provider to translate checkstyle tokens into readable form.
-   *
-   */
-  private final class TokenLabelProvider extends LabelProvider {
 
     @Override
-    public String getText(Object element) {
-      String translation = null;
-      if (mTranslateTokens) {
-        try {
-          translation = TOKEN_BUNDLE.getString((String) element);
-        } catch (MissingResourceException ex) {
-          translation = element.toString();
+    protected Control getValueWidget(Composite parent) {
+
+        if (mTable == null) {
+
+            mTranslateTokens =
+                CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS);
+            mSortTokens =
+                CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS);
+
+            IEclipsePreferences instanceScope =
+                InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
+            instanceScope.addPreferenceChangeListener(this);
+
+            mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
+            mTable.setContentProvider(new ArrayContentProvider());
+            mTable.setLabelProvider(new TokenLabelProvider());
+
+            installSorter(mSortTokens);
+
+            mTable.setInput(mTokens);
+            mTable.setCheckedElements(getInitialValues().toArray());
+
+            GridData gridData = new GridData(GridData.FILL_BOTH);
+            gridData.heightHint = 150;
+            mTable.getControl().setLayoutData(gridData);
+
+            // deregister the listener on widget dipose
+            mTable.getControl().addDisposeListener(new DisposeListener() {
+
+                @Override
+                public void widgetDisposed(DisposeEvent e) {
+                    IEclipsePreferences prefStore =
+                        InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
+                    prefStore.removePreferenceChangeListener(ConfigPropertyWidgetMultiCheck.this);
+                }
+            });
         }
-      } else {
-        translation = element.toString();
-      }
-      return translation;
+
+        return mTable.getControl();
     }
 
-  }
+    @Override
+    public String getValue() {
+        return Arrays.stream(mTable.getCheckedElements()).map(Object::toString)
+            .collect(Collectors.joining(", "));
+    }
+
+    private List<String> getInitialValues() {
+        List<String> result = new LinkedList<>();
+        StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ","); //$NON-NLS-1$
+        while (tokenizer.hasMoreTokens()) {
+            result.add(tokenizer.nextToken().trim());
+        }
+
+        return result;
+    }
+
+    private void installSorter(boolean sort) {
+        if (sort) {
+            Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
+            mTable.setComparator(new ViewerComparator(collator));
+        }
+        else {
+            mTable.setComparator(null);
+        }
+        mTable.refresh();
+    }
+
+    @Override
+    public void restorePropertyDefault() {
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+            : metadata.getDefaultValue();
+        List<String> result = new LinkedList<>();
+
+        if (defaultValue != null) {
+            StringTokenizer tokenizer = new StringTokenizer(defaultValue, ","); //$NON-NLS-1$
+            while (tokenizer.hasMoreTokens()) {
+                result.add(tokenizer.nextToken().trim());
+            }
+        }
+
+        // clear current checked state
+        mTable.setCheckedElements(new Object[0]);
+
+        mTable.setCheckedElements(result.toArray());
+    }
+
+    @Override
+    public void preferenceChange(PreferenceChangeEvent event) {
+        if (CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS.equals(event.getKey())) {
+            mTranslateTokens = Boolean.parseBoolean((String) event.getNewValue());
+            mTable.refresh(true);
+        }
+        if (CheckstyleUIPluginPrefs.PREF_SORT_TOKENS.equals(event.getKey())) {
+            mSortTokens = Boolean.parseBoolean((String) event.getNewValue());
+            installSorter(mSortTokens);
+        }
+    }
+
+    /**
+     * Label provider to translate checkstyle tokens into readable form.
+     *
+     */
+    private final class TokenLabelProvider extends LabelProvider {
+
+        @Override
+        public String getText(Object element) {
+            String translation = null;
+            if (mTranslateTokens) {
+                try {
+                    translation = TOKEN_BUNDLE.getString((String) element);
+                }
+                catch (MissingResourceException ex) {
+                    translation = element.toString();
+                }
+            }
+            else {
+                translation = element.toString();
+            }
+            return translation;
+        }
+
+    }
 
 }

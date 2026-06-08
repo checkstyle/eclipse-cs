@@ -32,69 +32,73 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class WhitespaceAroundTransformer extends AbstractCTransformationClass {
 
-  @Override
-  public FormatterConfiguration transformRule() {
-    String tokens = getAttribute("tokens");
-    if (tokens == null) {
-      tokens = "ARRAY_INIT, ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, "
-              + "BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, DO_WHILE, ELLIPSIS, EQUAL, GE, GENERIC_END, "
-              + "GENERIC_START, GT, LAMBDA, LAND, LCURLY, LE, LITERAL_ASSERT, LITERAL_CATCH, "
-              + "LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, "
-              + "LITERAL_RETURN, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, LITERAL_TRY, LITERAL_WHEN, "
-              + "LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, "
-              + "PLUS_ASSIGN, QUESTION, RCURLY, SL, SLIST, SL_ASSIGN, SR, SR_ASSIGN, STAR, "
-              + "STAR_ASSIGN, TYPE_EXTENSION_AND, WILDCARD_TYPE";
-    }
+    @Override
+    public FormatterConfiguration transformRule() {
+        String tokens = getAttribute("tokens");
+        if (tokens == null) {
+            tokens =
+                "ARRAY_INIT, ASSIGN, BAND, BAND_ASSIGN, BOR, BOR_ASSIGN, BSR, BSR_ASSIGN, BXOR, "
+                    + "BXOR_ASSIGN, COLON, DIV, DIV_ASSIGN, DO_WHILE, ELLIPSIS, EQUAL, GE, "
+                    + "GENERIC_END, GENERIC_START, GT, LAMBDA, LAND, LCURLY, LE, LITERAL_ASSERT, "
+                    + "LITERAL_CATCH, LITERAL_DO, LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, "
+                    + "LITERAL_IF, LITERAL_RETURN, LITERAL_SWITCH, LITERAL_SYNCHRONIZED, "
+                    + "LITERAL_TRY, LITERAL_WHEN, LITERAL_WHILE, LOR, LT, MINUS, MINUS_ASSIGN, "
+                    + "MOD, MOD_ASSIGN, NOT_EQUAL, PLUS, PLUS_ASSIGN, QUESTION, RCURLY, SL, SLIST, "
+                    + "SL_ASSIGN, SR, SR_ASSIGN, STAR, STAR_ASSIGN, TYPE_EXTENSION_AND, "
+                    + "WILDCARD_TYPE";
+        }
 
-    for (String token : tokens.split("\\s*,\\s*")) {
-      List<String> settings = switch (token) {
-        case "ASSIGN", "BAND_ASSIGN", "BOR_ASSIGN", "BSR_ASSIGN",
-             "BXOR_ASSIGN", "DIV_ASSIGN", "MINUS_ASSIGN", "MOD_ASSIGN",
-             "PLUS_ASSIGN", "SL_ASSIGN", "SR_ASSIGN", "STAR_ASSIGN" -> List.of(
-                "insert_space_after_assignment_operator",
-                "insert_space_before_assignment_operator");
-        case "BAND", "BOR", "BSR", "BXOR", "DIV", "EQUAL",
-             "GE", "GT", "LAND", "LE", "LOR", "LT", "MINUS",
-             "MOD", "NOT_EQUAL", "PLUS", "SL", "SR", "STAR" -> List.of(
-                "insert_space_after_binary_operator",
-                "insert_space_before_binary_operator");
-        case "COLON" -> List.of("insert_space_before_colon_in_for",
-                "insert_space_after_colon_in_for", "insert_space_before_colon_in_conditional",
-                "insert_space_after_colon_in_conditional");
-        case "QUESTION" -> List.of("insert_space_before_question_in_conditional",
-                "insert_space_after_question_in_conditional");
-        case "LCURLY" -> List.of("insert_space_before_opening_brace_in_type_declaration",
-                "insert_space_after_opening_brace_in_array_initializer",
-                "insert_space_before_opening_brace_in_annotation_type_declaration",
-                "insert_space_before_opening_brace_in_block",
-                "insert_space_before_opening_brace_in_method_declaration",
-                "insert_space_before_opening_brace_in_enum_declaration",
-                "insert_space_before_opening_brace_in_constructor_declaration",
-                "insert_space_before_opening_brace_in_enum_constant",
-                "insert_space_before_opening_brace_in_switch",
-                "insert_space_before_opening_brace_in_anonymous_type_declaration",
-                "insert_space_before_opening_brace_in_array_initializer");
-        case "RCURLY" -> List.of("insert_space_after_closing_brace_in_block",
-                "insert_space_before_closing_brace_in_array_initializer");
-        case "LITERAL_CATCH" -> List.of("insert_space_before_opening_paren_in_catch");
-        case "LITERAL_FOR" -> List.of("insert_space_before_opening_paren_in_for");
-        case "LITERAL_IF" -> List.of("insert_space_before_opening_paren_in_if");
-        case "LITERAL_RETURN" -> List.of("insert_space_before_parenthesized_expression_in_return");
-        case "LITERAL_SYNCHRONIZED" -> List.of("insert_space_before_opening_paren_in_synchronized");
-        case "LITERAL_WHILE", "DO_WHILE" -> List.of("insert_space_before_opening_paren_in_while");
-        case "LITERAL_SWITCH" -> List.of("insert_space_before_opening_paren_in_switch");
-        case "SLIST" -> List.of("insert_space_before_opening_brace_in_block");
-        case "TYPE_EXTENSION_AND" -> List.of("insert_space_before_and_in_type_parameter",
-                "insert_space_after_and_in_type_parameter");
-        case "LAMBDA" -> List.of("insert_space_before_lambda_arrow",
-                "insert_space_after_lambda_arrow");
-        case "ELLIPSIS" -> List.of("insert_space_before_ellipsis", "insert_space_after_ellipsis");
-        case "WILDCARD_TYPE" -> List.of("insert_space_before_question_in_wildcard",
-                "insert_space_after_question_in_wildcard");
-        default -> List.of();
-      };
-      settings.forEach(setting -> userFormatterSetting(setting, "insert"));
+        for (String token : tokens.split("\\s*,\\s*")) {
+            List<String> settings = switch (token) {
+                case "ASSIGN", "BAND_ASSIGN", "BOR_ASSIGN", "BSR_ASSIGN", "BXOR_ASSIGN",
+                    "DIV_ASSIGN", "MINUS_ASSIGN", "MOD_ASSIGN", "PLUS_ASSIGN", "SL_ASSIGN",
+                    "SR_ASSIGN", "STAR_ASSIGN" -> List.of("insert_space_after_assignment_operator",
+                        "insert_space_before_assignment_operator");
+                case "BAND", "BOR", "BSR", "BXOR", "DIV", "EQUAL", "GE", "GT", "LAND", "LE", "LOR",
+                    "LT", "MINUS", "MOD", "NOT_EQUAL", "PLUS", "SL", "SR",
+                    "STAR" -> List.of("insert_space_after_binary_operator",
+                        "insert_space_before_binary_operator");
+                case "COLON" -> List.of("insert_space_before_colon_in_for",
+                    "insert_space_after_colon_in_for", "insert_space_before_colon_in_conditional",
+                    "insert_space_after_colon_in_conditional");
+                case "QUESTION" -> List.of("insert_space_before_question_in_conditional",
+                    "insert_space_after_question_in_conditional");
+                case "LCURLY" -> List.of("insert_space_before_opening_brace_in_type_declaration",
+                    "insert_space_after_opening_brace_in_array_initializer",
+                    "insert_space_before_opening_brace_in_annotation_type_declaration",
+                    "insert_space_before_opening_brace_in_block",
+                    "insert_space_before_opening_brace_in_method_declaration",
+                    "insert_space_before_opening_brace_in_enum_declaration",
+                    "insert_space_before_opening_brace_in_constructor_declaration",
+                    "insert_space_before_opening_brace_in_enum_constant",
+                    "insert_space_before_opening_brace_in_switch",
+                    "insert_space_before_opening_brace_in_anonymous_type_declaration",
+                    "insert_space_before_opening_brace_in_array_initializer");
+                case "RCURLY" -> List.of("insert_space_after_closing_brace_in_block",
+                    "insert_space_before_closing_brace_in_array_initializer");
+                case "LITERAL_CATCH" -> List.of("insert_space_before_opening_paren_in_catch");
+                case "LITERAL_FOR" -> List.of("insert_space_before_opening_paren_in_for");
+                case "LITERAL_IF" -> List.of("insert_space_before_opening_paren_in_if");
+                case "LITERAL_RETURN" -> List
+                    .of("insert_space_before_parenthesized_expression_in_return");
+                case "LITERAL_SYNCHRONIZED" -> List
+                    .of("insert_space_before_opening_paren_in_synchronized");
+                case "LITERAL_WHILE",
+                    "DO_WHILE" -> List.of("insert_space_before_opening_paren_in_while");
+                case "LITERAL_SWITCH" -> List.of("insert_space_before_opening_paren_in_switch");
+                case "SLIST" -> List.of("insert_space_before_opening_brace_in_block");
+                case "TYPE_EXTENSION_AND" -> List.of("insert_space_before_and_in_type_parameter",
+                    "insert_space_after_and_in_type_parameter");
+                case "LAMBDA" -> List.of("insert_space_before_lambda_arrow",
+                    "insert_space_after_lambda_arrow");
+                case "ELLIPSIS" -> List.of("insert_space_before_ellipsis",
+                    "insert_space_after_ellipsis");
+                case "WILDCARD_TYPE" -> List.of("insert_space_before_question_in_wildcard",
+                    "insert_space_after_question_in_wildcard");
+                default -> List.of();
+            };
+            settings.forEach(setting -> userFormatterSetting(setting, "insert"));
+        }
+        return getFormatterSetting();
     }
-    return getFormatterSetting();
-  }
 }

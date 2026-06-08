@@ -45,89 +45,89 @@ import net.sf.eclipsecs.ui.util.InternalBrowser;
 
 public final class CheckConfigurationConfigureDialogView extends Composite {
 
-  /** The browser displaying module descriptions. */
-  private final Browser mBrowserDescription;
-  /** The available modules viewer. */
-  private final AvailableModulesViewer availableModulesViewer;
-  /** The configured modules panel. */
-  private final ConfiguredModules configuredModules;
+    /** The browser displaying module descriptions. */
+    private final Browser mBrowserDescription;
+    /** The available modules viewer. */
+    private final AvailableModulesViewer availableModulesViewer;
+    /** The configured modules panel. */
+    private final ConfiguredModules configuredModules;
 
-  public CheckConfigurationConfigureDialogView(Composite parent, int style,
-          CheckConfigurationConfigureDialogViewCallbacks callbacks, List<Module> mModules,
-          boolean configurable) {
-    super(parent, style);
-    GridLayoutFactory.swtDefaults().applyTo(this);
+    public CheckConfigurationConfigureDialogView(Composite parent, int style,
+        CheckConfigurationConfigureDialogViewCallbacks callbacks, List<Module> mModules,
+        boolean configurable) {
+        super(parent, style);
+        GridLayoutFactory.swtDefaults().applyTo(this);
 
-    SashForm sashForm = new SashForm(this, SWT.NONE);
-    GridDataFactory.fillDefaults().hint(700, 400).applyTo(sashForm);
-    GridLayoutFactory.swtDefaults().applyTo(sashForm);
+        SashForm sashForm = new SashForm(this, SWT.NONE);
+        GridDataFactory.fillDefaults().hint(700, 400).applyTo(sashForm);
+        GridLayoutFactory.swtDefaults().applyTo(sashForm);
 
-    Label lblDescription = new Label(this, SWT.NULL);
-    lblDescription.setText(Messages.CheckConfigurationConfigureDialog_lblDescription);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(lblDescription);
+        Label lblDescription = new Label(this, SWT.NULL);
+        lblDescription.setText(Messages.CheckConfigurationConfigureDialog_lblDescription);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(lblDescription);
 
-    mBrowserDescription = new Browser(this, SWT.BORDER);
-    GridDataFactory.create(GridData.FILL_BOTH).hint(SWT.DEFAULT, 100).applyTo(mBrowserDescription);
-    mBrowserDescription.addLocationListener(LocationListener.changingAdapter(event -> {
-      String url = event.location;
-      if (url != null && url.startsWith("http")) {
-        InternalBrowser.openLinkInExternalBrowser(url);
-        event.doit = false;
-      }
-    }));
+        mBrowserDescription = new Browser(this, SWT.BORDER);
+        GridDataFactory.create(GridData.FILL_BOTH).hint(SWT.DEFAULT, 100)
+            .applyTo(mBrowserDescription);
+        mBrowserDescription.addLocationListener(LocationListener.changingAdapter(event -> {
+            String url = event.location;
+            if (url != null && url.startsWith("http")) {
+                InternalBrowser.openLinkInExternalBrowser(url);
+                event.doit = false;
+            }
+        }));
 
-    this.availableModulesViewer = new AvailableModulesViewer(sashForm, SWT.NULL,
+        this.availableModulesViewer = new AvailableModulesViewer(sashForm, SWT.NULL,
             new AvailableModulesViewerLabelProvider(mModules), configurable, callbacks.newModule,
             this::changeAvailableModuleSelection);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(availableModulesViewer);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(availableModulesViewer);
 
-    this.configuredModules = new ConfiguredModules(sashForm, SWT.NONE, configurable,
-            mModules, new ConfiguredModulesCallbacks(callbacks.openModule, callbacks.removeModule,
-                    this::setBrowserDescription, callbacks.checkStateChanged));
-    GridDataFactory.fillDefaults().applyTo(configuredModules);
+        this.configuredModules = new ConfiguredModules(sashForm, SWT.NONE, configurable, mModules,
+            new ConfiguredModulesCallbacks(callbacks.openModule, callbacks.removeModule,
+                this::setBrowserDescription, callbacks.checkStateChanged));
+        GridDataFactory.fillDefaults().applyTo(configuredModules);
 
-    sashForm.setWeights(new int[] {
-        30,
-        70,
-    });
-  }
-
-  public void setBrowserDescription(String description) {
-    mBrowserDescription.setText(description);
-  }
-
-  public void refreshConfiguredModules() {
-    configuredModules.refresh();
-  }
-
-  public void refreshAvailableModules() {
-    availableModulesViewer.refresh();
-  }
-
-  public void selectFirstAvailableGroup() {
-    availableModulesViewer.selectFirstGroup();
-  }
-
-  public void focusAvailableModules() {
-    availableModulesViewer.focus();
-  }
-
-  private void changeAvailableModuleSelection(Object selection) {
-    String description = null;
-    if (selection instanceof RuleGroupMetadata group) {
-      description = group.getDescription();
-      configuredModules.setCurrentGroup(group);
-    } else if (selection instanceof RuleMetadata rule) {
-      description = rule.identity().description();
-      configuredModules.setCurrentGroup(rule.identity().group());
+        sashForm.setWeights(new int[] {
+            30, 70,
+        });
     }
-    setBrowserDescription(HtmlUtil.getDescriptionHtml(description));
-  }
 
-  public static final record CheckConfigurationConfigureDialogViewCallbacks(
-          Consumer<List<RuleMetadata>> newModule, Consumer<Module> openModule,
-          Consumer<List<Module>> removeModule, BiConsumer<Module, Boolean> checkStateChanged) {
+    public void setBrowserDescription(String description) {
+        mBrowserDescription.setText(description);
+    }
 
-  }
+    public void refreshConfiguredModules() {
+        configuredModules.refresh();
+    }
+
+    public void refreshAvailableModules() {
+        availableModulesViewer.refresh();
+    }
+
+    public void selectFirstAvailableGroup() {
+        availableModulesViewer.selectFirstGroup();
+    }
+
+    public void focusAvailableModules() {
+        availableModulesViewer.focus();
+    }
+
+    private void changeAvailableModuleSelection(Object selection) {
+        String description = null;
+        if (selection instanceof RuleGroupMetadata group) {
+            description = group.getDescription();
+            configuredModules.setCurrentGroup(group);
+        } else if (selection instanceof RuleMetadata rule) {
+            description = rule.identity().description();
+            configuredModules.setCurrentGroup(rule.identity().group());
+        }
+        setBrowserDescription(HtmlUtil.getDescriptionHtml(description));
+    }
+
+    public static final record CheckConfigurationConfigureDialogViewCallbacks(
+        Consumer<List<RuleMetadata>> newModule, Consumer<Module> openModule,
+        Consumer<List<Module>> removeModule, BiConsumer<Module, Boolean> checkStateChanged) {
+
+    }
 
 }

@@ -59,188 +59,193 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
  */
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
-  /** The working set of check configurations. */
-  private final ICheckConfigurationWorkingSet mWorkingSet;
-  /** The general settings composite. */
-  private CheckstylePreferencePageGeneralSettings generalSettings;
-  /** Flag indicating whether all projects need a rebuild. */
-  private boolean mRebuildAll;
+    /** The working set of check configurations. */
+    private final ICheckConfigurationWorkingSet mWorkingSet;
+    /** The general settings composite. */
+    private CheckstylePreferencePageGeneralSettings generalSettings;
+    /** Flag indicating whether all projects need a rebuild. */
+    private boolean mRebuildAll;
 
-  /**
-   * Constructor.
-   */
-  public CheckstylePreferencePage() {
-    setPreferenceStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
+    /**
+     * Constructor.
+     */
+    public CheckstylePreferencePage() {
+        setPreferenceStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
 
-    mWorkingSet = CheckConfigurationFactory.newWorkingSet();
-    noDefaultAndApplyButton();
-  }
-
-  @Override
-  public Control createContents(Composite ancestor) {
-    Control header = new CheckstylePreferencePageHeader(ancestor, SWT.NONE);
-    GridDataFactory.fillDefaults().applyTo(header);
-
-    this.generalSettings = new CheckstylePreferencePageGeneralSettings(ancestor, SWT.NONE,
-            () -> mRebuildAll = true);
-    GridDataFactory.fillDefaults().applyTo(generalSettings);
-
-    final Composite configComposite = createCheckConfigContents(ancestor);
-    GridDataFactory.fillDefaults().applyTo(configComposite);
-
-    return configComposite;
-  }
-
-  /**
-   * Creates the content regarding the management of check configurations.
-   *
-   * @param parent
-   *          the parent composite
-   * @return the configuration area
-   */
-  private Composite createCheckConfigContents(Composite parent) {
-    //
-    // Create the composite for configuring check configurations.
-    //
-    Group configComposite = new Group(parent, SWT.NULL);
-    configComposite.setText(Messages.CheckstylePreferencePage_titleCheckConfigs);
-    configComposite.setLayout(new FormLayout());
-
-    FormData formData = new FormData();
-    formData.left = new FormAttachment(0, 3);
-    formData.top = new FormAttachment(0, 3);
-    formData.right = new FormAttachment(100, -3);
-    formData.bottom = new FormAttachment(100, -3);
-    CheckConfigurationWorkingSetEditor mWorkingSetEditor = new CheckConfigurationWorkingSetEditor(
-            configComposite, SWT.NONE, mWorkingSet);
-    mWorkingSetEditor.setLayoutData(formData);
-
-    return configComposite;
-  }
-
-  @Override
-  public void init(IWorkbench workbench) {
-  }
-
-  @Override
-  public boolean performOk() {
-    try {
-      //
-      // Save the check configurations.
-      //
-      mWorkingSet.store();
-
-      CheckstylePluginPrefs.setString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE,
-              generalSettings.getLanguageIf());
-
-      //
-      // Save the general preferences.
-      //
-      CheckstyleUIPluginPrefs.setString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD,
-              generalSettings.getRebuildIfNeeded());
-
-      //
-      // fileset warning preference
-      //
-      boolean warnFileSetsNow = generalSettings.getWarnBeforeLosingFilesets();
-      CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING,
-              warnFileSetsNow);
-
-      //
-      // Include rule names preference.
-      //
-      boolean includeRuleNamesHasChanged = updateBooleanPreference(
-              generalSettings.getIncludeRuleNames(), CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
-
-      //
-      // Include module id preference.
-      //
-      boolean includeModuleIdHasChanged = updateBooleanPreference(
-              generalSettings.getIncludeModuleIdButton(),
-              CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
-
-      //
-      // Limit markers preference
-      //
-
-      boolean limitMarkersHasChanged = updateBooleanPreference(
-              generalSettings.getLimitCheckstyleMarkers(),
-              CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
-
-      int markerLimitNow = Integer.parseInt(generalSettings.getTxtMarkerLimit());
-      int markerLimitOriginal = CheckstylePluginPrefs
-              .getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
-      CheckstylePluginPrefs.setInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT, markerLimitNow);
-      boolean markerLimitHasChanged = markerLimitNow != markerLimitOriginal;
-
-      //
-      // Include background build preference.
-      //
-      boolean runInBackgroundNow = generalSettings.getBackgroundFullBuild();
-      CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD,
-              runInBackgroundNow);
-
-      // See if all projects need rebuild
-      boolean needRebuildAllProjects = needRebuildAllProjects(includeRuleNamesHasChanged,
-              includeModuleIdHasChanged, limitMarkersHasChanged, markerLimitHasChanged);
-
-      // Get projects that need rebuild considering the changes
-      Collection<IProject> projectsToBuild = mWorkingSet.getAffectedProjects();
-
-      if (needRebuildAllProjects || !projectsToBuild.isEmpty()) {
-        String promptRebuildPref = CheckstyleUIPluginPrefs
-                .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
-
-        boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
-
-        //
-        // Prompt for rebuild
-        //
-        if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
-
-          MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(getShell(),
-                  Messages.CheckstylePreferencePage_titleRebuild,
-                  Messages.CheckstylePreferencePage_msgRebuild,
-                  Messages.CheckstylePreferencePage_nagRebuild, false,
-                  CheckstyleUIPlugin.getDefault().getPreferenceStore(),
-                  CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
-
-          rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
-        }
-
-        if (rebuild) {
-          try {
-            if (needRebuildAllProjects) {
-              CheckstyleBuilder.buildAllProjects();
-            } else {
-              CheckstyleBuilder.buildProjects(projectsToBuild);
-            }
-
-          } catch (CheckstylePluginException ex) {
-            CheckstyleUIPlugin.errorDialog(getShell(),
-                    NLS.bind(Messages.errorFailedRebuild, ex.getMessage()), ex, true);
-          }
-        }
-      }
-    } catch (CheckstylePluginException | BackingStoreException ex) {
-      CheckstyleUIPlugin.errorDialog(getShell(),
-              NLS.bind(Messages.errorFailedSavePreferences, ex.getLocalizedMessage()), ex, true);
+        mWorkingSet = CheckConfigurationFactory.newWorkingSet();
+        noDefaultAndApplyButton();
     }
 
-    return true;
-  }
+    @Override
+    public Control createContents(Composite ancestor) {
+        Control header = new CheckstylePreferencePageHeader(ancestor, SWT.NONE);
+        GridDataFactory.fillDefaults().applyTo(header);
 
-  private static final boolean updateBooleanPreference(boolean selection, String preference)
-          throws BackingStoreException {
-    boolean original = CheckstylePluginPrefs.getBoolean(preference);
-    CheckstylePluginPrefs.setBoolean(preference, selection);
-    return selection != original;
-  }
+        this.generalSettings = new CheckstylePreferencePageGeneralSettings(ancestor, SWT.NONE,
+            () -> mRebuildAll = true);
+        GridDataFactory.fillDefaults().applyTo(generalSettings);
 
-  private boolean needRebuildAllProjects(boolean includeRuleNamesHasChanged,
-          boolean includeModuleIdHasChanged, boolean limitMarkersHasChanged,
-          boolean markerLimitHasChanged) {
-    return includeRuleNamesHasChanged || includeModuleIdHasChanged || limitMarkersHasChanged
+        final Composite configComposite = createCheckConfigContents(ancestor);
+        GridDataFactory.fillDefaults().applyTo(configComposite);
+
+        return configComposite;
+    }
+
+    /**
+     * Creates the content regarding the management of check configurations.
+     *
+     * @param parent
+     *            the parent composite
+     * @return the configuration area
+     */
+    private Composite createCheckConfigContents(Composite parent) {
+        //
+        // Create the composite for configuring check configurations.
+        //
+        Group configComposite = new Group(parent, SWT.NULL);
+        configComposite.setText(Messages.CheckstylePreferencePage_titleCheckConfigs);
+        configComposite.setLayout(new FormLayout());
+
+        FormData formData = new FormData();
+        formData.left = new FormAttachment(0, 3);
+        formData.top = new FormAttachment(0, 3);
+        formData.right = new FormAttachment(100, -3);
+        formData.bottom = new FormAttachment(100, -3);
+        CheckConfigurationWorkingSetEditor mWorkingSetEditor =
+            new CheckConfigurationWorkingSetEditor(configComposite, SWT.NONE, mWorkingSet);
+        mWorkingSetEditor.setLayoutData(formData);
+
+        return configComposite;
+    }
+
+    @Override
+    public void init(IWorkbench workbench) {
+    }
+
+    @Override
+    public boolean performOk() {
+        try {
+            //
+            // Save the check configurations.
+            //
+            mWorkingSet.store();
+
+            CheckstylePluginPrefs.setString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE,
+                generalSettings.getLanguageIf());
+
+            //
+            // Save the general preferences.
+            //
+            CheckstyleUIPluginPrefs.setString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD,
+                generalSettings.getRebuildIfNeeded());
+
+            //
+            // fileset warning preference
+            //
+            boolean warnFileSetsNow = generalSettings.getWarnBeforeLosingFilesets();
+            CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING,
+                warnFileSetsNow);
+
+            //
+            // Include rule names preference.
+            //
+            boolean includeRuleNamesHasChanged =
+                updateBooleanPreference(generalSettings.getIncludeRuleNames(),
+                    CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
+
+            //
+            // Include module id preference.
+            //
+            boolean includeModuleIdHasChanged =
+                updateBooleanPreference(generalSettings.getIncludeModuleIdButton(),
+                    CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
+
+            //
+            // Limit markers preference
+            //
+
+            boolean limitMarkersHasChanged =
+                updateBooleanPreference(generalSettings.getLimitCheckstyleMarkers(),
+                    CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
+
+            int markerLimitNow = Integer.parseInt(generalSettings.getTxtMarkerLimit());
+            int markerLimitOriginal =
+                CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
+            CheckstylePluginPrefs.setInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT,
+                markerLimitNow);
+            boolean markerLimitHasChanged = markerLimitNow != markerLimitOriginal;
+
+            //
+            // Include background build preference.
+            //
+            boolean runInBackgroundNow = generalSettings.getBackgroundFullBuild();
+            CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD,
+                runInBackgroundNow);
+
+            // See if all projects need rebuild
+            boolean needRebuildAllProjects = needRebuildAllProjects(includeRuleNamesHasChanged,
+                includeModuleIdHasChanged, limitMarkersHasChanged, markerLimitHasChanged);
+
+            // Get projects that need rebuild considering the changes
+            Collection<IProject> projectsToBuild = mWorkingSet.getAffectedProjects();
+
+            if (needRebuildAllProjects || !projectsToBuild.isEmpty()) {
+                String promptRebuildPref = CheckstyleUIPluginPrefs
+                    .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+
+                boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
+
+                //
+                // Prompt for rebuild
+                //
+                if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
+
+                    MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
+                        getShell(), Messages.CheckstylePreferencePage_titleRebuild,
+                        Messages.CheckstylePreferencePage_msgRebuild,
+                        Messages.CheckstylePreferencePage_nagRebuild, false,
+                        CheckstyleUIPlugin.getDefault().getPreferenceStore(),
+                        CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+
+                    rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
+                }
+
+                if (rebuild) {
+                    try {
+                        if (needRebuildAllProjects) {
+                            CheckstyleBuilder.buildAllProjects();
+                        }
+                        else {
+                            CheckstyleBuilder.buildProjects(projectsToBuild);
+                        }
+
+                    }
+                    catch (CheckstylePluginException ex) {
+                        CheckstyleUIPlugin.errorDialog(getShell(),
+                            NLS.bind(Messages.errorFailedRebuild, ex.getMessage()), ex, true);
+                    }
+                }
+            }
+        }
+        catch (CheckstylePluginException | BackingStoreException ex) {
+            CheckstyleUIPlugin.errorDialog(getShell(),
+                NLS.bind(Messages.errorFailedSavePreferences, ex.getLocalizedMessage()), ex, true);
+        }
+
+        return true;
+    }
+
+    private static final boolean updateBooleanPreference(boolean selection, String preference)
+            throws BackingStoreException {
+        boolean original = CheckstylePluginPrefs.getBoolean(preference);
+        CheckstylePluginPrefs.setBoolean(preference, selection);
+        return selection != original;
+    }
+
+    private boolean needRebuildAllProjects(boolean includeRuleNamesHasChanged,
+        boolean includeModuleIdHasChanged, boolean limitMarkersHasChanged,
+        boolean markerLimitHasChanged) {
+        return includeRuleNamesHasChanged || includeModuleIdHasChanged || limitMarkersHasChanged
             || markerLimitHasChanged || mRebuildAll;
-  }
+    }
 }

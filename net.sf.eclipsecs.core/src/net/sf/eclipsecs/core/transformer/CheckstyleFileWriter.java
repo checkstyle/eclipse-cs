@@ -35,96 +35,101 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public final class CheckstyleFileWriter {
 
-  /** An object containing all settings for the checkstyle-file. */
-  private final CheckstyleSetting mCheckstyleSetting;
-  /** The output file path. */
-  private final String file;
+    /** An object containing all settings for the checkstyle-file. */
+    private final CheckstyleSetting mCheckstyleSetting;
+    /** The output file path. */
+    private final String file;
 
-  /**
-   * Creates new instance of class CheckstyleFileWriter.
-   *
-   * @param setting
-   *          The settings for the checkstyle-file.
-   * @param file
-   *          Path where the checkstyle-file should be stored.
-   */
-  public CheckstyleFileWriter(final CheckstyleSetting setting, final String file) {
-    mCheckstyleSetting = setting;
-    this.file = file;
-  }
-
-  public void writeXmlFile() {
-    try (FileOutputStream fw = new FileOutputStream(file)) {
-      writeXMLFile(fw);
-    } catch (final IOException ex) {
-      CheckstyleLog.log(ex);
+    /**
+     * Creates new instance of class CheckstyleFileWriter.
+     *
+     * @param setting
+     *            The settings for the checkstyle-file.
+     * @param file
+     *            Path where the checkstyle-file should be stored.
+     */
+    public CheckstyleFileWriter(final CheckstyleSetting setting, final String file) {
+        mCheckstyleSetting = setting;
+        this.file = file;
     }
-  }
 
-  /**
-   * Method for writing the xml-file.
-   *
-   * @param outStream
-   *          BufferedWriter to outputfile.
-   * @throws IOException
-   *           an I/O exception occurred
-   */
-  private void writeXMLFile(final OutputStream outStream) throws IOException {
-    outStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes("UTF-8"));
-    outStream.write("<module name=\"Checker\">\n".getBytes("UTF-8"));
-    outStream.write("<property name=\"severity\" value=\"warning\"/>\n".getBytes("UTF-8"));
-    writeModules(mCheckstyleSetting.getmCheckerModules(), outStream);
-    outStream.write("<module name=\"TreeWalker\">\n".getBytes("UTF-8"));
-    writeModules(mCheckstyleSetting.getmTreeWalkerModules(), outStream);
-    outStream.write("</module>\n".getBytes("UTF-8"));
-    outStream.write("</module>\n".getBytes("UTF-8"));
-  }
+    public void writeXmlFile() {
+        try (FileOutputStream fw = new FileOutputStream(file)) {
+            writeXMLFile(fw);
+        }
+        catch (final IOException ex) {
+            CheckstyleLog.log(ex);
+        }
+    }
 
-  /**
-   * Method for writing all modules to file.
-   *
-   * @param modules the modules to write
-   * @param outStream
-   *          BufferedWriter to xml-file.
-   * @throws IOException
-   *           an I/O exception occurred
-   */
-  private static void writeModules(final HashMap<String, HashMap<String, String>> modules,
-          final OutputStream outStream) throws IOException {
-
-    final Iterator<String> modit = modules.keySet().iterator();
-    String module;
-
-    while (modit.hasNext()) {
-      module = modit.next();
-      if (modules.get(module) == null) {
-        outStream.write(("<module name=\"" + module + "\"/>\n").getBytes("UTF-8"));
-      } else {
-        outStream.write(("<module name=\"" + module + "\">\n").getBytes("UTF-8"));
-        writeProperty(modules.get(module), outStream);
+    /**
+     * Method for writing the xml-file.
+     *
+     * @param outStream
+     *            BufferedWriter to outputfile.
+     * @throws IOException
+     *             an I/O exception occurred
+     */
+    private void writeXMLFile(final OutputStream outStream) throws IOException {
+        outStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes("UTF-8"));
+        outStream.write("<module name=\"Checker\">\n".getBytes("UTF-8"));
+        outStream.write("<property name=\"severity\" value=\"warning\"/>\n".getBytes("UTF-8"));
+        writeModules(mCheckstyleSetting.getmCheckerModules(), outStream);
+        outStream.write("<module name=\"TreeWalker\">\n".getBytes("UTF-8"));
+        writeModules(mCheckstyleSetting.getmTreeWalkerModules(), outStream);
         outStream.write("</module>\n".getBytes("UTF-8"));
-      }
+        outStream.write("</module>\n".getBytes("UTF-8"));
     }
-  }
 
-  /**
-   * Method for writing a propterty to file.
-   *
-   * @param properties
-   *          A HashMap containing all properties.
-   * @param outStream the output stream to write to
-   * @throws IOException
-   *           an I/O exception occurred
-   */
-  private static void writeProperty(final HashMap<String, String> properties,
-          final OutputStream outStream) throws IOException {
-    final Iterator<String> propit = properties.keySet().iterator();
-    String prop;
+    /**
+     * Method for writing all modules to file.
+     *
+     * @param modules
+     *            the modules to write
+     * @param outStream
+     *            BufferedWriter to xml-file.
+     * @throws IOException
+     *             an I/O exception occurred
+     */
+    private static void writeModules(final HashMap<String, HashMap<String, String>> modules,
+        final OutputStream outStream) throws IOException {
 
-    while (propit.hasNext()) {
-      prop = propit.next();
-      outStream.write(("<property name=\"" + prop + "\" value=\"" + properties.get(prop) + "\"/>\n")
-              .getBytes("UTF-8"));
+        final Iterator<String> modit = modules.keySet().iterator();
+        String module;
+
+        while (modit.hasNext()) {
+            module = modit.next();
+            if (modules.get(module) == null) {
+                outStream.write(("<module name=\"" + module + "\"/>\n").getBytes("UTF-8"));
+            }
+            else {
+                outStream.write(("<module name=\"" + module + "\">\n").getBytes("UTF-8"));
+                writeProperty(modules.get(module), outStream);
+                outStream.write("</module>\n".getBytes("UTF-8"));
+            }
+        }
     }
-  }
+
+    /**
+     * Method for writing a propterty to file.
+     *
+     * @param properties
+     *            A HashMap containing all properties.
+     * @param outStream
+     *            the output stream to write to
+     * @throws IOException
+     *             an I/O exception occurred
+     */
+    private static void writeProperty(final HashMap<String, String> properties,
+        final OutputStream outStream) throws IOException {
+        final Iterator<String> propit = properties.keySet().iterator();
+        String prop;
+
+        while (propit.hasNext()) {
+            prop = propit.next();
+            outStream.write(
+                ("<property name=\"" + prop + "\" value=\"" + properties.get(prop) + "\"/>\n")
+                    .getBytes("UTF-8"));
+        }
+    }
 }

@@ -29,98 +29,98 @@ import java.util.Iterator;
  *
  */
 public class CheckstyleSetting {
-  /** Map which holds all checker-modules of the configuration. */
-  private final HashMap<String, HashMap<String, String>> mCheckerModules = new HashMap<>();
+    /** Map which holds all checker-modules of the configuration. */
+    private final HashMap<String, HashMap<String, String>> mCheckerModules = new HashMap<>();
 
-  /** Map which holds all treewalker-modules of the configuration. */
-  private final HashMap<String, HashMap<String, String>> mTreeWalkerModules = new HashMap<>();
+    /** Map which holds all treewalker-modules of the configuration. */
+    private final HashMap<String, HashMap<String, String>> mTreeWalkerModules = new HashMap<>();
 
-  /**
-   * Method for adding a new treewalker-module.
-   *
-   * @param name
-   *          The name of the module.
-   * @param properties
-   *          A hashmap of properties of this module.
-   */
-  public void addTreeWalkerModule(final String name, final HashMap<String, String> properties) {
+    /**
+     * Method for adding a new treewalker-module.
+     *
+     * @param name
+     *            The name of the module.
+     * @param properties
+     *            A hashmap of properties of this module.
+     */
+    public void addTreeWalkerModule(final String name, final HashMap<String, String> properties) {
 
-    mTreeWalkerModules.put(name, properties);
-  }
-
-  /**
-   * Method for adding a new checker-module.
-   *
-   * @param name
-   *          The name of the module.
-   * @param properties
-   *          A hashmap of properties of this module.
-   */
-  public void addCheckerModule(final String name, final HashMap<String, String> properties) {
-
-    mCheckerModules.put(name, properties);
-  }
-
-  /**
-   * Method for getting all checker-modules.
-   *
-   * @return A hashmap containing all checker-modules.
-   */
-  public HashMap<String, HashMap<String, String>> getmCheckerModules() {
-    return mCheckerModules;
-  }
-
-  /**
-   * Method for getting all treewalker-modules.
-   *
-   * @return A hashmap containing all treewalker-modules.
-   */
-  public HashMap<String, HashMap<String, String>> getmTreeWalkerModules() {
-    return mTreeWalkerModules;
-  }
-
-  /**
-   * Method for adding another instance of type CheckstyleSetting.
-   *
-   * @param setting
-   *          The CheckstyleSetting to add.
-   */
-  public void addSetting(final CheckstyleSetting setting) {
-    // add checker-modules
-    Iterator<String> modit = setting.getmCheckerModules().keySet().iterator();
-    String module;
-    while (modit.hasNext()) {
-      module = modit.next();
-      if (mCheckerModules.keySet().contains(module)) {
-        final Iterator<String> propit = setting.getmCheckerModules().get(module).keySet()
-                .iterator();
-        String property;
-        while (propit.hasNext()) {
-          property = propit.next();
-          mCheckerModules.get(module)
-            .putIfAbsent(property, setting.getmCheckerModules().get(module).get(property));
-        }
-      } else {
-        mCheckerModules.put(module, setting.getmCheckerModules().get(module));
-      }
+        mTreeWalkerModules.put(name, properties);
     }
 
-    // add treewalker-modules
-    modit = setting.getmTreeWalkerModules().keySet().iterator();
-    while (modit.hasNext()) {
-      module = modit.next();
-      if (mTreeWalkerModules.keySet().contains(module)) {
-        final Iterator<String> propit = setting.getmTreeWalkerModules().get(module).keySet()
-                .iterator();
-        String property;
-        while (propit.hasNext()) {
-          property = propit.next();
-          mTreeWalkerModules.get(module)
-            .putIfAbsent(property, setting.getmTreeWalkerModules().get(module).get(property));
-        }
-      } else {
-        mTreeWalkerModules.put(module, setting.getmTreeWalkerModules().get(module));
-      }
+    /**
+     * Method for adding a new checker-module.
+     *
+     * @param name
+     *            The name of the module.
+     * @param properties
+     *            A hashmap of properties of this module.
+     */
+    public void addCheckerModule(final String name, final HashMap<String, String> properties) {
+
+        mCheckerModules.put(name, properties);
     }
-  }
+
+    /**
+     * Method for getting all checker-modules.
+     *
+     * @return A hashmap containing all checker-modules.
+     */
+    public HashMap<String, HashMap<String, String>> getmCheckerModules() {
+        return mCheckerModules;
+    }
+
+    /**
+     * Method for getting all treewalker-modules.
+     *
+     * @return A hashmap containing all treewalker-modules.
+     */
+    public HashMap<String, HashMap<String, String>> getmTreeWalkerModules() {
+        return mTreeWalkerModules;
+    }
+
+    /**
+     * Method for adding another instance of type CheckstyleSetting.
+     *
+     * @param setting
+     *            The CheckstyleSetting to add.
+     */
+    public void addSetting(final CheckstyleSetting setting) {
+        // add checker-modules
+        Iterator<String> modit = setting.getmCheckerModules().keySet().iterator();
+        String module;
+        while (modit.hasNext()) {
+            module = modit.next();
+            if (mCheckerModules.keySet().contains(module)) {
+                final Iterator<String> propit =
+                    setting.getmCheckerModules().get(module).keySet().iterator();
+                String property;
+                while (propit.hasNext()) {
+                    property = propit.next();
+                    mCheckerModules.get(module).putIfAbsent(property,
+                        setting.getmCheckerModules().get(module).get(property));
+                }
+            } else {
+                mCheckerModules.put(module, setting.getmCheckerModules().get(module));
+            }
+        }
+
+        // add treewalker-modules
+        modit = setting.getmTreeWalkerModules().keySet().iterator();
+        while (modit.hasNext()) {
+            module = modit.next();
+            if (mTreeWalkerModules.keySet().contains(module)) {
+                final Iterator<String> propit =
+                    setting.getmTreeWalkerModules().get(module).keySet().iterator();
+                String property;
+                while (propit.hasNext()) {
+                    property = propit.next();
+                    mTreeWalkerModules.get(module).putIfAbsent(property,
+                        setting.getmTreeWalkerModules().get(module).get(property));
+                }
+            } else {
+                mTreeWalkerModules.put(module, setting.getmTreeWalkerModules().get(module));
+            }
+        }
+    }
 }

@@ -37,23 +37,23 @@ import net.sf.eclipsecs.core.builder.CheckerFactory;
  */
 public class PurgeCachesAction extends AbstractHandler implements IWorkbenchWindowActionDelegate {
 
-  @Override
-  public void run(IAction action) {
-    CheckerFactory.cleanup();
-  }
+    @Override
+    public void run(IAction action) {
+        CheckerFactory.cleanup();
+    }
 
-  @Override
-  public Object execute(ExecutionEvent event) throws ExecutionException {
-    CheckerFactory.cleanup();
-    return null;
-  }
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        CheckerFactory.cleanup();
+        return null;
+    }
 
-  @Override
-  public void selectionChanged(IAction action, ISelection selection) {
-  }
+    @Override
+    public void selectionChanged(IAction action, ISelection selection) {
+    }
 
-  @Override
-  public void init(IWorkbenchWindow window) {
-  }
+    @Override
+    public void init(IWorkbenchWindow window) {
+    }
 
 }

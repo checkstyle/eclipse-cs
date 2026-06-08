@@ -39,44 +39,45 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class FixCheckstyleMarkersJob extends UIJob {
 
-  /** The file to fix markers in. */
-  private IFile mFile;
+    /** The file to fix markers in. */
+    private IFile mFile;
 
-  /**
-   * Creates the job.
-   *
-   * @param file
-   *          the file to fix
-   */
-  public FixCheckstyleMarkersJob(IFile file) {
-    super(Messages.FixCheckstyleMarkersJob_title);
-    this.mFile = file;
-  }
-
-  @Override
-  public IStatus runInUIThread(IProgressMonitor monitor) {
-    IStatus status;
-    CheckstyleMarkerResolutionGenerator generator = new CheckstyleMarkerResolutionGenerator();
-    try {
-      IMarker[] markers = mFile.findMarkers(CheckstyleMarker.MARKER_ID, true,
-              IResource.DEPTH_INFINITE);
-
-      for (int i = 0; i < markers.length; i++) {
-
-        var resolutions = generator.getResolutions(markers[i]);
-
-        if (resolutions.length > 0) {
-          // only run the first fix for this marker
-          resolutions[0].run(markers[i]);
-        }
-
-      }
-      status = Status.OK_STATUS;
-    } catch (CoreException ex) {
-      status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK, ex.getMessage(),
-              ex);
+    /**
+     * Creates the job.
+     *
+     * @param file
+     *            the file to fix
+     */
+    public FixCheckstyleMarkersJob(IFile file) {
+        super(Messages.FixCheckstyleMarkersJob_title);
+        this.mFile = file;
     }
 
-    return status;
-  }
+    @Override
+    public IStatus runInUIThread(IProgressMonitor monitor) {
+        IStatus status;
+        CheckstyleMarkerResolutionGenerator generator = new CheckstyleMarkerResolutionGenerator();
+        try {
+            IMarker[] markers =
+                mFile.findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
+
+            for (int i = 0; i < markers.length; i++) {
+
+                var resolutions = generator.getResolutions(markers[i]);
+
+                if (resolutions.length > 0) {
+                    // only run the first fix for this marker
+                    resolutions[0].run(markers[i]);
+                }
+
+            }
+            status = Status.OK_STATUS;
+        }
+        catch (CoreException ex) {
+            status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+                ex.getMessage(), ex);
+        }
+
+        return status;
+    }
 }

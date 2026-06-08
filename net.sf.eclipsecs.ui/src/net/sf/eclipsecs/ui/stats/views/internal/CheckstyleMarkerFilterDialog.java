@@ -47,186 +47,188 @@ import net.sf.eclipsecs.ui.stats.Messages;
  */
 public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
-  //
-  // attributes
-  //
+    //
+    // attributes
+    //
 
-  /** The dialog view. */
-  private CheckstyleMarkerFilterDialogView dialogView;
+    /** The dialog view. */
+    private CheckstyleMarkerFilterDialogView dialogView;
 
-  /** The default button. */
-  private Button mBtnDefault;
+    /** The default button. */
+    private Button mBtnDefault;
 
-  /** The filter to be edited. */
-  private CheckstyleMarkerFilter mFilter;
+    /** The filter to be edited. */
+    private CheckstyleMarkerFilter mFilter;
 
-  /** the selected working set. */
-  private IWorkingSet mSelectedWorkingSet;
+    /** the selected working set. */
+    private IWorkingSet mSelectedWorkingSet;
 
-  /** The regular expressions to filter by. */
-  private List<String> mRegularExpressions;
+    /** The regular expressions to filter by. */
+    private List<String> mRegularExpressions;
 
-  //
-  // constructors
-  //
+    //
+    // constructors
+    //
 
-  /**
-   * Creates the filter dialog.
-   *
-   * @param shell
-   *          the parent shell
-   * @param filter
-   *          the filter instance
-   */
-  public CheckstyleMarkerFilterDialog(Shell shell, CheckstyleMarkerFilter filter) {
+    /**
+     * Creates the filter dialog.
+     *
+     * @param shell
+     *            the parent shell
+     * @param filter
+     *            the filter instance
+     */
+    public CheckstyleMarkerFilterDialog(Shell shell, CheckstyleMarkerFilter filter) {
 
-    super(shell);
-    setHelpAvailable(false);
-    mFilter = filter;
-  }
+        super(shell);
+        setHelpAvailable(false);
+        mFilter = filter;
+    }
 
-  //
-  // methods
-  //
+    //
+    // methods
+    //
 
-  /**
-   * Returns the edited filter.
-   *
-   * @return the edited filter
-   */
-  public CheckstyleMarkerFilter getFilter() {
-    return mFilter;
-  }
+    /**
+     * Returns the edited filter.
+     *
+     * @return the edited filter
+     */
+    public CheckstyleMarkerFilter getFilter() {
+        return mFilter;
+    }
 
-  @Override
-  protected Control createDialogArea(Composite parent) {
-    Composite composite = (Composite) super.createDialogArea(parent);
+    @Override
+    protected Control createDialogArea(Composite parent) {
+        Composite composite = (Composite) super.createDialogArea(parent);
 
-    this.dialogView = new CheckstyleMarkerFilterDialogView(composite, SWT.NONE,
+        this.dialogView = new CheckstyleMarkerFilterDialogView(composite, SWT.NONE,
             this::selectWorkingSet, this::editRegularExpressions);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
 
-    // init the controls
-    updateUIFromFilter();
+        // init the controls
+        updateUIFromFilter();
 
-    setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
-    setTitle(Messages.CheckstyleMarkerFilterDialog_title);
-    setMessage(Messages.CheckstyleMarkerFilterDialog_titleMessage);
+        setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+        setTitle(Messages.CheckstyleMarkerFilterDialog_title);
+        setMessage(Messages.CheckstyleMarkerFilterDialog_titleMessage);
 
-    return composite;
-  }
-
-  private void editRegularExpressions() {
-    List<String> regex = new ArrayList<>(mRegularExpressions);
-    CheckstyleMarkerFilterRegexDialog regexDialog = new CheckstyleMarkerFilterRegexDialog(
-            getShell(), regex);
-    if (Window.OK == regexDialog.open()) {
-      mRegularExpressions = regex;
-      initRegexLabel();
+        return composite;
     }
-  }
 
-  @Override
-  protected void createButtonsForButtonBar(Composite parent) {
-    mBtnDefault = createButton(parent, IDialogConstants.BACK_ID,
+    private void editRegularExpressions() {
+        List<String> regex = new ArrayList<>(mRegularExpressions);
+        CheckstyleMarkerFilterRegexDialog regexDialog =
+            new CheckstyleMarkerFilterRegexDialog(getShell(), regex);
+        if (Window.OK == regexDialog.open()) {
+            mRegularExpressions = regex;
+            initRegexLabel();
+        }
+    }
+
+    @Override
+    protected void createButtonsForButtonBar(Composite parent) {
+        mBtnDefault = createButton(parent, IDialogConstants.BACK_ID,
             Messages.CheckstyleMarkerFilterDialog_btnRestoreDefault, false);
-    mBtnDefault.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      mFilter = CheckstyleMarkerFilter.resetState(mFilter.focusResources());
-      updateUIFromFilter();
-    }));
+        mBtnDefault.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            mFilter = CheckstyleMarkerFilter.resetState(mFilter.focusResources());
+            updateUIFromFilter();
+        }));
 
-    // create OK and Cancel buttons by default
-    createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-    createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-  }
+        // create OK and Cancel buttons by default
+        createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+        createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+    }
 
-  @Override
-  protected void configureShell(Shell shell) {
-    super.configureShell(shell);
-    shell.setText(Messages.CheckstyleMarkerFilterDialog_btnShellTitle);
-  }
+    @Override
+    protected void configureShell(Shell shell) {
+        super.configureShell(shell);
+        shell.setText(Messages.CheckstyleMarkerFilterDialog_btnShellTitle);
+    }
 
-  @Override
-  protected void okPressed() {
-    updateFilterFromUI();
-    super.okPressed();
-  }
+    @Override
+    protected void okPressed() {
+        updateFilterFromUI();
+        super.okPressed();
+    }
 
-  /**
-   * Updates the ui controls from the filter data.
-   */
-  private void updateUIFromFilter() {
-    mSelectedWorkingSet = mFilter.workingSet();
-    initWorkingSetLabel();
+    /**
+     * Updates the ui controls from the filter data.
+     */
+    private void updateUIFromFilter() {
+        mSelectedWorkingSet = mFilter.workingSet();
+        initWorkingSetLabel();
 
-    mRegularExpressions = mFilter.filterRegex();
-    initRegexLabel();
+        mRegularExpressions = mFilter.filterRegex();
+        initRegexLabel();
 
-    dialogView.set(mFilter.enabled(), mFilter.onResource(), mFilter.selectBySeverity(),
+        dialogView.set(mFilter.enabled(), mFilter.onResource(), mFilter.selectBySeverity(),
             mFilter.severity(), mFilter.filterByRegex());
-  }
-
-  /**
-   * Updates the filter data from the ui controls.
-   */
-  private void updateFilterFromUI() {
-    mFilter = new CheckstyleMarkerFilter(dialogView.getFilterEnabled(),
-            dialogView.getOnResource(), mSelectedWorkingSet,
-            dialogView.getSelectBySeverity(), dialogView.getSeverity(),
-            dialogView.getSelectByRegex(), mRegularExpressions, mFilter.focusResources());
-  }
-
-  /**
-   * Initializes the label for the selected working set.
-   */
-  private void initWorkingSetLabel() {
-    if (mSelectedWorkingSet == null) {
-      dialogView
-              .setWorkingSetLabel(Messages.CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected);
-    } else {
-      dialogView.setWorkingSetLabel(mSelectedWorkingSet.getName());
-    }
-  }
-
-  /**
-   * Initializes the label for the regular expressions.
-   */
-  private void initRegexLabel() {
-
-    StringBuilder buf = new StringBuilder();
-
-    int size = mRegularExpressions != null ? mRegularExpressions.size() : 0;
-    for (int i = 0; i < size; i++) {
-      if (i > 0) {
-        buf.append(", "); //$NON-NLS-1$
-      }
-      buf.append(mRegularExpressions.get(i));
     }
 
-    if (size == 0) {
-      buf.append(Messages.CheckstyleMarkerFilterDialog_msgNoRegexDefined);
+    /**
+     * Updates the filter data from the ui controls.
+     */
+    private void updateFilterFromUI() {
+        mFilter =
+            new CheckstyleMarkerFilter(dialogView.getFilterEnabled(), dialogView.getOnResource(),
+                mSelectedWorkingSet, dialogView.getSelectBySeverity(), dialogView.getSeverity(),
+                dialogView.getSelectByRegex(), mRegularExpressions, mFilter.focusResources());
     }
 
-    dialogView.setRegexLabel(buf.toString());
-  }
+    /**
+     * Initializes the label for the selected working set.
+     */
+    private void initWorkingSetLabel() {
+        if (mSelectedWorkingSet == null) {
+            dialogView
+                .setWorkingSetLabel(Messages.CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected);
+        }
+        else {
+            dialogView.setWorkingSetLabel(mSelectedWorkingSet.getName());
+        }
+    }
 
-  private void selectWorkingSet() {
-    IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
+    /**
+     * Initializes the label for the regular expressions.
+     */
+    private void initRegexLabel() {
+
+        StringBuilder buf = new StringBuilder();
+
+        int size = mRegularExpressions != null ? mRegularExpressions.size() : 0;
+        for (int i = 0; i < size; i++) {
+            if (i > 0) {
+                buf.append(", "); //$NON-NLS-1$
+            }
+            buf.append(mRegularExpressions.get(i));
+        }
+
+        if (size == 0) {
+            buf.append(Messages.CheckstyleMarkerFilterDialog_msgNoRegexDefined);
+        }
+
+        dialogView.setRegexLabel(buf.toString());
+    }
+
+    private void selectWorkingSet() {
+        IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
             .createWorkingSetSelectionDialog(getShell(), false);
 
-    if (mSelectedWorkingSet != null) {
-      dialog.setSelection(new IWorkingSet[] {
-          mSelectedWorkingSet,
-      });
+        if (mSelectedWorkingSet != null) {
+            dialog.setSelection(new IWorkingSet[] {
+                mSelectedWorkingSet,
+            });
+        }
+        if (dialog.open() == Window.OK) {
+            IWorkingSet[] result = dialog.getSelection();
+            if (result != null && result.length > 0) {
+                mSelectedWorkingSet = result[0];
+            }
+            else {
+                mSelectedWorkingSet = null;
+            }
+            initWorkingSetLabel();
+        }
     }
-    if (dialog.open() == Window.OK) {
-      IWorkingSet[] result = dialog.getSelection();
-      if (result != null && result.length > 0) {
-        mSelectedWorkingSet = result[0];
-      } else {
-        mSelectedWorkingSet = null;
-      }
-      initWorkingSetLabel();
-    }
-  }
 }

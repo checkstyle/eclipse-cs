@@ -49,108 +49,108 @@ import net.sf.eclipsecs.ui.util.HtmlUtil;
  */
 public class MarkerPropertyPage extends PropertyPage {
 
-  private IMarker getIssue() {
-    return (IMarker) getElement();
-  }
-
-  @Override
-  protected Control createContents(Composite parent) {
-    noDefaultAndApplyButton();
-
-    final Composite composite = new Composite(parent, SWT.NULL);
-
-    composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-    final GridLayout layout = new GridLayout();
-    layout.numColumns = 3;
-    layout.marginHeight = 0;
-    layout.marginWidth = 0;
-    composite.setLayout(layout);
-
-    try {
-      createSeverityText(composite);
-      RuleIdentity ruleIdentity = createGroupText(composite);
-      createRuleText(composite, ruleIdentity);
-      createIdText(composite);
-      createDescriptionText(composite, ruleIdentity);
-    } catch (CoreException ex) {
-      CheckstyleLog.log(ex);
+    private IMarker getIssue() {
+        return (IMarker) getElement();
     }
-    return composite;
-  }
 
-  private void createSeverityText(final Composite composite) throws CoreException {
-    new Label(composite, SWT.NONE).setImage(
-            getSeverityImage(getIssue().getAttribute(IMarker.SEVERITY, -1)));
-    new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Issue);
-    String message = (String) getIssue().getAttribute(IMarker.MESSAGE);
-    Text labelMessage = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-    labelMessage.setText(message);
-  }
+    @Override
+    protected Control createContents(Composite parent) {
+        noDefaultAndApplyButton();
 
-  private RuleIdentity createGroupText(final Composite composite) throws CoreException {
-    new Label(composite, SWT.NONE).setImage(
-            CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
-    new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Group);
+        final Composite composite = new Composite(parent, SWT.NULL);
 
-    String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
-    RuleIdentity ruleIdentity = MetadataFactory.getRuleMetadata(moduleName).identity();
-    Text labelGroupName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-    labelGroupName.setText(ruleIdentity.group().getGroupName());
-    return ruleIdentity;
-  }
+        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+        final GridLayout layout = new GridLayout();
+        layout.numColumns = 3;
+        layout.marginHeight = 0;
+        layout.marginWidth = 0;
+        composite.setLayout(layout);
 
-  private void createRuleText(final Composite composite, RuleIdentity ruleIdentity) {
-    new Label(composite, SWT.NONE).setImage(
-            CheckstyleUIPluginImages.MODULE_ICON.getImage());
-    new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
-
-    Text labelRuleName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-    labelRuleName.setText(ruleIdentity.ruleName());
-  }
-
-  private void createIdText(final Composite composite) {
-    var id = getIssue().getAttribute(CheckstyleMarker.MODULE_ID, null);
-    if (!StringUtils.isEmpty(id)) {
-      new Label(composite, SWT.NONE).setImage(PlatformUI.getWorkbench().getSharedImages()
-              .getImage(ISharedImages.IMG_OBJS_INFO_TSK));
-      new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Id);
-
-      Text labelId = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
-      labelId.setText(id);
+        try {
+            createSeverityText(composite);
+            RuleIdentity ruleIdentity = createGroupText(composite);
+            createRuleText(composite, ruleIdentity);
+            createIdText(composite);
+            createDescriptionText(composite, ruleIdentity);
+        }
+        catch (CoreException ex) {
+            CheckstyleLog.log(ex);
+        }
+        return composite;
     }
-  }
 
-  private void createDescriptionText(final Composite composite, RuleIdentity ruleIdentity) {
-    Label descriptionLabel = new Label(composite, SWT.NONE);
-    descriptionLabel.setText(Messages.MarkerPropertyPage_Description);
-    GridData gridData = new GridData();
-    gridData.horizontalSpan = 3;
-    gridData.verticalIndent = 20;
-    descriptionLabel.setLayoutData(gridData);
+    private void createSeverityText(final Composite composite) throws CoreException {
+        new Label(composite, SWT.NONE)
+            .setImage(getSeverityImage(getIssue().getAttribute(IMarker.SEVERITY, -1)));
+        new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Issue);
+        String message = (String) getIssue().getAttribute(IMarker.MESSAGE);
+        Text labelMessage = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+        labelMessage.setText(message);
+    }
 
-    gridData = new GridData(GridData.FILL_BOTH);
-    gridData.heightHint = 100;
-    gridData.horizontalSpan = 3;
-    Browser browserDescription = new Browser(composite, SWT.BORDER);
-    browserDescription.setLayoutData(gridData);
-    browserDescription.setText(HtmlUtil
-            .getDescriptionHtml(ruleIdentity.description()));
-  }
+    private RuleIdentity createGroupText(final Composite composite) throws CoreException {
+        new Label(composite, SWT.NONE)
+            .setImage(CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
+        new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Group);
 
-  /**
-   * Get the image for the severity if it can be identified.
-   *
-   * @param severity issue severity
-   * @return Image or <code>null</code>
-   */
-  public static Image getSeverityImage(int severity) {
-    ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-    return switch (severity) {
-      case IMarker.SEVERITY_ERROR -> sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
-      case IMarker.SEVERITY_WARNING -> sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
-      case IMarker.SEVERITY_INFO -> sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
-      default -> null;
-    };
-  }
+        String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
+        RuleIdentity ruleIdentity = MetadataFactory.getRuleMetadata(moduleName).identity();
+        Text labelGroupName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+        labelGroupName.setText(ruleIdentity.group().getGroupName());
+        return ruleIdentity;
+    }
+
+    private void createRuleText(final Composite composite, RuleIdentity ruleIdentity) {
+        new Label(composite, SWT.NONE).setImage(CheckstyleUIPluginImages.MODULE_ICON.getImage());
+        new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
+
+        Text labelRuleName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+        labelRuleName.setText(ruleIdentity.ruleName());
+    }
+
+    private void createIdText(final Composite composite) {
+        var id = getIssue().getAttribute(CheckstyleMarker.MODULE_ID, null);
+        if (!StringUtils.isEmpty(id)) {
+            new Label(composite, SWT.NONE).setImage(PlatformUI.getWorkbench().getSharedImages()
+                .getImage(ISharedImages.IMG_OBJS_INFO_TSK));
+            new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Id);
+
+            Text labelId = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+            labelId.setText(id);
+        }
+    }
+
+    private void createDescriptionText(final Composite composite, RuleIdentity ruleIdentity) {
+        Label descriptionLabel = new Label(composite, SWT.NONE);
+        descriptionLabel.setText(Messages.MarkerPropertyPage_Description);
+        GridData gridData = new GridData();
+        gridData.horizontalSpan = 3;
+        gridData.verticalIndent = 20;
+        descriptionLabel.setLayoutData(gridData);
+
+        gridData = new GridData(GridData.FILL_BOTH);
+        gridData.heightHint = 100;
+        gridData.horizontalSpan = 3;
+        Browser browserDescription = new Browser(composite, SWT.BORDER);
+        browserDescription.setLayoutData(gridData);
+        browserDescription.setText(HtmlUtil.getDescriptionHtml(ruleIdentity.description()));
+    }
+
+    /**
+     * Get the image for the severity if it can be identified.
+     *
+     * @param severity
+     *            issue severity
+     * @return Image or <code>null</code>
+     */
+    public static Image getSeverityImage(int severity) {
+        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+        return switch (severity) {
+            case IMarker.SEVERITY_ERROR -> sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+            case IMarker.SEVERITY_WARNING -> sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+            case IMarker.SEVERITY_INFO -> sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+            default -> null;
+        };
+    }
 
 }

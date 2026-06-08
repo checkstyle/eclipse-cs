@@ -26,8 +26,8 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class ModifierOrderTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void modifierOrder() throws Exception {
-    testQuickfix("ModifierOrderInput.xml", new ModifierOrderQuickfix());
-  }
+    @Test
+    void modifierOrder() throws Exception {
+        testQuickfix("ModifierOrderInput.xml", new ModifierOrderQuickfix());
+    }
 }

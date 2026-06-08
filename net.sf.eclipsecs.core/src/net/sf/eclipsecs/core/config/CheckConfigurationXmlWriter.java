@@ -29,39 +29,39 @@ import org.dom4j.Element;
  */
 public final class CheckConfigurationXmlWriter {
 
-  private CheckConfigurationXmlWriter() {
-  }
+    private CheckConfigurationXmlWriter() {
+    }
 
-  /**
-   * Writes a check configuration as an XML child element under the given parent.
-   *
-   * @param parentElement
-   *          the parent XML element
-   * @param checkConfig
-   *          the check configuration to write
-   * @param location
-   *          the resolved location string
-   * @param elementName
-   *          the XML element name to use
-   */
-  public static void writeCheckConfiguration(Element parentElement, ICheckConfiguration checkConfig,
-          String location, String elementName) {
-    Element configEl = parentElement.addElement(elementName);
-    configEl.addAttribute(XMLTags.NAME_TAG, checkConfig.getName());
-    configEl.addAttribute(XMLTags.LOCATION_TAG, location);
-    configEl.addAttribute(XMLTags.TYPE_TAG, checkConfig.getType().getInternalName());
-    if (checkConfig.getDescription() != null) {
-      configEl.addAttribute(XMLTags.DESCRIPTION_TAG, checkConfig.getDescription());
+    /**
+     * Writes a check configuration as an XML child element under the given parent.
+     *
+     * @param parentElement
+     *            the parent XML element
+     * @param checkConfig
+     *            the check configuration to write
+     * @param location
+     *            the resolved location string
+     * @param elementName
+     *            the XML element name to use
+     */
+    public static void writeCheckConfiguration(Element parentElement,
+        ICheckConfiguration checkConfig, String location, String elementName) {
+        Element configEl = parentElement.addElement(elementName);
+        configEl.addAttribute(XMLTags.NAME_TAG, checkConfig.getName());
+        configEl.addAttribute(XMLTags.LOCATION_TAG, location);
+        configEl.addAttribute(XMLTags.TYPE_TAG, checkConfig.getType().getInternalName());
+        if (checkConfig.getDescription() != null) {
+            configEl.addAttribute(XMLTags.DESCRIPTION_TAG, checkConfig.getDescription());
+        }
+        for (ResolvableProperty prop : checkConfig.getResolvableProperties()) {
+            Element propEl = configEl.addElement(XMLTags.PROPERTY_TAG);
+            propEl.addAttribute(XMLTags.NAME_TAG, prop.getPropertyName());
+            propEl.addAttribute(XMLTags.VALUE_TAG, prop.getValue());
+        }
+        for (Map.Entry<String, String> entry : checkConfig.getAdditionalData().entrySet()) {
+            Element addEl = configEl.addElement(XMLTags.ADDITIONAL_DATA_TAG);
+            addEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
+            addEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+        }
     }
-    for (ResolvableProperty prop : checkConfig.getResolvableProperties()) {
-      Element propEl = configEl.addElement(XMLTags.PROPERTY_TAG);
-      propEl.addAttribute(XMLTags.NAME_TAG, prop.getPropertyName());
-      propEl.addAttribute(XMLTags.VALUE_TAG, prop.getValue());
-    }
-    for (Map.Entry<String, String> entry : checkConfig.getAdditionalData().entrySet()) {
-      Element addEl = configEl.addElement(XMLTags.ADDITIONAL_DATA_TAG);
-      addEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
-      addEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
-    }
-  }
 }

@@ -29,59 +29,59 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyType;
 
 /**
- * Create <code>ConfigPropertyWidget</code> instances based on provided
- * metadata.
+ * Create <code>ConfigPropertyWidget</code> instances based on provided metadata.
  */
 public final class ConfigPropertyWidgetFactory {
 
-  /** The widget builder registry. */
-  private static final Map<ConfigPropertyType, ConfigPropertyWidgetBuilder> REGISTRY = Map
-          .of(ConfigPropertyType.STRING, ConfigPropertyWidgetString::create,
-          ConfigPropertyType.STRING_ARRAY, ConfigPropertyWidgetStringArray::create,
-          ConfigPropertyType.INTEGER, ConfigPropertyWidgetInteger::create,
-          ConfigPropertyType.SINGLE_SELECT, ConfigPropertyWidgetSingleSelect::create,
-          ConfigPropertyType.BOOLEAN, ConfigPropertyWidgetBoolean::create,
-          ConfigPropertyType.MULTI_CHECK, ConfigPropertyWidgetMultiCheck::create,
-          ConfigPropertyType.HIDDEN, ConfigPropertyWidgetHidden::create,
-          ConfigPropertyType.FILE, ConfigPropertyWidgetFile::create,
-          ConfigPropertyType.REGEX, ConfigPropertyWidgetRegex::create);
+    /** The widget builder registry. */
+    private static final Map<ConfigPropertyType, ConfigPropertyWidgetBuilder> REGISTRY =
+        Map.of(ConfigPropertyType.STRING, ConfigPropertyWidgetString::create,
+            ConfigPropertyType.STRING_ARRAY, ConfigPropertyWidgetStringArray::create,
+            ConfigPropertyType.INTEGER, ConfigPropertyWidgetInteger::create,
+            ConfigPropertyType.SINGLE_SELECT, ConfigPropertyWidgetSingleSelect::create,
+            ConfigPropertyType.BOOLEAN, ConfigPropertyWidgetBoolean::create,
+            ConfigPropertyType.MULTI_CHECK, ConfigPropertyWidgetMultiCheck::create,
+            ConfigPropertyType.HIDDEN, ConfigPropertyWidgetHidden::create, ConfigPropertyType.FILE,
+            ConfigPropertyWidgetFile::create, ConfigPropertyType.REGEX,
+            ConfigPropertyWidgetRegex::create);
 
-  private ConfigPropertyWidgetFactory() {
-  }
-
-  /**
-   * Creates a property widget for the given property.
-   *
-   * @param parent
-   *          the parent component
-   * @param prop
-   *          the property
-   * @param shell
-   *          the parent shell
-   * @return the widget or <code>null</code> if the property type is unknown
-   */
-  public static IConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop,
-          Shell shell) {
-    IConfigPropertyWidget widget = null;
-
-    ConfigPropertyType type = prop.getMetaData().getDatatype();
-
-    if (prop.isPropertyReference()) {
-      widget = ConfigPropertyWidgetString.create(parent, prop);
-    } else {
-      widget = getWidgetForConfigPropertyType(parent, prop, type);
+    private ConfigPropertyWidgetFactory() {
     }
 
-    widget.initialize();
-    return widget;
-  }
+    /**
+     * Creates a property widget for the given property.
+     *
+     * @param parent
+     *            the parent component
+     * @param prop
+     *            the property
+     * @param shell
+     *            the parent shell
+     * @return the widget or <code>null</code> if the property type is unknown
+     */
+    public static IConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop,
+        Shell shell) {
+        IConfigPropertyWidget widget = null;
 
-  private static IConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
-          ConfigProperty prop, ConfigPropertyType type) {
-    return REGISTRY.getOrDefault(type, ConfigPropertyWidgetString::create).create(parent, prop);
-  }
+        ConfigPropertyType type = prop.getMetaData().getDatatype();
 
-  public interface ConfigPropertyWidgetBuilder {
-    IConfigPropertyWidget create(Composite parent, ConfigProperty prop);
-  }
+        if (prop.isPropertyReference()) {
+            widget = ConfigPropertyWidgetString.create(parent, prop);
+        }
+        else {
+            widget = getWidgetForConfigPropertyType(parent, prop, type);
+        }
+
+        widget.initialize();
+        return widget;
+    }
+
+    private static IConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
+        ConfigProperty prop, ConfigPropertyType type) {
+        return REGISTRY.getOrDefault(type, ConfigPropertyWidgetString::create).create(parent, prop);
+    }
+
+    public interface ConfigPropertyWidgetBuilder {
+        IConfigPropertyWidget create(Composite parent, ConfigProperty prop);
+    }
 }

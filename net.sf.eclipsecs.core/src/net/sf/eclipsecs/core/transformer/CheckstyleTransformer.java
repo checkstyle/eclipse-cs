@@ -36,104 +36,107 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  *
  */
 public class CheckstyleTransformer {
-  /** An object containing all settings for the eclipse-formatter. */
-  private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
+    /** An object containing all settings for the eclipse-formatter. */
+    private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
 
-  /** The list of checkstyle-rules delivered in the constructor. */
-  private final List<Configuration> mRules;
+    /** The list of checkstyle-rules delivered in the constructor. */
+    private final List<Configuration> mRules;
 
-  /**
-   * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
-   */
-  private final List<AbstractCTransformationClass> mTransformationClasses = new ArrayList<>();
+    /**
+     * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
+     */
+    private final List<AbstractCTransformationClass> mTransformationClasses = new ArrayList<>();
 
-  /** The project. */
-  private IProject mProject;
+    /** The project. */
+    private IProject mProject;
 
-  /**
-   * Creates a new instance of class CheckstyleTransformer.
-   *
-   * @param project
-   *          the project the transformer is operating on
-   * @param ruleList
-   *          A list of checkstyle-rules.
-   * @throws CheckstylePluginException
-   *           if an unexpected internal exception occurred
-   */
-  public CheckstyleTransformer(IProject project, final List<Configuration> ruleList)
-          throws CheckstylePluginException {
-    mProject = project;
-    mRules = ruleList;
+    /**
+     * Creates a new instance of class CheckstyleTransformer.
+     *
+     * @param project
+     *            the project the transformer is operating on
+     * @param ruleList
+     *            A list of checkstyle-rules.
+     * @throws CheckstylePluginException
+     *             if an unexpected internal exception occurred
+     */
+    public CheckstyleTransformer(IProject project, final List<Configuration> ruleList)
+            throws CheckstylePluginException {
+        mProject = project;
+        mRules = ruleList;
 
-    final List<String> classnames = new ArrayList<>();
-    final Iterator<Configuration> it = mRules.iterator();
+        final List<String> classnames = new ArrayList<>();
+        final Iterator<Configuration> it = mRules.iterator();
 
-    while (it.hasNext()) {
-      Configuration item = it.next();
-      classnames.add("net.sf.eclipsecs.core.transformer.ctransformerclasses." + item.getName()
-              + "Transformer");
+        while (it.hasNext()) {
+            Configuration item = it.next();
+            classnames.add("net.sf.eclipsecs.core.transformer.ctransformerclasses." + item.getName()
+                + "Transformer");
+        }
+
+        loadTransformationClasses(classnames);
     }
 
-    loadTransformationClasses(classnames);
-  }
-
-  /**
-   * Loads all transformationclasses that are needed to recognize the checkstyle-rules. A instance
-   * of every loaded class is stored in the field transformationClasses. Gets called by the
-   * constructor.
-   *
-   * @param classnames
-   *          A list of names of which classes get loaded.
-   * @throws CheckstylePluginException
-   *           an unexpected exception occurred
-   */
-  private void loadTransformationClasses(final List<String> classnames)
-          throws CheckstylePluginException {
-    final Iterator<String> nameit = classnames.iterator();
-    final Iterator<Configuration> ruleit = mRules.iterator();
-    String name;
-    Configuration rule;
-    Class<?> transformationClass;
-    while (nameit.hasNext() && ruleit.hasNext()) {
-      name = nameit.next();
-      rule = ruleit.next();
-      try {
-        transformationClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
-                .loadClass(name);
-        final AbstractCTransformationClass transObj = (AbstractCTransformationClass)
-                transformationClass.getDeclaredConstructor().newInstance();
-        transObj.setRule(rule);
-        mTransformationClasses.add(transObj);
-        // Logger.writeln("using " + name + " to transform rule \""
-        // + rule.getName() + "\"");
-      } catch (final ClassNotFoundException ex) {
-        // NOOP there is just no appropriate transformer class
-      } catch (final ReflectiveOperationException ex) {
-        CheckstylePluginException.rethrow(ex);
-      }
+    /**
+     * Loads all transformationclasses that are needed to recognize the checkstyle-rules. A instance
+     * of every loaded class is stored in the field transformationClasses. Gets called by the
+     * constructor.
+     *
+     * @param classnames
+     *            A list of names of which classes get loaded.
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
+    private void loadTransformationClasses(final List<String> classnames)
+            throws CheckstylePluginException {
+        final Iterator<String> nameit = classnames.iterator();
+        final Iterator<Configuration> ruleit = mRules.iterator();
+        String name;
+        Configuration rule;
+        Class<?> transformationClass;
+        while (nameit.hasNext() && ruleit.hasNext()) {
+            name = nameit.next();
+            rule = ruleit.next();
+            try {
+                transformationClass =
+                    CheckstylePlugin.getDefault().getAddonExtensionClassLoader().loadClass(name);
+                final AbstractCTransformationClass transObj =
+                    (AbstractCTransformationClass) transformationClass.getDeclaredConstructor()
+                        .newInstance();
+                transObj.setRule(rule);
+                mTransformationClasses.add(transObj);
+                // Logger.writeln("using " + name + " to transform rule \""
+                // + rule.getName() + "\"");
+            }
+            catch (final ClassNotFoundException ex) {
+                // NOOP there is just no appropriate transformer class
+            }
+            catch (final ReflectiveOperationException ex) {
+                CheckstylePluginException.rethrow(ex);
+            }
+        }
     }
-  }
 
-  /**
-   * Method for starting transforming. Converts all checkstyle-rules to a new
-   * eclipse-formatter-profile.
-   */
-  // FormatterConfigWriter used via side effect on its arguments
-  public void transformRules() {
-    loadRuleConfigurations();
-    new FormatterConfigWriter(mProject, mFormatterSetting).writeSettings();
-  }
-
-  /**
-   * Method which handles every single checkstyle-rule. For every rule it calls the appropriate
-   * transformerclass. Gets called by transformRules().
-   */
-  private void loadRuleConfigurations() {
-    FormatterConfiguration settings;
-    final Iterator<AbstractCTransformationClass> it = mTransformationClasses.iterator();
-    while (it.hasNext()) {
-      settings = it.next().transformRule();
-      mFormatterSetting.addConfiguration(settings);
+    /**
+     * Method for starting transforming. Converts all checkstyle-rules to a new
+     * eclipse-formatter-profile.
+     */
+    // FormatterConfigWriter used via side effect on its arguments
+    public void transformRules() {
+        loadRuleConfigurations();
+        new FormatterConfigWriter(mProject, mFormatterSetting).writeSettings();
     }
-  }
+
+    /**
+     * Method which handles every single checkstyle-rule. For every rule it calls the appropriate
+     * transformerclass. Gets called by transformRules().
+     */
+    private void loadRuleConfigurations() {
+        FormatterConfiguration settings;
+        final Iterator<AbstractCTransformationClass> it = mTransformationClasses.iterator();
+        while (it.hasNext()) {
+            settings = it.next().transformRule();
+            mFormatterSetting.addConfiguration(settings);
+        }
+    }
 }

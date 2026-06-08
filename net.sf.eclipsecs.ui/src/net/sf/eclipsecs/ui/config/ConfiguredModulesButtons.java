@@ -31,25 +31,25 @@ import net.sf.eclipsecs.ui.Messages;
 
 public class ConfiguredModulesButtons extends Composite {
 
-  public ConfiguredModulesButtons(Composite parent, int style, boolean configurable,
-          Runnable removeModule, Runnable editModule) {
-    super(parent, style);
-    GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(true).margins(0, 0).applyTo(this);
+    public ConfiguredModulesButtons(Composite parent, int style, boolean configurable,
+        Runnable removeModule, Runnable editModule) {
+        super(parent, style);
+        GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(true).margins(0, 0).applyTo(this);
 
-    Button mRemoveButton = new Button(this, SWT.PUSH);
-    mRemoveButton.setText(Messages.CheckConfigurationConfigureDialog_btnRemove);
-    GridDataFactory.swtDefaults().applyTo(mRemoveButton);
-    if (configurable) {
-      mRemoveButton.addSelectionListener(
-              SelectionListener.widgetSelectedAdapter(event -> removeModule.run()));
-    }
-    mRemoveButton.setEnabled(configurable);
+        Button mRemoveButton = new Button(this, SWT.PUSH);
+        mRemoveButton.setText(Messages.CheckConfigurationConfigureDialog_btnRemove);
+        GridDataFactory.swtDefaults().applyTo(mRemoveButton);
+        if (configurable) {
+            mRemoveButton.addSelectionListener(
+                SelectionListener.widgetSelectedAdapter(event -> removeModule.run()));
+        }
+        mRemoveButton.setEnabled(configurable);
 
-    Button mEditButton = new Button(this, SWT.PUSH);
-    mEditButton.setText(Messages.CheckConfigurationConfigureDialog_btnOpen);
-    GridDataFactory.swtDefaults().applyTo(mEditButton);
-    mEditButton.addSelectionListener(
+        Button mEditButton = new Button(this, SWT.PUSH);
+        mEditButton.setText(Messages.CheckConfigurationConfigureDialog_btnOpen);
+        GridDataFactory.swtDefaults().applyTo(mEditButton);
+        mEditButton.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> editModule.run()));
-  }
+    }
 
 }

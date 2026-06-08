@@ -40,46 +40,58 @@ import net.sf.eclipsecs.ui.quickfixes.modifier.ModifierOrderQuickfix;
  */
 public class FinalClassQuickfix extends AbstractASTResolution {
 
-  /** The length of the javadoc comment declaration. */
-  private static final int JAVADOC_COMMENT_LENGTH = 6;
+    /** The length of the javadoc comment declaration. */
+    private static final int JAVADOC_COMMENT_LENGTH = 6;
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new ASTVisitor() {
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(TypeDeclaration node) {
-        // recalculate start position because optional javadoc is mixed
-        // into the original start position
-        int pos = node.getStartPosition() + (node.getJavadoc() != null
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new FinalClassQuickfixAstVisitor(lineInfo);
+    }
+
+    @Override
+    public String getDescription() {
+        return Messages.FinalClassQuickfix_description;
+    }
+
+    @Override
+    public String getLabel() {
+        return Messages.FinalClassQuickfix_label;
+    }
+
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
+    }
+
+    private final class FinalClassQuickfixAstVisitor extends ASTVisitor {
+
+        /** The line info region. */
+        private final IRegion lineInfo;
+
+        private FinalClassQuickfixAstVisitor(IRegion lineInfo) {
+            this.lineInfo = lineInfo;
+        }
+
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean visit(TypeDeclaration node) {
+            // recalculate start position because optional javadoc is mixed
+            // into the original start position
+            int pos = node.getStartPosition() + (node.getJavadoc() != null
                 ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
                 : 0);
-        if (containsPosition(lineInfo, pos) && !Modifier.isFinal(node.getModifiers())) {
-          Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
-          node.modifiers().add(finalModifier);
-          // reorder modifiers into their correct order
-          List<?> reorderedModifiers = ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
-          node.modifiers().clear();
-          node.modifiers().addAll(reorderedModifiers);
+            if (containsPosition(lineInfo, pos) && !Modifier.isFinal(node.getModifiers())) {
+                Modifier finalModifier =
+                    node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
+                node.modifiers().add(finalModifier);
+                // reorder modifiers into their correct order
+                List<?> reorderedModifiers =
+                    ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
+                node.modifiers().clear();
+                node.modifiers().addAll(reorderedModifiers);
+            }
+            return true;
         }
-        return true;
-      }
-    };
-  }
-
-  @Override
-  public String getDescription() {
-    return Messages.FinalClassQuickfix_description;
-  }
-
-  @Override
-  public String getLabel() {
-    return Messages.FinalClassQuickfix_label;
-  }
-
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
-  }
+    }
 }

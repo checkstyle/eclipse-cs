@@ -26,13 +26,13 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class MissingSwitchDefaultTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void missingSwitchDefault() throws Exception {
-    testQuickfix("MissingSwitchDefaultInput.xml", new MissingSwitchDefaultQuickfix());
-  }
+    @Test
+    void missingSwitchDefault() throws Exception {
+        testQuickfix("MissingSwitchDefaultInput.xml", new MissingSwitchDefaultQuickfix());
+    }
 
-  @Test
-  void missingSwitchDefaultInner() throws Exception {
-    testQuickfix("MissingSwitchDefaultInputInner.xml", new MissingSwitchDefaultQuickfix());
-  }
+    @Test
+    void missingSwitchDefaultInner() throws Exception {
+        testQuickfix("MissingSwitchDefaultInputInner.xml", new MissingSwitchDefaultQuickfix());
+    }
 }

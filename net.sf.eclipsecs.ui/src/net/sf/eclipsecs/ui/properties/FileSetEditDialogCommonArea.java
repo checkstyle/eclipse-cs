@@ -43,61 +43,61 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
 
 public final class FileSetEditDialogCommonArea extends Composite {
 
-  /** The text field for the file set name. */
-  private final Text mFileSetNameText;
-  /** The combo viewer for check configuration selection. */
-  private final ComboViewer mComboViewer;
+    /** The text field for the file set name. */
+    private final Text mFileSetNameText;
+    /** The combo viewer for check configuration selection. */
+    private final ComboViewer mComboViewer;
 
-  public FileSetEditDialogCommonArea(Composite parent, int style,
-          Consumer<ICheckConfiguration> selectionChanged, Runnable configureFileSetConfig) {
-    super(parent, style);
-    setLayout(new FillLayout());
+    public FileSetEditDialogCommonArea(Composite parent, int style,
+        Consumer<ICheckConfiguration> selectionChanged, Runnable configureFileSetConfig) {
+        super(parent, style);
+        setLayout(new FillLayout());
 
-    Composite composite = new Composite(this, SWT.NONE);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
+        Composite composite = new Composite(this, SWT.NONE);
+        GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
 
-    Label nameLabel = new Label(composite, SWT.NULL);
-    nameLabel.setText(Messages.FileSetEditDialog_lblName);
+        Label nameLabel = new Label(composite, SWT.NULL);
+        nameLabel.setText(Messages.FileSetEditDialog_lblName);
 
-    mFileSetNameText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mFileSetNameText);
+        mFileSetNameText = new Text(composite, SWT.SINGLE | SWT.BORDER);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mFileSetNameText);
 
-    Label lblConfiguration = new Label(composite, SWT.NULL);
-    lblConfiguration.setText(Messages.FileSetEditDialog_lblCheckConfig);
+        Label lblConfiguration = new Label(composite, SWT.NULL);
+        lblConfiguration.setText(Messages.FileSetEditDialog_lblCheckConfig);
 
-    final Composite comboComposite = new Composite(composite, SWT.NONE);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(comboComposite);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(comboComposite);
+        final Composite comboComposite = new Composite(composite, SWT.NONE);
+        GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(comboComposite);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(comboComposite);
 
-    mComboViewer = new ComboViewer(comboComposite);
-    mComboViewer.getCombo().setVisibleItemCount(10);
-    mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
-    mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
-    mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mComboViewer.getControl());
-    mComboViewer.addSelectionChangedListener(event -> selectionChanged
+        mComboViewer = new ComboViewer(comboComposite);
+        mComboViewer.getCombo().setVisibleItemCount(10);
+        mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
+        mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
+        mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mComboViewer.getControl());
+        mComboViewer.addSelectionChangedListener(event -> selectionChanged
             .accept((ICheckConfiguration) event.getStructuredSelection().getFirstElement()));
 
-    Button mConfigureButton = new Button(comboComposite, SWT.PUSH);
-    mConfigureButton.setText(Messages.FileSetEditDialog_btnConfigure);
-    mConfigureButton.addSelectionListener(
+        Button mConfigureButton = new Button(comboComposite, SWT.PUSH);
+        mConfigureButton.setText(Messages.FileSetEditDialog_btnConfigure);
+        mConfigureButton.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> configureFileSetConfig.run()));
-    GridDataFactory.swtDefaults().applyTo(mConfigureButton);
-  }
+        GridDataFactory.swtDefaults().applyTo(mConfigureButton);
+    }
 
-  public String getText() {
-    return this.mFileSetNameText.getText();
-  }
+    public String getText() {
+        return this.mFileSetNameText.getText();
+    }
 
-  public void setInput(ProjectConfigurationWorkingCopy configuration) {
-    this.mComboViewer.setInput(configuration);
-  }
+    public void setInput(ProjectConfigurationWorkingCopy configuration) {
+        this.mComboViewer.setInput(configuration);
+    }
 
-  public void setText(String text) {
-    this.mFileSetNameText.setText(text);
-  }
+    public void setText(String text) {
+        this.mFileSetNameText.setText(text);
+    }
 
-  public void setSelection(ICheckConfiguration iCheckConfiguration) {
-    this.mComboViewer.setSelection(new StructuredSelection(iCheckConfiguration));
-  }
+    public void setSelection(ICheckConfiguration iCheckConfiguration) {
+        this.mComboViewer.setSelection(new StructuredSelection(iCheckConfiguration));
+    }
 }

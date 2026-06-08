@@ -36,169 +36,169 @@ import net.sf.eclipsecs.ui.stats.Messages;
 
 public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
 
-  /** The filter composite group. */
-  private final Group mFilterComposite;
-  /** The "on any resource" radio button. */
-  private final Button mRadioOnAnyResource;
-  /** The "any resource in same project" radio button. */
-  private final Button mRadioAnyResourceInSameProject;
-  /** The "selected resource" radio button. */
-  private final Button mRadioSelectedResource;
-  /** The "selected resource and children" radio button. */
-  private final Button mRadioSelectedResourceAndChildren;
-  /** The "selected working set" radio button. */
-  private final Button mRadioSelectedWorkingSet;
-  /** The selected working set label. */
-  private final Label mLblSelectedWorkingSet;
-  /** The working set button. */
-  private final Button mBtnWorkingSet;
-  /** The severity enabled checkbox. */
-  private final Button mChkSeverityEnabled;
-  /** The severity error checkbox. */
-  private final Button mChkSeverityError;
-  /** The severity warning checkbox. */
-  private final Button mChkSeverityWarning;
-  /** The severity info checkbox. */
-  private final Button mChkSeverityInfo;
+    /** The filter composite group. */
+    private final Group mFilterComposite;
+    /** The "on any resource" radio button. */
+    private final Button mRadioOnAnyResource;
+    /** The "any resource in same project" radio button. */
+    private final Button mRadioAnyResourceInSameProject;
+    /** The "selected resource" radio button. */
+    private final Button mRadioSelectedResource;
+    /** The "selected resource and children" radio button. */
+    private final Button mRadioSelectedResourceAndChildren;
+    /** The "selected working set" radio button. */
+    private final Button mRadioSelectedWorkingSet;
+    /** The selected working set label. */
+    private final Label mLblSelectedWorkingSet;
+    /** The working set button. */
+    private final Button mBtnWorkingSet;
+    /** The severity enabled checkbox. */
+    private final Button mChkSeverityEnabled;
+    /** The severity error checkbox. */
+    private final Button mChkSeverityError;
+    /** The severity warning checkbox. */
+    private final Button mChkSeverityWarning;
+    /** The severity info checkbox. */
+    private final Button mChkSeverityInfo;
 
-  public CheckstyleMarkerFilterResourceFilterGroup(Composite parent, int style,
-          Runnable updateControlState, Runnable selectWorkingSet) {
-    super(parent, style);
-    setLayout(new FillLayout());
+    public CheckstyleMarkerFilterResourceFilterGroup(Composite parent, int style,
+        Runnable updateControlState, Runnable selectWorkingSet) {
+        super(parent, style);
+        setLayout(new FillLayout());
 
-    mFilterComposite = new Group(this, SWT.NULL);
-    mFilterComposite.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
-    mFilterComposite.setLayout(new GridLayout(3, false));
-    mFilterComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        mFilterComposite = new Group(this, SWT.NULL);
+        mFilterComposite.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
+        mFilterComposite.setLayout(new GridLayout(3, false));
+        mFilterComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-    mRadioOnAnyResource = createButton(mFilterComposite, SWT.RADIO,
+        mRadioOnAnyResource = createButton(mFilterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnAnyResource,
             GridDataFactory.swtDefaults().span(3, 1));
 
-    mRadioAnyResourceInSameProject = createButton(mFilterComposite, SWT.RADIO,
+        mRadioAnyResourceInSameProject = createButton(mFilterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnAnyResourceInSameProject,
             GridDataFactory.swtDefaults().span(3, 1));
 
-    mRadioSelectedResource = createButton(mFilterComposite, SWT.RADIO,
+        mRadioSelectedResource = createButton(mFilterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResource,
             GridDataFactory.swtDefaults().span(3, 1));
 
-    mRadioSelectedResourceAndChildren = new Button(mFilterComposite, SWT.RADIO);
-    mRadioSelectedResourceAndChildren
+        mRadioSelectedResourceAndChildren = new Button(mFilterComposite, SWT.RADIO);
+        mRadioSelectedResourceAndChildren
             .setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResourceAndChilds);
-    GridDataFactory.swtDefaults().span(3, 1).applyTo(mRadioSelectedResourceAndChildren);
+        GridDataFactory.swtDefaults().span(3, 1).applyTo(mRadioSelectedResourceAndChildren);
 
-    mRadioSelectedWorkingSet = createButton(mFilterComposite, SWT.RADIO,
+        mRadioSelectedWorkingSet = createButton(mFilterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnWorkingSet, GridDataFactory.swtDefaults());
 
-    mLblSelectedWorkingSet = new Label(mFilterComposite, SWT.NULL);
-    mLblSelectedWorkingSet.setLayoutData(
+        mLblSelectedWorkingSet = new Label(mFilterComposite, SWT.NULL);
+        mLblSelectedWorkingSet.setLayoutData(
             new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
 
-    mBtnWorkingSet = createButton(mFilterComposite, SWT.PUSH,
+        mBtnWorkingSet = createButton(mFilterComposite, SWT.PUSH,
             Messages.CheckstyleMarkerFilterDialog_btnSelect,
             GridDataFactory.swtDefaults().span(1, 2));
-    mBtnWorkingSet.addSelectionListener(
+        mBtnWorkingSet.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> selectWorkingSet.run()));
 
-    Composite severityGroup = new Composite(mFilterComposite, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(4).margins(0, 5).applyTo(severityGroup);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(3, 1).applyTo(severityGroup);
+        Composite severityGroup = new Composite(mFilterComposite, SWT.NULL);
+        GridLayoutFactory.swtDefaults().numColumns(4).margins(0, 5).applyTo(severityGroup);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(3, 1).applyTo(severityGroup);
 
-    mChkSeverityEnabled = createButton(severityGroup, SWT.CHECK,
+        mChkSeverityEnabled = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnMarkerSeverity,
             GridDataFactory.create(GridData.FILL_HORIZONTAL));
-    mChkSeverityEnabled.addSelectionListener(
+        mChkSeverityEnabled.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> updateControlState.run()));
 
-    mChkSeverityError = createButton(severityGroup, SWT.CHECK,
+        mChkSeverityError = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnSeverityError, GridDataFactory.swtDefaults());
 
-    mChkSeverityWarning = createButton(severityGroup, SWT.CHECK,
+        mChkSeverityWarning = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnSeverityWarning,
             GridDataFactory.swtDefaults());
 
-    mChkSeverityInfo = createButton(severityGroup, SWT.CHECK,
+        mChkSeverityInfo = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnSeverityInfo, GridDataFactory.swtDefaults());
-  }
+    }
 
-  public void setFromFilter(int onResource, boolean selectBySeverity, int severity) {
-    mRadioOnAnyResource.setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
-    mRadioAnyResourceInSameProject
+    public void setFromFilter(int onResource, boolean selectBySeverity, int severity) {
+        mRadioOnAnyResource.setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
+        mRadioAnyResourceInSameProject
             .setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT);
-    mRadioSelectedResource
+        mRadioSelectedResource
             .setSelection(onResource == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY);
-    mRadioSelectedResourceAndChildren
+        mRadioSelectedResourceAndChildren
             .setSelection(onResource == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN);
-    mRadioSelectedWorkingSet.setSelection(onResource == CheckstyleMarkerFilter.ON_WORKING_SET);
+        mRadioSelectedWorkingSet.setSelection(onResource == CheckstyleMarkerFilter.ON_WORKING_SET);
 
-    mChkSeverityEnabled.setSelection(selectBySeverity);
+        mChkSeverityEnabled.setSelection(selectBySeverity);
 
-    mChkSeverityError.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_ERROR) > 0);
-    mChkSeverityWarning.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_WARNING) > 0);
-    mChkSeverityInfo.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
-  }
-
-  public void propagateEnabled(boolean enabled) {
-    mFilterComposite.setEnabled(enabled);
-    mRadioOnAnyResource.setEnabled(enabled);
-    mRadioAnyResourceInSameProject.setEnabled(enabled);
-    mRadioSelectedResource.setEnabled(enabled);
-    mRadioSelectedResourceAndChildren.setEnabled(enabled);
-    mRadioSelectedWorkingSet.setEnabled(enabled);
-    mLblSelectedWorkingSet.setEnabled(enabled);
-    mBtnWorkingSet.setEnabled(enabled);
-    mChkSeverityEnabled.setEnabled(enabled);
-
-    mChkSeverityError.setEnabled(enabled && mChkSeverityEnabled.getSelection());
-    mChkSeverityWarning.setEnabled(enabled && mChkSeverityEnabled.getSelection());
-    mChkSeverityInfo.setEnabled(enabled && mChkSeverityEnabled.getSelection());
-  }
-
-  public void setWorkingSetLabel(String text) {
-    mLblSelectedWorkingSet.setText(text);
-  }
-
-  public int getOnResource() {
-    int onResource;
-    if (mRadioSelectedResource.getSelection()) {
-      onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
-    } else if (mRadioSelectedResourceAndChildren.getSelection()) {
-      onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
-    } else if (mRadioAnyResourceInSameProject.getSelection()) {
-      onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
-    } else if (mRadioSelectedWorkingSet.getSelection()) {
-      onResource = CheckstyleMarkerFilter.ON_WORKING_SET;
-    } else {
-      onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE;
+        mChkSeverityError.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_ERROR) > 0);
+        mChkSeverityWarning.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_WARNING) > 0);
+        mChkSeverityInfo.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
     }
-    return onResource;
-  }
 
-  public int getSeverity() {
-    int severity = 0;
-    if (mChkSeverityError.getSelection()) {
-      severity = severity | CheckstyleMarkerFilter.SEVERITY_ERROR;
-    }
-    if (mChkSeverityWarning.getSelection()) {
-      severity = severity | CheckstyleMarkerFilter.SEVERITY_WARNING;
-    }
-    if (mChkSeverityInfo.getSelection()) {
-      severity = severity | CheckstyleMarkerFilter.SEVERITY_INFO;
-    }
-    return severity;
-  }
+    public void propagateEnabled(boolean enabled) {
+        mFilterComposite.setEnabled(enabled);
+        mRadioOnAnyResource.setEnabled(enabled);
+        mRadioAnyResourceInSameProject.setEnabled(enabled);
+        mRadioSelectedResource.setEnabled(enabled);
+        mRadioSelectedResourceAndChildren.setEnabled(enabled);
+        mRadioSelectedWorkingSet.setEnabled(enabled);
+        mLblSelectedWorkingSet.setEnabled(enabled);
+        mBtnWorkingSet.setEnabled(enabled);
+        mChkSeverityEnabled.setEnabled(enabled);
 
-  public boolean getSelectBySeverity() {
-    return mChkSeverityEnabled.getSelection();
-  }
+        mChkSeverityError.setEnabled(enabled && mChkSeverityEnabled.getSelection());
+        mChkSeverityWarning.setEnabled(enabled && mChkSeverityEnabled.getSelection());
+        mChkSeverityInfo.setEnabled(enabled && mChkSeverityEnabled.getSelection());
+    }
 
-  private static Button createButton(Composite parent, int style, String text,
-          GridDataFactory gridDataFactory) {
-    Button button = new Button(parent, style);
-    button.setText(text);
-    gridDataFactory.applyTo(button);
-    return button;
-  }
+    public void setWorkingSetLabel(String text) {
+        mLblSelectedWorkingSet.setText(text);
+    }
+
+    public int getOnResource() {
+        int onResource;
+        if (mRadioSelectedResource.getSelection()) {
+            onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
+        } else if (mRadioSelectedResourceAndChildren.getSelection()) {
+            onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
+        } else if (mRadioAnyResourceInSameProject.getSelection()) {
+            onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
+        } else if (mRadioSelectedWorkingSet.getSelection()) {
+            onResource = CheckstyleMarkerFilter.ON_WORKING_SET;
+        } else {
+            onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE;
+        }
+        return onResource;
+    }
+
+    public int getSeverity() {
+        int severity = 0;
+        if (mChkSeverityError.getSelection()) {
+            severity = severity | CheckstyleMarkerFilter.SEVERITY_ERROR;
+        }
+        if (mChkSeverityWarning.getSelection()) {
+            severity = severity | CheckstyleMarkerFilter.SEVERITY_WARNING;
+        }
+        if (mChkSeverityInfo.getSelection()) {
+            severity = severity | CheckstyleMarkerFilter.SEVERITY_INFO;
+        }
+        return severity;
+    }
+
+    public boolean getSelectBySeverity() {
+        return mChkSeverityEnabled.getSelection();
+    }
+
+    private static Button createButton(Composite parent, int style, String text,
+        GridDataFactory gridDataFactory) {
+        Button button = new Button(parent, style);
+        button.setText(text);
+        gridDataFactory.applyTo(button);
+        return button;
+    }
 
 }

@@ -35,22 +35,23 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public final class InternalBrowser {
 
-  private InternalBrowser() {
-    // utility class
-  }
-
-  /**
-   * Open a link in an external browser, independent of the Eclipse browser settings.
-   *
-   * @param url the URL to open
-   */
-  public static final void openLinkInExternalBrowser(String url) {
-    try {
-      final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport()
-              .createBrowser(IWorkbenchBrowserSupport.AS_EXTERNAL, null, null, null);
-      browser.openURL(new URL(url));
-    } catch (PartInitException | MalformedURLException ex) {
-      CheckstyleLog.log(ex);
+    private InternalBrowser() {
+        // utility class
     }
-  }
+
+    /**
+     * Open a link in an external browser, independent of the Eclipse browser settings.
+     *
+     * @param url
+     *            the URL to open
+     */
+    public static final void openLinkInExternalBrowser(String url) {
+        try {
+            final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport()
+                .createBrowser(IWorkbenchBrowserSupport.AS_EXTERNAL, null, null, null);
+            browser.openURL(new URL(url));
+        } catch (PartInitException | MalformedURLException ex) {
+            CheckstyleLog.log(ex);
+        }
+    }
 }

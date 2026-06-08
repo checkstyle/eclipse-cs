@@ -45,90 +45,94 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public final class CheckConfigurationTester {
 
-  private CheckConfigurationTester() {
+    private CheckConfigurationTester() {
 
-  }
-
-  /**
-   * Tests a configuration if there are unresolved properties.
-   *
-   * @param checkConfiguration the check configuration to test
-   * @return the list of unresolved properties as ResolvableProperty values.
-   * @throws CheckstylePluginException
-   *           most likely the configuration file could not be found
-   */
-  public static List<ResolvableProperty> getUnresolvedProperties(
-          ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
-
-    CheckstyleConfigurationFile configFile = checkConfiguration.getCheckstyleConfiguration();
-
-    PropertyResolver resolver = configFile.getPropertyResolver();
-
-    MissingPropertyCollector collector = new MissingPropertyCollector();
-
-    if (resolver instanceof MultiPropertyResolver) {
-      ((MultiPropertyResolver) resolver).addPropertyResolver(collector);
-    } else {
-      MultiPropertyResolver multiResolver = new MultiPropertyResolver();
-      multiResolver.addPropertyResolver(resolver);
-      multiResolver.addPropertyResolver(collector);
-      resolver = multiResolver;
     }
-
-    InputSource input = null;
-    try {
-      input = configFile.getCheckConfigFileInputSource();
-      ConfigurationLoader.loadConfiguration(input, resolver, IgnoredModulesOptions.EXECUTE);
-    } catch (CheckstyleException ex) {
-      CheckstylePluginException.rethrow(ex);
-    } finally {
-      Closeables.closeQuietly(input.getByteStream());
-    }
-
-    return collector.getUnresolvedProperties();
-  }
-
-  /**
-   * A property resolver that itself does not resolve properties but collects properties that are
-   * not being resolved by a given other property resolver. This is used to find unresolved
-   * properties after all other property reolvers have been asked.
-   *
-   */
-  private static final class MissingPropertyCollector implements PropertyResolver {
 
     /**
-     * Properties that will be ignored, because they can always be resolved when the configuration
-     * is used in the context of a project.
+     * Tests a configuration if there are unresolved properties.
+     *
+     * @param checkConfiguration
+     *            the check configuration to test
+     * @return the list of unresolved properties as ResolvableProperty values.
+     * @throws CheckstylePluginException
+     *             most likely the configuration file could not be found
      */
-    private static final List<String> IGNORE_PROPS = Arrays.asList("basedir", //$NON-NLS-1$
+    public static List<ResolvableProperty> getUnresolvedProperties(
+        ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
+
+        CheckstyleConfigurationFile configFile = checkConfiguration.getCheckstyleConfiguration();
+
+        PropertyResolver resolver = configFile.getPropertyResolver();
+
+        MissingPropertyCollector collector = new MissingPropertyCollector();
+
+        if (resolver instanceof MultiPropertyResolver) {
+            ((MultiPropertyResolver) resolver).addPropertyResolver(collector);
+        }
+        else {
+            MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+            multiResolver.addPropertyResolver(resolver);
+            multiResolver.addPropertyResolver(collector);
+            resolver = multiResolver;
+        }
+
+        InputSource input = null;
+        try {
+            input = configFile.getCheckConfigFileInputSource();
+            ConfigurationLoader.loadConfiguration(input, resolver, IgnoredModulesOptions.EXECUTE);
+        }
+        catch (CheckstyleException ex) {
+            CheckstylePluginException.rethrow(ex);
+        }
+        finally {
+            Closeables.closeQuietly(input.getByteStream());
+        }
+
+        return collector.getUnresolvedProperties();
+    }
+
+    /**
+     * A property resolver that itself does not resolve properties but collects properties that are
+     * not being resolved by a given other property resolver. This is used to find unresolved
+     * properties after all other property reolvers have been asked.
+     *
+     */
+    private static final class MissingPropertyCollector implements PropertyResolver {
+
+        /**
+         * Properties that will be ignored, because they can always be resolved when the
+         * configuration is used in the context of a project.
+         */
+        private static final List<String> IGNORE_PROPS = Arrays.asList("basedir", //$NON-NLS-1$
             "project_loc"); //$NON-NLS-1$
 
-    /** The list of unresolved properties. */
-    private List<ResolvableProperty> mUnresolvedProperties = new ArrayList<>();
+        /** The list of unresolved properties. */
+        private List<ResolvableProperty> mUnresolvedProperties = new ArrayList<>();
 
-    @Override
-    public String resolve(String aName) {
+        @Override
+        public String resolve(String aName) {
 
-      if (!IGNORE_PROPS.contains(aName)) {
-        ResolvableProperty prop = new ResolvableProperty(aName, null);
+            if (!IGNORE_PROPS.contains(aName)) {
+                ResolvableProperty prop = new ResolvableProperty(aName, null);
 
-        // rule out duplicates
-        if (!mUnresolvedProperties.contains(prop)) {
-          mUnresolvedProperties.add(prop);
+                // rule out duplicates
+                if (!mUnresolvedProperties.contains(prop)) {
+                    mUnresolvedProperties.add(prop);
+                }
+            }
+            // return warning to prevent hiccups with properties used in module
+            // severity. Bad hack, I know :-(
+            return "warning"; //$NON-NLS-1$
         }
-      }
-      // return warning to prevent hiccups with properties used in module
-      // severity. Bad hack, I know :-(
-      return "warning"; //$NON-NLS-1$
-    }
 
-    /**
-     * The list of unresolved properties containing ResolvableProperty items.
-     *
-     * @return the list of unresolved properties.
-     */
-    public List<ResolvableProperty> getUnresolvedProperties() {
-      return mUnresolvedProperties;
+        /**
+         * The list of unresolved properties containing ResolvableProperty items.
+         *
+         * @return the list of unresolved properties.
+         */
+        public List<ResolvableProperty> getUnresolvedProperties() {
+            return mUnresolvedProperties;
+        }
     }
-  }
 }

@@ -40,115 +40,115 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
-  /** Identifier of the plug-in. */
-  public static final String PLUGIN_ID = "net.sf.eclipsecs.ui"; //$NON-NLS-1$
+    /** Identifier of the plug-in. */
+    public static final String PLUGIN_ID = "net.sf.eclipsecs.ui"; //$NON-NLS-1$
 
-  /** The shared instance. */
-  private static CheckstyleUIPlugin sPlugin;
+    /** The shared instance. */
+    private static CheckstyleUIPlugin sPlugin;
 
-  /**
-   * The constructor.
-   */
-  public CheckstyleUIPlugin() {
-    sPlugin = this;
-  }
+    /**
+     * The constructor.
+     */
+    public CheckstyleUIPlugin() {
+        sPlugin = this;
+    }
 
-  @Override
-  public void stop(BundleContext context) throws Exception {
-    // free cached images
-    CheckstyleUIPluginImages.clearCachedImages();
-    super.stop(context);
-  }
+    @Override
+    public void stop(BundleContext context) throws Exception {
+        // free cached images
+        CheckstyleUIPluginImages.clearCachedImages();
+        super.stop(context);
+    }
 
-  /**
-   * Returns the shared instance.
-   *
-   * @return The shared plug-in instance.
-   */
-  public static CheckstyleUIPlugin getDefault() {
-    return sPlugin;
-  }
+    /**
+     * Returns the shared instance.
+     *
+     * @return The shared plug-in instance.
+     */
+    public static CheckstyleUIPlugin getDefault() {
+        return sPlugin;
+    }
 
-  /**
-   * Returns the workspace instance.
-   *
-   * @return Workspace instance.
-   */
-  public static IWorkspace getWorkspace() {
-    return ResourcesPlugin.getWorkspace();
-  }
+    /**
+     * Returns the workspace instance.
+     *
+     * @return Workspace instance.
+     */
+    public static IWorkspace getWorkspace() {
+        return ResourcesPlugin.getWorkspace();
+    }
 
-  /**
-   * Helper method to get the current plattform locale.
-   *
-   * @return the platform locale
-   */
-  public static Locale getPlatformLocale() {
+    /**
+     * Helper method to get the current plattform locale.
+     *
+     * @return the platform locale
+     */
+    public static Locale getPlatformLocale() {
 
-    String locale = Platform.getNL();
-    String[] parts = locale.split("_"); //$NON-NLS-1$
+        String locale = Platform.getNL();
+        String[] parts = locale.split("_"); //$NON-NLS-1$
 
-    String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
-    String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
-    String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
+        String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
+        String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
+        String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
 
-    return new Locale(language, country, variant);
-  }
+        return new Locale(language, country, variant);
+    }
 
-  /**
-   * Open an error dialog for an exception that occurred within the plugin.
-   *
-   * @param shell
-   *          the shell
-   * @param message
-   *          the exception message
-   * @param throwable
-   *          the exception
-   * @param log
-   *          <code>true</code> if the exception should be logged
-   */
-  public static void errorDialog(Shell shell, String message, Throwable throwable, boolean log) {
+    /**
+     * Open an error dialog for an exception that occurred within the plugin.
+     *
+     * @param shell
+     *            the shell
+     * @param message
+     *            the exception message
+     * @param throwable
+     *            the exception
+     * @param log
+     *            <code>true</code> if the exception should be logged
+     */
+    public static void errorDialog(Shell shell, String message, Throwable throwable, boolean log) {
 
-    Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+        Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
             message != null ? message : "", throwable); //$NON-NLS-1$
 
-    String msg = NLS.bind(Messages.errorDialogMainMessage, message);
-    ErrorDialog.openError(shell, Messages.CheckstyleLog_titleInternalError, msg, status);
+        String msg = NLS.bind(Messages.errorDialogMainMessage, message);
+        ErrorDialog.openError(shell, Messages.CheckstyleLog_titleInternalError, msg, status);
 
-    if (log) {
-      CheckstyleLog.log(throwable);
+        if (log) {
+            CheckstyleLog.log(throwable);
+        }
     }
-  }
 
-  /**
-   * Open an error dialog for an exception that occurred within the plugin.
-   *
-   * @param shell
-   *          the shell
-   * @param throwable
-   *          the exception
-   * @param log
-   *          <code>true</code> if the exception should be logged
-   */
-  public static void errorDialog(Shell shell, Throwable throwable, boolean log) {
-    errorDialog(shell, throwable.getLocalizedMessage(), throwable, log);
-  }
+    /**
+     * Open an error dialog for an exception that occurred within the plugin.
+     *
+     * @param shell
+     *            the shell
+     * @param throwable
+     *            the exception
+     * @param log
+     *            <code>true</code> if the exception should be logged
+     */
+    public static void errorDialog(Shell shell, Throwable throwable, boolean log) {
+        errorDialog(shell, throwable.getLocalizedMessage(), throwable, log);
+    }
 
-  /**
-   * Open an warning dialog for an exception that occurred within the plugin.
-   *
-   * @param shell
-   *          the shell
-   * @param message
-   *          the exception message
-   * @param throwable
-   *          the exception
-   */
-  public static void warningDialog(Shell shell, String message, Throwable throwable) {
-    Status status = new Status(IStatus.WARNING, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+    /**
+     * Open an warning dialog for an exception that occurred within the plugin.
+     *
+     * @param shell
+     *            the shell
+     * @param message
+     *            the exception message
+     * @param throwable
+     *            the exception
+     */
+    public static void warningDialog(Shell shell, String message, Throwable throwable) {
+        Status status = new Status(IStatus.WARNING, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
             throwable.getLocalizedMessage(), throwable);
 
-    ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);
-  }
+        ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);
+    }
 
 }

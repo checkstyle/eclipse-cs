@@ -29,24 +29,25 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class FinalParametersTransformer extends AbstractCTransformationClass {
-  @Override
-  public FormatterConfiguration transformRule() {
-    String tokens = getAttribute("tokens");
-    if (tokens == null) {
-      tokens = "METHOD_DEF, CTOR_DEF";
-    }
-
-    for (String token : tokens.split("\\s*,\\s*")) {
-      switch (token) {
-        case "METHOD_DEF", "CTOR_DEF" -> useCleanupSetting("make_parameters_final", "true");
-        case "LITERAL_CATCH", "FOR_EACH_CLAUSE", "PATTERN_VARIABLE_DEF" ->
-          useCleanupSetting("make_local_variable_final", "true");
-        default -> {
-          // nothing to transform
+    @Override
+    public FormatterConfiguration transformRule() {
+        String tokens = getAttribute("tokens");
+        if (tokens == null) {
+            tokens = "METHOD_DEF, CTOR_DEF";
         }
-      }
+
+        for (String token : tokens.split("\\s*,\\s*")) {
+            switch (token) {
+                case "METHOD_DEF", "CTOR_DEF" -> useCleanupSetting("make_parameters_final", "true");
+                case "LITERAL_CATCH", "FOR_EACH_CLAUSE",
+                    "PATTERN_VARIABLE_DEF" -> useCleanupSetting("make_local_variable_final",
+                        "true");
+                default -> {
+                    // nothing to transform
+                }
+            }
+        }
+        useCleanupSetting("make_variable_declarations_final", "true");
+        return getFormatterSetting();
     }
-    useCleanupSetting("make_variable_declarations_final", "true");
-    return getFormatterSetting();
-  }
 }

@@ -36,95 +36,95 @@ import org.eclipse.core.runtime.Path;
  */
 public class PackageFilter extends AbstractFilter {
 
-  /**
-   * Marker string in the filter data, if present the subpackes of a filtered package are not
-   * recursively excluded, but only the filtered package itself.
-   */
-  public static final String RECURSE_OFF_MARKER = "<recurse=false>";
+    /**
+     * Marker string in the filter data, if present the subpackes of a filtered package are not
+     * recursively excluded, but only the filtered package itself.
+     */
+    public static final String RECURSE_OFF_MARKER = "<recurse=false>";
 
-  /** The package filter data. */
-  private List<String> mData = new ArrayList<>();
+    /** The package filter data. */
+    private List<String> mData = new ArrayList<>();
 
-  /** Whether to exclude sub-packages. */
-  private boolean mExcludeSubPackages = true;
+    /** Whether to exclude sub-packages. */
+    private boolean mExcludeSubPackages = true;
 
-  @Override
-  public boolean accept(Object object) {
-    boolean accept = true;
-    if (object instanceof IResource resource) {
-      IContainer folder;
-      if (resource instanceof IContainer) {
-        folder = (IContainer) resource;
-      } else {
-        folder = resource.getParent();
-      }
+    @Override
+    public boolean accept(Object object) {
+        boolean accept = true;
+        if (object instanceof IResource resource) {
+            IContainer folder;
+            if (resource instanceof IContainer) {
+                folder = (IContainer) resource;
+            } else {
+                folder = resource.getParent();
+            }
 
-      IPath projRelativPath = folder.getProjectRelativePath();
+            IPath projRelativPath = folder.getProjectRelativePath();
 
-      int size = mData != null ? mData.size() : 0;
-      for (int i = 0; i < size; i++) {
-        String element = mData.get(i);
+            int size = mData != null ? mData.size() : 0;
+            for (int i = 0; i < size; i++) {
+                String element = mData.get(i);
 
-        if (!RECURSE_OFF_MARKER.equals(element)) {
-          IPath filteredPath = new Path(element);
-          if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)
-                  || !mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
-            accept = false;
-            break;
-          }
+                if (!RECURSE_OFF_MARKER.equals(element)) {
+                    IPath filteredPath = new Path(element);
+                    if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)
+                        || !mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
+                        accept = false;
+                        break;
+                    }
+                }
+            }
         }
-      }
-    }
-    return accept;
-  }
-
-  @Override
-  public void setFilterData(List<String> filterData) {
-    mData = filterData;
-
-    if (mData.contains(RECURSE_OFF_MARKER)) {
-      mExcludeSubPackages = false;
-    }
-  }
-
-  @Override
-  public List<String> getFilterData() {
-    return mData;
-  }
-
-  @Override
-  public String getPresentableFilterData() {
-
-    StringBuilder buf = new StringBuilder();
-
-    int size = mData != null ? mData.size() : 0;
-    for (int i = 0; i < size; i++) {
-      if (i > 0) {
-        buf.append(", "); //$NON-NLS-1$
-      }
-
-      buf.append(mData.get(i));
+        return accept;
     }
 
-    return buf.toString();
-  }
+    @Override
+    public void setFilterData(List<String> filterData) {
+        mData = filterData;
 
-  @Override
-  public boolean equals(Object o) {
-
-    if (o == null || !(o instanceof PackageFilter)) {
-      return false;
-    }
-    if (this == o) {
-      return true;
+        if (mData.contains(RECURSE_OFF_MARKER)) {
+            mExcludeSubPackages = false;
+        }
     }
 
-    PackageFilter rhs = (PackageFilter) o;
-    return super.equals(o) && Objects.equals(mData, rhs.mData);
-  }
+    @Override
+    public List<String> getFilterData() {
+        return mData;
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(super.hashCode(), mData);
-  }
+    @Override
+    public String getPresentableFilterData() {
+
+        StringBuilder buf = new StringBuilder();
+
+        int size = mData != null ? mData.size() : 0;
+        for (int i = 0; i < size; i++) {
+            if (i > 0) {
+                buf.append(", "); //$NON-NLS-1$
+            }
+
+            buf.append(mData.get(i));
+        }
+
+        return buf.toString();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+
+        if (o == null || !(o instanceof PackageFilter)) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+
+        PackageFilter rhs = (PackageFilter) o;
+        return super.equals(o) && Objects.equals(mData, rhs.mData);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(super.hashCode(), mData);
+    }
 }

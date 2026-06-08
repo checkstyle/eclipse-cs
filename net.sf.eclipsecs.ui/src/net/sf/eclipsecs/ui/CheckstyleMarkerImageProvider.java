@@ -33,28 +33,30 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
  */
 public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
 
-  @Override
-  public Image getManagedImage(Annotation annotation) {
-    Image image = null;
-    String type = annotation.getType();
-    if (CheckstyleMarker.ERROR_TYPE.equals(type)) {
-      image = CheckstyleUIPluginImages.MARKER_ERROR.getImage();
-    } else if (CheckstyleMarker.WARNING_TYPE.equals(type)) {
-      image = CheckstyleUIPluginImages.MARKER_WARNING.getImage();
-    } else if (CheckstyleMarker.INFO_TYPE.equals(type)) {
-      image = CheckstyleUIPluginImages.MARKER_INFO.getImage();
+    @Override
+    public Image getManagedImage(Annotation annotation) {
+        Image image = null;
+        String type = annotation.getType();
+        if (CheckstyleMarker.ERROR_TYPE.equals(type)) {
+            image = CheckstyleUIPluginImages.MARKER_ERROR.getImage();
+        }
+        else if (CheckstyleMarker.WARNING_TYPE.equals(type)) {
+            image = CheckstyleUIPluginImages.MARKER_WARNING.getImage();
+        }
+        else if (CheckstyleMarker.INFO_TYPE.equals(type)) {
+            image = CheckstyleUIPluginImages.MARKER_INFO.getImage();
+        }
+
+        return image;
     }
 
-    return image;
-  }
+    @Override
+    public String getImageDescriptorId(Annotation annotation) {
+        return null;
+    }
 
-  @Override
-  public String getImageDescriptorId(Annotation annotation) {
-    return null;
-  }
-
-  @Override
-  public ImageDescriptor getImageDescriptor(String imageDescritporId) {
-    return null;
-  }
+    @Override
+    public ImageDescriptor getImageDescriptor(String imageDescritporId) {
+        return null;
+    }
 }

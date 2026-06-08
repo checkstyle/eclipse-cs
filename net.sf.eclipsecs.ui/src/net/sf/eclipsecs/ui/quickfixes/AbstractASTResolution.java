@@ -40,146 +40,149 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
  *
  */
 public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
-        implements ICheckstyleMarkerResolution {
+    implements ICheckstyleMarkerResolution {
 
-  /** The module name for this quickfix. */
-  private String module;
+    /** The module name for this quickfix. */
+    private String module;
 
-  /**
-   * Template method to be implemented by concrete quickfix implementations. These must provide
-   * their fixing modification through an AST visitor, more specifically by doing the necessary
-   * modifications directly on the visited AST nodes. The AST itself will record modification.
-   *
-   * @param lineInfo
-   *          the IRegion for the line containing the marker to fix
-   * @param markerStartOffset
-   *          the actual offset where the problem marker starts
-   * @return the modifying AST visitor
-   */
-  protected abstract ASTVisitor handleGetCorrectingASTVisitor(IRegion lineInfo,
-          int markerStartOffset);
+    /**
+     * Template method to be implemented by concrete quickfix implementations. These must provide
+     * their fixing modification through an AST visitor, more specifically by doing the necessary
+     * modifications directly on the visited AST nodes. The AST itself will record modification.
+     *
+     * @param lineInfo
+     *            the IRegion for the line containing the marker to fix
+     * @param markerStartOffset
+     *            the actual offset where the problem marker starts
+     * @return the modifying AST visitor
+     */
+    protected abstract ASTVisitor handleGetCorrectingASTVisitor(IRegion lineInfo,
+        int markerStartOffset);
 
-  @Override
-  public boolean canFix(IMarker marker) {
-    boolean canFix = false;
-    try {
-      if (CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
-        String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, "");
-        if (module.equals(markerModule)) {
-          canFix = true;
-        } else {
-          var shortName = StringUtils.substringAfterLast(markerModule, '.');
-          canFix = module.equals(shortName);
+    @Override
+    public boolean canFix(IMarker marker) {
+        boolean canFix = false;
+        try {
+            if (CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
+                String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, "");
+                if (module.equals(markerModule)) {
+                    canFix = true;
+                }
+                else {
+                    var shortName = StringUtils.substringAfterLast(markerModule, '.');
+                    canFix = module.equals(shortName);
+                }
+            }
         }
-      }
-    } catch (CoreException ex) {
-      // ignore
+        catch (CoreException ex) {
+            // ignore
+        }
+        return canFix;
     }
-    return canFix;
-  }
 
-  @Override
-  public Image getImage() {
-    // default implementation returns no image
-    return null;
-  }
+    @Override
+    public Image getImage() {
+        // default implementation returns no image
+        return null;
+    }
 
-  @Override
-  public IMarker[] findOtherMarkers(IMarker[] markers) {
-    return Arrays.stream(markers)
-            .filter(this::canFix)
-            .toArray(IMarker[]::new);
-  }
+    @Override
+    public IMarker[] findOtherMarkers(IMarker[] markers) {
+        return Arrays.stream(markers).filter(this::canFix).toArray(IMarker[]::new);
+    }
 
-  @Override
-  public void run(IMarker marker) {
-    AstQuickfixExecutor.run(marker, this::handleGetCorrectingASTVisitor);
-  }
+    @Override
+    public void run(IMarker marker) {
+        AstQuickfixExecutor.run(marker, this::handleGetCorrectingASTVisitor);
+    }
 
-  @Override
-  public void setModule(String module) {
-    this.module = module;
-  }
+    @Override
+    public void setModule(String module) {
+        this.module = module;
+    }
 
-  /**
-   * Determines if the given position lies within the boundaries of the ASTNode.
-   *
-   * @param node
-   *          the ASTNode
-   * @param position
-   *          the position to check for
-   * @return <code>true</code> if the position is within the ASTNode
-   */
-  protected boolean containsPosition(ASTNode node, int position) {
-    return node.getStartPosition() <= position
+    /**
+     * Determines if the given position lies within the boundaries of the ASTNode.
+     *
+     * @param node
+     *            the ASTNode
+     * @param position
+     *            the position to check for
+     * @return <code>true</code> if the position is within the ASTNode
+     */
+    protected boolean containsPosition(ASTNode node, int position) {
+        return node.getStartPosition() <= position
             && position <= node.getStartPosition() + node.getLength();
-  }
-
-  /**
-   * Determines if the given position lies within the boundaries of the region.
-   *
-   * @param region
-   *          the region
-   * @param position
-   *          the position to check for
-   * @return <code>true</code> if the position is within the region
-   */
-  protected boolean containsPosition(IRegion region, int position) {
-    return region.getOffset() <= position && position <= region.getOffset() + region.getLength();
-  }
-
-  /**
-   * Returns a deep copy of the subtree of AST nodes rooted at the given node. The resulting nodes
-   * are owned by the same AST as the given node. Even if the given node has a parent, the result
-   * node will be unparented.
-   * <p>
-   * Source range information on the original nodes is automatically copied to the new nodes. Client
-   * properties ( <code>properties</code>) are not carried over.
-   * </p>
-   * <p>
-   * The node's <code>AST</code> and the target <code>AST</code> must support the same API level.
-   * </p>
-   *
-   * @param <T>
-   *          the AST node type
-   * @param node
-   *          the node to copy, or <code>null</code> if none
-   *
-   * @return the copied node, or <code>null</code> if <code>node</code> is <code>null</code>
-   */
-  @SuppressWarnings("unchecked")
-  protected <T extends ASTNode> T copy(final T node) {
-    return (T) ASTNode.copySubtree(node.getAST(), node);
-  }
-
-  /**
-   * Replaces a node in an AST with another node. If the replacement is successful the original node
-   * is deleted.
-   *
-   * @param node
-   *          The node to replace.
-   * @param replacement
-   *          The replacement node.
-   * @return <code>true</code> if the node was successfully replaced.
-   */
-  protected static boolean replace(final ASTNode node, final ASTNode replacement) {
-    boolean replaced = false;
-    final ASTNode parent = node.getParent();
-    final StructuralPropertyDescriptor descriptor = node.getLocationInParent();
-    if (descriptor != null) {
-      if (descriptor.isChildProperty()) {
-        parent.setStructuralProperty(descriptor, replacement);
-        node.delete();
-        replaced = true;
-      } else if (descriptor.isChildListProperty()) {
-        @SuppressWarnings("unchecked")
-        final List<ASTNode> children = (List<ASTNode>) parent.getStructuralProperty(descriptor);
-        children.set(children.indexOf(node), replacement);
-        node.delete();
-        replaced = true;
-      }
     }
-    return replaced;
-  }
+
+    /**
+     * Determines if the given position lies within the boundaries of the region.
+     *
+     * @param region
+     *            the region
+     * @param position
+     *            the position to check for
+     * @return <code>true</code> if the position is within the region
+     */
+    protected boolean containsPosition(IRegion region, int position) {
+        return region.getOffset() <= position
+            && position <= region.getOffset() + region.getLength();
+    }
+
+    /**
+     * Returns a deep copy of the subtree of AST nodes rooted at the given node. The resulting nodes
+     * are owned by the same AST as the given node. Even if the given node has a parent, the result
+     * node will be unparented.
+     * <p>
+     * Source range information on the original nodes is automatically copied to the new nodes.
+     * Client properties ( <code>properties</code>) are not carried over.
+     * </p>
+     * <p>
+     * The node's <code>AST</code> and the target <code>AST</code> must support the same API level.
+     * </p>
+     *
+     * @param <T>
+     *            the AST node type
+     * @param node
+     *            the node to copy, or <code>null</code> if none
+     *
+     * @return the copied node, or <code>null</code> if <code>node</code> is <code>null</code>
+     */
+    @SuppressWarnings("unchecked")
+    protected <T extends ASTNode> T copy(final T node) {
+        return (T) ASTNode.copySubtree(node.getAST(), node);
+    }
+
+    /**
+     * Replaces a node in an AST with another node. If the replacement is successful the original
+     * node is deleted.
+     *
+     * @param node
+     *            The node to replace.
+     * @param replacement
+     *            The replacement node.
+     * @return <code>true</code> if the node was successfully replaced.
+     */
+    protected static boolean replace(final ASTNode node, final ASTNode replacement) {
+        boolean replaced = false;
+        final ASTNode parent = node.getParent();
+        final StructuralPropertyDescriptor descriptor = node.getLocationInParent();
+        if (descriptor != null) {
+            if (descriptor.isChildProperty()) {
+                parent.setStructuralProperty(descriptor, replacement);
+                node.delete();
+                replaced = true;
+            }
+            else if (descriptor.isChildListProperty()) {
+                @SuppressWarnings("unchecked")
+                final List<ASTNode> children =
+                    (List<ASTNode>) parent.getStructuralProperty(descriptor);
+                children.set(children.indexOf(node), replacement);
+                node.delete();
+                replaced = true;
+            }
+        }
+        return replaced;
+    }
 
 }

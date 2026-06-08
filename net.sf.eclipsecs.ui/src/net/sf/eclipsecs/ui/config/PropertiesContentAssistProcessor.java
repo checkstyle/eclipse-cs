@@ -38,72 +38,71 @@ import net.sf.eclipsecs.ui.Messages;
  * Provides content assist for builtin properties.
  *
  */
-public class PropertiesContentAssistProcessor
-        implements ISubjectControlContentAssistProcessor {
+public class PropertiesContentAssistProcessor implements ISubjectControlContentAssistProcessor {
 
-  /** The context information validator. */
-  private IContextInformationValidator mValidator = new SubjectControlContextInformationValidator(
-          this);
+    /** The context information validator. */
+    private IContextInformationValidator mValidator =
+        new SubjectControlContextInformationValidator(this);
 
-  @Override
-  public IContextInformation[] computeContextInformation(ITextViewer viewer, int offset) {
-    return new IContextInformation[0];
-  }
+    @Override
+    public IContextInformation[] computeContextInformation(ITextViewer viewer, int offset) {
+        return new IContextInformation[0];
+    }
 
-  @Override
-  public IContextInformation[] computeContextInformation(
-          IContentAssistSubjectControl contentAssistSubjectControl, int documentOffset) {
-    return new IContextInformation[0];
-  }
+    @Override
+    public IContextInformation[] computeContextInformation(
+        IContentAssistSubjectControl contentAssistSubjectControl, int documentOffset) {
+        return new IContextInformation[0];
+    }
 
-  @Override
-  public char[] getCompletionProposalAutoActivationCharacters() {
-    return new char[0];
-  }
+    @Override
+    public char[] getCompletionProposalAutoActivationCharacters() {
+        return new char[0];
+    }
 
-  @Override
-  public char[] getContextInformationAutoActivationCharacters() {
-    return new char[0];
-  }
+    @Override
+    public char[] getContextInformationAutoActivationCharacters() {
+        return new char[0];
+    }
 
-  @Override
-  public String getErrorMessage() {
-    return null;
-  }
+    @Override
+    public String getErrorMessage() {
+        return null;
+    }
 
-  @Override
-  public IContextInformationValidator getContextInformationValidator() {
-    return mValidator;
-  }
+    @Override
+    public IContextInformationValidator getContextInformationValidator() {
+        return mValidator;
+    }
 
-  @Override
-  public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
-    return new ICompletionProposal[0];
-  }
+    @Override
+    public ICompletionProposal[] computeCompletionProposals(ITextViewer viewer, int offset) {
+        return new ICompletionProposal[0];
+    }
 
-  @Override
-  public ICompletionProposal[] computeCompletionProposals(
-          IContentAssistSubjectControl contentAssistSubjectControl, int documentOffset) {
-    List<CompletionProposal> proposals = new ArrayList<>();
+    @Override
+    public ICompletionProposal[] computeCompletionProposals(
+        IContentAssistSubjectControl contentAssistSubjectControl, int documentOffset) {
+        List<CompletionProposal> proposals = new ArrayList<>();
 
-    String basedir = "${basedir}"; //$NON-NLS-1$
-    String projectLoc = "${project_loc}"; //$NON-NLS-1$
-    String workspaceLoc = "${workspace_loc}"; //$NON-NLS-1$
-    String configLoc = "${config_loc}"; //$NON-NLS-1$
-    String samedir = "${samedir}"; //$NON-NLS-1$
+        String basedir = "${basedir}"; //$NON-NLS-1$
+        String projectLoc = "${project_loc}"; //$NON-NLS-1$
+        String workspaceLoc = "${workspace_loc}"; //$NON-NLS-1$
+        String configLoc = "${config_loc}"; //$NON-NLS-1$
+        String samedir = "${samedir}"; //$NON-NLS-1$
 
-    proposals.add(new CompletionProposal(basedir, documentOffset, 0, basedir.length(), null,
+        proposals.add(new CompletionProposal(basedir, documentOffset, 0, basedir.length(), null,
             basedir, null, Messages.PropertiesContentAssistProcessor_basedir));
-    proposals.add(new CompletionProposal(projectLoc, documentOffset, 0, projectLoc.length(), null,
-            projectLoc, null, Messages.PropertiesContentAssistProcessor_projectLoc));
-    proposals.add(new CompletionProposal(workspaceLoc, documentOffset, 0, workspaceLoc.length(),
+        proposals.add(new CompletionProposal(projectLoc, documentOffset, 0, projectLoc.length(),
+            null, projectLoc, null, Messages.PropertiesContentAssistProcessor_projectLoc));
+        proposals.add(new CompletionProposal(workspaceLoc, documentOffset, 0, workspaceLoc.length(),
             null, workspaceLoc, null, Messages.PropertiesContentAssistProcessor_workspaceLoc));
-    proposals.add(new CompletionProposal(configLoc, documentOffset, 0, configLoc.length(), null,
+        proposals.add(new CompletionProposal(configLoc, documentOffset, 0, configLoc.length(), null,
             configLoc, null, Messages.PropertiesContentAssistProcessor_configLoc));
-    proposals.add(new CompletionProposal(samedir, documentOffset, 0, samedir.length(), null,
+        proposals.add(new CompletionProposal(samedir, documentOffset, 0, samedir.length(), null,
             samedir, null, Messages.PropertiesContentAssistProcessor_samedir));
 
-    return proposals.toArray(new ICompletionProposal[proposals.size()]);
-  }
+        return proposals.toArray(new ICompletionProposal[proposals.size()]);
+    }
 
 }

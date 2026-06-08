@@ -34,36 +34,34 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  */
 public interface ICheckConfigurationEditor {
 
-  /**
-   * Initializes the configuration editor with its properties.
-   *
-   * @param checkConfiguration
-   *          the working copy
-   * @param dialog
-   *          the dialog
-   */
-  void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-          CheckConfigurationPropertiesDialog dialog);
+    /**
+     * Initializes the configuration editor with its properties.
+     *
+     * @param checkConfiguration
+     *            the working copy
+     * @param dialog
+     *            the dialog
+     */
+    void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+        CheckConfigurationPropertiesDialog dialog);
 
-  /**
-   * Create the editor control. This method is always called after the
-   * initialize method.
-   *
-   * @param parent
-   *          the parent composite
-   * @param shell
-   *          the parent shell
-   * @return the location editor control
-   */
-  Control createEditorControl(Composite parent, Shell shell);
+    /**
+     * Create the editor control. This method is always called after the initialize method.
+     *
+     * @param parent
+     *            the parent composite
+     * @param shell
+     *            the parent shell
+     * @return the location editor control
+     */
+    Control createEditorControl(Composite parent, Shell shell);
 
-  /**
-   * Returns the edited working copy.
-   *
-   * @return the edited working copy
-   * @throws CheckstylePluginException
-   *           a validation error occurred when setting the editor data to the
-   *           working copy
-   */
-  CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException;
+    /**
+     * Returns the edited working copy.
+     *
+     * @return the edited working copy
+     * @throws CheckstylePluginException
+     *             a validation error occurred when setting the editor data to the working copy
+     */
+    CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException;
 }

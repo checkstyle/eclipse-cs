@@ -31,55 +31,58 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class ParenPadTransformer extends AbstractCTransformationClass {
 
-  @Override
-  public FormatterConfiguration transformRule() {
-    String tokens = getAttribute("tokens");
-    if (tokens == null) {
-      tokens = "CTOR_CALL, LPAREN, METHOD_CALL, RPAREN, SUPER_CTOR_CALL";
-    }
-    String option = getAttribute("option");
-    if (option == null) {
-      option = "nospace";
-    }
-    String value = switch (option) {
-      case "nospace" -> "do not insert";
-      default -> "insert";
-    };
+    @Override
+    public FormatterConfiguration transformRule() {
+        String tokens = getAttribute("tokens");
+        if (tokens == null) {
+            tokens = "CTOR_CALL, LPAREN, METHOD_CALL, RPAREN, SUPER_CTOR_CALL";
+        }
+        String option = getAttribute("option");
+        if (option == null) {
+            option = "nospace";
+        }
+        String value = switch (option) {
+            case "nospace" -> "do not insert";
+            default -> "insert";
+        };
 
-    for (String token : tokens.split("\\s*,\\s*")) {
-      List<String> settings = switch (token) {
-        case "LPAREN" -> List.of("insert_space_after_opening_paren_in_parenthesized_expression",
-                "insert_space_after_opening_paren_in_while",
-                "insert_space_after_opening_paren_in_for",
-                "insert_space_after_opening_paren_in_if",
-                "insert_space_after_opening_paren_in_switch",
-                "insert_space_after_opening_paren_in_synchronized",
-                "insert_space_after_opening_paren_in_catch",
-                "insert_space_after_opening_paren_in_method_invocation",
-                "insert_space_after_opening_paren_in_annotation",
-                "insert_space_after_opening_paren_in_constructor_declaration",
-                "insert_space_after_opening_paren_in_enum_constant",
-                "insert_space_after_opening_paren_in_method_declaration");
-        case "RPAREN" -> List.of("insert_space_before_closing_paren_in_parenthesized_expression",
-                "insert_space_before_closing_paren_in_while",
-                "insert_space_before_closing_paren_in_for",
-                "insert_space_before_closing_paren_in_if",
-                "insert_space_before_closing_paren_in_switch",
-                "insert_space_before_closing_paren_in_synchronized",
-                "insert_space_before_closing_paren_in_catch",
-                "insert_space_before_closing_paren_in_method_invocation",
-                "insert_space_before_closing_paren_in_method_declaration",
-                "insert_space_before_closing_paren_in_constructor_declaration",
-                "insert_space_before_closing_paren_in_enum_constant",
-                "insert_space_before_closing_paren_in_annotation");
-        case "CTOR_CALL", "METHOD_CALL", "SUPER_CTOR_CALL" -> List.of(
-                "insert_space_before_closing_paren_in_method_invocation",
-                "insert_space_after_opening_paren_in_method_invocation");
-        default -> List.of();
-      };
-      settings.forEach(setting -> userFormatterSetting(setting, value));
+        for (String token : tokens.split("\\s*,\\s*")) {
+            List<String> settings = switch (token) {
+                case "LPAREN" -> List.of(
+                    "insert_space_after_opening_paren_in_parenthesized_expression",
+                    "insert_space_after_opening_paren_in_while",
+                    "insert_space_after_opening_paren_in_for",
+                    "insert_space_after_opening_paren_in_if",
+                    "insert_space_after_opening_paren_in_switch",
+                    "insert_space_after_opening_paren_in_synchronized",
+                    "insert_space_after_opening_paren_in_catch",
+                    "insert_space_after_opening_paren_in_method_invocation",
+                    "insert_space_after_opening_paren_in_annotation",
+                    "insert_space_after_opening_paren_in_constructor_declaration",
+                    "insert_space_after_opening_paren_in_enum_constant",
+                    "insert_space_after_opening_paren_in_method_declaration");
+                case "RPAREN" -> List.of(
+                    "insert_space_before_closing_paren_in_parenthesized_expression",
+                    "insert_space_before_closing_paren_in_while",
+                    "insert_space_before_closing_paren_in_for",
+                    "insert_space_before_closing_paren_in_if",
+                    "insert_space_before_closing_paren_in_switch",
+                    "insert_space_before_closing_paren_in_synchronized",
+                    "insert_space_before_closing_paren_in_catch",
+                    "insert_space_before_closing_paren_in_method_invocation",
+                    "insert_space_before_closing_paren_in_method_declaration",
+                    "insert_space_before_closing_paren_in_constructor_declaration",
+                    "insert_space_before_closing_paren_in_enum_constant",
+                    "insert_space_before_closing_paren_in_annotation");
+                case "CTOR_CALL", "METHOD_CALL",
+                    "SUPER_CTOR_CALL" -> List.of(
+                        "insert_space_before_closing_paren_in_method_invocation",
+                        "insert_space_after_opening_paren_in_method_invocation");
+                default -> List.of();
+            };
+            settings.forEach(setting -> userFormatterSetting(setting, value));
+        }
+        return getFormatterSetting();
     }
-    return getFormatterSetting();
-  }
 
 }

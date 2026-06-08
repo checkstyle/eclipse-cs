@@ -36,88 +36,91 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class ExternalFileConfigurationType extends AbstractConfigurationType {
 
-  /** Key to access the information if the configuration is protected. */
-  public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
+    /** Key to access the information if the configuration is protected. */
+    public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
 
-  /** Property resolver used to add dynamic location support. */
-  private static final PropertyResolver DYNAMIC_LOC_RESOLVER;
+    /** Property resolver used to add dynamic location support. */
+    private static final PropertyResolver DYNAMIC_LOC_RESOLVER;
 
-  static {
-    MultiPropertyResolver resolver = new MultiPropertyResolver();
-    resolver.addPropertyResolver(new ClasspathVariableResolver());
-    resolver.addPropertyResolver(new SystemPropertyResolver());
-    DYNAMIC_LOC_RESOLVER = resolver;
-  }
-
-  /**
-   * Tries to resolve a dynamic location into the real file path.
-   *
-   * @param location
-   *          the probably unresolved location string
-   * @return the resolved location
-   * @throws CheckstylePluginException
-   *           unexpected error while resolving the dynamic properties
-   */
-  public static String resolveDynamicLocation(String location) throws CheckstylePluginException {
-
-    String newLocation = location;
-
-    try {
-      // support dynamic locations for external configurations
-      while (PropertyUtil.hasUnresolvedProperties(newLocation)) {
-        newLocation = PropertyUtil.replaceProperties(newLocation, DYNAMIC_LOC_RESOLVER);
-      }
-    } catch (CheckstyleException ex) {
-      CheckstylePluginException.rethrow(ex);
-    }
-    return newLocation;
-  }
-
-  @Override
-  protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
-
-    String location = checkConfiguration.getLocation();
-
-    // support dynamic locations for external configurations
-    try {
-      location = resolveDynamicLocation(location);
-    } catch (CheckstylePluginException ex) {
-      CheckstyleLog.log(ex);
-      throw new IOException(ex);
+    static {
+        MultiPropertyResolver resolver = new MultiPropertyResolver();
+        resolver.addPropertyResolver(new ClasspathVariableResolver());
+        resolver.addPropertyResolver(new SystemPropertyResolver());
+        DYNAMIC_LOC_RESOLVER = resolver;
     }
 
-    return new File(location).toURI().toURL();
+    /**
+     * Tries to resolve a dynamic location into the real file path.
+     *
+     * @param location
+     *            the probably unresolved location string
+     * @return the resolved location
+     * @throws CheckstylePluginException
+     *             unexpected error while resolving the dynamic properties
+     */
+    public static String resolveDynamicLocation(String location) throws CheckstylePluginException {
 
-  }
+        String newLocation = location;
 
-  @Override
-  public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
+        try {
+            // support dynamic locations for external configurations
+            while (PropertyUtil.hasUnresolvedProperties(newLocation)) {
+                newLocation = PropertyUtil.replaceProperties(newLocation, DYNAMIC_LOC_RESOLVER);
+            }
+        }
+        catch (CheckstyleException ex) {
+            CheckstylePluginException.rethrow(ex);
+        }
+        return newLocation;
+    }
 
-    boolean isConfigurable = true;
+    @Override
+    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
 
-    boolean isProtected = Boolean
-            .parseBoolean(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG));
-    isConfigurable = !isProtected;
-
-    if (!isProtected) {
-
-      String location = checkConfiguration.getLocation();
-
-      try {
+        String location = checkConfiguration.getLocation();
 
         // support dynamic locations for external configurations
-        location = resolveDynamicLocation(location);
-      } catch (CheckstylePluginException ex) {
-        CheckstyleLog.log(ex);
-        isConfigurable = false;
-      }
+        try {
+            location = resolveDynamicLocation(location);
+        }
+        catch (CheckstylePluginException ex) {
+            CheckstyleLog.log(ex);
+            throw new IOException(ex);
+        }
 
-      // The configuration can be changed when the external configuration
-      // file
-      // can is writable
-      isConfigurable = new File(location).canWrite();
+        return new File(location).toURI().toURL();
+
     }
-    return isConfigurable;
-  }
+
+    @Override
+    public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
+
+        boolean isConfigurable = true;
+
+        boolean isProtected =
+            Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG));
+        isConfigurable = !isProtected;
+
+        if (!isProtected) {
+
+            String location = checkConfiguration.getLocation();
+
+            try {
+
+                // support dynamic locations for external configurations
+                location = resolveDynamicLocation(location);
+            }
+            catch (CheckstylePluginException ex) {
+                CheckstyleLog.log(ex);
+                isConfigurable = false;
+            }
+
+            // The configuration can be changed when the external configuration
+            // file
+            // can is writable
+            isConfigurable = new File(location).canWrite();
+        }
+        return isConfigurable;
+    }
 
 }

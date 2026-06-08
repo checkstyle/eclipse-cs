@@ -24,27 +24,27 @@ import org.eclipse.core.resources.WorkspaceJob;
 import org.eclipse.core.runtime.jobs.ISchedulingRule;
 
 /**
- * Super class of all jobs that invoke Checkstyle.
- * Avoids concurrent invocations and styles the progress UI.
+ * Super class of all jobs that invoke Checkstyle. Avoids concurrent invocations and styles the
+ * progress UI.
  */
 public abstract class AbstractCheckJob extends WorkspaceJob implements ISchedulingRule {
-  /**
-   * The job family marker is used by the progress service to provide different icons.
-   */
-  public static final Object CHECKSTYLE_JOB_FAMILY = new Object();
+    /**
+     * The job family marker is used by the progress service to provide different icons.
+     */
+    public static final Object CHECKSTYLE_JOB_FAMILY = new Object();
 
-  public AbstractCheckJob(String name) {
-    super(name);
-  }
+    public AbstractCheckJob(String name) {
+        super(name);
+    }
 
-  @Override
-  public final boolean isConflicting(ISchedulingRule rule) {
-    return rule instanceof AbstractCheckJob;
-  }
+    @Override
+    public final boolean isConflicting(ISchedulingRule rule) {
+        return rule instanceof AbstractCheckJob;
+    }
 
-  @Override
-  public boolean belongsTo(Object family) {
-    return CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
-  }
+    @Override
+    public boolean belongsTo(Object family) {
+        return CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
+    }
 
 }

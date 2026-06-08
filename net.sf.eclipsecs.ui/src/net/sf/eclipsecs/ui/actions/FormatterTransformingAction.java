@@ -34,21 +34,21 @@ import net.sf.eclipsecs.core.jobs.TransformFormatterRulesJob;
  */
 public class FormatterTransformingAction implements IActionDelegate {
 
-  /** The selected project. */
-  private IProject project;
+    /** The selected project. */
+    private IProject project;
 
-  @Override
-  public void run(final IAction arg0) {
-    final TransformFormatterRulesJob job = new TransformFormatterRulesJob(project);
-    job.schedule();
-  }
-
-  @Override
-  public void selectionChanged(final IAction action, final ISelection selection) {
-    if (selection instanceof IStructuredSelection structuredSelection
-            && structuredSelection.getFirstElement() instanceof IProject selectedProject) {
-      this.project = selectedProject;
+    @Override
+    public void run(final IAction arg0) {
+        final TransformFormatterRulesJob job = new TransformFormatterRulesJob(project);
+        job.schedule();
     }
-  }
+
+    @Override
+    public void selectionChanged(final IAction action, final ISelection selection) {
+        if (selection instanceof IStructuredSelection structuredSelection
+            && structuredSelection.getFirstElement() instanceof IProject selectedProject) {
+            this.project = selectedProject;
+        }
+    }
 
 }

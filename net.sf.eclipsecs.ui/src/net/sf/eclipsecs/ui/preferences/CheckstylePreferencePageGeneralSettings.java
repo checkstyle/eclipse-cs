@@ -46,212 +46,211 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 
 public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
-  /** The default language code. */
-  private static final String DEFAULT_LANGUAGE = "default";
+    /** The default language code. */
+    private static final String DEFAULT_LANGUAGE = "default";
 
-  /** The list of supported language codes. */
-  private static final List<String> SUPPORTED_LANGUAGES = List.of(DEFAULT_LANGUAGE, "de", "en",
-          "es", "fi", "fr", "ja", "pt", "tr", "zh");
-  /** The display items for the language combo. */
-  private static final String[] LANGUAGE_ITEMS = SUPPORTED_LANGUAGES.stream().map(code -> {
-    String displayLang;
-    if (code == DEFAULT_LANGUAGE) {
-      displayLang = code;
-    } else {
-      var loc = Locale.forLanguageTag(code);
-      displayLang = code + " - " + loc.getDisplayLanguage(loc);
-    }
-    return displayLang;
-  }).toArray(String[]::new);
+    /** The list of supported language codes. */
+    private static final List<String> SUPPORTED_LANGUAGES =
+        List.of(DEFAULT_LANGUAGE, "de", "en", "es", "fi", "fr", "ja", "pt", "tr", "zh");
+    /** The display items for the language combo. */
+    private static final String[] LANGUAGE_ITEMS = SUPPORTED_LANGUAGES.stream().map(code -> {
+        String displayLang;
+        if (code == DEFAULT_LANGUAGE) {
+            displayLang = code;
+        } else {
+            var loc = Locale.forLanguageTag(code);
+            displayLang = code + " - " + loc.getDisplayLanguage(loc);
+        }
+        return displayLang;
+    }).toArray(String[]::new);
 
-  /** The language selection combo. */
-  private final Combo languageIf;
-  /** The rebuild preference combo. */
-  private final Combo mRebuildIfNeeded;
-  /** The checkbox for warning before losing filesets. */
-  private final Button mWarnBeforeLosingFilesets;
-  /** The checkbox to include rule names. */
-  private final Button mIncludeRuleNamesButton;
-  /** The checkbox to include module IDs. */
-  private final Button mIncludeModuleIdButton;
-  /** The checkbox to limit checkstyle markers. */
-  private final Button mLimitCheckstyleMarkers;
-  /** The text field for the marker limit. */
-  private final Text mTxtMarkerLimit;
-  /** The checkbox for running in background on full builds. */
-  private final Button mBackgroundFullBuild;
+    /** The language selection combo. */
+    private final Combo languageIf;
+    /** The rebuild preference combo. */
+    private final Combo mRebuildIfNeeded;
+    /** The checkbox for warning before losing filesets. */
+    private final Button mWarnBeforeLosingFilesets;
+    /** The checkbox to include rule names. */
+    private final Button mIncludeRuleNamesButton;
+    /** The checkbox to include module IDs. */
+    private final Button mIncludeModuleIdButton;
+    /** The checkbox to limit checkstyle markers. */
+    private final Button mLimitCheckstyleMarkers;
+    /** The text field for the marker limit. */
+    private final Text mTxtMarkerLimit;
+    /** The checkbox for running in background on full builds. */
+    private final Button mBackgroundFullBuild;
 
-  public CheckstylePreferencePageGeneralSettings(Composite parent, int style,
-          Runnable setRebuildAll) {
-    super(parent, style);
-    setLayout(new FillLayout());
+    public CheckstylePreferencePageGeneralSettings(Composite parent, int style,
+        Runnable setRebuildAll) {
+        super(parent, style);
+        setLayout(new FillLayout());
 
-    Group group = new Group(this, style);
+        Group group = new Group(this, style);
 
-    group.setText(Messages.CheckstylePreferencePage_lblGeneralSettings);
-    GridLayoutFactory.swtDefaults().applyTo(group);
+        group.setText(Messages.CheckstylePreferencePage_lblGeneralSettings);
+        GridLayoutFactory.swtDefaults().applyTo(group);
 
-    languageIf = createLanguageSetting(group);
-    mRebuildIfNeeded = createRebuildSection(group, setRebuildAll);
+        languageIf = createLanguageSetting(group);
+        mRebuildIfNeeded = createRebuildSection(group, setRebuildAll);
 
-    //
-    // Create the "Fileset warning" check box.
-    //
-    mWarnBeforeLosingFilesets = makeButton(group, SWT.CHECK,
-            Messages.CheckstylePreferencePage_lblWarnFilesets,
-            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING));
+        //
+        // Create the "Fileset warning" check box.
+        //
+        mWarnBeforeLosingFilesets =
+            makeButton(group, SWT.CHECK, Messages.CheckstylePreferencePage_lblWarnFilesets,
+                CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING));
 
-    //
-    // Create the "Include rule name" check box.
-    //
-    mIncludeRuleNamesButton = makeCheckboxWithRebuildNoteLabel(group,
+        //
+        // Create the "Include rule name" check box.
+        //
+        mIncludeRuleNamesButton = makeCheckboxWithRebuildNoteLabel(group,
             Messages.CheckstylePreferencePage_lblIncludeRulenames,
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES));
 
-    //
-    // Create the "Include rule name" check box.
-    //
-    mIncludeModuleIdButton = makeCheckboxWithRebuildNoteLabel(group,
+        //
+        // Create the "Include rule name" check box.
+        //
+        mIncludeModuleIdButton = makeCheckboxWithRebuildNoteLabel(group,
             Messages.CheckstylePreferencePage_lblIncludeModuleIds,
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS));
 
-    //
-    // Create the "limit markers" check box and text field combination
-    //
-    final Composite limitMarkersComposite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(limitMarkersComposite);
+        //
+        // Create the "limit markers" check box and text field combination
+        //
+        final Composite limitMarkersComposite = new Composite(group, SWT.NULL);
+        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(limitMarkersComposite);
 
-    mLimitCheckstyleMarkers = makeButton(limitMarkersComposite, SWT.CHECK,
+        mLimitCheckstyleMarkers = makeButton(limitMarkersComposite, SWT.CHECK,
             Messages.CheckstylePreferencePage_lblLimitMarker, CheckstylePluginPrefs
-                    .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE));
+                .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE));
 
-    mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
-    mTxtMarkerLimit.setTextLimit(5);
-    SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
+        mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
+        mTxtMarkerLimit.setTextLimit(5);
+        SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
 
-    mTxtMarkerLimit.setText(Integer.toString(
+        mTxtMarkerLimit.setText(Integer.toString(
             CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT)));
-    GridDataFactory.swtDefaults().hint(30, SWT.DEFAULT).applyTo(mTxtMarkerLimit);
+        GridDataFactory.swtDefaults().hint(30, SWT.DEFAULT).applyTo(mTxtMarkerLimit);
 
-    addRebuildNoteLabel(limitMarkersComposite);
+        addRebuildNoteLabel(limitMarkersComposite);
 
-    //
-    // Create the "Run Checkstyle in background on full builds" check box.
-    //
-    final Composite backgroundFullBuildComposite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0)
+        //
+        // Create the "Run Checkstyle in background on full builds" check box.
+        //
+        final Composite backgroundFullBuildComposite = new Composite(group, SWT.NULL);
+        GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0)
             .applyTo(backgroundFullBuildComposite);
 
-    mBackgroundFullBuild = makeButton(backgroundFullBuildComposite, SWT.CHECK,
+        mBackgroundFullBuild = makeButton(backgroundFullBuildComposite, SWT.CHECK,
             Messages.CheckstylePreferencePage_txtBackgroundFullBuild0,
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD));
-  }
+    }
 
-  private static Combo createRebuildSection(Group group, Runnable setRebuildAll) {
-    final Composite rebuildComposite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(rebuildComposite);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(rebuildComposite);
+    private static Combo createRebuildSection(Group group, Runnable setRebuildAll) {
+        final Composite rebuildComposite = new Composite(group, SWT.NULL);
+        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(rebuildComposite);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(rebuildComposite);
 
-    Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
-    lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
+        Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
+        lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
 
-    Combo mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
-    mRebuildIfNeeded.setItems(new String[] {
-        MessageDialogWithToggle.PROMPT,
-        MessageDialogWithToggle.ALWAYS,
-        MessageDialogWithToggle.NEVER,
-    });
-    mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(
+        Combo mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
+        mRebuildIfNeeded.setItems(new String[] {
+            MessageDialogWithToggle.PROMPT, MessageDialogWithToggle.ALWAYS,
+            MessageDialogWithToggle.NEVER,
+        });
+        mRebuildIfNeeded.select(mRebuildIfNeeded.indexOf(
             CheckstyleUIPluginPrefs.getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD)));
 
-    //
-    // Create button to purge the checker cache
-    //
+        //
+        // Create button to purge the checker cache
+        //
 
-    Button mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
-    mPurgeCacheButton
-            .setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
-    mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
-    mPurgeCacheButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      CheckerFactory.cleanup();
-      setRebuildAll.run();
-    }));
-    GridDataFactory.swtDefaults().align(GridData.END, GridData.CENTER).grab(true, false)
+        Button mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
+        mPurgeCacheButton.setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
+        mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
+        mPurgeCacheButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            CheckerFactory.cleanup();
+            setRebuildAll.run();
+        }));
+        GridDataFactory.swtDefaults().align(GridData.END, GridData.CENTER).grab(true, false)
             .hint(20, 20).applyTo(mPurgeCacheButton);
 
-    return mRebuildIfNeeded;
-  }
-
-  private static Combo createLanguageSetting(Group group) {
-    Composite langComposite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(langComposite);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(langComposite);
-
-    final Label lblLanguage = new Label(langComposite, SWT.NULL);
-    lblLanguage.setText(Messages.CheckstylePreferencePage_lblLocaleLanguage);
-    Combo languageIf = new Combo(langComposite, SWT.READ_ONLY);
-    languageIf.setItems(LANGUAGE_ITEMS);
-    final String lang = CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
-    final int selectedLang = SUPPORTED_LANGUAGES
-            .indexOf(lang == null || lang.isEmpty() ? DEFAULT_LANGUAGE : lang);
-    if (selectedLang != -1) {
-      languageIf.select(selectedLang);
+        return mRebuildIfNeeded;
     }
-    return languageIf;
-  }
 
-  private static Button makeCheckboxWithRebuildNoteLabel(Group group, String text,
-          boolean selection) {
-    Composite composite = new Composite(group, SWT.NULL);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
-    Button button = makeButton(composite, SWT.CHECK, text, selection);
-    addRebuildNoteLabel(composite);
-    return button;
-  }
+    private static Combo createLanguageSetting(Group group) {
+        Composite langComposite = new Composite(group, SWT.NULL);
+        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(langComposite);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(langComposite);
 
-  private static Button makeButton(Composite parent, int style, String text, boolean selection) {
-    Button button = new Button(parent, style);
-    button.setText(text);
-    button.setSelection(selection);
-    return button;
-  }
+        final Label lblLanguage = new Label(langComposite, SWT.NULL);
+        lblLanguage.setText(Messages.CheckstylePreferencePage_lblLocaleLanguage);
+        Combo languageIf = new Combo(langComposite, SWT.READ_ONLY);
+        languageIf.setItems(LANGUAGE_ITEMS);
+        final String lang =
+            CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
+        final int selectedLang =
+            SUPPORTED_LANGUAGES.indexOf(lang == null || lang.isEmpty() ? DEFAULT_LANGUAGE : lang);
+        if (selectedLang != -1) {
+            languageIf.select(selectedLang);
+        }
+        return languageIf;
+    }
 
-  private static void addRebuildNoteLabel(Composite parent) {
-    Label lblRebuildNote = new Label(parent, SWT.NULL);
-    lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
-    lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
-    SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
-  }
+    private static Button makeCheckboxWithRebuildNoteLabel(Group group, String text,
+        boolean selection) {
+        Composite composite = new Composite(group, SWT.NULL);
+        GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
+        Button button = makeButton(composite, SWT.CHECK, text, selection);
+        addRebuildNoteLabel(composite);
+        return button;
+    }
 
-  public String getLanguageIf() {
-    return SUPPORTED_LANGUAGES.get(languageIf.getSelectionIndex());
-  }
+    private static Button makeButton(Composite parent, int style, String text, boolean selection) {
+        Button button = new Button(parent, style);
+        button.setText(text);
+        button.setSelection(selection);
+        return button;
+    }
 
-  public String getRebuildIfNeeded() {
-    return mRebuildIfNeeded.getItem(mRebuildIfNeeded.getSelectionIndex());
-  }
+    private static void addRebuildNoteLabel(Composite parent) {
+        Label lblRebuildNote = new Label(parent, SWT.NULL);
+        lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
+        lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
+        SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
+    }
 
-  public boolean getWarnBeforeLosingFilesets() {
-    return mWarnBeforeLosingFilesets.getSelection();
-  }
+    public String getLanguageIf() {
+        return SUPPORTED_LANGUAGES.get(languageIf.getSelectionIndex());
+    }
 
-  public boolean getIncludeRuleNames() {
-    return mIncludeRuleNamesButton.getSelection();
-  }
+    public String getRebuildIfNeeded() {
+        return mRebuildIfNeeded.getItem(mRebuildIfNeeded.getSelectionIndex());
+    }
 
-  public boolean getIncludeModuleIdButton() {
-    return mIncludeModuleIdButton.getSelection();
-  }
+    public boolean getWarnBeforeLosingFilesets() {
+        return mWarnBeforeLosingFilesets.getSelection();
+    }
 
-  public boolean getLimitCheckstyleMarkers() {
-    return mLimitCheckstyleMarkers.getSelection();
-  }
+    public boolean getIncludeRuleNames() {
+        return mIncludeRuleNamesButton.getSelection();
+    }
 
-  public String getTxtMarkerLimit() {
-    return mTxtMarkerLimit.getText();
-  }
+    public boolean getIncludeModuleIdButton() {
+        return mIncludeModuleIdButton.getSelection();
+    }
 
-  public boolean getBackgroundFullBuild() {
-    return mBackgroundFullBuild.getSelection();
-  }
+    public boolean getLimitCheckstyleMarkers() {
+        return mLimitCheckstyleMarkers.getSelection();
+    }
+
+    public String getTxtMarkerLimit() {
+        return mTxtMarkerLimit.getText();
+    }
+
+    public boolean getBackgroundFullBuild() {
+        return mBackgroundFullBuild.getSelection();
+    }
 }

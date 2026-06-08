@@ -43,93 +43,93 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class RuleConfigurationEditDialogAdvancedSettings extends Composite {
 
-  /** The text field for the module comment. */
-  private final Text mCommentText;
-  /** The text field for the module id. */
-  private final Text mIdText;
-  /** The map of custom message key to text field. */
-  private final Map<String, Text> mCustomMessages;
+    /** The text field for the module comment. */
+    private final Text mCommentText;
+    /** The text field for the module id. */
+    private final Text mIdText;
+    /** The map of custom message key to text field. */
+    private final Map<String, Text> mCustomMessages;
 
-  public RuleConfigurationEditDialogAdvancedSettings(Composite parent, int style, Module rule,
-          boolean readonly) {
-    super(parent, style);
+    public RuleConfigurationEditDialogAdvancedSettings(Composite parent, int style, Module rule,
+        boolean readonly) {
+        super(parent, style);
 
-    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
+        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
 
-    mCommentText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblComment);
-    mIdText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblId);
+        mCommentText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblComment);
+        mIdText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblId);
 
-    Group messagesGroup = new Group(this, SWT.NULL);
-    messagesGroup.setText(Messages.RuleConfigurationEditDialog_titleCustMsg);
-    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(messagesGroup);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(messagesGroup);
+        Group messagesGroup = new Group(this, SWT.NULL);
+        messagesGroup.setText(Messages.RuleConfigurationEditDialog_titleCustMsg);
+        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(messagesGroup);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(messagesGroup);
 
-    mCustomMessages = new HashMap<>();
+        mCustomMessages = new HashMap<>();
 
-    // take keys from metadata as well as predefined from the
-    // configuration. This way we don't lose keys not defined in metadata.
-    Set<String> msgKeys = new TreeSet<>();
-    msgKeys.addAll(rule.getMetaData().messageKeys());
-    msgKeys.addAll(rule.getCustomMessages().keySet());
+        // take keys from metadata as well as predefined from the
+        // configuration. This way we don't lose keys not defined in metadata.
+        Set<String> msgKeys = new TreeSet<>();
+        msgKeys.addAll(rule.getMetaData().messageKeys());
+        msgKeys.addAll(rule.getCustomMessages().keySet());
 
-    for (String msgKey : msgKeys) {
-      final Text msgText = createLabeledText(messagesGroup, msgKey);
+        for (String msgKey : msgKeys) {
+            final Text msgText = createLabeledText(messagesGroup, msgKey);
 
-      final String standardMessage = MetadataFactory.getStandardMessage(msgKey,
-              rule.getMetaData().identity().internalName());
+            final String standardMessage = MetadataFactory.getStandardMessage(msgKey,
+                rule.getMetaData().identity().internalName());
 
-      if (standardMessage != null) {
-        msgText.setMessage(standardMessage);
-      }
+            if (standardMessage != null) {
+                msgText.setMessage(standardMessage);
+            }
 
-      String message = rule.getCustomMessages().get(msgKey);
-      if (StringUtils.isNotBlank(message)) {
-        msgText.setText(message);
-      }
-      msgText.setEnabled(!readonly);
+            String message = rule.getCustomMessages().get(msgKey);
+            if (StringUtils.isNotBlank(message)) {
+                msgText.setText(message);
+            }
+            msgText.setEnabled(!readonly);
 
-      mCustomMessages.put(msgKey, msgText);
+            mCustomMessages.put(msgKey, msgText);
+        }
+
+        String comment = rule.getComment();
+        if (comment != null) {
+            mCommentText.setText(comment);
+        }
+
+        String id = rule.getId();
+        if (id != null) {
+            mIdText.setText(id);
+        }
+
+        mIdText.setEnabled(!readonly);
+        // mCustomMessageText.setEditable(!mReadonly);
+        mCommentText.setEnabled(!readonly);
     }
 
-    String comment = rule.getComment();
-    if (comment != null) {
-      mCommentText.setText(comment);
+    public String getComment() {
+        return mCommentText.getText();
     }
 
-    String id = rule.getId();
-    if (id != null) {
-      mIdText.setText(id);
+    public String getId() {
+        return mIdText.getText();
     }
 
-    mIdText.setEnabled(!readonly);
-    // mCustomMessageText.setEditable(!mReadonly);
-    mCommentText.setEnabled(!readonly);
-  }
-
-  public String getComment() {
-    return mCommentText.getText();
-  }
-
-  public String getId() {
-    return mIdText.getText();
-  }
-
-  public Map<String, String> getCustomMessages() {
-    return mCustomMessages.entrySet().stream()
+    public Map<String, String> getCustomMessages() {
+        return mCustomMessages.entrySet().stream()
             .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().getText()));
-  }
+    }
 
-  public void resetComment() {
-    mCommentText.setText("");
-  }
+    public void resetComment() {
+        mCommentText.setText("");
+    }
 
-  private static Text createLabeledText(Composite parent, String label) {
-    Label commentLabel = new Label(parent, SWT.NULL);
-    commentLabel.setText(label);
-    GridDataFactory.swtDefaults().applyTo(commentLabel);
-    Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(text);
-    return text;
-  }
+    private static Text createLabeledText(Composite parent, String label) {
+        Label commentLabel = new Label(parent, SWT.NULL);
+        commentLabel.setText(label);
+        GridDataFactory.swtDefaults().applyTo(commentLabel);
+        Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(text);
+        return text;
+    }
 
 }

@@ -37,39 +37,39 @@ import org.eclipse.ui.ide.ResourceUtil;
 
 public final class SelectionTool {
 
-  private SelectionTool() {
+    private SelectionTool() {
 
-  }
+    }
 
-  public static List<IResource> resolveSelection(IWorkbenchPart part, ISelection selection) {
-    List<IResource> resources = Collections.emptyList();
-    if (part instanceof IEditorPart editor) {
-      IFile file = ResourceUtil.getFile(editor.getEditorInput());
-      if (file != null) {
-        resources = List.of(file);
-      }
-    } else if (selection instanceof IStructuredSelection structuredSelection) {
-      resources = new ArrayList<>();
-      for (Object object : structuredSelection) {
-        if (object instanceof IWorkingSet workingSet) {
-          IAdaptable[] elements = workingSet.getElements();
-          for (int i = 0; i < elements.length; i++) {
-            considerAdaptable(elements[i]).ifPresent(resources::add);
-          }
-        } else if (object instanceof IAdaptable adaptable) {
-          considerAdaptable(adaptable).ifPresent(resources::add);
+    public static List<IResource> resolveSelection(IWorkbenchPart part, ISelection selection) {
+        List<IResource> resources = Collections.emptyList();
+        if (part instanceof IEditorPart editor) {
+            IFile file = ResourceUtil.getFile(editor.getEditorInput());
+            if (file != null) {
+                resources = List.of(file);
+            }
+        } else if (selection instanceof IStructuredSelection structuredSelection) {
+            resources = new ArrayList<>();
+            for (Object object : structuredSelection) {
+                if (object instanceof IWorkingSet workingSet) {
+                    IAdaptable[] elements = workingSet.getElements();
+                    for (int i = 0; i < elements.length; i++) {
+                        considerAdaptable(elements[i]).ifPresent(resources::add);
+                    }
+                } else if (object instanceof IAdaptable adaptable) {
+                    considerAdaptable(adaptable).ifPresent(resources::add);
+                }
+            }
         }
-      }
+        return resources;
     }
-    return resources;
-  }
 
-  private static Optional<IResource> considerAdaptable(IAdaptable adaptable) {
-    IResource resource = adaptable.getAdapter(IResource.class);
-    if (resource == null) {
-      resource = adaptable.getAdapter(IFile.class);
+    private static Optional<IResource> considerAdaptable(IAdaptable adaptable) {
+        IResource resource = adaptable.getAdapter(IResource.class);
+        if (resource == null) {
+            resource = adaptable.getAdapter(IFile.class);
+        }
+        return Optional.ofNullable(resource);
     }
-    return Optional.ofNullable(resource);
-  }
 
 }

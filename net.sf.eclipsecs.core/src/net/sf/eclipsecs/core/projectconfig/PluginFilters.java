@@ -37,123 +37,125 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public final class PluginFilters {
 
-  /** constant for the extension point id. */
-  private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.core.filters";
+    /** constant for the extension point id. */
+    private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.core.filters";
 
-  /** constant for the name attribute. */
-  private static final String ATTR_NAME = "name"; //$NON-NLS-1$
+    /** constant for the name attribute. */
+    private static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
-  /** constant for the name attribute. */
-  private static final String ATTR_INTERNAL_NAME = "internal-name"; //$NON-NLS-1$
+    /** constant for the name attribute. */
+    private static final String ATTR_INTERNAL_NAME = "internal-name"; //$NON-NLS-1$
 
-  /** constant for the description attribute. */
-  private static final String ATTR_DESCRIPTION = "description"; //$NON-NLS-1$
+    /** constant for the description attribute. */
+    private static final String ATTR_DESCRIPTION = "description"; //$NON-NLS-1$
 
-  /** constant for the class attribute. */
-  private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
+    /** constant for the class attribute. */
+    private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-  /** contant for the readonly attribute. */
-  private static final String ATTR_READONLY = "readonly"; //$NON-NLS-1$
+    /** contant for the readonly attribute. */
+    private static final String ATTR_READONLY = "readonly"; //$NON-NLS-1$
 
-  /** constant for the selected attribute. */
-  private static final String ATTR_SELECTED = "selected"; //$NON-NLS-1$
+    /** constant for the selected attribute. */
+    private static final String ATTR_SELECTED = "selected"; //$NON-NLS-1$
 
-  /** constant for the value attribute. */
-  private static final String ATTR_VALUE = "value"; //$NON-NLS-1$
+    /** constant for the value attribute. */
+    private static final String ATTR_VALUE = "value"; //$NON-NLS-1$
 
-  /** constant for the data tag. */
-  private static final String TAG_DATA = "data"; //$NON-NLS-1$
+    /** constant for the data tag. */
+    private static final String TAG_DATA = "data"; //$NON-NLS-1$
 
-  /** the filter prototypes configured to the extension point. */
-  private static final IFilter[] FILTER_PROTOTYPES;
+    /** the filter prototypes configured to the extension point. */
+    private static final IFilter[] FILTER_PROTOTYPES;
 
-  /**
-   * Initialize the configured to the filter extension point.
-   */
-  static {
+    /**
+     * Initialize the configured to the filter extension point.
+     */
+    static {
 
-    IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-    IConfigurationElement[] elements = pluginRegistry
-            .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
+        IConfigurationElement[] elements =
+            pluginRegistry.getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-    List<IFilter> filters = new ArrayList<>();
+        List<IFilter> filters = new ArrayList<>();
 
-    for (int i = 0; i < elements.length; i++) {
+        for (int i = 0; i < elements.length; i++) {
 
-      try {
+            try {
 
-        String name = elements[i].getAttribute(ATTR_NAME);
-        String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
-        String desc = elements[i].getAttribute(ATTR_DESCRIPTION);
-        boolean readOnly = Boolean.parseBoolean(elements[i].getAttribute(ATTR_READONLY));
+                String name = elements[i].getAttribute(ATTR_NAME);
+                String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
+                String desc = elements[i].getAttribute(ATTR_DESCRIPTION);
+                boolean readOnly = Boolean.parseBoolean(elements[i].getAttribute(ATTR_READONLY));
 
-        IFilter filter = (IFilter) elements[i].createExecutableExtension(ATTR_CLASS);
-        filter.initialize(name, internalName, desc, readOnly);
+                IFilter filter = (IFilter) elements[i].createExecutableExtension(ATTR_CLASS);
+                filter.initialize(name, internalName, desc, readOnly);
 
-        boolean defaultState = Boolean.parseBoolean(elements[i].getAttribute(ATTR_SELECTED));
+                boolean defaultState =
+                    Boolean.parseBoolean(elements[i].getAttribute(ATTR_SELECTED));
 
-        filter.setEnabled(defaultState);
+                filter.setEnabled(defaultState);
 
-        // Load initial filter data
-        List<String> data = new ArrayList<>();
-        IConfigurationElement[] dataTags = elements[i].getChildren(TAG_DATA);
-        int size = dataTags != null ? dataTags.length : 0;
-        for (int j = 0; j < size; j++) {
-          data.add(dataTags[j].getAttribute(ATTR_VALUE));
+                // Load initial filter data
+                List<String> data = new ArrayList<>();
+                IConfigurationElement[] dataTags = elements[i].getChildren(TAG_DATA);
+                int size = dataTags != null ? dataTags.length : 0;
+                for (int j = 0; j < size; j++) {
+                    data.add(dataTags[j].getAttribute(ATTR_VALUE));
+                }
+                filter.setFilterData(data);
+
+                filters.add(filter);
+            }
+            catch (Exception ex) {
+                CheckstyleLog.log(ex);
+            }
         }
-        filter.setFilterData(data);
 
-        filters.add(filter);
-      } catch (Exception ex) {
-        CheckstyleLog.log(ex);
-      }
+        FILTER_PROTOTYPES = filters.toArray(new IFilter[filters.size()]);
     }
 
-    FILTER_PROTOTYPES = filters.toArray(new IFilter[filters.size()]);
-  }
-
-  /** Hidden default constructor. */
-  private PluginFilters() {
-    // NOOP
-  }
-
-  /**
-   * Returns the available filters.
-   *
-   * @return the available filters.
-   */
-  public static IFilter[] getConfiguredFilters() {
-
-    // Copy the prototypes for the client
-    IFilter[] mFilter = new IFilter[FILTER_PROTOTYPES.length];
-
-    // Clone and set the state of the filter
-    for (int i = 0; i < mFilter.length; i++) {
-      mFilter[i] = FILTER_PROTOTYPES[i].clone();
+    /** Hidden default constructor. */
+    private PluginFilters() {
+        // NOOP
     }
 
-    return mFilter;
-  }
+    /**
+     * Returns the available filters.
+     *
+     * @return the available filters.
+     */
+    public static IFilter[] getConfiguredFilters() {
 
-  /**
-   * Gets a filter prototype by name.
-   *
-   * @param internalName
-   *          the filters internal name
-   * @return the filter prototype or <code>null</code>
-   */
-  public static IFilter getByInternalName(String internalName) {
+        // Copy the prototypes for the client
+        IFilter[] mFilter = new IFilter[FILTER_PROTOTYPES.length];
 
-    IFilter filter = null;
+        // Clone and set the state of the filter
+        for (int i = 0; i < mFilter.length; i++) {
+            mFilter[i] = FILTER_PROTOTYPES[i].clone();
+        }
 
-    for (int i = 0; i < FILTER_PROTOTYPES.length; i++) {
-      if (FILTER_PROTOTYPES[i].getInternalName().equals(internalName)) {
-        filter = FILTER_PROTOTYPES[i].clone();
-        break;
-      }
+        return mFilter;
     }
 
-    return filter;
-  }
+    /**
+     * Gets a filter prototype by name.
+     *
+     * @param internalName
+     *            the filters internal name
+     * @return the filter prototype or <code>null</code>
+     */
+    public static IFilter getByInternalName(String internalName) {
+
+        IFilter filter = null;
+
+        for (int i = 0; i < FILTER_PROTOTYPES.length; i++) {
+            if (FILTER_PROTOTYPES[i].getInternalName().equals(internalName)) {
+                filter = FILTER_PROTOTYPES[i].clone();
+                break;
+            }
+        }
+
+        return filter;
+    }
 }

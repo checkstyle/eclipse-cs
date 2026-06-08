@@ -31,43 +31,41 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  */
 public class LeftCurlyTransformer extends AbstractCTransformationClass {
-  @Override
-  public FormatterConfiguration transformRule() {
-    String tokens = getAttribute("tokens");
-    if (tokens == null) {
-      tokens = "CLASS_DEF, CTOR_DEF, INTERFACE_DEF, METHOD_DEF, LITERAL_CATCH, LITERAL_DO, "
-              + "LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SYNCHRONIZED, "
-              + "LITERAL_TRY, LITERAL_WHILE";
-    }
+    @Override
+    public FormatterConfiguration transformRule() {
+        String tokens = getAttribute("tokens");
+        if (tokens == null) {
+            tokens = "CLASS_DEF, CTOR_DEF, INTERFACE_DEF, METHOD_DEF, LITERAL_CATCH, LITERAL_DO, "
+                + "LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SYNCHRONIZED, "
+                + "LITERAL_TRY, LITERAL_WHILE";
+        }
 
-    String option = switch (getAttribute("option")) {
-      case null -> "end_of_line";
-      case "eol" -> "end_of_line";
-      case "nl", "nlow" -> "next_line";
-      case String s -> s;
-    };
+        String option = switch (getAttribute("option")) {
+            case null -> "end_of_line";
+            case "eol" -> "end_of_line";
+            case "nl", "nlow" -> "next_line";
+            case String s -> s;
+        };
 
-    for (String token : tokens.split("\\s*,\\s*")) {
-      List<String> settings = switch (token) {
-        case "CLASS_DEF" -> List.of("brace_position_for_anonymous_type_declaration",
-                "brace_position_for_enum_constant",
-                "brace_position_for_enum_declaration",
-                "brace_position_for_type_declaration",
-                "brace_position_for_annotation_type_declaration");
-        case "INTERFACE_DEF" -> List.of(
-                "brace_position_for_annotation_type_declaration",
-                "brace_position_for_type_declaration");
-        case "CTOR_DEF" -> List.of("brace_position_for_constructor_declaration");
-        case "METHOD_DEF" -> List.of("brace_position_for_method_declaration");
-        case "LITERAL_DO", "LITERAL_ELSE", "LITERAL_FOR", "LITERAL_IF", "LITERAL_WHILE",
-             "LITERAL_CATCH", "LITERAL_FINALLY", "LITERAL_TRY", "LITERAL_SYNCHRONIZED" -> List.of(
-                     "brace_position_for_block");
-        case "LITERAL_SWITCH" -> List.of("brace_position_for_switch");
-        default -> Collections.emptyList();
-      };
-      settings.forEach(setting -> userFormatterSetting(setting, option));
+        for (String token : tokens.split("\\s*,\\s*")) {
+            List<String> settings = switch (token) {
+                case "CLASS_DEF" -> List.of("brace_position_for_anonymous_type_declaration",
+                    "brace_position_for_enum_constant", "brace_position_for_enum_declaration",
+                    "brace_position_for_type_declaration",
+                    "brace_position_for_annotation_type_declaration");
+                case "INTERFACE_DEF" -> List.of("brace_position_for_annotation_type_declaration",
+                    "brace_position_for_type_declaration");
+                case "CTOR_DEF" -> List.of("brace_position_for_constructor_declaration");
+                case "METHOD_DEF" -> List.of("brace_position_for_method_declaration");
+                case "LITERAL_DO", "LITERAL_ELSE", "LITERAL_FOR", "LITERAL_IF", "LITERAL_WHILE",
+                    "LITERAL_CATCH", "LITERAL_FINALLY", "LITERAL_TRY",
+                    "LITERAL_SYNCHRONIZED" -> List.of("brace_position_for_block");
+                case "LITERAL_SWITCH" -> List.of("brace_position_for_switch");
+                default -> Collections.emptyList();
+            };
+            settings.forEach(setting -> userFormatterSetting(setting, option));
+        }
+        return getFormatterSetting();
     }
-    return getFormatterSetting();
-  }
 
 }

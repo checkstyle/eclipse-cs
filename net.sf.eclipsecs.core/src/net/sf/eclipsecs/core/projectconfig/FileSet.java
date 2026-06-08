@@ -34,184 +34,185 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  */
 public class FileSet implements Cloneable {
 
-  /** The file set name. */
-  private String name;
+    /** The file set name. */
+    private String name;
 
-  /** The check configuration. */
-  private ICheckConfiguration checkConfig;
+    /** The check configuration. */
+    private ICheckConfiguration checkConfig;
 
-  /** Whether this file set is enabled. */
-  private boolean enabled = true;
+    /** Whether this file set is enabled. */
+    private boolean enabled = true;
 
-  /** The file match patterns. */
-  private List<FileMatchPattern> fileMatchPatterns = new LinkedList<>();
+    /** The file match patterns. */
+    private List<FileMatchPattern> fileMatchPatterns = new LinkedList<>();
 
-  /**
-   * Default constructor.
-   */
-  public FileSet() {
+    /**
+     * Default constructor.
+     */
+    public FileSet() {
 
-  }
+    }
 
-  /**
-   * Default constructor.
-   *
-   * @param name
-   *          The name of the <code>FileSet</code>
-   * @param checkConfig
-   *          The name of the <code>CheckConfiguration</code> used to check this
-   *          <code>FileSet</code>.
-   */
-  public FileSet(String name, ICheckConfiguration checkConfig) {
-    this.name = name;
-    this.checkConfig = checkConfig;
-  }
+    /**
+     * Default constructor.
+     *
+     * @param name
+     *            The name of the <code>FileSet</code>
+     * @param checkConfig
+     *            The name of the <code>CheckConfiguration</code> used to check this
+     *            <code>FileSet</code>.
+     */
+    public FileSet(String name, ICheckConfiguration checkConfig) {
+        this.name = name;
+        this.checkConfig = checkConfig;
+    }
 
-  /**
-   * Returns a list of <code>FileMatchPattern</code> objects.
-   *
-   * @return List
-   */
-  public List<FileMatchPattern> getFileMatchPatterns() {
-    return fileMatchPatterns;
-  }
+    /**
+     * Returns a list of <code>FileMatchPattern</code> objects.
+     *
+     * @return List
+     */
+    public List<FileMatchPattern> getFileMatchPatterns() {
+        return fileMatchPatterns;
+    }
 
-  /**
-   * Set the list of <code>FileMatchPattern</code> objects.
-   *
-   * @param fileMatchPatterns
-   *          The new list of pattern objects.
-   */
-  public void setFileMatchPatterns(List<FileMatchPattern> fileMatchPatterns) {
-    this.fileMatchPatterns = fileMatchPatterns;
-  }
+    /**
+     * Set the list of <code>FileMatchPattern</code> objects.
+     *
+     * @param fileMatchPatterns
+     *            The new list of pattern objects.
+     */
+    public void setFileMatchPatterns(List<FileMatchPattern> fileMatchPatterns) {
+        this.fileMatchPatterns = fileMatchPatterns;
+    }
 
-  /**
-   * Get the check configuration used by this file set.
-   *
-   * @return The check configuration used to audit files in the file set.
-   */
-  public ICheckConfiguration getCheckConfig() {
-    return checkConfig;
-  }
+    /**
+     * Get the check configuration used by this file set.
+     *
+     * @return The check configuration used to audit files in the file set.
+     */
+    public ICheckConfiguration getCheckConfig() {
+        return checkConfig;
+    }
 
-  /**
-   * Sets the check configuration used by this file set.
-   *
-   * @param checkConfig
-   *          the check configuration
-   */
-  public void setCheckConfig(ICheckConfiguration checkConfig) {
-    this.checkConfig = checkConfig;
-  }
+    /**
+     * Sets the check configuration used by this file set.
+     *
+     * @param checkConfig
+     *            the check configuration
+     */
+    public void setCheckConfig(ICheckConfiguration checkConfig) {
+        this.checkConfig = checkConfig;
+    }
 
-  /**
-   * Returns the name.
-   *
-   * @return String
-   */
-  public String getName() {
-    return name;
-  }
+    /**
+     * Returns the name.
+     *
+     * @return String
+     */
+    public String getName() {
+        return name;
+    }
 
-  /**
-   * Sets the name.
-   *
-   * @param name
-   *          The name to set
-   */
-  public void setName(String name) {
-    this.name = name;
-  }
+    /**
+     * Sets the name.
+     *
+     * @param name
+     *            The name to set
+     */
+    public void setName(String name) {
+        this.name = name;
+    }
 
-  /**
-   * Returns the enabled flag.
-   *
-   * @return boolean
-   */
-  public boolean isEnabled() {
-    return enabled;
-  }
+    /**
+     * Returns the enabled flag.
+     *
+     * @return boolean
+     */
+    public boolean isEnabled() {
+        return enabled;
+    }
 
-  /**
-   * Sets the enabled flag.
-   *
-   * @param enabled
-   *          The enabled to set
-   */
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
-  }
+    /**
+     * Sets the enabled flag.
+     *
+     * @param enabled
+     *            The enabled to set
+     */
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
 
-  /**
-   * Tests a file to see if its included in the file set.
-   *
-   * @param file
-   *          The file to test.
-   * @return <code>true</code>= the file is included in the file set, <code>false</code>= the file
-   *         is not included in the file set.
-   */
-  public boolean includesFile(IFile file) {
-    boolean result = false;
-    String filePath = file.getProjectRelativePath().toString();
+    /**
+     * Tests a file to see if its included in the file set.
+     *
+     * @param file
+     *            The file to test.
+     * @return <code>true</code>= the file is included in the file set, <code>false</code>= the file
+     *         is not included in the file set.
+     */
+    public boolean includesFile(IFile file) {
+        boolean result = false;
+        String filePath = file.getProjectRelativePath().toString();
 
-    for (FileMatchPattern pattern : fileMatchPatterns) {
-      boolean matches = pattern.isMatch(filePath);
-      if (matches) {
-        if (pattern.isIncludePattern()) {
-          result = true;
-        } else {
-          result = false;
+        for (FileMatchPattern pattern : fileMatchPatterns) {
+            boolean matches = pattern.isMatch(filePath);
+            if (matches) {
+                if (pattern.isIncludePattern()) {
+                    result = true;
+                }
+                else {
+                    result = false;
+                }
+            }
         }
-      }
+
+        return result;
     }
 
-    return result;
-  }
+    @Override
+    public FileSet clone() {
+        try {
+            FileSet clone = (FileSet) super.clone();
 
-  @Override
-  public FileSet clone() {
-    try {
-      FileSet clone = (FileSet) super.clone();
+            // clone filesets
+            List<FileMatchPattern> clonedPatterns = new LinkedList<>();
+            for (FileMatchPattern pattern : fileMatchPatterns) {
+                clonedPatterns.add(pattern.clone());
+            }
+            clone.fileMatchPatterns = clonedPatterns;
 
-      // clone filesets
-      List<FileMatchPattern> clonedPatterns = new LinkedList<>();
-      for (FileMatchPattern pattern : fileMatchPatterns) {
-        clonedPatterns.add(pattern.clone());
-      }
-      clone.fileMatchPatterns = clonedPatterns;
-
-      return clone;
-    } catch (CloneNotSupportedException ex) {
-      // should never happen
-      throw new InternalError(ex);
+            return clone;
+        }
+        catch (CloneNotSupportedException ex) {
+            // should never happen
+            throw new InternalError(ex);
+        }
     }
-  }
 
-  @Override
-  public boolean equals(Object obj) {
+    @Override
+    public boolean equals(Object obj) {
 
-    if (obj == null || !(obj instanceof FileSet)) {
-      return false;
-    }
-    if (this == obj) {
-      return true;
-    }
-    FileSet rhs = (FileSet) obj;
-    return enabled == rhs.enabled && Objects.equals(name, rhs.name)
+        if (obj == null || !(obj instanceof FileSet)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        FileSet rhs = (FileSet) obj;
+        return enabled == rhs.enabled && Objects.equals(name, rhs.name)
             && Objects.equals(fileMatchPatterns, rhs.fileMatchPatterns)
             && Objects.equals(checkConfig, rhs.checkConfig);
-  }
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(enabled, name, checkConfig, fileMatchPatterns, checkConfig);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(enabled, name, checkConfig, fileMatchPatterns, checkConfig);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this).add("enabled", enabled).add("name", name)
-            .add("fileMatchPatterns", fileMatchPatterns).add("checkConfig", checkConfig)
-            .toString();
-  }
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("enabled", enabled).add("name", name)
+            .add("fileMatchPatterns", fileMatchPatterns).add("checkConfig", checkConfig).toString();
+    }
 }

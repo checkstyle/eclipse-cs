@@ -56,238 +56,246 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  */
 public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
-  /** The rule being edited. */
-  private final Module mRule;
-  /** The dialog title. */
-  private final String mTitle;
-  /** Whether the dialog is read-only. */
-  private final boolean mReadonly;
+    /** The rule being edited. */
+    private final Module mRule;
+    /** The dialog title. */
+    private final String mTitle;
+    /** Whether the dialog is read-only. */
+    private final boolean mReadonly;
 
-  /** The general settings tab. */
-  private RuleConfigurationEditDialogGeneralSettings generalSettings;
-  /** The advanced settings tab. */
-  private RuleConfigurationEditDialogAdvancedSettings advancedSettings;
+    /** The general settings tab. */
+    private RuleConfigurationEditDialogGeneralSettings generalSettings;
+    /** The advanced settings tab. */
+    private RuleConfigurationEditDialogAdvancedSettings advancedSettings;
 
-  /**
-   * Constructor.
-   *
-   * @param parent
-   *          Parent shell.
-   * @param rule
-   *          Rule being edited.
-   * @param readonly
-   *          whether the dialog is read-only
-   * @param title
-   *          the dialog title
-   */
-  public RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title) {
-    super(parent);
-    setShellStyle(getShellStyle() | SWT.RESIZE);
-    setHelpAvailable(false);
-    mRule = rule;
-    mReadonly = readonly;
-    mTitle = title;
-  }
-
-  @Override
-  protected Control createDialogArea(Composite parent) {
-    Composite composite = (Composite) super.createDialogArea(parent);
-
-    TabFolder mMainTab = new TabFolder(composite, SWT.NULL);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(mMainTab);
-
-    generalSettings = new RuleConfigurationEditDialogGeneralSettings(mMainTab, SWT.NULL, mRule,
-            mReadonly);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(generalSettings);
-
-    advancedSettings = new RuleConfigurationEditDialogAdvancedSettings(mMainTab, SWT.NULL, mRule,
-            mReadonly);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(advancedSettings);
-
-    TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
-    mainItem.setControl(generalSettings);
-    mainItem.setText(Messages.RuleConfigurationEditDialog_tabGeneral);
-
-    TabItem advancedItem = new TabItem(mMainTab, SWT.NULL);
-    advancedItem.setControl(advancedSettings);
-    advancedItem.setText(Messages.RuleConfigurationEditDialog_tabAdvanced);
-
-    initialize();
-    return composite;
-  }
-
-  @Override
-  protected Control createButtonBar(Composite parent) {
-
-    Composite composite = new Composite(parent, SWT.NONE);
-    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
-
-    Button mBtnTranslate = new Button(composite, SWT.CHECK);
-    mBtnTranslate.setText(Messages.RuleConfigurationEditDialog_btnTranslateTokens);
-    GridDataFactory.swtDefaults().indent(5, 0).applyTo(mBtnTranslate);
-
-    // Init the translate tokens preference
-    mBtnTranslate.setSelection(
-            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS));
-    mBtnTranslate.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      // store translation preference
-      try {
-        CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS,
-                ((Button) event.widget).getSelection());
-      } catch (BackingStoreException ex) {
-        CheckstyleLog.log(ex);
-      }
-    }));
-
-    Button mBtnSort = new Button(composite, SWT.CHECK);
-    mBtnSort.setText(Messages.RuleConfigurationEditDialog_btnSortTokens);
-    GridDataFactory.swtDefaults().indent(5, 0).applyTo(mBtnSort);
-
-    // Init the sort tokens preference
-    mBtnSort.setSelection(
-            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS));
-    mBtnSort.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      // store translation preference
-      try {
-        CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS,
-                ((Button) event.widget).getSelection());
-      } catch (BackingStoreException ex) {
-        CheckstyleLog.log(ex);
-      }
-    }));
-
-    Control buttonBar = super.createButtonBar(composite);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER).applyTo(buttonBar);
-
-    return composite;
-  }
-
-  @Override
-  protected void createButtonsForButtonBar(Composite parent) {
-
-    Button defautlt = createButton(parent, IDialogConstants.BACK_ID,
-            Messages.RuleConfigurationEditDialog_btnDefaul, false);
-    defautlt.setEnabled(!mReadonly);
-
-    // create OK and Cancel buttons by default
-    createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
-    createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
-  }
-
-  private void initialize() {
-
-    this.setTitle(
-            NLS.bind(Messages.RuleConfigurationEditDialog_titleRuleConfigEditor, mRule.getName()));
-    if (mReadonly) {
-      this.setMessage(Messages.RuleConfigurationEditDialog_msgReadonlyModule);
-    } else {
-      this.setMessage(Messages.RuleConfigurationEditDialog_msgEditRuleConfig);
+    /**
+     * Constructor.
+     *
+     * @param parent
+     *            Parent shell.
+     * @param rule
+     *            Rule being edited.
+     * @param readonly
+     *            whether the dialog is read-only
+     * @param title
+     *            the dialog title
+     */
+    public RuleConfigurationEditDialog(Shell parent, Module rule, boolean readonly, String title) {
+        super(parent);
+        setShellStyle(getShellStyle() | SWT.RESIZE);
+        setHelpAvailable(false);
+        mRule = rule;
+        mReadonly = readonly;
+        mTitle = title;
     }
 
-    // set the logo
-    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
-  }
+    @Override
+    protected Control createDialogArea(Composite parent) {
+        Composite composite = (Composite) super.createDialogArea(parent);
 
-  @Override
-  protected void buttonPressed(int buttonId) {
-    if (IDialogConstants.BACK_ID == buttonId) {
+        TabFolder mMainTab = new TabFolder(composite, SWT.NULL);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(mMainTab);
 
-      if (MessageDialog.openConfirm(getShell(),
-              Messages.RuleConfigurationEditDialog_titleRestoreDefault,
-              Messages.RuleConfigurationEditDialog_msgRestoreDefault)) {
+        generalSettings =
+            new RuleConfigurationEditDialogGeneralSettings(mMainTab, SWT.NULL, mRule, mReadonly);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(generalSettings);
 
-        if (mRule.getMetaData().hasSeverity()) {
-          generalSettings.setSeverity(mRule.getMetaData().defaultSeverity());
-          advancedSettings.resetComment();
+        advancedSettings =
+            new RuleConfigurationEditDialogAdvancedSettings(mMainTab, SWT.NULL, mRule, mReadonly);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(advancedSettings);
+
+        TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
+        mainItem.setControl(generalSettings);
+        mainItem.setText(Messages.RuleConfigurationEditDialog_tabGeneral);
+
+        TabItem advancedItem = new TabItem(mMainTab, SWT.NULL);
+        advancedItem.setControl(advancedSettings);
+        advancedItem.setText(Messages.RuleConfigurationEditDialog_tabAdvanced);
+
+        initialize();
+        return composite;
+    }
+
+    @Override
+    protected Control createButtonBar(Composite parent) {
+
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
+
+        Button mBtnTranslate = new Button(composite, SWT.CHECK);
+        mBtnTranslate.setText(Messages.RuleConfigurationEditDialog_btnTranslateTokens);
+        GridDataFactory.swtDefaults().indent(5, 0).applyTo(mBtnTranslate);
+
+        // Init the translate tokens preference
+        mBtnTranslate.setSelection(
+            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS));
+        mBtnTranslate.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            // store translation preference
+            try {
+                CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS,
+                    ((Button) event.widget).getSelection());
+            }
+            catch (BackingStoreException ex) {
+                CheckstyleLog.log(ex);
+            }
+        }));
+
+        Button mBtnSort = new Button(composite, SWT.CHECK);
+        mBtnSort.setText(Messages.RuleConfigurationEditDialog_btnSortTokens);
+        GridDataFactory.swtDefaults().indent(5, 0).applyTo(mBtnSort);
+
+        // Init the sort tokens preference
+        mBtnSort.setSelection(
+            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS));
+        mBtnSort.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            // store translation preference
+            try {
+                CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS,
+                    ((Button) event.widget).getSelection());
+            }
+            catch (BackingStoreException ex) {
+                CheckstyleLog.log(ex);
+            }
+        }));
+
+        Control buttonBar = super.createButtonBar(composite);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER)
+            .applyTo(buttonBar);
+
+        return composite;
+    }
+
+    @Override
+    protected void createButtonsForButtonBar(Composite parent) {
+
+        Button defautlt = createButton(parent, IDialogConstants.BACK_ID,
+            Messages.RuleConfigurationEditDialog_btnDefaul, false);
+        defautlt.setEnabled(!mReadonly);
+
+        // create OK and Cancel buttons by default
+        createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
+        createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
+    }
+
+    private void initialize() {
+
+        this.setTitle(
+            NLS.bind(Messages.RuleConfigurationEditDialog_titleRuleConfigEditor, mRule.getName()));
+        if (mReadonly) {
+            this.setMessage(Messages.RuleConfigurationEditDialog_msgReadonlyModule);
+        }
+        else {
+            this.setMessage(Messages.RuleConfigurationEditDialog_msgEditRuleConfig);
         }
 
-        // restore the default value for the properties
-        generalSettings.restoreProperties();
-      }
-    } else {
-      super.buttonPressed(buttonId);
-    }
-  }
-
-  /**
-   * OK button was selected.
-   */
-  @Override
-  protected void okPressed() {
-    //
-    // Get the selected severity level.
-    //
-    Severity severity = mRule.getSeverity();
-    try {
-      severity = generalSettings.getSeverity();
-    } catch (IllegalArgumentException ex) {
-      CheckstyleLog.log(ex);
+        // set the logo
+        this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     }
 
-    // Get the comment.
-    final String comment = StringUtils.trimToNull(advancedSettings.getComment());
+    @Override
+    protected void buttonPressed(int buttonId) {
+        if (IDialogConstants.BACK_ID == buttonId) {
 
-    // Get the id
-    final String id = StringUtils.trimToNull(advancedSettings.getId());
+            if (MessageDialog.openConfirm(getShell(),
+                Messages.RuleConfigurationEditDialog_titleRestoreDefault,
+                Messages.RuleConfigurationEditDialog_msgRestoreDefault)) {
 
-    // Get the custom message
-    for (Map.Entry<String, String> entry : advancedSettings.getCustomMessages().entrySet()) {
+                if (mRule.getMetaData().hasSeverity()) {
+                    generalSettings.setSeverity(mRule.getMetaData().defaultSeverity());
+                    advancedSettings.resetComment();
+                }
 
-      String msgKey = entry.getKey();
-
-      String standardMessage = MetadataFactory.getStandardMessage(msgKey,
-              mRule.getMetaData().identity().internalName());
-      if (standardMessage == null) {
-        standardMessage = ""; //$NON-NLS-1$
-      }
-
-      String message = StringUtils.trimToNull(entry.getValue());
-      if (message != null && !message.equals(standardMessage)) {
-        mRule.getCustomMessages().put(msgKey, message);
-      } else {
-        mRule.getCustomMessages().remove(msgKey);
-      }
+                // restore the default value for the properties
+                generalSettings.restoreProperties();
+            }
+        }
+        else {
+            super.buttonPressed(buttonId);
+        }
     }
 
-    //
-    // Build a new collection of configuration properties.
-    //
-    // Note: if the rule does not have any configuration properties then
-    // skip over the populating of the config property hash map.
-    //
-    Optional<String> widgetValiationError = generalSettings.validatePropertyWidgets();
-    if (widgetValiationError.isPresent()) {
-      setErrorMessage(widgetValiationError.get());
-    } else {
-      // If we made it this far then all of the user input validated and we
-      // can
-      // update the final rule with the values the user entered.
-      mRule.setSeverity(severity);
-      mRule.setComment(comment);
-      mRule.setId(id);
-      super.okPressed();
+    /**
+     * OK button was selected.
+     */
+    @Override
+    protected void okPressed() {
+        //
+        // Get the selected severity level.
+        //
+        Severity severity = mRule.getSeverity();
+        try {
+            severity = generalSettings.getSeverity();
+        }
+        catch (IllegalArgumentException ex) {
+            CheckstyleLog.log(ex);
+        }
+
+        // Get the comment.
+        final String comment = StringUtils.trimToNull(advancedSettings.getComment());
+
+        // Get the id
+        final String id = StringUtils.trimToNull(advancedSettings.getId());
+
+        // Get the custom message
+        for (Map.Entry<String, String> entry : advancedSettings.getCustomMessages().entrySet()) {
+
+            String msgKey = entry.getKey();
+
+            String standardMessage = MetadataFactory.getStandardMessage(msgKey,
+                mRule.getMetaData().identity().internalName());
+            if (standardMessage == null) {
+                standardMessage = ""; //$NON-NLS-1$
+            }
+
+            String message = StringUtils.trimToNull(entry.getValue());
+            if (message != null && !message.equals(standardMessage)) {
+                mRule.getCustomMessages().put(msgKey, message);
+            }
+            else {
+                mRule.getCustomMessages().remove(msgKey);
+            }
+        }
+
+        //
+        // Build a new collection of configuration properties.
+        //
+        // Note: if the rule does not have any configuration properties then
+        // skip over the populating of the config property hash map.
+        //
+        Optional<String> widgetValiationError = generalSettings.validatePropertyWidgets();
+        if (widgetValiationError.isPresent()) {
+            setErrorMessage(widgetValiationError.get());
+        }
+        else {
+            // If we made it this far then all of the user input validated and we
+            // can
+            // update the final rule with the values the user entered.
+            mRule.setSeverity(severity);
+            mRule.setComment(comment);
+            mRule.setId(id);
+            super.okPressed();
+        }
     }
-  }
 
-  @Override
-  public void create() {
-    super.create();
+    @Override
+    public void create() {
+        super.create();
 
-    // add resize support - for each different module the settings will be
-    // stored separately
-    SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
+        // add resize support - for each different module the settings will be
+        // stored separately
+        SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
             RuleConfigurationEditDialog.class.getName() + "#" //$NON-NLS-1$
-                    + mRule.getMetaData().identity().internalName());
-  }
+                + mRule.getMetaData().identity().internalName());
+    }
 
-  /**
-   * Over-rides method from Window to configure the shell (e.g. the enclosing window).
-   */
-  @Override
-  protected void configureShell(Shell shell) {
-    super.configureShell(shell);
+    /**
+     * Over-rides method from Window to configure the shell (e.g. the enclosing window).
+     */
+    @Override
+    protected void configureShell(Shell shell) {
+        super.configureShell(shell);
 
-    shell.setText(mTitle);
-  }
+        shell.setText(mTitle);
+    }
 }

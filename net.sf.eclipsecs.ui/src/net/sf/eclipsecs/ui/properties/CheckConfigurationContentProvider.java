@@ -37,42 +37,43 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
  */
 public final class CheckConfigurationContentProvider implements IStructuredContentProvider {
 
-  /** The singleton instance. */
-  public static final CheckConfigurationContentProvider INSTANCE =
-          new CheckConfigurationContentProvider();
+    /** The singleton instance. */
+    public static final CheckConfigurationContentProvider INSTANCE =
+        new CheckConfigurationContentProvider();
 
-  private CheckConfigurationContentProvider() {
+    private CheckConfigurationContentProvider() {
 
-  }
-
-  @Override
-  public Object[] getElements(Object inputElement) {
-
-    List<ICheckConfiguration> configurations = new ArrayList<>();
-
-    if (inputElement instanceof ProjectConfigurationWorkingCopy) {
-      ICheckConfiguration[] localConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
-              .getLocalCheckConfigWorkingSet().getWorkingCopies();
-
-      ICheckConfiguration[] globalConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
-              .getGlobalCheckConfigWorkingSet().getWorkingCopies();
-
-      configurations.addAll(Arrays.asList(localConfigs));
-      configurations.addAll(Arrays.asList(globalConfigs));
-    } else {
-      configurations.addAll(CheckConfigurationFactory.getCheckConfigurations());
     }
 
-    return configurations.toArray();
-  }
+    @Override
+    public Object[] getElements(Object inputElement) {
 
-  @Override
-  public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-    // do nothing.
-  }
+        List<ICheckConfiguration> configurations = new ArrayList<>();
 
-  @Override
-  public void dispose() {
-    // do nothing.
-  }
+        if (inputElement instanceof ProjectConfigurationWorkingCopy) {
+            ICheckConfiguration[] localConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
+                .getLocalCheckConfigWorkingSet().getWorkingCopies();
+
+            ICheckConfiguration[] globalConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
+                .getGlobalCheckConfigWorkingSet().getWorkingCopies();
+
+            configurations.addAll(Arrays.asList(localConfigs));
+            configurations.addAll(Arrays.asList(globalConfigs));
+        }
+        else {
+            configurations.addAll(CheckConfigurationFactory.getCheckConfigurations());
+        }
+
+        return configurations.toArray();
+    }
+
+    @Override
+    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+        // do nothing.
+    }
+
+    @Override
+    public void dispose() {
+        // do nothing.
+    }
 }

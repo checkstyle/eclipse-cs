@@ -33,28 +33,28 @@ import net.sf.eclipsecs.ui.util.InternalBrowser;
 
 public class CheckstylePreferencePageHeader extends Composite {
 
-  /** The checkstyle version string. */
-  private static final String CHECKSTYLE_VERSION = Main.class.getPackage()
-          .getImplementationVersion();
+    /** The checkstyle version string. */
+    private static final String CHECKSTYLE_VERSION =
+        Main.class.getPackage().getImplementationVersion();
 
-  public CheckstylePreferencePageHeader(Composite parent, int style) {
-    super(parent, style);
-    RowLayoutFactory.fillDefaults().applyTo(this);
+    public CheckstylePreferencePageHeader(Composite parent, int style) {
+        super(parent, style);
+        RowLayoutFactory.fillDefaults().applyTo(this);
 
-    Link link = new Link(this, SWT.NONE);
-    var text = NLS.bind(Messages.CheckstylePreferencePage_version,
+        Link link = new Link(this, SWT.NONE);
+        var text = NLS.bind(Messages.CheckstylePreferencePage_version,
             "<a>" + CHECKSTYLE_VERSION + "</a>");
-    text = text.replace("Checkstyle", "<a>Checkstyle</a>");
-    link.setText(text);
-    link.addListener(SWT.Selection, this::linkClicked);
-  }
-
-  private void linkClicked(Event event) {
-    String url = "https://checkstyle.org";
-    if (Character.isDigit(event.text.charAt(0))) {
-      url = url + "/releasenotes.html#Release_" + CHECKSTYLE_VERSION;
+        text = text.replace("Checkstyle", "<a>Checkstyle</a>");
+        link.setText(text);
+        link.addListener(SWT.Selection, this::linkClicked);
     }
-    InternalBrowser.openLinkInExternalBrowser(url);
-  }
+
+    private void linkClicked(Event event) {
+        String url = "https://checkstyle.org";
+        if (Character.isDigit(event.text.charAt(0))) {
+            url = url + "/releasenotes.html#Release_" + CHECKSTYLE_VERSION;
+        }
+        InternalBrowser.openLinkInExternalBrowser(url);
+    }
 
 }

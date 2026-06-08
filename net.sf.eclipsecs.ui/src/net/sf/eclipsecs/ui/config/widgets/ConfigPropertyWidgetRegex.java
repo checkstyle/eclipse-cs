@@ -45,143 +45,143 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
  */
 public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidget {
 
-  /** The default test message. */
-  private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
+    /** The default test message. */
+    private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
 
-  /** The red color. */
-  private final Color mRedColor;
+    /** The red color. */
+    private final Color mRedColor;
 
-  /** The green color. */
-  private final Color mGreenColor;
+    /** The green color. */
+    private final Color mGreenColor;
 
-  /** The contents composite. */
-  private Composite mContents;
+    /** The contents composite. */
+    private Composite mContents;
 
-  /** The text widget. */
-  private Text mTextWidget;
+    /** The text widget. */
+    private Text mTextWidget;
 
-  /** The regex test text widget. */
-  private Text mRegexTestWidget;
+    /** The regex test text widget. */
+    private Text mRegexTestWidget;
 
-  /** The text background color. */
-  private Color mTextBgColor;
+    /** The text background color. */
+    private Color mTextBgColor;
 
-  /**
-   * Creates the widget.
-   *
-   * @param parent
-   *          the parent composite
-   * @param prop
-   *          the property
-   */
-  private ConfigPropertyWidgetRegex(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-    mGreenColor = new Color(parent.getDisplay(), 219, 235, 204);
-    mRedColor = new Color(parent.getDisplay(), 255, 225, 225);
-
-  }
-
-  public static ConfigPropertyWidgetRegex create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetRegex(parent, prop);
-  }
-
-  @Override
-  protected Control getValueWidget(Composite parent) {
-
-    if (mContents == null) {
-
-      mContents = new Composite(parent, SWT.NULL);
-      mContents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-      GridLayout layout = new GridLayout(2, true);
-      layout.marginWidth = 0;
-      layout.marginHeight = 0;
-      mContents.setLayout(layout);
-
-      //
-      // Create a text entry field.
-      //
-      mTextWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
-      mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-      mTextWidget.addKeyListener(new RegexTestListener());
-      mTextBgColor = mTextWidget.getBackground();
-
-      // content assist
-      RegexCompletionProposalFactory.createForText(mTextWidget);
-
-      String initValue = getInitValue();
-      if (initValue != null) {
-        mTextWidget.setText(initValue);
-      }
-
-      mRegexTestWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
-      mRegexTestWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-      mRegexTestWidget.setMessage(mDefaultMessage);
-      mRegexTestWidget.addKeyListener(new RegexTestListener());
+    /**
+     * Creates the widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     */
+    private ConfigPropertyWidgetRegex(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
+        mGreenColor = new Color(parent.getDisplay(), 219, 235, 204);
+        mRedColor = new Color(parent.getDisplay(), 255, 225, 225);
 
     }
 
-    return mTextWidget;
-  }
-
-  @Override
-  public String getValue() {
-    String result = mTextWidget.getText();
-    if (result == null) {
-      result = ""; //$NON-NLS-1$
+    public static ConfigPropertyWidgetRegex create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetRegex(parent, prop);
     }
-    return result;
-  }
 
-  @Override
-  public void restorePropertyDefault() {
-    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+    @Override
+    protected Control getValueWidget(Composite parent) {
+
+        if (mContents == null) {
+
+            mContents = new Composite(parent, SWT.NULL);
+            mContents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            GridLayout layout = new GridLayout(2, true);
+            layout.marginWidth = 0;
+            layout.marginHeight = 0;
+            mContents.setLayout(layout);
+
+            //
+            // Create a text entry field.
+            //
+            mTextWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
+            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            mTextWidget.addKeyListener(new RegexTestListener());
+            mTextBgColor = mTextWidget.getBackground();
+
+            // content assist
+            RegexCompletionProposalFactory.createForText(mTextWidget);
+
+            String initValue = getInitValue();
+            if (initValue != null) {
+                mTextWidget.setText(initValue);
+            }
+
+            mRegexTestWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
+            mRegexTestWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            mRegexTestWidget.setMessage(mDefaultMessage);
+            mRegexTestWidget.addKeyListener(new RegexTestListener());
+
+        }
+
+        return mTextWidget;
+    }
+
+    @Override
+    public String getValue() {
+        String result = mTextWidget.getText();
+        if (result == null) {
+            result = ""; //$NON-NLS-1$
+        }
+        return result;
+    }
+
+    @Override
+    public void restorePropertyDefault() {
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-    mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
-  }
-
-  @Override
-  public void validate() throws CheckstylePluginException {
-    try {
-      //
-      // Compile the text to a regex pattern
-      //
-      Pattern.compile(mTextWidget.getText());
-    } catch (PatternSyntaxException ex) {
-      CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
-    }
-  }
-
-  private void testRegex() {
-    try {
-      Pattern pattern = Pattern.compile(mTextWidget.getText());
-      Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
-      if (matcher.find()) {
-        mRegexTestWidget.setBackground(mGreenColor);
-      } else {
-        mRegexTestWidget.setBackground(mRedColor);
-      }
-
-      mTextWidget.setBackground(mTextBgColor);
-    } catch (PatternSyntaxException ex) {
-      mTextWidget.setBackground(mRedColor);
-    }
-  }
-
-  /**
-   * Simple key listener to test the regular expression.
-   *
-   */
-  private final class RegexTestListener implements KeyListener {
-
-    @Override
-    public void keyPressed(KeyEvent e) {
-      // NOOP
+        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
     }
 
     @Override
-    public void keyReleased(KeyEvent e) {
-      testRegex();
+    public void validate() throws CheckstylePluginException {
+        try {
+            //
+            // Compile the text to a regex pattern
+            //
+            Pattern.compile(mTextWidget.getText());
+        } catch (PatternSyntaxException ex) {
+            CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
+        }
     }
-  }
+
+    private void testRegex() {
+        try {
+            Pattern pattern = Pattern.compile(mTextWidget.getText());
+            Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
+            if (matcher.find()) {
+                mRegexTestWidget.setBackground(mGreenColor);
+            } else {
+                mRegexTestWidget.setBackground(mRedColor);
+            }
+
+            mTextWidget.setBackground(mTextBgColor);
+        } catch (PatternSyntaxException ex) {
+            mTextWidget.setBackground(mRedColor);
+        }
+    }
+
+    /**
+     * Simple key listener to test the regular expression.
+     *
+     */
+    private final class RegexTestListener implements KeyListener {
+
+        @Override
+        public void keyPressed(KeyEvent e) {
+            // NOOP
+        }
+
+        @Override
+        public void keyReleased(KeyEvent e) {
+            testRegex();
+        }
+    }
 }

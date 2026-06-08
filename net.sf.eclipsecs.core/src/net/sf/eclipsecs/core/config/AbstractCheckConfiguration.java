@@ -34,28 +34,30 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 public abstract class AbstractCheckConfiguration implements ICheckConfiguration {
 
-  @Override
-  public void exportConfiguration(File file) throws CheckstylePluginException {
-    try (InputStream in = getCheckstyleConfiguration().getCheckConfigFileStream()) {
-      Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
-    } catch (IOException ex) {
-      CheckstylePluginException.rethrow(ex);
+    @Override
+    public void exportConfiguration(File file) throws CheckstylePluginException {
+        try (InputStream in = getCheckstyleConfiguration().getCheckConfigFileStream()) {
+            Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        }
+        catch (IOException ex) {
+            CheckstylePluginException.rethrow(ex);
+        }
     }
-  }
 
-  @Override
-  public void copyConfiguration(ICheckConfiguration target) throws CheckstylePluginException {
-    try {
-      // use the export function ;-)
-      File targetFile = URIUtil.toFile(target.getResolvedConfigurationFileURL().toURI());
-      File sourceFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
+    @Override
+    public void copyConfiguration(ICheckConfiguration target) throws CheckstylePluginException {
+        try {
+            // use the export function ;-)
+            File targetFile = URIUtil.toFile(target.getResolvedConfigurationFileURL().toURI());
+            File sourceFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
 
-      // copying from a file to the same file will destroy it.
-      if (!Objects.equals(targetFile, sourceFile)) {
-        exportConfiguration(targetFile);
-      }
-    } catch (URISyntaxException ex) {
-      CheckstylePluginException.rethrow(ex);
+            // copying from a file to the same file will destroy it.
+            if (!Objects.equals(targetFile, sourceFile)) {
+                exportConfiguration(targetFile);
+            }
+        }
+        catch (URISyntaxException ex) {
+            CheckstylePluginException.rethrow(ex);
+        }
     }
-  }
 }

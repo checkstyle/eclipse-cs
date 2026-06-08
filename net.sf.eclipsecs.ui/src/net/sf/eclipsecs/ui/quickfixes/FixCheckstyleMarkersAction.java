@@ -30,36 +30,35 @@ import org.eclipse.ui.IObjectActionDelegate;
 import org.eclipse.ui.IWorkbenchPart;
 
 /**
- * This action tries to run all quickfixes for markers on a selected compilation
- * unit.
+ * This action tries to run all quickfixes for markers on a selected compilation unit.
  *
  */
 public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
-  /** the selection that occured in the workspace. */
-  private ISelection mSelection;
+    /** the selection that occured in the workspace. */
+    private ISelection mSelection;
 
-  @Override
-  public void selectionChanged(IAction action, ISelection selection) {
-    mSelection = selection;
-  }
-
-  @Override
-  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-    // empty
-  }
-
-  @Override
-  public void run(IAction action) {
-    if (mSelection instanceof IStructuredSelection selection && selection.size() == 1) {
-      Object element = selection.getFirstElement();
-      IFile file = ((IAdaptable) element).getAdapter(IFile.class);
-      if (file != null) {
-        // call the fixing job
-        Job job = new FixCheckstyleMarkersJob(file);
-        job.setUser(true);
-        job.schedule();
-      }
+    @Override
+    public void selectionChanged(IAction action, ISelection selection) {
+        mSelection = selection;
     }
-  }
+
+    @Override
+    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+        // empty
+    }
+
+    @Override
+    public void run(IAction action) {
+        if (mSelection instanceof IStructuredSelection selection && selection.size() == 1) {
+            Object element = selection.getFirstElement();
+            IFile file = ((IAdaptable) element).getAdapter(IFile.class);
+            if (file != null) {
+                // call the fixing job
+                Job job = new FixCheckstyleMarkersJob(file);
+                job.setUser(true);
+                job.schedule();
+            }
+        }
+    }
 }

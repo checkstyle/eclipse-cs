@@ -50,84 +50,87 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
  */
 public class CheckSelectedFilesAction extends AbstractHandler implements IObjectActionDelegate {
 
-  /** The workbench part. */
-  private IWorkbenchPart mPart;
+    /** The workbench part. */
+    private IWorkbenchPart mPart;
 
-  /** The structured selection. */
-  private IStructuredSelection mSelection;
+    /** The structured selection. */
+    private IStructuredSelection mSelection;
 
-  @Override
-  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-    mPart = targetPart;
-  }
-
-  @Override
-  public void selectionChanged(IAction action, ISelection selection) {
-
-    if (selection instanceof IStructuredSelection) {
-      mSelection = (IStructuredSelection) selection;
+    @Override
+    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
+        mPart = targetPart;
     }
-  }
 
-  @Override
-  public void run(IAction action) {
-    checkSelection(mSelection);
-  }
+    @Override
+    public void selectionChanged(IAction action, ISelection selection) {
 
-  private void checkSelection(IStructuredSelection selection) {
-    Set<IResource> resources = new HashSet<>();
-    for (Object object : selection.toList()) {
-      if (object instanceof IAdaptable adaptable) {
-        var resource = adaptable.getAdapter(IResource.class);
-        if (resource != null) {
-          resources.add(resource);
+        if (selection instanceof IStructuredSelection) {
+            mSelection = (IStructuredSelection) selection;
         }
-      }
     }
-    List<IFile> filesToCheck = new ArrayList<>();
-    try {
-      addFileResources(List.copyOf(resources), filesToCheck);
-      if (!filesToCheck.isEmpty()) {
-        RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
-        job.setRule(job);
-        job.schedule();
-      }
-    } catch (CoreException ex) {
-      CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), ex, true);
+
+    @Override
+    public void run(IAction action) {
+        checkSelection(mSelection);
     }
-  }
 
-  /**
-   * Recursively add all files contained in the given resource collection to the second list.
-   *
-   * @param resources
-   *          list of resource
-   * @param files
-   *          the list of files
-   * @throws CoreException
-   *           an unexpected exception
-   */
-  private void addFileResources(List<IResource> resources, List<IFile> files) throws CoreException {
-    for (IResource resource : resources) {
-
-      if (!resource.isAccessible()) {
-        continue;
-      }
-
-      if (resource instanceof IFile) {
-        files.add((IFile) resource);
-      } else if (resource instanceof IContainer) {
-        addFileResources(Arrays.asList(((IContainer) resource).members()), files);
-      }
+    private void checkSelection(IStructuredSelection selection) {
+        Set<IResource> resources = new HashSet<>();
+        for (Object object : selection.toList()) {
+            if (object instanceof IAdaptable adaptable) {
+                var resource = adaptable.getAdapter(IResource.class);
+                if (resource != null) {
+                    resources.add(resource);
+                }
+            }
+        }
+        List<IFile> filesToCheck = new ArrayList<>();
+        try {
+            addFileResources(List.copyOf(resources), filesToCheck);
+            if (!filesToCheck.isEmpty()) {
+                RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
+                job.setRule(job);
+                job.schedule();
+            }
+        }
+        catch (CoreException ex) {
+            CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), ex, true);
+        }
     }
-  }
 
-  @Override
-  public Object execute(ExecutionEvent event) throws ExecutionException {
-    var selection = HandlerUtil.getCurrentSelection(event);
-    if (selection instanceof IStructuredSelection structuredSelection) {
-      checkSelection(structuredSelection);
+    /**
+     * Recursively add all files contained in the given resource collection to the second list.
+     *
+     * @param resources
+     *            list of resource
+     * @param files
+     *            the list of files
+     * @throws CoreException
+     *             an unexpected exception
+     */
+    private void addFileResources(List<IResource> resources, List<IFile> files)
+            throws CoreException {
+        for (IResource resource : resources) {
+
+            if (!resource.isAccessible()) {
+                continue;
+            }
+
+            if (resource instanceof IFile) {
+                files.add((IFile) resource);
+            }
+            else if (resource instanceof IContainer) {
+                addFileResources(Arrays.asList(((IContainer) resource).members()), files);
+            }
+        }
     }
-    return null;
-  }
+
+    @Override
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+        var selection = HandlerUtil.getCurrentSelection(event);
+        if (selection instanceof IStructuredSelection structuredSelection) {
+            checkSelection(structuredSelection);
+        }
+        return null;
+    }
 }

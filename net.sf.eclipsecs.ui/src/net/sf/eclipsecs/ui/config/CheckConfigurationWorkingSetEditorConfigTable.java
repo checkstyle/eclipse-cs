@@ -40,69 +40,70 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class CheckConfigurationWorkingSetEditorConfigTable extends Composite {
 
-  /** The table viewer for check configurations. */
-  private final TableViewer tableViewer;
+    /** The table viewer for check configurations. */
+    private final TableViewer tableViewer;
 
-  public CheckConfigurationWorkingSetEditorConfigTable(Composite parent, int style,
-          boolean useDefaultColumn, CheckConfigurationWorkingCopy[] configs,
-          ConfigurationLabelProvider multiProvider, Runnable configureCheckConfig,
-          Consumer<CheckConfigurationWorkingCopy> handleSelectionChanged) {
-    super(parent, style);
-    setLayout(new FillLayout());
-    Table table = new Table(this, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+    public CheckConfigurationWorkingSetEditorConfigTable(Composite parent, int style,
+        boolean useDefaultColumn, CheckConfigurationWorkingCopy[] configs,
+        ConfigurationLabelProvider multiProvider, Runnable configureCheckConfig,
+        Consumer<CheckConfigurationWorkingCopy> handleSelectionChanged) {
+        super(parent, style);
+        setLayout(new FillLayout());
+        Table table = new Table(this, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
 
-    table.setHeaderVisible(true);
-    table.setLinesVisible(true);
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
 
-    TableLayout tableLayout = new TableLayout();
-    table.setLayout(tableLayout);
+        TableLayout tableLayout = new TableLayout();
+        table.setLayout(tableLayout);
 
-    TableColumn column1 = new TableColumn(table, SWT.NULL);
-    column1.setText(Messages.CheckstylePreferencePage_colCheckConfig);
-    tableLayout.addColumnData(new ColumnWeightData(40));
+        TableColumn column1 = new TableColumn(table, SWT.NULL);
+        column1.setText(Messages.CheckstylePreferencePage_colCheckConfig);
+        tableLayout.addColumnData(new ColumnWeightData(40));
 
-    TableColumn column2 = new TableColumn(table, SWT.NULL);
-    column2.setText(Messages.CheckstylePreferencePage_colLocation);
-    tableLayout.addColumnData(new ColumnWeightData(30));
+        TableColumn column2 = new TableColumn(table, SWT.NULL);
+        column2.setText(Messages.CheckstylePreferencePage_colLocation);
+        tableLayout.addColumnData(new ColumnWeightData(30));
 
-    TableColumn column3 = new TableColumn(table, SWT.NULL);
-    column3.setText(Messages.CheckstylePreferencePage_colType);
-    tableLayout.addColumnData(new ColumnWeightData(30));
+        TableColumn column3 = new TableColumn(table, SWT.NULL);
+        column3.setText(Messages.CheckstylePreferencePage_colType);
+        tableLayout.addColumnData(new ColumnWeightData(30));
 
-    if (useDefaultColumn) {
-      TableColumn column4 = new TableColumn(table, SWT.NULL);
-      column4.setText(Messages.CheckstylePreferencePage_colDefault);
-      tableLayout.addColumnData(new ColumnWeightData(12));
+        if (useDefaultColumn) {
+            TableColumn column4 = new TableColumn(table, SWT.NULL);
+            column4.setText(Messages.CheckstylePreferencePage_colDefault);
+            tableLayout.addColumnData(new ColumnWeightData(12));
+        }
+
+        tableViewer = new TableViewer(table);
+        tableViewer.setLabelProvider(multiProvider);
+        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+        tableViewer.setInput(configs);
+        tableViewer.addDoubleClickListener(event -> configureCheckConfig.run());
+        tableViewer.addSelectionChangedListener(event -> {
+            CheckConfigurationWorkingCopy checkConfig = (CheckConfigurationWorkingCopy) tableViewer
+                .getStructuredSelection().getFirstElement();
+            handleSelectionChanged.accept(checkConfig);
+        });
+        TableViewerEnhancer.enhance(tableViewer, multiProvider);
     }
 
-    tableViewer = new TableViewer(table);
-    tableViewer.setLabelProvider(multiProvider);
-    tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-    tableViewer.setInput(configs);
-    tableViewer.addDoubleClickListener(event -> configureCheckConfig.run());
-    tableViewer.addSelectionChangedListener(event -> {
-      CheckConfigurationWorkingCopy checkConfig = (CheckConfigurationWorkingCopy) tableViewer
-              .getStructuredSelection().getFirstElement();
-      handleSelectionChanged.accept(checkConfig);
-    });
-    TableViewerEnhancer.enhance(tableViewer, multiProvider);
-  }
+    public void refresh() {
+        tableViewer.refresh(true);
+    }
 
-  public void refresh() {
-    tableViewer.refresh(true);
-  }
+    public CheckConfigurationWorkingCopy getSelection() {
+        return (CheckConfigurationWorkingCopy) tableViewer.getStructuredSelection()
+            .getFirstElement();
+    }
 
-  public CheckConfigurationWorkingCopy getSelection() {
-    return (CheckConfigurationWorkingCopy) tableViewer.getStructuredSelection().getFirstElement();
-  }
+    public void setConfigs(CheckConfigurationWorkingCopy[] configs) {
+        this.tableViewer.setInput(configs);
+        this.tableViewer.refresh();
+    }
 
-  public void setConfigs(CheckConfigurationWorkingCopy[] configs) {
-    this.tableViewer.setInput(configs);
-    this.tableViewer.refresh();
-  }
-
-  public void setSelection(CheckConfigurationWorkingCopy config) {
-    this.tableViewer.setSelection(new StructuredSelection(config));
-  }
+    public void setSelection(CheckConfigurationWorkingCopy config) {
+        this.tableViewer.setSelection(new StructuredSelection(config));
+    }
 
 }

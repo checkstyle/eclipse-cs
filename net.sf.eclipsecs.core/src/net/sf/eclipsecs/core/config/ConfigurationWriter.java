@@ -44,208 +44,209 @@ import net.sf.eclipsecs.core.util.XMLUtil;
  */
 public final class ConfigurationWriter {
 
-  /** Hidden default constructor. */
-  private ConfigurationWriter() {
+    /** Hidden default constructor. */
+    private ConfigurationWriter() {
 
-  }
-
-  /**
-   * Writes a new checkstyle configuration to the output stream.
-   *
-   * @param out
-   *          the output stream to write to
-   * @param checkConfig
-   *          the Check configuration object
-   * @throws CheckstylePluginException
-   *           error writing the checkstyle configuration
-   */
-  public static void writeNewConfiguration(OutputStream out, ICheckConfiguration checkConfig)
-          throws CheckstylePluginException {
-
-    // write an empty list of modules
-    // mandatory modules are added automatically
-    write(out, new ArrayList<>(), checkConfig);
-  }
-
-  /**
-   * Writes the modules of the configuration to the output stream.
-   *
-   * @param out
-   *          the ouput stream.
-   * @param modules
-   *          the modules
-   * @param checkConfig
-   *          the Check configuration object
-   * @throws CheckstylePluginException
-   *           error writing the checkstyle configuration
-   */
-  public static void write(OutputStream out, List<Module> modules, ICheckConfiguration checkConfig)
-          throws CheckstylePluginException {
-
-    try {
-      // pass the configured modules through the save filters
-      SaveFilters.process(modules);
-
-      Document doc = DocumentHelper.createDocument();
-      doc.addDocType(XMLTags.MODULE_TAG, "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN",
-              "https://checkstyle.org/dtds/configuration_1_3.dtd");
-
-      String lineSeperator = System.lineSeparator();
-
-      String comment = lineSeperator + "    This configuration file was written by "
-              + "the eclipse-cs plugin configuration editor" + lineSeperator;
-      doc.addComment(comment);
-
-      // write out name and description as comment
-      String description = lineSeperator + "    Checkstyle-Configuration: " //$NON-NLS-1$
-              + checkConfig.getName() + lineSeperator + "    Description: " //$NON-NLS-1$
-              + (Strings.emptyToNull(checkConfig.getDescription()) != null
-                      ? lineSeperator + checkConfig.getDescription() + lineSeperator
-                      : "none" + lineSeperator); //$NON-NLS-1$
-      doc.addComment(description);
-
-      // find the root module (Checker)
-      // the root module is the only module that has no parent
-      List<Module> rootModules = getChildModules(null, modules);
-      if (rootModules.isEmpty()) {
-        throw new CheckstylePluginException(Messages.errorNoRootModule);
-      }
-
-      if (rootModules.size() > 1) {
-        throw new CheckstylePluginException(Messages.errorMoreThanOneRootModule);
-      }
-
-      writeModules(rootModules.get(0), doc, null, modules);
-
-      out.write(XMLUtil.toByteArray(doc));
-    } catch (IOException ex) {
-      CheckstylePluginException.rethrow(ex);
-    }
-  }
-
-  private static void writeModules(Module module, Branch parent, Severity parentSeverity,
-          List<Module> remainingModules) {
-    Element moduleEl = writeModule(module, parent);
-
-    Severity severity = parentSeverity;
-    if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
-      // set the parent severity for child modules
-      severity = module.getSeverity();
     }
 
-    // remove this module from the list of modules to write
-    remainingModules.remove(module);
+    /**
+     * Writes a new checkstyle configuration to the output stream.
+     *
+     * @param out
+     *            the output stream to write to
+     * @param checkConfig
+     *            the Check configuration object
+     * @throws CheckstylePluginException
+     *             error writing the checkstyle configuration
+     */
+    public static void writeNewConfiguration(OutputStream out, ICheckConfiguration checkConfig)
+            throws CheckstylePluginException {
 
-    final List<Module> childs = getChildModules(module, remainingModules);
-
-    // write child modules recursively
-    for (Module child : childs) {
-      writeModules(child, moduleEl, severity, remainingModules);
-    }
-  }
-
-  /**
-   * Writes a module to the transformer handler.
-   *
-   * @param module
-   *          the module to write
-   * @param parent
-   *          the parent element
-   * @return the written module element
-   */
-  private static Element writeModule(Module module, Branch parent) {
-    // Start the module
-    Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
-    moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().identity().internalName());
-
-    // Write comment
-    if (Strings.emptyToNull(module.getComment()) != null) {
-
-      Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-      metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.COMMENT_ID);
-      metaEl.addAttribute(XMLTags.VALUE_TAG, module.getComment());
+        // write an empty list of modules
+        // mandatory modules are added automatically
+        write(out, new ArrayList<>(), checkConfig);
     }
 
-    // Write severity only if it differs from the parents severity
-    if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
+    /**
+     * Writes the modules of the configuration to the output stream.
+     *
+     * @param out
+     *            the ouput stream.
+     * @param modules
+     *            the modules
+     * @param checkConfig
+     *            the Check configuration object
+     * @throws CheckstylePluginException
+     *             error writing the checkstyle configuration
+     */
+    public static void write(OutputStream out, List<Module> modules,
+        ICheckConfiguration checkConfig) throws CheckstylePluginException {
 
-      Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
-      propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
-      propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().toXmlValue());
+        try {
+            // pass the configured modules through the save filters
+            SaveFilters.process(modules);
+
+            Document doc = DocumentHelper.createDocument();
+            doc.addDocType(XMLTags.MODULE_TAG,
+                "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN",
+                "https://checkstyle.org/dtds/configuration_1_3.dtd");
+
+            String lineSeperator = System.lineSeparator();
+
+            String comment = lineSeperator + "    This configuration file was written by "
+                + "the eclipse-cs plugin configuration editor" + lineSeperator;
+            doc.addComment(comment);
+
+            // write out name and description as comment
+            String description = lineSeperator + "    Checkstyle-Configuration: " //$NON-NLS-1$
+                + checkConfig.getName() + lineSeperator + "    Description: " //$NON-NLS-1$
+                + (Strings.emptyToNull(checkConfig.getDescription()) != null
+                    ? lineSeperator + checkConfig.getDescription() + lineSeperator
+                    : "none" + lineSeperator); //$NON-NLS-1$
+            doc.addComment(description);
+
+            // find the root module (Checker)
+            // the root module is the only module that has no parent
+            List<Module> rootModules = getChildModules(null, modules);
+            if (rootModules.isEmpty()) {
+                throw new CheckstylePluginException(Messages.errorNoRootModule);
+            }
+
+            if (rootModules.size() > 1) {
+                throw new CheckstylePluginException(Messages.errorMoreThanOneRootModule);
+            }
+
+            writeModules(rootModules.get(0), doc, null, modules);
+
+            out.write(XMLUtil.toByteArray(doc));
+        }
+        catch (IOException ex) {
+            CheckstylePluginException.rethrow(ex);
+        }
     }
 
-    // write module id
-    if (Strings.emptyToNull(module.getId()) != null) {
+    private static void writeModules(Module module, Branch parent, Severity parentSeverity,
+        List<Module> remainingModules) {
+        Element moduleEl = writeModule(module, parent);
 
-      Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
-      propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.ID_TAG);
-      propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getId());
+        Severity severity = parentSeverity;
+        if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
+            // set the parent severity for child modules
+            severity = module.getSeverity();
+        }
+
+        // remove this module from the list of modules to write
+        remainingModules.remove(module);
+
+        final List<Module> childs = getChildModules(module, remainingModules);
+
+        // write child modules recursively
+        for (Module child : childs) {
+            writeModules(child, moduleEl, severity, remainingModules);
+        }
     }
 
-    // write properties of the module
-    module.getProperties().stream()
-        .filter(property -> property.getValue() != null)
-        .filter(property -> !property.getValue().isEmpty())
-        .filter(property -> !Objects.equals(property.getValue(),
-                property.getMetaData().getDefaultValue()))
-        .forEach(property -> {
-          Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
-          propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
-          propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
-        });
+    /**
+     * Writes a module to the transformer handler.
+     *
+     * @param module
+     *            the module to write
+     * @param parent
+     *            the parent element
+     * @return the written module element
+     */
+    private static Element writeModule(Module module, Branch parent) {
+        // Start the module
+        Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
+        moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().identity().internalName());
 
-    // write custom messages
-    for (Map.Entry<String, String> entry : module.getCustomMessages().entrySet()) {
+        // Write comment
+        if (Strings.emptyToNull(module.getComment()) != null) {
 
-      Element metaEl = moduleEl.addElement(XMLTags.MESSAGE_TAG);
-      metaEl.addAttribute(XMLTags.KEY_TAG, entry.getKey());
-      metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.COMMENT_ID);
+            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getComment());
+        }
+
+        // Write severity only if it differs from the parents severity
+        if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
+
+            Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+            propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
+            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().toXmlValue());
+        }
+
+        // write module id
+        if (Strings.emptyToNull(module.getId()) != null) {
+
+            Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+            propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.ID_TAG);
+            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getId());
+        }
+
+        // write properties of the module
+        module.getProperties().stream().filter(property -> property.getValue() != null)
+            .filter(property -> !property.getValue().isEmpty()).filter(property -> !Objects
+                .equals(property.getValue(), property.getMetaData().getDefaultValue()))
+            .forEach(property -> {
+                Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+                propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
+                propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
+            });
+
+        // write custom messages
+        for (Map.Entry<String, String> entry : module.getCustomMessages().entrySet()) {
+
+            Element metaEl = moduleEl.addElement(XMLTags.MESSAGE_TAG);
+            metaEl.addAttribute(XMLTags.KEY_TAG, entry.getKey());
+            metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+        }
+
+        // write custom metadata
+        for (Map.Entry<String, String> entry : module.getCustomMetaData().entrySet()) {
+
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
+            metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+        }
+
+        // Write last enabled severity level
+        if (module.getLastEnabledSeverity() != null) {
+
+            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
+            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().toXmlValue());
+        }
+
+        return moduleEl;
     }
 
-    // write custom metadata
-    for (Map.Entry<String, String> entry : module.getCustomMetaData().entrySet()) {
+    /**
+     * Returns a list of child modules outgoing from a module.
+     *
+     * @param module
+     *            the parent module
+     * @param remainingModules
+     *            the list of modules that are yet not written
+     * @return the list of child modules
+     */
+    private static List<Module> getChildModules(Module module, List<Module> remainingModules) {
+        List<Module> childModules = new ArrayList<>();
 
-      Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-      metaEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
-      metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+        for (Module tmp : remainingModules) {
+            String parentInternalName =
+                module != null ? module.getMetaData().identity().internalName() : null;
+            String childParent = tmp.getMetaData().identity().parent();
+
+            // only the checker module has no parent
+            if (parentInternalName == null && "Root".equals(childParent)) {
+                childModules.add(tmp);
+            }
+            else if (childParent.equals(parentInternalName)) {
+                childModules.add(tmp);
+            }
+        }
+
+        return childModules;
     }
-
-    // Write last enabled severity level
-    if (module.getLastEnabledSeverity() != null) {
-
-      Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-      metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
-      metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().toXmlValue());
-    }
-
-    return moduleEl;
-  }
-
-  /**
-   * Returns a list of child modules outgoing from a module.
-   *
-   * @param module
-   *          the parent module
-   * @param remainingModules
-   *          the list of modules that are yet not written
-   * @return the list of child modules
-   */
-  private static List<Module> getChildModules(Module module, List<Module> remainingModules) {
-    List<Module> childModules = new ArrayList<>();
-
-    for (Module tmp : remainingModules) {
-      String parentInternalName = module != null ? module.getMetaData().identity().internalName()
-              : null;
-      String childParent = tmp.getMetaData().identity().parent();
-
-      // only the checker module has no parent
-      if (parentInternalName == null && "Root".equals(childParent)) {
-        childModules.add(tmp);
-      } else if (childParent.equals(parentInternalName)) {
-        childModules.add(tmp);
-      }
-    }
-
-    return childModules;
-  }
 }

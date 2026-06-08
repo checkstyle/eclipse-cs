@@ -29,14 +29,14 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class LineLengthTransformer extends AbstractCTransformationClass {
-  @Override
-  public FormatterConfiguration transformRule() {
-    String val = getAttribute("max");
-    if (val == null) {
-      val = "80";
+    @Override
+    public FormatterConfiguration transformRule() {
+        String val = getAttribute("max");
+        if (val == null) {
+            val = "80";
+        }
+        userFormatterSetting("lineSplit", val);
+        userFormatterSetting("comment.line_length", val);
+        return getFormatterSetting();
     }
-    userFormatterSetting("lineSplit", val);
-    userFormatterSetting("comment.line_length", val);
-    return getFormatterSetting();
-  }
 }

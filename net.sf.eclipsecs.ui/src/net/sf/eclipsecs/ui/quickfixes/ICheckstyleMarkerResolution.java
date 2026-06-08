@@ -29,19 +29,19 @@ import org.eclipse.ui.IMarkerResolution2;
  */
 public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
 
-  /**
-   * Checks if this quickfix can actually fix the marker occurrence.
-   *
-   * @param marker
-   *          the marker to potentially be fixed.
-   * @return <code>true</code> if this quickfix can fix the marker,
-   *         <code>false</code> otherwise.
-   */
-  boolean canFix(IMarker marker);
+    /**
+     * Checks if this quickfix can actually fix the marker occurrence.
+     *
+     * @param marker
+     *            the marker to potentially be fixed.
+     * @return <code>true</code> if this quickfix can fix the marker, <code>false</code> otherwise.
+     */
+    boolean canFix(IMarker marker);
 
-  /**
-   * @param module id of the checkstyle module
-   */
-  void setModule(String module);
+    /**
+     * @param module
+     *            id of the checkstyle module
+     */
+    void setModule(String module);
 
 }

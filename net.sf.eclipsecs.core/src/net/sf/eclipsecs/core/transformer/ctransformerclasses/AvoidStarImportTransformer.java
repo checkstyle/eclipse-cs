@@ -30,11 +30,11 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class AvoidStarImportTransformer extends AbstractCTransformationClass {
 
-  @Override
-  public FormatterConfiguration transformRule() {
-    useCleanupSetting("organize_imports", "true");
-    useCleanupSetting("remove_unused_imports", "true");
-    return getFormatterSetting();
-  }
+    @Override
+    public FormatterConfiguration transformRule() {
+        useCleanupSetting("organize_imports", "true");
+        useCleanupSetting("remove_unused_imports", "true");
+        return getFormatterSetting();
+    }
 
 }

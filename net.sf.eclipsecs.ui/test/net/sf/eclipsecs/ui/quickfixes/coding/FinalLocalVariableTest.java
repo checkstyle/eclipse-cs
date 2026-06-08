@@ -26,8 +26,8 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class FinalLocalVariableTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void finalLocalVariable() throws Exception {
-    testQuickfix("FinalLocalVariableInput.xml", new FinalLocalVariableQuickfix());
-  }
+    @Test
+    void finalLocalVariable() throws Exception {
+        testQuickfix("FinalLocalVariableInput.xml", new FinalLocalVariableQuickfix());
+    }
 }

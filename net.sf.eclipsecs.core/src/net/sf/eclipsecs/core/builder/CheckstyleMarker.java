@@ -29,38 +29,38 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
  * Represents the Checkstyle file marker.
  */
 public final class CheckstyleMarker {
-  /** ID for the CheckstyleMarker. */
-  public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker";
+    /** ID for the CheckstyleMarker. */
+    public static final String MARKER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleMarker";
 
-  /** Module name key in marker attributes. */
-  public static final String MODULE_NAME = "ModuleName"; //$NON-NLS-1$
+    /** Module name key in marker attributes. */
+    public static final String MODULE_NAME = "ModuleName"; //$NON-NLS-1$
 
-  /** Module Id key in marker attributes. */
-  public static final String MODULE_ID = "ModuleId"; //$NON-NLS-1$
+    /** Module Id key in marker attributes. */
+    public static final String MODULE_ID = "ModuleId"; //$NON-NLS-1$
 
-  /** Constant for message key info additionally stored. */
-  public static final String MESSAGE_KEY = "MessageKey"; //$NON-NLS-1$
+    /** Constant for message key info additionally stored. */
+    public static final String MESSAGE_KEY = "MessageKey"; //$NON-NLS-1$
 
-  /** Constant for the error marker type. */
-  public static final String ERROR_TYPE = CheckstylePlugin.PLUGIN_ID + ".error"; //$NON-NLS-1$
+    /** Constant for the error marker type. */
+    public static final String ERROR_TYPE = CheckstylePlugin.PLUGIN_ID + ".error"; //$NON-NLS-1$
 
-  /** Constant for the warning marker type. */
-  public static final String WARNING_TYPE = CheckstylePlugin.PLUGIN_ID + ".warning"; //$NON-NLS-1$
+    /** Constant for the warning marker type. */
+    public static final String WARNING_TYPE = CheckstylePlugin.PLUGIN_ID + ".warning"; //$NON-NLS-1$
 
-  /** Constant for the info marker type. */
-  public static final String INFO_TYPE = CheckstylePlugin.PLUGIN_ID + ".info"; //$NON-NLS-1$
+    /** Constant for the info marker type. */
+    public static final String INFO_TYPE = CheckstylePlugin.PLUGIN_ID + ".info"; //$NON-NLS-1$
 
-  private CheckstyleMarker() {
-    // utility class
-  }
-
-  public static boolean isCheckstyleMarker(IMarker marker) {
-    boolean isCheckstyleMarker;
-    try {
-      isCheckstyleMarker = CheckstyleMarker.MARKER_ID.equals(marker.getType());
-    } catch (CoreException ex) {
-      isCheckstyleMarker = false;
+    private CheckstyleMarker() {
+        // utility class
     }
-    return isCheckstyleMarker;
-  }
+
+    public static boolean isCheckstyleMarker(IMarker marker) {
+        boolean isCheckstyleMarker;
+        try {
+            isCheckstyleMarker = CheckstyleMarker.MARKER_ID.equals(marker.getType());
+        } catch (CoreException ex) {
+            isCheckstyleMarker = false;
+        }
+        return isCheckstyleMarker;
+    }
 }

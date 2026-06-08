@@ -32,34 +32,35 @@ import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
  */
 public class CheckConfigurationLabelProvider extends LabelProvider {
 
-  /** Singleton instance. */
-  public static final CheckConfigurationLabelProvider INSTANCE =
-          new CheckConfigurationLabelProvider();
+    /** Singleton instance. */
+    public static final CheckConfigurationLabelProvider INSTANCE =
+        new CheckConfigurationLabelProvider();
 
-  protected CheckConfigurationLabelProvider() {
+    protected CheckConfigurationLabelProvider() {
 
-  }
-
-  @Override
-  public String getText(Object element) {
-    String text;
-    if (element instanceof ICheckConfiguration checkConfig) {
-      text = checkConfig.getName() + " " //$NON-NLS-1$
-              + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal
-                      : Messages.CheckConfigurationLabelProvider_suffixLocal);
-    } else {
-      text = super.getText(element);
     }
-    return text;
-  }
 
-  @Override
-  public Image getImage(Object element) {
-    Image image = null;
-    if (element instanceof ICheckConfiguration checkConfig) {
-      image = ConfigurationTypesUI.getConfigurationTypeImage(checkConfig.getType());
+    @Override
+    public String getText(Object element) {
+        String text;
+        if (element instanceof ICheckConfiguration checkConfig) {
+            text = checkConfig.getName() + " " //$NON-NLS-1$
+                + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal
+                    : Messages.CheckConfigurationLabelProvider_suffixLocal);
+        }
+        else {
+            text = super.getText(element);
+        }
+        return text;
     }
-    return image;
-  }
+
+    @Override
+    public Image getImage(Object element) {
+        Image image = null;
+        if (element instanceof ICheckConfiguration checkConfig) {
+            image = ConfigurationTypesUI.getConfigurationTypeImage(checkConfig.getType());
+        }
+        return image;
+    }
 
 }

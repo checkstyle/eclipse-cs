@@ -31,32 +31,32 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 class ResourceBundlePropertyResolver implements PropertyResolver {
 
-  /** the resource bundle. */
-  private ResourceBundle mBundle;
+    /** the resource bundle. */
+    private ResourceBundle mBundle;
 
-  /**
-   * Creates the property resolver.
-   *
-   * @param bundle
-   *          the resource bundle
-   */
-  public ResourceBundlePropertyResolver(ResourceBundle bundle) {
-    mBundle = bundle;
-  }
-
-  @Override
-  public String resolve(String property) {
-
-    String value = null;
-
-    if (mBundle != null) {
-      try {
-        value = mBundle.getString(property);
-      } catch (MissingResourceException ex) {
-        // ignore
-      }
+    /**
+     * Creates the property resolver.
+     *
+     * @param bundle
+     *            the resource bundle
+     */
+    public ResourceBundlePropertyResolver(ResourceBundle bundle) {
+        mBundle = bundle;
     }
 
-    return value;
-  }
+    @Override
+    public String resolve(String property) {
+
+        String value = null;
+
+        if (mBundle != null) {
+            try {
+                value = mBundle.getString(property);
+            } catch (MissingResourceException ex) {
+                // ignore
+            }
+        }
+
+        return value;
+    }
 }

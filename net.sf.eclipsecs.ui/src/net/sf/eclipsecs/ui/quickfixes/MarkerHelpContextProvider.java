@@ -34,128 +34,129 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
  * Provides context help for checkstyle markers.
  */
 public class MarkerHelpContextProvider extends AbstractContextProvider
-        implements IMarkerHelpContextProvider {
+    implements IMarkerHelpContextProvider {
 
-  /**
-   * Package of the regexp checks
-   */
-  private static final String REGEXP_PACKAGE = "com.puppycrawl.tools.checkstyle.checks.regexp.";
-  /**
-   * Suffix of all standard check implementations
-   */
-  private static final String CHECK_SUFFIX = "Check";
-  /**
-   * Common prefix for all Checkstyle marker help contexts. Must be same as plugin id and must end
-   * with a dot.
-   */
-  private static final String PLUGIN_PREFIX = "net.sf.eclipsecs.ui" + ".";
+    /**
+     * Package of the regexp checks
+     */
+    private static final String REGEXP_PACKAGE = "com.puppycrawl.tools.checkstyle.checks.regexp.";
+    /**
+     * Suffix of all standard check implementations
+     */
+    private static final String CHECK_SUFFIX = "Check";
+    /**
+     * Common prefix for all Checkstyle marker help contexts. Must be same as plugin id and must end
+     * with a dot.
+     */
+    private static final String PLUGIN_PREFIX = "net.sf.eclipsecs.ui" + ".";
 
-  @Override
-  public String getHelpContextForMarker(IMarker marker) {
-    String helpContext = null;
-    String module = getModule(marker);
-    if (module.endsWith(CHECK_SUFFIX)) {
-      helpContext = PLUGIN_PREFIX
-              + StringUtils.removeEnd(StringUtils.substringAfterLast(module, '.'), CHECK_SUFFIX);
+    @Override
+    public String getHelpContextForMarker(IMarker marker) {
+        String helpContext = null;
+        String module = getModule(marker);
+        if (module.endsWith(CHECK_SUFFIX)) {
+            helpContext = PLUGIN_PREFIX
+                + StringUtils.removeEnd(StringUtils.substringAfterLast(module, '.'), CHECK_SUFFIX);
+        }
+        return helpContext;
     }
-    return helpContext;
-  }
 
-  private String getModule(IMarker marker) {
-    return marker.getAttribute(CheckstyleMarker.MODULE_NAME, StringUtils.EMPTY);
-  }
+    private String getModule(IMarker marker) {
+        return marker.getAttribute(CheckstyleMarker.MODULE_NAME, StringUtils.EMPTY);
+    }
 
-  @Override
-  public boolean hasHelpContextForMarker(IMarker marker) {
-    // regex rules don't provide useful help for understanding and fixing an issue
-    return CheckstyleMarker.isCheckstyleMarker(marker)
+    @Override
+    public boolean hasHelpContextForMarker(IMarker marker) {
+        // regex rules don't provide useful help for understanding and fixing an issue
+        return CheckstyleMarker.isCheckstyleMarker(marker)
             && !getModule(marker).startsWith(REGEXP_PACKAGE);
-  }
-
-  @Override
-  public IContext getContext(String id, String locale) {
-    var moduleName = StringUtils.substringAfter(id, PLUGIN_PREFIX);
-    return new CheckstyleHelpContext(moduleName);
-  }
-
-  @Override
-  public String[] getPlugins() {
-    return new String[] {
-        "net.sf.eclipsecs.ui",
-    };
-  }
-
-  /**
-   * @param moduleName
-   *          module name
-   * @return online help URL
-   */
-  public static String getOnlineHelp(String moduleName) {
-    String url = null;
-    var metadata = MetadataFactory.getRuleMetadata(moduleName);
-    if (metadata != null) {
-      var group = metadata.identity().group().getGroupId().toLowerCase();
-      // some web pages are different to the packages in Checkstyle
-      if ("indentation".equals(group) || StringUtils.isEmpty(group)) {
-        group = "misc";
-      }
-      var file = moduleName.toLowerCase();
-      url = "https://checkstyle.org/checks/" + group + "/" + file + ".html#" + moduleName;
     }
-    return url;
-  }
 
-  /**
-   * Help topic forwarding to the online help
-   */
-  private static final class CheckstyleHelpTopic implements IHelpResource {
-    /** The module name. */
-    private final String moduleName;
+    @Override
+    public IContext getContext(String id, String locale) {
+        var moduleName = StringUtils.substringAfter(id, PLUGIN_PREFIX);
+        return new CheckstyleHelpContext(moduleName);
+    }
+
+    @Override
+    public String[] getPlugins() {
+        return new String[] {
+            "net.sf.eclipsecs.ui",
+        };
+    }
 
     /**
      * @param moduleName
-     *          module name
+     *            module name
+     * @return online help URL
      */
-    private CheckstyleHelpTopic(String moduleName) {
-      this.moduleName = moduleName;
+    public static String getOnlineHelp(String moduleName) {
+        String url = null;
+        var metadata = MetadataFactory.getRuleMetadata(moduleName);
+        if (metadata != null) {
+            var group = metadata.identity().group().getGroupId().toLowerCase();
+            // some web pages are different to the packages in Checkstyle
+            if ("indentation".equals(group) || StringUtils.isEmpty(group)) {
+                group = "misc";
+            }
+            var file = moduleName.toLowerCase();
+            url = "https://checkstyle.org/checks/" + group + "/" + file + ".html#" + moduleName;
+        }
+        return url;
     }
 
-    @Override
-    public String getLabel() {
-      return null;
+    /**
+     * Help topic forwarding to the online help
+     */
+    private static final class CheckstyleHelpTopic implements IHelpResource {
+        /** The module name. */
+        private final String moduleName;
+
+        /**
+         * @param moduleName
+         *            module name
+         */
+        private CheckstyleHelpTopic(String moduleName) {
+            this.moduleName = moduleName;
+        }
+
+        @Override
+        public String getLabel() {
+            return null;
+        }
+
+        @Override
+        public String getHref() {
+            return getOnlineHelp(moduleName);
+        }
     }
 
-    @Override
-    public String getHref() {
-      return getOnlineHelp(moduleName);
-    }
-  }
+    /**
+     * Dynamically created help context for a checkstyle marker
+     */
+    private static final class CheckstyleHelpContext implements IContext {
+        /** The module name. */
+        private final String moduleName;
 
-  /**
-   * Dynamically created help context for a checkstyle marker
-   */
-  private static final class CheckstyleHelpContext implements IContext {
-    /** The module name. */
-    private final String moduleName;
+        private CheckstyleHelpContext(String moduleName) {
+            this.moduleName = moduleName;
+        }
 
-    private CheckstyleHelpContext(String moduleName) {
-      this.moduleName = moduleName;
-    }
+        @Override
+        public IHelpResource[] getRelatedTopics() {
+            IHelpResource helpResource = new CheckstyleHelpTopic(moduleName);
+            return new IHelpResource[] {
+                helpResource,
+            };
+        }
 
-    @Override
-    public IHelpResource[] getRelatedTopics() {
-      IHelpResource helpResource = new CheckstyleHelpTopic(moduleName);
-      return new IHelpResource[] {
-          helpResource,
-      };
+        @Override
+        public String getText() {
+            // must be null, because the help manager will only show the URL immediately when no
+            // text is
+            // defined
+            return null;
+        }
     }
-
-    @Override
-    public String getText() {
-      // must be null, because the help manager will only show the URL immediately when no text is
-      // defined
-      return null;
-    }
-  }
 
 }

@@ -39,72 +39,75 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class CheckstylePropertyApplyOperation {
 
-  private CheckstylePropertyApplyOperation() {
+    private CheckstylePropertyApplyOperation() {
 
-  }
-
-  public static boolean apply(Shell shell, ProjectConfigurationWorkingCopy projectConfig,
-          boolean checkstyleEnabled, boolean checkstyleInitiallyEnabled) {
-    try {
-
-      IProject project = projectConfig.getProject();
-
-      // save the edited project configuration
-      if (projectConfig.isDirty()) {
-        projectConfig.store();
-      }
-
-      // check if checkstyle nature has to be configured/deconfigured
-      if (checkstyleEnabled != checkstyleInitiallyEnabled) {
-        ConfigureDeconfigureNatureJob configOperation = new ConfigureDeconfigureNatureJob(project,
-                CheckstyleNature.NATURE_ID);
-        configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
-        configOperation.schedule();
-      }
-
-      if (checkstyleEnabled) {
-        boolean needRebuild = !checkstyleInitiallyEnabled || projectConfig.isRebuildNeeded();
-
-        if (projectConfig.isSyncFormatter()) {
-          TransformCheckstyleRulesJob transFormJob = new TransformCheckstyleRulesJob(project);
-          transFormJob.schedule();
-        }
-
-        // if a rebuild is advised, check/prompt if the rebuild should
-        // really be done.
-        if (needRebuild) {
-          String promptRebuildPref = CheckstyleUIPluginPrefs
-                  .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
-
-          boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
-
-          //
-          // Prompt for rebuild
-          //
-          if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
-            MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(shell,
-                    Messages.CheckstylePropertyPage_titleRebuild,
-                    Messages.CheckstylePropertyPage_msgRebuild,
-                    Messages.CheckstylePropertyPage_nagRebuild, false,
-                    CheckstyleUIPlugin.getDefault().getPreferenceStore(),
-                    CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
-
-            doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
-          }
-
-          // check if a rebuild is necessary
-          if (doRebuild) {
-
-            BuildProjectJob rebuildOperation = new BuildProjectJob(project,
-                    IncrementalProjectBuilder.FULL_BUILD);
-            rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
-            rebuildOperation.schedule();
-          }
-        }
-      }
-    } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(shell, ex, true);
     }
-    return true;
-  }
+
+    public static boolean apply(Shell shell, ProjectConfigurationWorkingCopy projectConfig,
+        boolean checkstyleEnabled, boolean checkstyleInitiallyEnabled) {
+        try {
+
+            IProject project = projectConfig.getProject();
+
+            // save the edited project configuration
+            if (projectConfig.isDirty()) {
+                projectConfig.store();
+            }
+
+            // check if checkstyle nature has to be configured/deconfigured
+            if (checkstyleEnabled != checkstyleInitiallyEnabled) {
+                ConfigureDeconfigureNatureJob configOperation =
+                    new ConfigureDeconfigureNatureJob(project, CheckstyleNature.NATURE_ID);
+                configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
+                configOperation.schedule();
+            }
+
+            if (checkstyleEnabled) {
+                boolean needRebuild =
+                    !checkstyleInitiallyEnabled || projectConfig.isRebuildNeeded();
+
+                if (projectConfig.isSyncFormatter()) {
+                    TransformCheckstyleRulesJob transFormJob =
+                        new TransformCheckstyleRulesJob(project);
+                    transFormJob.schedule();
+                }
+
+                // if a rebuild is advised, check/prompt if the rebuild should
+                // really be done.
+                if (needRebuild) {
+                    String promptRebuildPref = CheckstyleUIPluginPrefs
+                        .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+
+                    boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
+
+                    //
+                    // Prompt for rebuild
+                    //
+                    if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
+                        MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
+                            shell, Messages.CheckstylePropertyPage_titleRebuild,
+                            Messages.CheckstylePropertyPage_msgRebuild,
+                            Messages.CheckstylePropertyPage_nagRebuild, false,
+                            CheckstyleUIPlugin.getDefault().getPreferenceStore(),
+                            CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+
+                        doRebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
+                    }
+
+                    // check if a rebuild is necessary
+                    if (doRebuild) {
+
+                        BuildProjectJob rebuildOperation =
+                            new BuildProjectJob(project, IncrementalProjectBuilder.FULL_BUILD);
+                        rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
+                        rebuildOperation.schedule();
+                    }
+                }
+            }
+        }
+        catch (CheckstylePluginException ex) {
+            CheckstyleUIPlugin.errorDialog(shell, ex, true);
+        }
+        return true;
+    }
 }

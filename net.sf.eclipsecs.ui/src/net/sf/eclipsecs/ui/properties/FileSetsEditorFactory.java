@@ -24,19 +24,20 @@ import org.eclipse.swt.widgets.Shell;
 
 public final class FileSetsEditorFactory {
 
-  private FileSetsEditorFactory() {
+    private FileSetsEditorFactory() {
 
-  }
-
-  public static IFileSetsEditor createEditor(Shell shell, PropertyPageContext propertyPageContext,
-          boolean useSimpleConfig) {
-    IFileSetsEditor editor;
-    if (useSimpleConfig) {
-      editor = new SimpleFileSetsEditor(shell, propertyPageContext);
-    } else {
-      editor = new ComplexFileSetsEditor(propertyPageContext);
     }
-    return editor;
-  }
+
+    public static IFileSetsEditor createEditor(Shell shell, PropertyPageContext propertyPageContext,
+        boolean useSimpleConfig) {
+        IFileSetsEditor editor;
+        if (useSimpleConfig) {
+            editor = new SimpleFileSetsEditor(shell, propertyPageContext);
+        }
+        else {
+            editor = new ComplexFileSetsEditor(propertyPageContext);
+        }
+        return editor;
+    }
 
 }

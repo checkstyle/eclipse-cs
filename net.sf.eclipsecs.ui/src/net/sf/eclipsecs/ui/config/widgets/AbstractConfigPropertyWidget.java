@@ -36,100 +36,98 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  */
 public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWidget {
 
-  /** The config property. */
-  private ConfigProperty mProp;
+    /** The config property. */
+    private ConfigProperty mProp;
 
-  /** The value widget control. */
-  private Control mValueWidget;
+    /** The value widget control. */
+    private Control mValueWidget;
 
-  /** The parent composite. */
-  private Composite mParent;
+    /** The parent composite. */
+    private Composite mParent;
 
-  protected AbstractConfigPropertyWidget(Composite parent, ConfigProperty prop) {
-    mParent = parent;
-    mProp = prop;
-  }
-
-  /**
-   * Returns the widget containing the values.
-   *
-   * @param parent the parent composite
-   * @return the widget containing the value
-   */
-  protected abstract Control getValueWidget(Composite parent);
-
-  /**
-   * @return The property's value.
-   */
-  @Override
-  public abstract String getValue();
-
-  @Override
-  public void initialize() {
-
-    //
-    // Add the property's name.
-    //
-    Label label = new Label(mParent, SWT.NULL);
-    label.setText(mProp.getName() + ":"); //$NON-NLS-1$
-    GridData gridData = new GridData();
-    gridData.verticalAlignment = SWT.BEGINNING;
-    label.setLayoutData(gridData);
-
-    mValueWidget = getValueWidget(mParent);
-    gridData = (GridData) mValueWidget.getLayoutData();
-    mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
-
-    // provide a label that shows a tooltip with the property description
-    Label lblPropertyInfo = new Label(mParent, SWT.NULL);
-    gridData = new GridData();
-    gridData.verticalAlignment = SWT.BEGINNING;
-    lblPropertyInfo.setLayoutData(gridData);
-    lblPropertyInfo.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
-    lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
-    SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
-  }
-
-  @Override
-  public void setEnabled(boolean enabled) {
-    mValueWidget.setEnabled(enabled);
-  }
-
-  /**
-  * Figure out an initial value for the property. This will be,
-  * in order of precedence:
-  * 1) the existing value
-  * 2) a default value overriding the checkstyle default
-  * 3) the checkstyle default value, if specified
-  * 4) blank
-  *
-  * @return the initial value
-  */
-  protected String getInitValue() {
-    String initValue = null;
-    if (mProp != null) {
-      initValue = mProp.getValue();
-    }
-    if (initValue == null) {
-      initValue = mProp.getMetaData().getOverrideDefault();
-    }
-    if (initValue == null) {
-      initValue = mProp.getMetaData().getDefaultValue();
-    }
-    if (initValue == null) {
-      initValue = ""; //$NON-NLS-1$
+    protected AbstractConfigPropertyWidget(Composite parent, ConfigProperty prop) {
+        mParent = parent;
+        mProp = prop;
     }
 
-    return initValue;
-  }
+    /**
+     * Returns the widget containing the values.
+     *
+     * @param parent
+     *            the parent composite
+     * @return the widget containing the value
+     */
+    protected abstract Control getValueWidget(Composite parent);
 
-  @Override
-  public ConfigProperty getConfigProperty() {
-    return mProp;
-  }
+    /**
+     * @return The property's value.
+     */
+    @Override
+    public abstract String getValue();
 
-  @Override
-  public void validate() throws CheckstylePluginException {
-    // Nothing to to for most properties
-  }
+    @Override
+    public void initialize() {
+
+        //
+        // Add the property's name.
+        //
+        Label label = new Label(mParent, SWT.NULL);
+        label.setText(mProp.getName() + ":"); //$NON-NLS-1$
+        GridData gridData = new GridData();
+        gridData.verticalAlignment = SWT.BEGINNING;
+        label.setLayoutData(gridData);
+
+        mValueWidget = getValueWidget(mParent);
+        gridData = (GridData) mValueWidget.getLayoutData();
+        mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
+
+        // provide a label that shows a tooltip with the property description
+        Label lblPropertyInfo = new Label(mParent, SWT.NULL);
+        gridData = new GridData();
+        gridData.verticalAlignment = SWT.BEGINNING;
+        lblPropertyInfo.setLayoutData(gridData);
+        lblPropertyInfo.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
+        lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
+        SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
+    }
+
+    @Override
+    public void setEnabled(boolean enabled) {
+        mValueWidget.setEnabled(enabled);
+    }
+
+    /**
+     * Figure out an initial value for the property. This will be, in order of precedence: 1) the
+     * existing value 2) a default value overriding the checkstyle default 3) the checkstyle default
+     * value, if specified 4) blank
+     *
+     * @return the initial value
+     */
+    protected String getInitValue() {
+        String initValue = null;
+        if (mProp != null) {
+            initValue = mProp.getValue();
+        }
+        if (initValue == null) {
+            initValue = mProp.getMetaData().getOverrideDefault();
+        }
+        if (initValue == null) {
+            initValue = mProp.getMetaData().getDefaultValue();
+        }
+        if (initValue == null) {
+            initValue = ""; //$NON-NLS-1$
+        }
+
+        return initValue;
+    }
+
+    @Override
+    public ConfigProperty getConfigProperty() {
+        return mProp;
+    }
+
+    @Override
+    public void validate() throws CheckstylePluginException {
+        // Nothing to to for most properties
+    }
 }

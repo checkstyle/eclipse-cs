@@ -32,40 +32,40 @@ import net.sf.eclipsecs.ui.stats.views.AbstractStatsView;
  */
 public class FiltersAction extends Action {
 
-  //
-  // attributes
-  //
+    //
+    // attributes
+    //
 
-  /** the view that uses this action. */
-  private AbstractStatsView mStatsView;
+    /** the view that uses this action. */
+    private AbstractStatsView mStatsView;
 
-  //
-  // constructor
-  //
+    //
+    // constructor
+    //
 
-  /**
-   * Creates the action.
-   *
-   * @param view
-   *          the stats view
-   */
-  public FiltersAction(AbstractStatsView view) {
-    super(Messages.FiltersAction_text);
-    setImageDescriptor(CheckstyleUIPluginImages.FILTER_ICON.getImageDescriptor());
-    setToolTipText(Messages.FiltersAction_tooltip);
-    this.mStatsView = view;
-    setEnabled(true);
-  }
+    /**
+     * Creates the action.
+     *
+     * @param view
+     *            the stats view
+     */
+    public FiltersAction(AbstractStatsView view) {
+        super(Messages.FiltersAction_text);
+        setImageDescriptor(CheckstyleUIPluginImages.FILTER_ICON.getImageDescriptor());
+        setToolTipText(Messages.FiltersAction_tooltip);
+        this.mStatsView = view;
+        setEnabled(true);
+    }
 
-  //
-  // methods
-  //
+    //
+    // methods
+    //
 
-  /**
-   * Opens the dialog. Notifies the view if the filter has been modified.
-   */
-  @Override
-  public void run() {
-    mStatsView.openFiltersDialog();
-  }
+    /**
+     * Opens the dialog. Notifies the view if the filter has been modified.
+     */
+    @Override
+    public void run() {
+        mStatsView.openFiltersDialog();
+    }
 }

@@ -36,72 +36,73 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  */
 public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWidget {
 
-  /** The text widget. */
-  private Text mTextWidget;
+    /** The text widget. */
+    private Text mTextWidget;
 
-  /**
-   * Creates the widget.
-   *
-   * @param parent
-   *          the parent composite
-   * @param prop
-   *          the property
-   */
-  private ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-  }
-
-  public static ConfigPropertyWidgetInteger create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetInteger(parent, prop);
-  }
-
-  @Override
-  protected Control getValueWidget(Composite parent) {
-
-    if (mTextWidget == null) {
-
-      //
-      // Create a text entry field.
-      //
-      mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
-      mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-      SWTUtil.addOnlyDigitInputSupport(mTextWidget);
-
-      String initValue = getInitValue();
-      if (initValue != null) {
-        mTextWidget.setText(initValue);
-      }
+    /**
+     * Creates the widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     */
+    private ConfigPropertyWidgetInteger(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
     }
 
-    return mTextWidget;
-  }
-
-  @Override
-  public String getValue() {
-    String result = mTextWidget.getText();
-    if (result == null) {
-      result = new String();
+    public static ConfigPropertyWidgetInteger create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetInteger(parent, prop);
     }
-    return result;
-  }
 
-  @Override
-  public void restorePropertyDefault() {
-    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+    @Override
+    protected Control getValueWidget(Composite parent) {
+
+        if (mTextWidget == null) {
+
+            //
+            // Create a text entry field.
+            //
+            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            SWTUtil.addOnlyDigitInputSupport(mTextWidget);
+
+            String initValue = getInitValue();
+            if (initValue != null) {
+                mTextWidget.setText(initValue);
+            }
+        }
+
+        return mTextWidget;
+    }
+
+    @Override
+    public String getValue() {
+        String result = mTextWidget.getText();
+        if (result == null) {
+            result = new String();
+        }
+        return result;
+    }
+
+    @Override
+    public void restorePropertyDefault() {
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-    mTextWidget.setText(defaultValue != null ? defaultValue : new String());
-  }
-
-  @Override
-  public void validate() throws CheckstylePluginException {
-    try {
-      //
-      // Parse the value to see if an exception gets thrown.
-      //
-      Integer.parseInt(mTextWidget.getText());
-    } catch (NumberFormatException ex) {
-      CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
+        mTextWidget.setText(defaultValue != null ? defaultValue : new String());
     }
-  }
+
+    @Override
+    public void validate() throws CheckstylePluginException {
+        try {
+            //
+            // Parse the value to see if an exception gets thrown.
+            //
+            Integer.parseInt(mTextWidget.getText());
+        }
+        catch (NumberFormatException ex) {
+            CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
+        }
+    }
 }

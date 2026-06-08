@@ -40,59 +40,60 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
 
 public final class SimpleFileSetsEditorView extends Composite {
 
-  /** The combo viewer for check configuration selection. */
-  private final ComboViewer mComboViewer;
+    /** The combo viewer for check configuration selection. */
+    private final ComboViewer mComboViewer;
 
-  public SimpleFileSetsEditorView(Composite parent, int style, Runnable manageConfig,
-          FileSet mDefaultFileSet, PropertyPageContext propertyPageContext) {
-    super(parent, style);
-    GridLayoutFactory.fillDefaults().applyTo(this);
+    public SimpleFileSetsEditorView(Composite parent, int style, Runnable manageConfig,
+        FileSet mDefaultFileSet, PropertyPageContext propertyPageContext) {
+        super(parent, style);
+        GridLayoutFactory.fillDefaults().applyTo(this);
 
-    Group configArea = new Group(this, SWT.NULL);
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(configArea);
-    configArea.setText(Messages.SimpleFileSetsEditor_titleSimpleConfig);
-    GridLayoutFactory.fillDefaults().numColumns(2).applyTo(configArea);
+        Group configArea = new Group(this, SWT.NULL);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(configArea);
+        configArea.setText(Messages.SimpleFileSetsEditor_titleSimpleConfig);
+        GridLayoutFactory.fillDefaults().numColumns(2).applyTo(configArea);
 
-    mComboViewer = new ComboViewer(configArea);
-    mComboViewer.getCombo().setVisibleItemCount(10);
-    mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
-    mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
-    mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
-    GridDataFactory.fillDefaults().grab(true, false).applyTo(mComboViewer.getControl());
+        mComboViewer = new ComboViewer(configArea);
+        mComboViewer.getCombo().setVisibleItemCount(10);
+        mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
+        mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
+        mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(mComboViewer.getControl());
 
-    Button mBtnManageConfigs = new Button(configArea, SWT.PUSH);
-    mBtnManageConfigs.setText(Messages.SimpleFileSetsEditor_btnManageConfigs);
-    mBtnManageConfigs.addSelectionListener(
+        Button mBtnManageConfigs = new Button(configArea, SWT.PUSH);
+        mBtnManageConfigs.setText(Messages.SimpleFileSetsEditor_btnManageConfigs);
+        mBtnManageConfigs.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> manageConfig.run()));
-    GridDataFactory.fillDefaults().applyTo(mBtnManageConfigs);
+        GridDataFactory.fillDefaults().applyTo(mBtnManageConfigs);
 
-    // Description
-    Label lblConfigDesc = new Label(configArea, SWT.LEFT);
-    lblConfigDesc.setText(Messages.SimpleFileSetsEditor_lblDescription);
-    GridDataFactory.fillDefaults().span(2, 1).applyTo(lblConfigDesc);
+        // Description
+        Label lblConfigDesc = new Label(configArea, SWT.LEFT);
+        lblConfigDesc.setText(Messages.SimpleFileSetsEditor_lblDescription);
+        GridDataFactory.fillDefaults().span(2, 1).applyTo(lblConfigDesc);
 
-    Text mTxtConfigDescription = new Text(configArea,
+        Text mTxtConfigDescription = new Text(configArea,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.V_SCROLL);
-    GridDataFactory.fillDefaults().span(2, 1).hint(SWT.DEFAULT, 100).grab(true, true)
+        GridDataFactory.fillDefaults().span(2, 1).hint(SWT.DEFAULT, 100).grab(true, true)
             .applyTo(mTxtConfigDescription);
 
-    mComboViewer.addSelectionChangedListener(event -> {
-      ICheckConfiguration config = (ICheckConfiguration) event.getStructuredSelection()
-              .getFirstElement();
-      mDefaultFileSet.setCheckConfig(config);
-      mTxtConfigDescription.setText(config.getDescription() != null ? config.getDescription() : "");
-      propertyPageContext.updateButtons();
-    });
+        mComboViewer.addSelectionChangedListener(event -> {
+            ICheckConfiguration config =
+                (ICheckConfiguration) event.getStructuredSelection().getFirstElement();
+            mDefaultFileSet.setCheckConfig(config);
+            mTxtConfigDescription
+                .setText(config.getDescription() != null ? config.getDescription() : "");
+            propertyPageContext.updateButtons();
+        });
 
-    // init the check configuration combo
-    mComboViewer.setInput(propertyPageContext.configuration());
-    if (mDefaultFileSet.getCheckConfig() != null) {
-      mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
+        // init the check configuration combo
+        mComboViewer.setInput(propertyPageContext.configuration());
+        if (mDefaultFileSet.getCheckConfig() != null) {
+            mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
+        }
     }
-  }
 
-  public void refresh() {
-    mComboViewer.refresh();
-  }
+    public void refresh() {
+        mComboViewer.refresh();
+    }
 
 }

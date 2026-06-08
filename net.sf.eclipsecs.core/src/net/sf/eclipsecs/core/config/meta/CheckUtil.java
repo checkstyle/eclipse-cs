@@ -41,56 +41,46 @@ public final class CheckUtil {
     }
 
     public static String getModifiableTokens(String checkName) {
-      final Object checkResult = getCheck(checkName);
-      String result = null;
-      if (AbstractJavadocCheck.class.isAssignableFrom(checkResult.getClass())) {
-          final AbstractJavadocCheck javadocCheck = (AbstractJavadocCheck) checkResult;
-          final List<Integer> modifiableJavadocTokens = subtractTokens(
-                  javadocCheck.getAcceptableJavadocTokens(),
-                  javadocCheck.getRequiredJavadocTokens());
-          result = getTokens(JavadocUtil::getTokenName, modifiableJavadocTokens);
-      }
-      else if (AbstractCheck.class.isAssignableFrom(checkResult.getClass())) {
-          final AbstractCheck check = (AbstractCheck) checkResult;
-          final List<Integer> modifiableTokens = subtractTokens(check.getAcceptableTokens(),
-                  check.getRequiredTokens());
-          result = getTokens(TokenUtil::getTokenName, modifiableTokens);
-      }
-      else {
-        throw new IllegalStateException("Exception caused in CheckUtil.getCheck, "
+        final Object checkResult = getCheck(checkName);
+        String result = null;
+        if (AbstractJavadocCheck.class.isAssignableFrom(checkResult.getClass())) {
+            final AbstractJavadocCheck javadocCheck = (AbstractJavadocCheck) checkResult;
+            final List<Integer> modifiableJavadocTokens = subtractTokens(
+                javadocCheck.getAcceptableJavadocTokens(), javadocCheck.getRequiredJavadocTokens());
+            result = getTokens(JavadocUtil::getTokenName, modifiableJavadocTokens);
+        } else if (AbstractCheck.class.isAssignableFrom(checkResult.getClass())) {
+            final AbstractCheck check = (AbstractCheck) checkResult;
+            final List<Integer> modifiableTokens =
+                subtractTokens(check.getAcceptableTokens(), check.getRequiredTokens());
+            result = getTokens(TokenUtil::getTokenName, modifiableTokens);
+        } else {
+            throw new IllegalStateException("Exception caused in CheckUtil.getCheck, "
                 + "method executed in wrong context, heirarchy of check class missing");
-      }
-      return result;
-   }
+        }
+        return result;
+    }
 
     private static AbstractCheck getCheck(String checkName) {
-        final ClassLoader classLoader = CheckstylePlugin.getDefault()
-                .getAddonExtensionClassLoader();
+        final ClassLoader classLoader =
+            CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
         try {
             final Set<String> packageNames = PackageNamesLoader.getPackageNames(classLoader);
             return (AbstractCheck) new PackageObjectFactory(packageNames, classLoader)
-                    .createModule(checkName);
-        }
-        catch (CheckstyleException ex) {
+                .createModule(checkName);
+        } catch (CheckstyleException ex) {
             throw new IllegalStateException("exception occured during load of " + checkName, ex);
         }
     }
 
     private static List<Integer> subtractTokens(int[] tokens, int... requiredTokens) {
-      Set<Integer> requiredTokensSet = new HashSet<>(Arrays.stream(requiredTokens)
-              .boxed()
-              .collect(Collectors.toList()));
-      return Arrays.stream(tokens)
-              .boxed()
-              .filter(token -> !requiredTokensSet.contains(token))
-              .collect(Collectors.toList());
+        Set<Integer> requiredTokensSet =
+            new HashSet<>(Arrays.stream(requiredTokens).boxed().collect(Collectors.toList()));
+        return Arrays.stream(tokens).boxed().filter(token -> !requiredTokensSet.contains(token))
+            .collect(Collectors.toList());
     }
 
     private static String getTokens(Function<Integer, String> function,
-            List<Integer> modifiableTokens) {
-      return modifiableTokens.stream()
-            .map(function::apply)
-            .collect(Collectors.joining(","));
+        List<Integer> modifiableTokens) {
+        return modifiableTokens.stream().map(function::apply).collect(Collectors.joining(","));
     }
 }
-

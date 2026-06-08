@@ -37,35 +37,35 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class WorkspaceFileSelector {
 
-  private WorkspaceFileSelector() {
+    private WorkspaceFileSelector() {
 
-  }
-
-  public static Optional<String> select(Shell shell) {
-    ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
-            new WorkbenchLabelProvider(), new WorkbenchContentProvider());
-    dialog.setHelpAvailable(false);
-    dialog.setTitle(Messages.ProjectConfigurationLocationEditor_titleSelectConfigFile);
-    dialog.setMessage(Messages.ProjectConfigurationLocationEditor_msgSelectConfigFile);
-    dialog.setBlockOnOpen(true);
-    dialog.setAllowMultiple(false);
-    dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
-    dialog.setValidator(selection -> {
-      int status;
-      if (selection.length == 1 && selection[0] instanceof IFile) {
-        status = IStatus.OK;
-      } else {
-        status = IStatus.ERROR;
-      }
-      return new Status(status, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);
-    });
-    Optional<String> path = Optional.empty();
-    if (Window.OK == dialog.open()) {
-      Object[] result = dialog.getResult();
-      IFile checkFile = (IFile) result[0];
-      path = Optional.of(checkFile.getFullPath().toString());
     }
-    return path;
-  }
+
+    public static Optional<String> select(Shell shell) {
+        ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
+            new WorkbenchLabelProvider(), new WorkbenchContentProvider());
+        dialog.setHelpAvailable(false);
+        dialog.setTitle(Messages.ProjectConfigurationLocationEditor_titleSelectConfigFile);
+        dialog.setMessage(Messages.ProjectConfigurationLocationEditor_msgSelectConfigFile);
+        dialog.setBlockOnOpen(true);
+        dialog.setAllowMultiple(false);
+        dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
+        dialog.setValidator(selection -> {
+            int status;
+            if (selection.length == 1 && selection[0] instanceof IFile) {
+                status = IStatus.OK;
+            } else {
+                status = IStatus.ERROR;
+            }
+            return new Status(status, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);
+        });
+        Optional<String> path = Optional.empty();
+        if (Window.OK == dialog.open()) {
+            Object[] result = dialog.getResult();
+            IFile checkFile = (IFile) result[0];
+            path = Optional.of(checkFile.getFullPath().toString());
+        }
+        return path;
+    }
 
 }

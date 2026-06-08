@@ -28,37 +28,37 @@ import org.eclipse.swt.widgets.Control;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 
 /**
- * Interface for the part of the checkstyle plugin properties page that
- * configures file sets for the project.
+ * Interface for the part of the checkstyle plugin properties page that configures file sets for the
+ * project.
  *
  */
 public interface IFileSetsEditor {
-  /**
-   * Creates the contents of the file set editor.
-   *
-   * @param parent
-   *          the parent component
-   * @return the control
-   */
-  Control createContents(Composite parent);
+    /**
+     * Creates the contents of the file set editor.
+     *
+     * @param parent
+     *            the parent component
+     * @return the control
+     */
+    Control createContents(Composite parent);
 
-  /**
-   * Set the file sets for the editor.
-   *
-   * @param fileSets
-   *          the list of file sets
-   */
-  void setFileSets(List<FileSet> fileSets);
+    /**
+     * Set the file sets for the editor.
+     *
+     * @param fileSets
+     *            the list of file sets
+     */
+    void setFileSets(List<FileSet> fileSets);
 
-  /**
-   * Returns the file sets.
-   *
-   * @return the list of file sets
-   */
-  List<FileSet> getFileSets();
+    /**
+     * Returns the file sets.
+     *
+     * @return the list of file sets
+     */
+    List<FileSet> getFileSets();
 
-  /**
-   * Refreshes the view.
-   */
-  void refresh();
+    /**
+     * Refreshes the view.
+     */
+    void refresh();
 }

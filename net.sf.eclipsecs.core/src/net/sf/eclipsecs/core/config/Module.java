@@ -35,279 +35,280 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
  */
 public class Module implements Cloneable {
 
-  //
-  // attributes
-  //
+    //
+    // attributes
+    //
 
-  /** the custom messages for this module. */
-  private final Map<String, String> mCustomMessages = new HashMap<>();
+    /** the custom messages for this module. */
+    private final Map<String, String> mCustomMessages = new HashMap<>();
 
-  /** map containing unknown custom metadata of the module. */
-  private final Map<String, String> mCustomMetaData = new HashMap<>();
+    /** map containing unknown custom metadata of the module. */
+    private final Map<String, String> mCustomMetaData = new HashMap<>();
 
-  /** the name of the module. */
-  private String mName;
+    /** the name of the module. */
+    private String mName;
 
-  /** the meta data associated with the module. */
-  private RuleMetadata mMetaData;
+    /** the meta data associated with the module. */
+    private RuleMetadata mMetaData;
 
-  /** the properties of the modules. */
-  private List<ConfigProperty> mProperties = new ArrayList<>();
+    /** the properties of the modules. */
+    private List<ConfigProperty> mProperties = new ArrayList<>();
 
-  /** the comment of the module. */
-  private String mComment;
+    /** the comment of the module. */
+    private String mComment;
 
-  /** the id of the module. */
-  private String id;
+    /** the id of the module. */
+    private String id;
 
-  /** the severity level. */
-  private Severity mSeverityLevel = Severity.INHERIT;
+    /** the severity level. */
+    private Severity mSeverityLevel = Severity.INHERIT;
 
-  /** the last severity level before setting to ignored. */
-  private Severity mLastEnabledSeverity;
+    /** the last severity level before setting to ignored. */
+    private Severity mLastEnabledSeverity;
 
-  //
-  // constructors
-  //
+    //
+    // constructors
+    //
 
-  /**
-   * Creates a module with the according meta data.
-   *
-   * @param metaData
-   *          the meta data
-   * @param withDefaults
-   *          determines if the properties should be initialized with the Checkstyle default values
-   */
-  public Module(RuleMetadata metaData, boolean withDefaults) {
-    mMetaData = metaData;
+    /**
+     * Creates a module with the according meta data.
+     *
+     * @param metaData
+     *            the meta data
+     * @param withDefaults
+     *            determines if the properties should be initialized with the Checkstyle default
+     *            values
+     */
+    public Module(RuleMetadata metaData, boolean withDefaults) {
+        mMetaData = metaData;
 
-    if (metaData != null) {
+        if (metaData != null) {
 
-      // create the properties according to the meta data
-      List<ConfigPropertyMetadata> propMetas = metaData.configPropMetadata();
-      int size = propMetas != null ? propMetas.size() : 0;
-      for (int i = 0; i < size; i++) {
+            // create the properties according to the meta data
+            List<ConfigPropertyMetadata> propMetas = metaData.configPropMetadata();
+            int size = propMetas != null ? propMetas.size() : 0;
+            for (int i = 0; i < size; i++) {
 
-        ConfigPropertyMetadata propMeta = propMetas.get(i);
-        ConfigProperty property = new ConfigProperty(propMeta);
-        getProperties().add(property);
+                ConfigPropertyMetadata propMeta = propMetas.get(i);
+                ConfigProperty property = new ConfigProperty(propMeta);
+                getProperties().add(property);
 
-        if (withDefaults) {
-          property.setValue(propMeta.getDefaultValue());
+                if (withDefaults) {
+                    property.setValue(propMeta.getDefaultValue());
+                }
+            }
+
+            if (metaData.defaultSeverity() != null) {
+                mSeverityLevel = metaData.defaultSeverity();
+            }
         }
-      }
-
-      if (metaData.defaultSeverity() != null) {
-        mSeverityLevel = metaData.defaultSeverity();
-      }
-    }
-  }
-
-  /**
-   * Create a module without meta data.
-   *
-   * @param name
-   *          the name of the module
-   */
-  public Module(String name) {
-    mName = name;
-  }
-
-  /**
-   * Returns the name of the module.
-   *
-   * @return the name of the module
-   */
-  public String getName() {
-    return mMetaData != null ? mMetaData.identity().ruleName() : mName;
-  }
-
-  /**
-   * Returns the unique id of the module.
-   *
-   * @return the id
-   */
-  public String getId() {
-    return id;
-  }
-
-  /**
-   * Sets the unique id of the module.
-   *
-   * @param id
-   *          the id to set
-   */
-  public void setId(String id) {
-    this.id = id;
-  }
-
-  /**
-   * Returns the custom messages to display instead of Checkstyle's default message.
-   *
-   * @return the customMessage
-   */
-  public Map<String, String> getCustomMessages() {
-    return mCustomMessages;
-  }
-
-  /**
-   * Returns the meta data associated with the module.
-   *
-   * @return the meta data of the module
-   */
-  public RuleMetadata getMetaData() {
-    return mMetaData;
-  }
-
-  /**
-   * Sets the meta data of the module.
-   *
-   * @param metaData
-   *          the meta data
-   */
-  public void setMetaData(RuleMetadata metaData) {
-    mMetaData = metaData;
-  }
-
-  /**
-   * Returns all properties of this module.
-   *
-   * @return the properties
-   */
-  public List<ConfigProperty> getProperties() {
-    return mProperties;
-  }
-
-  /**
-   * Returns the property data for a given property name.
-   *
-   * @param property
-   *          the property name
-   * @return the coresponding property or <code>null</code>
-   */
-  public ConfigProperty getProperty(String property) {
-
-    ConfigProperty propertyObj = null;
-
-    int size = mProperties != null ? mProperties.size() : 0;
-    for (int i = 0; i < size; i++) {
-      ConfigProperty tmp = mProperties.get(i);
-
-      if (tmp.getName().equals(property)) {
-        propertyObj = tmp;
-        break;
-      }
-    }
-    return propertyObj;
-  }
-
-  /**
-   * Returns the user comment for this module.
-   *
-   * @return the comment
-   */
-  public String getComment() {
-    return mComment;
-  }
-
-  /**
-   * Sets the user comment for this module.
-   *
-   * @param comment
-   *          the comment
-   */
-  public void setComment(String comment) {
-    mComment = comment;
-  }
-
-  /**
-   * Returns the severity level of this module.
-   *
-   * @return the severity level
-   */
-  public Severity getSeverity() {
-    Severity severity = null;
-    if (mMetaData != null && mMetaData.hasSeverity()) {
-      severity = mSeverityLevel != null ? mSeverityLevel : getMetaData().defaultSeverity();
-    }
-    return severity;
-  }
-
-  /**
-   * Returns the last severity level before the module was set to ignore.
-   *
-   * @return the last severity level
-   */
-  public Severity getLastEnabledSeverity() {
-    return mLastEnabledSeverity;
-  }
-
-  /**
-   * Sets the last enabled severity. This is used to restore the original severity setting after the
-   * module has been set to ignore.
-   *
-   * @param severity
-   *          the severity
-   */
-  public void setLastEnabledSeverity(Severity severity) {
-    mLastEnabledSeverity = severity;
-  }
-
-  /**
-   * Sets the severity level.
-   *
-   * @param severityLevel
-   *          the severity level to set
-   */
-  public void setSeverity(Severity severityLevel) {
-
-    Severity defaultLevel = null;
-
-    if (mMetaData != null && mMetaData.hasSeverity()) {
-      defaultLevel = getMetaData().defaultSeverity();
-    } else if (mMetaData == null) {
-      defaultLevel = MetadataFactory.getDefaultSeverity();
     }
 
-    if (defaultLevel != null) {
-      if (severityLevel == defaultLevel) {
-        mSeverityLevel = null;
-        setLastEnabledSeverity(null);
-      } else if (Severity.IGNORE == severityLevel) {
-        if (mSeverityLevel != null && Severity.IGNORE != mSeverityLevel) {
-          setLastEnabledSeverity(mSeverityLevel);
+    /**
+     * Create a module without meta data.
+     *
+     * @param name
+     *            the name of the module
+     */
+    public Module(String name) {
+        mName = name;
+    }
+
+    /**
+     * Returns the name of the module.
+     *
+     * @return the name of the module
+     */
+    public String getName() {
+        return mMetaData != null ? mMetaData.identity().ruleName() : mName;
+    }
+
+    /**
+     * Returns the unique id of the module.
+     *
+     * @return the id
+     */
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Sets the unique id of the module.
+     *
+     * @param id
+     *            the id to set
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    /**
+     * Returns the custom messages to display instead of Checkstyle's default message.
+     *
+     * @return the customMessage
+     */
+    public Map<String, String> getCustomMessages() {
+        return mCustomMessages;
+    }
+
+    /**
+     * Returns the meta data associated with the module.
+     *
+     * @return the meta data of the module
+     */
+    public RuleMetadata getMetaData() {
+        return mMetaData;
+    }
+
+    /**
+     * Sets the meta data of the module.
+     *
+     * @param metaData
+     *            the meta data
+     */
+    public void setMetaData(RuleMetadata metaData) {
+        mMetaData = metaData;
+    }
+
+    /**
+     * Returns all properties of this module.
+     *
+     * @return the properties
+     */
+    public List<ConfigProperty> getProperties() {
+        return mProperties;
+    }
+
+    /**
+     * Returns the property data for a given property name.
+     *
+     * @param property
+     *            the property name
+     * @return the coresponding property or <code>null</code>
+     */
+    public ConfigProperty getProperty(String property) {
+
+        ConfigProperty propertyObj = null;
+
+        int size = mProperties != null ? mProperties.size() : 0;
+        for (int i = 0; i < size; i++) {
+            ConfigProperty tmp = mProperties.get(i);
+
+            if (tmp.getName().equals(property)) {
+                propertyObj = tmp;
+                break;
+            }
+        }
+        return propertyObj;
+    }
+
+    /**
+     * Returns the user comment for this module.
+     *
+     * @return the comment
+     */
+    public String getComment() {
+        return mComment;
+    }
+
+    /**
+     * Sets the user comment for this module.
+     *
+     * @param comment
+     *            the comment
+     */
+    public void setComment(String comment) {
+        mComment = comment;
+    }
+
+    /**
+     * Returns the severity level of this module.
+     *
+     * @return the severity level
+     */
+    public Severity getSeverity() {
+        Severity severity = null;
+        if (mMetaData != null && mMetaData.hasSeverity()) {
+            severity = mSeverityLevel != null ? mSeverityLevel : getMetaData().defaultSeverity();
+        }
+        return severity;
+    }
+
+    /**
+     * Returns the last severity level before the module was set to ignore.
+     *
+     * @return the last severity level
+     */
+    public Severity getLastEnabledSeverity() {
+        return mLastEnabledSeverity;
+    }
+
+    /**
+     * Sets the last enabled severity. This is used to restore the original severity setting after
+     * the module has been set to ignore.
+     *
+     * @param severity
+     *            the severity
+     */
+    public void setLastEnabledSeverity(Severity severity) {
+        mLastEnabledSeverity = severity;
+    }
+
+    /**
+     * Sets the severity level.
+     *
+     * @param severityLevel
+     *            the severity level to set
+     */
+    public void setSeverity(Severity severityLevel) {
+
+        Severity defaultLevel = null;
+
+        if (mMetaData != null && mMetaData.hasSeverity()) {
+            defaultLevel = getMetaData().defaultSeverity();
+        } else if (mMetaData == null) {
+            defaultLevel = MetadataFactory.getDefaultSeverity();
         }
 
-        mSeverityLevel = severityLevel;
-      } else {
-        mSeverityLevel = severityLevel;
-      }
+        if (defaultLevel != null) {
+            if (severityLevel == defaultLevel) {
+                mSeverityLevel = null;
+                setLastEnabledSeverity(null);
+            } else if (Severity.IGNORE == severityLevel) {
+                if (mSeverityLevel != null && Severity.IGNORE != mSeverityLevel) {
+                    setLastEnabledSeverity(mSeverityLevel);
+                }
+
+                mSeverityLevel = severityLevel;
+            } else {
+                mSeverityLevel = severityLevel;
+            }
+        }
     }
-  }
 
-  /**
-   * Return the map containing custom metadata for the module.
-   *
-   * @return the custom metadata
-   */
-  public Map<String, String> getCustomMetaData() {
-    return mCustomMetaData;
-  }
-
-  @Override
-  public Module clone() {
-    try {
-      Module clone = (Module) super.clone();
-      clone.mProperties = new ArrayList<>();
-
-      for (ConfigProperty prop : mProperties) {
-        clone.getProperties().add(prop.clone());
-      }
-
-      return clone;
-    } catch (CloneNotSupportedException ex) {
-      // should not happen
-      throw new InternalError(ex);
+    /**
+     * Return the map containing custom metadata for the module.
+     *
+     * @return the custom metadata
+     */
+    public Map<String, String> getCustomMetaData() {
+        return mCustomMetaData;
     }
-  }
+
+    @Override
+    public Module clone() {
+        try {
+            Module clone = (Module) super.clone();
+            clone.mProperties = new ArrayList<>();
+
+            for (ConfigProperty prop : mProperties) {
+                clone.getProperties().add(prop.clone());
+            }
+
+            return clone;
+        } catch (CloneNotSupportedException ex) {
+            // should not happen
+            throw new InternalError(ex);
+        }
+    }
 }

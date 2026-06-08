@@ -43,66 +43,66 @@ import net.sf.eclipsecs.ui.properties.ComplexFileSetsEditor.FileSetViewerSorter;
 
 public final class ComplexFileSetsEditorTableView extends Composite {
 
-  /** The checkbox table viewer. */
-  private final CheckboxTableViewer mViewer;
+    /** The checkbox table viewer. */
+    private final CheckboxTableViewer mViewer;
 
-  public ComplexFileSetsEditorTableView(Composite parent, int style,
-          ICheckStateListener changeEnabledState, Consumer<FileSet> editFileSet,
-          List<FileSet> mFileSets) {
-    super(parent, style);
-    GridLayoutFactory.fillDefaults().applyTo(this);
+    public ComplexFileSetsEditorTableView(Composite parent, int style,
+        ICheckStateListener changeEnabledState, Consumer<FileSet> editFileSet,
+        List<FileSet> mFileSets) {
+        super(parent, style);
+        GridLayoutFactory.fillDefaults().applyTo(this);
 
-    mViewer = new CheckboxTableViewer(createTable(this));
-    mViewer.setLabelProvider(FileSetLabelProvider.INSTANCE);
-    mViewer.setContentProvider(ArrayContentProvider.getInstance());
-    mViewer.setComparator(FileSetViewerSorter.INSTANCE);
-    mViewer.setInput(mFileSets);
+        mViewer = new CheckboxTableViewer(createTable(this));
+        mViewer.setLabelProvider(FileSetLabelProvider.INSTANCE);
+        mViewer.setContentProvider(ArrayContentProvider.getInstance());
+        mViewer.setComparator(FileSetViewerSorter.INSTANCE);
+        mViewer.setInput(mFileSets);
 
-    for (FileSet fileSet : mFileSets) {
-      mViewer.setChecked(fileSet, fileSet.isEnabled());
+        for (FileSet fileSet : mFileSets) {
+            mViewer.setChecked(fileSet, fileSet.isEnabled());
+        }
+
+        mViewer.addDoubleClickListener(event -> editFileSet.accept(getSelectedFileSet()));
+        mViewer.addCheckStateListener(changeEnabledState);
     }
 
-    mViewer.addDoubleClickListener(event -> editFileSet.accept(getSelectedFileSet()));
-    mViewer.addCheckStateListener(changeEnabledState);
-  }
+    public void refresh() {
+        mViewer.refresh();
+    }
 
-  public void refresh() {
-    mViewer.refresh();
-  }
+    public void setChecked(FileSet fileSet, boolean enabled) {
+        mViewer.setChecked(fileSet, enabled);
+    }
 
-  public void setChecked(FileSet fileSet, boolean enabled) {
-    mViewer.setChecked(fileSet, enabled);
-  }
+    public FileSet getSelectedFileSet() {
+        return (FileSet) mViewer.getStructuredSelection().getFirstElement();
+    }
 
-  public FileSet getSelectedFileSet() {
-    return (FileSet) mViewer.getStructuredSelection().getFirstElement();
-  }
+    private static Table createTable(Composite parent) {
+        Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(table);
 
-  private static Table createTable(Composite parent) {
-    Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(table);
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
 
-    table.setHeaderVisible(true);
-    table.setLinesVisible(true);
+        TableLayout tableLayout = new TableLayout();
+        table.setLayout(tableLayout);
 
-    TableLayout tableLayout = new TableLayout();
-    table.setLayout(tableLayout);
+        TableColumn column1 = new TableColumn(table, SWT.NONE);
+        column1.setText(Messages.ComplexFileSetsEditor_colEnabled);
+        column1.setResizable(false);
 
-    TableColumn column1 = new TableColumn(table, SWT.NONE);
-    column1.setText(Messages.ComplexFileSetsEditor_colEnabled);
-    column1.setResizable(false);
+        TableColumn column2 = new TableColumn(table, SWT.NONE);
+        column2.setText(Messages.ComplexFileSetsEditor_colFilesetName);
 
-    TableColumn column2 = new TableColumn(table, SWT.NONE);
-    column2.setText(Messages.ComplexFileSetsEditor_colFilesetName);
+        TableColumn column3 = new TableColumn(table, SWT.NONE);
+        column3.setText(Messages.ComplexFileSetsEditor_colConfiguration);
 
-    TableColumn column3 = new TableColumn(table, SWT.NONE);
-    column3.setText(Messages.ComplexFileSetsEditor_colConfiguration);
+        tableLayout.addColumnData(new ColumnWeightData(20));
+        tableLayout.addColumnData(new ColumnWeightData(40));
+        tableLayout.addColumnData(new ColumnWeightData(40));
 
-    tableLayout.addColumnData(new ColumnWeightData(20));
-    tableLayout.addColumnData(new ColumnWeightData(40));
-    tableLayout.addColumnData(new ColumnWeightData(40));
-
-    return table;
-  }
+        return table;
+    }
 
 }

@@ -59,147 +59,151 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
  */
 public class CheckstylePropertyPage extends PropertyPage {
 
-  /** The main tab composite. */
-  private CheckstylePropertyPageMainTab mainTab;
-
-  //
-  // other members
-  //
-
-  /** the actual working data for this form. */
-  private ProjectConfigurationWorkingCopy mProjectConfig;
-
-  /** Flag indicating whether checkstyle was initially activated for the project. */
-  private boolean mCheckstyleInitiallyActivated;
-
-  //
-  // methods
-  //
-
-  @Override
-  public void setElement(IAdaptable element) {
-    super.setElement(element);
+    /** The main tab composite. */
+    private CheckstylePropertyPageMainTab mainTab;
 
     //
-    // Get the project.
+    // other members
     //
-    IProject project = null;
 
-    IResource resource = (IResource) element;
-    if (resource.getType() == IResource.PROJECT) {
-      project = (IProject) resource;
-    }
+    /** the actual working data for this form. */
+    private ProjectConfigurationWorkingCopy mProjectConfig;
 
-    try {
-      IProjectConfiguration projectConfig = ProjectConfigurationFactory.getConfiguration(project);
-      mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
+    /** Flag indicating whether checkstyle was initially activated for the project. */
+    private boolean mCheckstyleInitiallyActivated;
 
-      mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
-    } catch (CoreException | CheckstylePluginException ex) {
-      handleConfigFileError(ex, project);
-    }
-  }
+    //
+    // methods
+    //
 
-  private void handleConfigFileError(Exception error, IProject project) {
+    @Override
+    public void setElement(IAdaptable element) {
+        super.setElement(element);
 
-    CheckstyleLog.log(error, Messages.errorOpeningPropertiesPage);
-    CheckstyleUIPlugin.warningDialog(null, Messages.errorOpeningPropertiesPage, error);
+        //
+        // Get the project.
+        //
+        IProject project = null;
 
-    IProjectConfiguration projectConfig = ProjectConfigurationFactory
-            .createDefaultProjectConfiguration(project);
-    mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
-    try {
-      mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
-    } catch (CoreException nested) {
-      CheckstyleUIPlugin.errorDialog(null, nested.getMessage(), nested, true);
-    }
-  }
-
-  @Override
-  public Control createContents(Composite parent) {
-    // suppress default- & apply-buttons
-    noDefaultAndApplyButton();
-
-    TabFolder tabFolder = new TabFolder(parent, SWT.TOP);
-    tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
-    tabFolder.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      mainTab.refreshFileSetEditor();
-      getContainer().updateButtons();
-    }));
-    this.mainTab = new CheckstylePropertyPageMainTab(tabFolder, SWT.NONE,
-            new PropertyPageContext((IProject) getElement(), mProjectConfig,
-                    getContainer()::updateButtons),
-            mCheckstyleInitiallyActivated);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(mainTab);
-
-    // create the local configurations area
-    Control localConfigArea = new LocalConfig(tabFolder, SWT.NONE,
-            mProjectConfig.getLocalCheckConfigWorkingSet());
-
-    TabItem mainItem = new TabItem(tabFolder, SWT.NULL);
-    mainItem.setControl(mainTab);
-    mainItem.setText(Messages.CheckstylePropertyPage_tabMain);
-
-    TabItem localItem = new TabItem(tabFolder, SWT.NULL);
-    localItem.setControl(localConfigArea);
-    localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
-
-    return mainTab;
-  }
-
-  @Override
-  public boolean isValid() {
-    boolean isValid = true;
-    if (mProjectConfig != null) {
-      // check if all check configurations resolve
-      List<FileSet> fileSets = mProjectConfig.getFileSets();
-      for (FileSet fileset : fileSets) {
-        ICheckConfiguration checkConfig = fileset.getCheckConfig();
-        if (checkConfig != null) {
-          try {
-            checkConfig.getCheckstyleConfiguration();
-          } catch (CheckstylePluginException ex) {
-            setErrorMessage(NLS.bind(Messages.errorCannotResolveCheckLocation,
-                    checkConfig.getLocation(), checkConfig.getName()));
-            isValid = false;
-            break;
-          }
+        IResource resource = (IResource) element;
+        if (resource.getType() == IResource.PROJECT) {
+            project = (IProject) resource;
         }
-      }
+
+        try {
+            IProjectConfiguration projectConfig =
+                ProjectConfigurationFactory.getConfiguration(project);
+            mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
+
+            mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
+        }
+        catch (CoreException | CheckstylePluginException ex) {
+            handleConfigFileError(ex, project);
+        }
     }
 
-    if (isValid) {
-      setErrorMessage(null);
-    }
-    return isValid;
-  }
+    private void handleConfigFileError(Exception error, IProject project) {
 
-  @Override
-  public boolean performOk() {
-    return CheckstylePropertyApplyOperation.apply(getShell(), mProjectConfig,
+        CheckstyleLog.log(error, Messages.errorOpeningPropertiesPage);
+        CheckstyleUIPlugin.warningDialog(null, Messages.errorOpeningPropertiesPage, error);
+
+        IProjectConfiguration projectConfig =
+            ProjectConfigurationFactory.createDefaultProjectConfiguration(project);
+        mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
+        try {
+            mCheckstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
+        }
+        catch (CoreException nested) {
+            CheckstyleUIPlugin.errorDialog(null, nested.getMessage(), nested, true);
+        }
+    }
+
+    @Override
+    public Control createContents(Composite parent) {
+        // suppress default- & apply-buttons
+        noDefaultAndApplyButton();
+
+        TabFolder tabFolder = new TabFolder(parent, SWT.TOP);
+        tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
+        tabFolder.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            mainTab.refreshFileSetEditor();
+            getContainer().updateButtons();
+        }));
+        this.mainTab = new CheckstylePropertyPageMainTab(tabFolder, SWT.NONE,
+            new PropertyPageContext((IProject) getElement(), mProjectConfig,
+                getContainer()::updateButtons),
+            mCheckstyleInitiallyActivated);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(mainTab);
+
+        // create the local configurations area
+        Control localConfigArea =
+            new LocalConfig(tabFolder, SWT.NONE, mProjectConfig.getLocalCheckConfigWorkingSet());
+
+        TabItem mainItem = new TabItem(tabFolder, SWT.NULL);
+        mainItem.setControl(mainTab);
+        mainItem.setText(Messages.CheckstylePropertyPage_tabMain);
+
+        TabItem localItem = new TabItem(tabFolder, SWT.NULL);
+        localItem.setControl(localConfigArea);
+        localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
+
+        return mainTab;
+    }
+
+    @Override
+    public boolean isValid() {
+        boolean isValid = true;
+        if (mProjectConfig != null) {
+            // check if all check configurations resolve
+            List<FileSet> fileSets = mProjectConfig.getFileSets();
+            for (FileSet fileset : fileSets) {
+                ICheckConfiguration checkConfig = fileset.getCheckConfig();
+                if (checkConfig != null) {
+                    try {
+                        checkConfig.getCheckstyleConfiguration();
+                    }
+                    catch (CheckstylePluginException ex) {
+                        setErrorMessage(NLS.bind(Messages.errorCannotResolveCheckLocation,
+                            checkConfig.getLocation(), checkConfig.getName()));
+                        isValid = false;
+                        break;
+                    }
+                }
+            }
+        }
+
+        if (isValid) {
+            setErrorMessage(null);
+        }
+        return isValid;
+    }
+
+    @Override
+    public boolean performOk() {
+        return CheckstylePropertyApplyOperation.apply(getShell(), mProjectConfig,
             mainTab.isCheckstyleEnabled(), mCheckstyleInitiallyActivated);
-  }
-
-  private static final class LocalConfig extends Composite {
-
-    private LocalConfig(Composite parent, int style, ICheckConfigurationWorkingSet workingSet) {
-      super(parent, style);
-      setLayout(new FillLayout());
-
-      Composite noteAndEditor = new Composite(this, SWT.NULL);
-      noteAndEditor.setLayout(new GridLayout(1, false));
-      noteAndEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-      Label lblHint = new Label(noteAndEditor, SWT.WRAP);
-      lblHint.setText(Messages.CheckstylePropertyPage_msgLocalConfigs);
-      GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-      gridData.widthHint = 200;
-      lblHint.setLayoutData(gridData);
-
-      Control workingSetEditor = new CheckConfigurationWorkingSetEditor(noteAndEditor, SWT.NONE,
-              workingSet);
-      workingSetEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
     }
 
-  }
+    private static final class LocalConfig extends Composite {
+
+        private LocalConfig(Composite parent, int style, ICheckConfigurationWorkingSet workingSet) {
+            super(parent, style);
+            setLayout(new FillLayout());
+
+            Composite noteAndEditor = new Composite(this, SWT.NULL);
+            noteAndEditor.setLayout(new GridLayout(1, false));
+            noteAndEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+            Label lblHint = new Label(noteAndEditor, SWT.WRAP);
+            lblHint.setText(Messages.CheckstylePropertyPage_msgLocalConfigs);
+            GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+            gridData.widthHint = 200;
+            lblHint.setLayoutData(gridData);
+
+            Control workingSetEditor =
+                new CheckConfigurationWorkingSetEditor(noteAndEditor, SWT.NONE, workingSet);
+            workingSetEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
+        }
+
+    }
 }

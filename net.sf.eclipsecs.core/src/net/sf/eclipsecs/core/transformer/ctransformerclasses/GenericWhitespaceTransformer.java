@@ -29,24 +29,25 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class GenericWhitespaceTransformer extends AbstractCTransformationClass {
-  @Override
-  public FormatterConfiguration transformRule() {
-    userFormatterSetting("insert_space_before_question_in_wildcard", "do not insert");
-    userFormatterSetting("insert_space_before_closing_angle_bracket_in_type_arguments",
+    @Override
+    public FormatterConfiguration transformRule() {
+        userFormatterSetting("insert_space_before_question_in_wildcard", "do not insert");
+        userFormatterSetting("insert_space_before_closing_angle_bracket_in_type_arguments",
             "do not insert");
-    userFormatterSetting("insert_space_after_question_in_wildcard", "do not insert");
-    userFormatterSetting("insert_space_after_opening_angle_bracket_in_type_arguments",
+        userFormatterSetting("insert_space_after_question_in_wildcard", "do not insert");
+        userFormatterSetting("insert_space_after_opening_angle_bracket_in_type_arguments",
             "do not insert");
-    userFormatterSetting(
+        userFormatterSetting(
             "insert_space_before_closing_angle_bracket_in_parameterized_type_reference",
             "do not insert");
-    userFormatterSetting("insert_space_after_opening_angle_bracket_in_type_parameters",
+        userFormatterSetting("insert_space_after_opening_angle_bracket_in_type_parameters",
             "do not insert");
-    userFormatterSetting("insert_space_before_closing_angle_bracket_in_type_parameters",
+        userFormatterSetting("insert_space_before_closing_angle_bracket_in_type_parameters",
             "do not insert");
-    userFormatterSetting("insert_space_after_opening_angle_bracket_in_parameterized_type_reference",
+        userFormatterSetting(
+            "insert_space_after_opening_angle_bracket_in_parameterized_type_reference",
             "do not insert");
-    return getFormatterSetting();
-  }
+        return getFormatterSetting();
+    }
 
 }

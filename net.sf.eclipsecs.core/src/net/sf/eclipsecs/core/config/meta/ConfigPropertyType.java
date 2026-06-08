@@ -25,45 +25,45 @@ package net.sf.eclipsecs.core.config.meta;
  */
 public enum ConfigPropertyType {
 
-  /** A String. */
-  STRING,
+    /** A String. */
+    STRING,
 
-  /** An array of strings. */
-  STRING_ARRAY,
+    /** An array of strings. */
+    STRING_ARRAY,
 
-  /** An integer. */
-  INTEGER,
+    /** An integer. */
+    INTEGER,
 
-  /** Select a single items from a list. */
-  SINGLE_SELECT,
+    /** Select a single items from a list. */
+    SINGLE_SELECT,
 
-  /** Boolean value. */
-  BOOLEAN,
+    /** Boolean value. */
+    BOOLEAN,
 
-  /** Select multiple items from a set. */
-  MULTI_CHECK,
+    /** Select multiple items from a set. */
+    MULTI_CHECK,
 
-  /** A value that is not configured. */
-  HIDDEN,
+    /** A value that is not configured. */
+    HIDDEN,
 
-  /** A value that contains a file name. */
-  FILE,
+    /** A value that contains a file name. */
+    FILE,
 
-  /** A value that contains a regular expression. */
-  REGEX;
+    /** A value that contains a regular expression. */
+    REGEX;
 
-  static ConfigPropertyType fromXmlValue(String xmlValue) {
-    return switch (xmlValue) {
-      case "String" -> STRING;
-      case "StringArray" -> STRING_ARRAY;
-      case "Integer" -> INTEGER;
-      case "SingleSelect" -> SINGLE_SELECT;
-      case "Boolean" -> BOOLEAN;
-      case "MultiCheck" -> MULTI_CHECK;
-      case "Hidden" -> HIDDEN;
-      case "File" -> FILE;
-      case "Regex" -> REGEX;
-      default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
-    };
-  }
+    static ConfigPropertyType fromXmlValue(String xmlValue) {
+        return switch (xmlValue) {
+            case "String" -> STRING;
+            case "StringArray" -> STRING_ARRAY;
+            case "Integer" -> INTEGER;
+            case "SingleSelect" -> SINGLE_SELECT;
+            case "Boolean" -> BOOLEAN;
+            case "MultiCheck" -> MULTI_CHECK;
+            case "Hidden" -> HIDDEN;
+            case "File" -> FILE;
+            case "Regex" -> REGEX;
+            default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
+        };
+    }
 }

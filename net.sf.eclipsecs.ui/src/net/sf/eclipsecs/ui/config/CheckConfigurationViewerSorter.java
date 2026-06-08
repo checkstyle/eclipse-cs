@@ -30,28 +30,28 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  */
 public final class CheckConfigurationViewerSorter extends ViewerComparator {
 
-  /** Singleton instance. */
-  public static final CheckConfigurationViewerSorter INSTANCE =
-          new CheckConfigurationViewerSorter();
+    /** Singleton instance. */
+    public static final CheckConfigurationViewerSorter INSTANCE =
+        new CheckConfigurationViewerSorter();
 
-  private CheckConfigurationViewerSorter() {
+    private CheckConfigurationViewerSorter() {
 
-  }
-
-  @Override
-  public int compare(Viewer viewer, Object e1, Object e2) {
-    int result = 0;
-
-    if (e1 instanceof ICheckConfiguration && e2 instanceof ICheckConfiguration) {
-      ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
-      ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
-
-      String string1 = cfg1.getName();
-      String string2 = cfg2.getName();
-
-      result = string1.compareToIgnoreCase(string2);
     }
 
-    return result;
-  }
+    @Override
+    public int compare(Viewer viewer, Object e1, Object e2) {
+        int result = 0;
+
+        if (e1 instanceof ICheckConfiguration && e2 instanceof ICheckConfiguration) {
+            ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
+            ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
+
+            String string1 = cfg1.getName();
+            String string2 = cfg2.getName();
+
+            result = string1.compareToIgnoreCase(string2);
+        }
+
+        return result;
+    }
 }

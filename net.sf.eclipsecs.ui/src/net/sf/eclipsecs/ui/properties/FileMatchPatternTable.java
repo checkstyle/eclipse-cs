@@ -44,116 +44,116 @@ import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternCo
 
 public final class FileMatchPatternTable extends Composite {
 
-  /** The checkbox table viewer for patterns. */
-  private final CheckboxTableViewer mPatternViewer;
+    /** The checkbox table viewer for patterns. */
+    private final CheckboxTableViewer mPatternViewer;
 
-  public FileMatchPatternTable(Composite parent, int style,
-          FileMatchPatternControlCallbacks callbacks) {
-    super(parent, style);
-    GridLayoutFactory.fillDefaults().applyTo(this);
+    public FileMatchPatternTable(Composite parent, int style,
+        FileMatchPatternControlCallbacks callbacks) {
+        super(parent, style);
+        GridLayoutFactory.fillDefaults().applyTo(this);
 
-    Table table = createTable(this);
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
+        Table table = createTable(this);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
-    this.mPatternViewer = new CheckboxTableViewer(table);
+        this.mPatternViewer = new CheckboxTableViewer(table);
 
-    mPatternViewer.setLabelProvider(new FileMatchPatternLabelProvider());
-    mPatternViewer.setContentProvider(ArrayContentProvider.getInstance());
-    mPatternViewer.addDoubleClickListener(event -> {
-      FileMatchPattern pattern = (FileMatchPattern) ((IStructuredSelection) event.getSelection())
-              .getFirstElement();
-      callbacks.editFileMatchPattern().accept(pattern);
-      callbacks.updateMatchView().run();
-    });
-    mPatternViewer.addCheckStateListener(event -> {
-      if (event.getElement() instanceof FileMatchPattern pattern) {
-        pattern.setIsIncludePattern(event.getChecked());
+        mPatternViewer.setLabelProvider(new FileMatchPatternLabelProvider());
+        mPatternViewer.setContentProvider(ArrayContentProvider.getInstance());
+        mPatternViewer.addDoubleClickListener(event -> {
+            FileMatchPattern pattern =
+                (FileMatchPattern) ((IStructuredSelection) event.getSelection()).getFirstElement();
+            callbacks.editFileMatchPattern().accept(pattern);
+            callbacks.updateMatchView().run();
+        });
+        mPatternViewer.addCheckStateListener(event -> {
+            if (event.getElement() instanceof FileMatchPattern pattern) {
+                pattern.setIsIncludePattern(event.getChecked());
+                mPatternViewer.refresh();
+                callbacks.updateMatchView().run();
+            }
+        });
+        mPatternViewer.setCheckStateProvider(FileMatchPatternTableCheckStateProvider.INSTANCE);
+    }
+
+    public FileMatchPattern getSelectedPattern() {
+        return (FileMatchPattern) mPatternViewer.getStructuredSelection().getFirstElement();
+    }
+
+    public void refresh() {
         mPatternViewer.refresh();
-        callbacks.updateMatchView().run();
-      }
-    });
-    mPatternViewer.setCheckStateProvider(FileMatchPatternTableCheckStateProvider.INSTANCE);
-  }
-
-  public FileMatchPattern getSelectedPattern() {
-    return (FileMatchPattern) mPatternViewer.getStructuredSelection().getFirstElement();
-  }
-
-  public void refresh() {
-    mPatternViewer.refresh();
-  }
-
-  public void setInput(List<FileMatchPattern> fileMatchPatterns) {
-    mPatternViewer.setInput(fileMatchPatterns);
-  }
-
-  private static Table createTable(Composite parent) {
-    Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
-    table.setHeaderVisible(true);
-    table.setLinesVisible(true);
-
-    TableLayout tableLayout = new TableLayout();
-    table.setLayout(tableLayout);
-
-    TableColumn column1 = new TableColumn(table, SWT.NONE);
-    column1.setText(Messages.FileSetEditDialog_colInclude);
-    tableLayout.addColumnData(new ColumnWeightData(11));
-
-    TableColumn column2 = new TableColumn(table, SWT.NONE);
-    column2.setText(Messages.FileSetEditDialog_colRegex);
-    tableLayout.addColumnData(new ColumnWeightData(89));
-
-    return table;
-  }
-
-  /**
-   * Provides the labels for the FileSet list display.
-   */
-  private static final class FileMatchPatternLabelProvider extends LabelProvider
-          implements ITableLabelProvider {
-
-    @Override
-    public String getColumnText(Object element, int columnIndex) {
-      String columnText;
-      if (element instanceof FileMatchPattern pattern) {
-        columnText = switch (columnIndex) {
-          case 0 -> new String();
-          case 1 -> pattern.getMatchPattern();
-          default -> element.toString();
-        };
-      } else {
-        columnText = element.toString();
-      }
-      return columnText;
     }
 
-    @Override
-    public Image getColumnImage(Object element, int columnIndex) {
-      return null;
+    public void setInput(List<FileMatchPattern> fileMatchPatterns) {
+        mPatternViewer.setInput(fileMatchPatterns);
     }
-  }
 
-  private static final class FileMatchPatternTableCheckStateProvider
-          implements ICheckStateProvider {
+    private static Table createTable(Composite parent) {
+        Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
 
-    /** The singleton instance. */
-    private static final FileMatchPatternTableCheckStateProvider INSTANCE =
+        TableLayout tableLayout = new TableLayout();
+        table.setLayout(tableLayout);
+
+        TableColumn column1 = new TableColumn(table, SWT.NONE);
+        column1.setText(Messages.FileSetEditDialog_colInclude);
+        tableLayout.addColumnData(new ColumnWeightData(11));
+
+        TableColumn column2 = new TableColumn(table, SWT.NONE);
+        column2.setText(Messages.FileSetEditDialog_colRegex);
+        tableLayout.addColumnData(new ColumnWeightData(89));
+
+        return table;
+    }
+
+    /**
+     * Provides the labels for the FileSet list display.
+     */
+    private static final class FileMatchPatternLabelProvider extends LabelProvider
+        implements ITableLabelProvider {
+
+        @Override
+        public String getColumnText(Object element, int columnIndex) {
+            String columnText;
+            if (element instanceof FileMatchPattern pattern) {
+                columnText = switch (columnIndex) {
+                    case 0 -> new String();
+                    case 1 -> pattern.getMatchPattern();
+                    default -> element.toString();
+                };
+            } else {
+                columnText = element.toString();
+            }
+            return columnText;
+        }
+
+        @Override
+        public Image getColumnImage(Object element, int columnIndex) {
+            return null;
+        }
+    }
+
+    private static final class FileMatchPatternTableCheckStateProvider
+        implements ICheckStateProvider {
+
+        /** The singleton instance. */
+        private static final FileMatchPatternTableCheckStateProvider INSTANCE =
             new FileMatchPatternTableCheckStateProvider();
 
-    private FileMatchPatternTableCheckStateProvider() {
+        private FileMatchPatternTableCheckStateProvider() {
+
+        }
+
+        @Override
+        public boolean isChecked(Object element) {
+            return ((FileMatchPattern) element).isIncludePattern();
+        }
+
+        @Override
+        public boolean isGrayed(Object element) {
+            return false;
+        }
 
     }
-
-    @Override
-    public boolean isChecked(Object element) {
-      return ((FileMatchPattern) element).isIncludePattern();
-    }
-
-    @Override
-    public boolean isGrayed(Object element) {
-      return false;
-    }
-
-  }
 
 }

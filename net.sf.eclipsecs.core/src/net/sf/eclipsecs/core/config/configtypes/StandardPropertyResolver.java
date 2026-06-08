@@ -31,60 +31,63 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class StandardPropertyResolver implements PropertyResolver, IContextAware {
 
-  /** constant for the workspace_loc variable. */
-  private static final String WORKSPACE_LOC = "workspace_loc"; //$NON-NLS-1$
+    /** constant for the workspace_loc variable. */
+    private static final String WORKSPACE_LOC = "workspace_loc"; //$NON-NLS-1$
 
-  /** constant for the project_loc variable. */
-  private static final String PROJECT_LOC = "project_loc"; //$NON-NLS-1$
+    /** constant for the project_loc variable. */
+    private static final String PROJECT_LOC = "project_loc"; //$NON-NLS-1$
 
-  /** constant for the basedir variable. */
-  private static final String BASEDIR_LOC = "basedir"; //$NON-NLS-1$
+    /** constant for the basedir variable. */
+    private static final String BASEDIR_LOC = "basedir"; //$NON-NLS-1$
 
-  /** constant for the samedir variable. */
-  private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
+    /** constant for the samedir variable. */
+    private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
 
-  /** constant for the config_loc variable. */
-  private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
+    /** constant for the config_loc variable. */
+    private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
 
-  /** the location of the configuration file. */
-  private final String mConfigLocation;
+    /** the location of the configuration file. */
+    private final String mConfigLocation;
 
-  /** the context project. */
-  private IProject mProject;
+    /** the context project. */
+    private IProject mProject;
 
-  /**
-   * Creates the BuiltInPropertyResolver.
-   *
-   * @param configLocation
-   *          the location of the checkstyle configuration file
-   */
-  public StandardPropertyResolver(String configLocation) {
-    mConfigLocation = configLocation;
-  }
-
-  @Override
-  public void setProjectContext(IProject project) {
-    mProject = project;
-  }
-
-  @Override
-  public String resolve(String property) {
-
-    String value = null;
-    if (WORKSPACE_LOC.equals(property)) {
-      value = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
-    } else if (mProject != null && (PROJECT_LOC.equals(property) || BASEDIR_LOC.equals(property))) {
-      value = mProject.getLocation().toString();
-    } else if (mConfigLocation != null
-            && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
-      String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
-
-      int lastSlash = configLocWOBackslashes.lastIndexOf("/"); //$NON-NLS-1$
-      if (lastSlash > -1) {
-        value = configLocWOBackslashes.substring(0, lastSlash + 1);
-      }
+    /**
+     * Creates the BuiltInPropertyResolver.
+     *
+     * @param configLocation
+     *            the location of the checkstyle configuration file
+     */
+    public StandardPropertyResolver(String configLocation) {
+        mConfigLocation = configLocation;
     }
 
-    return value;
-  }
+    @Override
+    public void setProjectContext(IProject project) {
+        mProject = project;
+    }
+
+    @Override
+    public String resolve(String property) {
+
+        String value = null;
+        if (WORKSPACE_LOC.equals(property)) {
+            value = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
+        }
+        else if (mProject != null
+            && (PROJECT_LOC.equals(property) || BASEDIR_LOC.equals(property))) {
+            value = mProject.getLocation().toString();
+        }
+        else if (mConfigLocation != null
+            && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
+            String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
+
+            int lastSlash = configLocWOBackslashes.lastIndexOf("/"); //$NON-NLS-1$
+            if (lastSlash > -1) {
+                value = configLocWOBackslashes.substring(0, lastSlash + 1);
+            }
+        }
+
+        return value;
+    }
 }

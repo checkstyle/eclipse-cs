@@ -48,133 +48,134 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
 /**
- * Implementation of a location editor to input a remote location. Contains just
- * a text field to input the URL.
+ * Implementation of a location editor to input a remote location. Contains just a text field to
+ * input the URL.
  *
  */
 public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
-  //
-  // attributes
-  //
+    //
+    // attributes
+    //
 
-  /** The properties dialog. */
-  private CheckConfigurationPropertiesDialog mDialog;
+    /** The properties dialog. */
+    private CheckConfigurationPropertiesDialog mDialog;
 
-  /** the working copy this editor edits. */
-  private CheckConfigurationWorkingCopy mWorkingCopy;
+    /** the working copy this editor edits. */
+    private CheckConfigurationWorkingCopy mWorkingCopy;
 
-  /** The editor view. */
-  private InternalConfigurationEditorView editorView;
+    /** The editor view. */
+    private InternalConfigurationEditorView editorView;
 
-  //
-  // methods
-  //
+    //
+    // methods
+    //
 
-  @Override
-  public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-          CheckConfigurationPropertiesDialog dialog) {
-    mWorkingCopy = checkConfiguration;
-    mDialog = dialog;
-  }
-
-  @Override
-  public Control createEditorControl(Composite parent, final Shell shell) {
-    this.editorView = new InternalConfigurationEditorView(parent, SWT.NULL,
-            () -> importConfig(shell));
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(this.editorView);
-
-    if (mWorkingCopy.getName() != null) {
-      editorView.setConfigName(mWorkingCopy.getName());
-    }
-    if (mWorkingCopy.getLocation() != null) {
-      editorView.setConfigLocation(mWorkingCopy.getLocation());
-    }
-    if (mWorkingCopy.getDescription() != null) {
-      editorView.setDescription(mWorkingCopy.getDescription());
+    @Override
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+        CheckConfigurationPropertiesDialog dialog) {
+        mWorkingCopy = checkConfiguration;
+        mDialog = dialog;
     }
 
-    return editorView;
-  }
+    @Override
+    public Control createEditorControl(Composite parent, final Shell shell) {
+        this.editorView =
+            new InternalConfigurationEditorView(parent, SWT.NULL, () -> importConfig(shell));
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(this.editorView);
 
-  private void importConfig(Shell shell) {
-    promptImportConfigFile(shell).ifPresent(configFileString -> {
-      ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
-              configFileString, null, new ExternalFileConfigurationType(), true, null,
-              null);
-      try {
-        tmpSourceConfig.copyConfiguration(getEditedWorkingCopy());
-      } catch (CheckstylePluginException ex) {
-        mDialog.setErrorMessage(ex.getLocalizedMessage());
-      }
-    });
-  }
-
-  private static Optional<String> promptImportConfigFile(Shell shell) {
-    FileDialog fileDialog = new FileDialog(shell);
-    fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
-    fileDialog.setFilterExtensions(new String[] {
-        "*.xml",
-        "*.*",
-    });
-    Optional<String> configFile = Optional.empty();
-    String configFileString = fileDialog.open();
-    if (configFileString != null && new File(configFileString).exists()) {
-      configFile = Optional.of(configFileString);
-    }
-    return configFile;
-  }
-
-  @Override
-  public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-    mWorkingCopy.setName(editorView.getConfigName());
-
-    if (mWorkingCopy.getLocation() == null) {
-
-      String location = "internal_config_" + System.currentTimeMillis() + ".xml";
-      try {
-        mWorkingCopy.setLocation(location);
-      } catch (CheckstylePluginException ex) {
-        if (StringUtils.isNotBlank(location) && ensureFileExists(location)) {
-          mWorkingCopy.setLocation(location);
-        } else {
-          throw ex;
+        if (mWorkingCopy.getName() != null) {
+            editorView.setConfigName(mWorkingCopy.getName());
         }
-      }
-    }
-    mWorkingCopy.setDescription(editorView.getDescription());
-
-    return mWorkingCopy;
-  }
-
-  /**
-   * Helper method trying to ensure that the file location provided by the user
-   * exists. If that is not the case it prompts the user if an empty
-   * configuration file should be created.
-   *
-   * @param location
-   *          the configuration file location
-   * @return whether the file exists or was created
-   * @throws CheckstylePluginException
-   *           error when trying to ensure the location file existance
-   */
-  private boolean ensureFileExists(String location) throws CheckstylePluginException {
-    Path resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
-
-    if (!Files.exists(resolvedLocation)) {
-      if (resolvedLocation.getParent() != null) {
-        try {
-          Files.createDirectories(resolvedLocation.getParent());
-          try (OutputStream out = new BufferedOutputStream(
-                  Files.newOutputStream(resolvedLocation))) {
-            ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
-          }
-        } catch (IOException ex) {
-          CheckstylePluginException.rethrow(ex);
+        if (mWorkingCopy.getLocation() != null) {
+            editorView.setConfigLocation(mWorkingCopy.getLocation());
         }
-      }
+        if (mWorkingCopy.getDescription() != null) {
+            editorView.setDescription(mWorkingCopy.getDescription());
+        }
+
+        return editorView;
     }
 
-    return true;
-  }
+    private void importConfig(Shell shell) {
+        promptImportConfigFile(shell).ifPresent(configFileString -> {
+            ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", configFileString,
+                null, new ExternalFileConfigurationType(), true, null, null);
+            try {
+                tmpSourceConfig.copyConfiguration(getEditedWorkingCopy());
+            }
+            catch (CheckstylePluginException ex) {
+                mDialog.setErrorMessage(ex.getLocalizedMessage());
+            }
+        });
+    }
+
+    private static Optional<String> promptImportConfigFile(Shell shell) {
+        FileDialog fileDialog = new FileDialog(shell);
+        fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
+        fileDialog.setFilterExtensions(new String[] {
+            "*.xml", "*.*",
+        });
+        Optional<String> configFile = Optional.empty();
+        String configFileString = fileDialog.open();
+        if (configFileString != null && new File(configFileString).exists()) {
+            configFile = Optional.of(configFileString);
+        }
+        return configFile;
+    }
+
+    @Override
+    public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
+        mWorkingCopy.setName(editorView.getConfigName());
+
+        if (mWorkingCopy.getLocation() == null) {
+
+            String location = "internal_config_" + System.currentTimeMillis() + ".xml";
+            try {
+                mWorkingCopy.setLocation(location);
+            }
+            catch (CheckstylePluginException ex) {
+                if (StringUtils.isNotBlank(location) && ensureFileExists(location)) {
+                    mWorkingCopy.setLocation(location);
+                }
+                else {
+                    throw ex;
+                }
+            }
+        }
+        mWorkingCopy.setDescription(editorView.getDescription());
+
+        return mWorkingCopy;
+    }
+
+    /**
+     * Helper method trying to ensure that the file location provided by the user exists. If that is
+     * not the case it prompts the user if an empty configuration file should be created.
+     *
+     * @param location
+     *            the configuration file location
+     * @return whether the file exists or was created
+     * @throws CheckstylePluginException
+     *             error when trying to ensure the location file existance
+     */
+    private boolean ensureFileExists(String location) throws CheckstylePluginException {
+        Path resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
+
+        if (!Files.exists(resolvedLocation)) {
+            if (resolvedLocation.getParent() != null) {
+                try {
+                    Files.createDirectories(resolvedLocation.getParent());
+                    try (OutputStream out =
+                        new BufferedOutputStream(Files.newOutputStream(resolvedLocation))) {
+                        ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+                    }
+                }
+                catch (IOException ex) {
+                    CheckstylePluginException.rethrow(ex);
+                }
+            }
+        }
+
+        return true;
+    }
 }

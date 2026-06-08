@@ -36,86 +36,88 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
 /**
- * Implementation of a location editor with only a not editable text field. This
- * is used to just show the location.
+ * Implementation of a location editor with only a not editable text field. This is used to just
+ * show the location.
  *
  */
 public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
 
-  //
-  // attributes
-  //
+    //
+    // attributes
+    //
 
-  /** the working copy this editor edits. */
-  private CheckConfigurationWorkingCopy mWorkingCopy;
+    /** the working copy this editor edits. */
+    private CheckConfigurationWorkingCopy mWorkingCopy;
 
-  /** the text field containing the config name. */
-  private Text mConfigName;
+    /** the text field containing the config name. */
+    private Text mConfigName;
 
-  /** text field containing the location. */
-  private Text mLocation;
+    /** text field containing the location. */
+    private Text mLocation;
 
-  /** the text containing the description. */
-  private Text mDescription;
+    /** the text containing the description. */
+    private Text mDescription;
 
-  //
-  // methods
-  //
+    //
+    // methods
+    //
 
-  @Override
-  public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-          CheckConfigurationPropertiesDialog dialog) {
-    mWorkingCopy = checkConfiguration;
-  }
+    @Override
+    public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
+        CheckConfigurationPropertiesDialog dialog) {
+        mWorkingCopy = checkConfiguration;
+    }
 
-  @Override
-  public Control createEditorControl(Composite parent, final Shell shell) {
-    Composite contents = new Composite(parent, SWT.NULL);
-    contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
+    @Override
+    public Control createEditorControl(Composite parent, final Shell shell) {
+        Composite contents = new Composite(parent, SWT.NULL);
+        contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
 
-    Label lblConfigName = new Label(contents, SWT.NULL);
-    lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    lblConfigName.setLayoutData(new GridData());
+        Label lblConfigName = new Label(contents, SWT.NULL);
+        lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
+        lblConfigName.setLayoutData(new GridData());
 
-    mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mConfigName.setEditable(false);
-    mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mConfigName.setFocus();
+        mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        mConfigName.setEditable(false);
+        mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        mConfigName.setFocus();
 
-    Label lblConfigLocation = new Label(contents, SWT.NULL);
-    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblConfigLocation);
+        Label lblConfigLocation = new Label(contents, SWT.NULL);
+        lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
+            .applyTo(lblConfigLocation);
 
-    mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-    mLocation.setEditable(false);
+        mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        mLocation.setEditable(false);
 
-    Label lblDescription = new Label(contents, SWT.NULL);
-    lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
+        Label lblDescription = new Label(contents, SWT.NULL);
+        lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
+        GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
-    mDescription = new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    mDescription.setEditable(false);
-    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
+        mDescription =
+            new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
+        mDescription.setEditable(false);
+        GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
             .applyTo(mDescription);
 
-    if (mWorkingCopy.getName() != null) {
-      mConfigName.setText(mWorkingCopy.getName());
-    }
-    if (mWorkingCopy.getLocation() != null) {
-      mLocation.setText(mWorkingCopy.getLocation());
-    }
-    if (mWorkingCopy.getDescription() != null) {
-      mDescription.setText(mWorkingCopy.getDescription());
+        if (mWorkingCopy.getName() != null) {
+            mConfigName.setText(mWorkingCopy.getName());
+        }
+        if (mWorkingCopy.getLocation() != null) {
+            mLocation.setText(mWorkingCopy.getLocation());
+        }
+        if (mWorkingCopy.getDescription() != null) {
+            mDescription.setText(mWorkingCopy.getDescription());
+        }
+
+        return contents;
     }
 
-    return contents;
-  }
-
-  @Override
-  public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-    return mWorkingCopy;
-  }
+    @Override
+    public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
+        return mWorkingCopy;
+    }
 
 }

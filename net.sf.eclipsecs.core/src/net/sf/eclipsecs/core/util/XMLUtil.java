@@ -37,66 +37,67 @@ import org.xml.sax.SAXException;
  */
 public final class XMLUtil {
 
-  /**
-   * Private constructor to prevent instances.
-   */
-  private XMLUtil() {
-  }
-
-  /**
-   * Creates a pretty printed representation of the document as a byte array.
-   *
-   * @param document
-   *          the document
-   * @return the document as a byte array (UTF-8)
-   * @throws IOException
-   *           Exception while serializing the document
-   */
-  public static byte[] toByteArray(Document document) throws IOException {
-
-    ByteArrayOutputStream byteOut = new ByteArrayOutputStream(512);
-
-    // Pretty print the document to System.out
-    OutputFormat format = OutputFormat.createPrettyPrint();
-    XMLWriter writer = new XMLWriter(byteOut, format);
-    writer.write(document);
-
-    return byteOut.toByteArray();
-  }
-
-  /**
-   * Entity resolver which handles mapping public DTDs to internal DTD resource.
-   *
-   */
-  public static class InternalDtdEntityResolver implements EntityResolver {
-
-    /** The public-to-internal DTD mapping. */
-    private final Map<String, String> mPublic2InternalDtdMap;
+    /**
+     * Private constructor to prevent instances.
+     */
+    private XMLUtil() {
+    }
 
     /**
-     * Creates the entity resolver using a mapping of public DTD name to internal DTD resource.
+     * Creates a pretty printed representation of the document as a byte array.
      *
-     * @param public2InternalDtdMap
-     *          the public2internal DTD mapping
+     * @param document
+     *            the document
+     * @return the document as a byte array (UTF-8)
+     * @throws IOException
+     *             Exception while serializing the document
      */
-    public InternalDtdEntityResolver(Map<String, String> public2InternalDtdMap) {
-      mPublic2InternalDtdMap = public2InternalDtdMap;
+    public static byte[] toByteArray(Document document) throws IOException {
+
+        ByteArrayOutputStream byteOut = new ByteArrayOutputStream(512);
+
+        // Pretty print the document to System.out
+        OutputFormat format = OutputFormat.createPrettyPrint();
+        XMLWriter writer = new XMLWriter(byteOut, format);
+        writer.write(document);
+
+        return byteOut.toByteArray();
     }
 
-    @Override
-    public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
-      InputSource inputSource = null;
-      if (mPublic2InternalDtdMap.containsKey(publicId)) {
-        final String dtdResourceName = mPublic2InternalDtdMap.get(publicId);
+    /**
+     * Entity resolver which handles mapping public DTDs to internal DTD resource.
+     *
+     */
+    public static class InternalDtdEntityResolver implements EntityResolver {
 
-        final InputStream dtdIS = getClass().getClassLoader().getResourceAsStream(dtdResourceName);
-        if (dtdIS == null) {
-          // -@cs[IllegalInstantiation] SAXException is in the overridden method signature
-          throw new SAXException("Unable to load internal dtd " + dtdResourceName); //$NON-NLS-1$
+        /** The public-to-internal DTD mapping. */
+        private final Map<String, String> mPublic2InternalDtdMap;
+
+        /**
+         * Creates the entity resolver using a mapping of public DTD name to internal DTD resource.
+         *
+         * @param public2InternalDtdMap
+         *            the public2internal DTD mapping
+         */
+        public InternalDtdEntityResolver(Map<String, String> public2InternalDtdMap) {
+            mPublic2InternalDtdMap = public2InternalDtdMap;
         }
-        inputSource = new InputSource(dtdIS);
-      }
-      return inputSource;
+
+        @Override
+        public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
+            InputSource inputSource = null;
+            if (mPublic2InternalDtdMap.containsKey(publicId)) {
+                final String dtdResourceName = mPublic2InternalDtdMap.get(publicId);
+
+                final InputStream dtdIS =
+                    getClass().getClassLoader().getResourceAsStream(dtdResourceName);
+                if (dtdIS == null) {
+                    // -@cs[IllegalInstantiation] SAXException is in the overridden method signature
+                    throw new SAXException("Unable to load internal dtd " + dtdResourceName);
+                }
+                inputSource = new InputSource(dtdIS);
+            }
+            return inputSource;
+        }
     }
-  }
 }

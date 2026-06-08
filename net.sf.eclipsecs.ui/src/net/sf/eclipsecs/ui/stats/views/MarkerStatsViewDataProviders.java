@@ -43,273 +43,280 @@ import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders master,
-        MarkerStatsViewDetailDataProviders detail) {
+    MarkerStatsViewDetailDataProviders detail) {
 
-  /** Section tag for master view settings. */
-  private static final String TAG_SECTION_MASTER = "masterView";
-  /** Section tag for detail view settings. */
-  private static final String TAG_SECTION_DETAIL = "detailView";
+    /** Section tag for master view settings. */
+    private static final String TAG_SECTION_MASTER = "masterView";
+    /** Section tag for detail view settings. */
+    private static final String TAG_SECTION_DETAIL = "detailView";
 
-  public MarkerStatsViewDataProviders(IDialogSettings dialogSettings) {
-    this(new MarkerStatsViewMasterDataProviders(dialogSettings),
+    public MarkerStatsViewDataProviders(IDialogSettings dialogSettings) {
+        this(new MarkerStatsViewMasterDataProviders(dialogSettings),
             new MarkerStatsViewDetailDataProviders(dialogSettings));
-  }
-
-  public record MarkerStatsViewMasterDataProviders(MasterContentProvider contentProvider,
-          MasterViewMultiProvider multiProvider) {
-
-    public MarkerStatsViewMasterDataProviders(IDialogSettings dialogSettings) {
-      this(new MasterContentProvider(), new MasterViewMultiProvider(dialogSettings));
-    }
-  }
-
-  public record MarkerStatsViewDetailDataProviders(DetailContentProvider contentProvider,
-          DetailViewMultiProvider multiProvider) {
-
-    public MarkerStatsViewDetailDataProviders(IDialogSettings dialogSettings) {
-      this(new DetailContentProvider(), new DetailViewMultiProvider(dialogSettings));
-    }
-  }
-
-  /**
-   * Content provider for the master table viewer.
-   *
-   * @author Lars Ködderitzsch
-   */
-  public static final class MasterContentProvider implements IStructuredContentProvider {
-    /** The current marker stats. */
-    private Object[] mCurrentMarkerStats;
-
-    private MasterContentProvider() {
-
     }
 
-    @Override
-    public Object[] getElements(Object inputElement) {
-      if (mCurrentMarkerStats == null) {
-        // find the marker statistics for the current category
-        Stats currentStats = (Stats) inputElement;
-        mCurrentMarkerStats = currentStats.getMarkerStats().toArray();
-      }
+    public record MarkerStatsViewMasterDataProviders(MasterContentProvider contentProvider,
+        MasterViewMultiProvider multiProvider) {
 
-      return mCurrentMarkerStats;
-    }
-
-    @Override
-    public void dispose() {
-      mCurrentMarkerStats = null;
-    }
-
-    @Override
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-      mCurrentMarkerStats = null;
-    }
-  }
-
-  /**
-   * Content provider for the detail table viewer.
-   *
-   * @author Lars Ködderitzsch
-   */
-  public static final class DetailContentProvider implements IStructuredContentProvider {
-
-    /** The current detail markers. */
-    private Object[] mCurrentDetails;
-    /** The current detail category. */
-    private String currentDetailCategory;
-
-    private DetailContentProvider() {
-
-    }
-
-    @Override
-    public Object[] getElements(Object inputElement) {
-      if (mCurrentDetails == null) {
-        // find the marker statistics for the current category
-        Stats currentStats = (Stats) inputElement;
-        Collection<MarkerStat> markerStats = currentStats.getMarkerStats();
-        Iterator<MarkerStat> iter = markerStats.iterator();
-        while (iter.hasNext()) {
-          MarkerStat markerStat = iter.next();
-          if (markerStat.getIdentifiant().equals(currentDetailCategory)) {
-            mCurrentDetails = markerStat.getMarkers().toArray();
-            break;
-          }
+        public MarkerStatsViewMasterDataProviders(IDialogSettings dialogSettings) {
+            this(new MasterContentProvider(), new MasterViewMultiProvider(dialogSettings));
         }
-      }
-
-      return mCurrentDetails != null ? mCurrentDetails : new Object[0];
     }
 
-    @Override
-    public void dispose() {
-      mCurrentDetails = null;
-    }
+    public record MarkerStatsViewDetailDataProviders(DetailContentProvider contentProvider,
+        DetailViewMultiProvider multiProvider) {
 
-    @Override
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-      mCurrentDetails = null;
-    }
-
-    public int getMarkerCount() {
-      return mCurrentDetails != null ? mCurrentDetails.length : 0;
-    }
-
-    public String getCurrentDetailCategory() {
-      return currentDetailCategory;
-    }
-
-    public void setCurrentDetailCategory(String currentDetailCategory) {
-      this.currentDetailCategory = currentDetailCategory;
-      this.mCurrentDetails = null;
-    }
-
-  }
-
-  /**
-   * Label provider for the master table viewer.
-   *
-   * @author Lars Ködderitzsch
-   */
-  public static final class MasterViewMultiProvider extends LabelProvider
-          implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
-
-    /** The dialog settings. */
-    private final IDialogSettings mainSettings;
-
-    private MasterViewMultiProvider(IDialogSettings mainSettings) {
-      this.mainSettings = mainSettings;
-    }
-
-    @Override
-    public String getColumnText(Object obj, int index) {
-      MarkerStat stat = (MarkerStat) obj;
-      return switch (index) {
-        case 1 -> stat.getIdentifiant();
-        case 2 -> Integer.toString(stat.getCount());
-        default -> "";
-      };
-    }
-
-    @Override
-    public Image getColumnImage(Object obj, int index) {
-      Image image = null;
-      MarkerStat stat = (MarkerStat) obj;
-
-      if (index == 0) {
-        int severity = stat.getMaxSeverity();
-        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-
-        if (IMarker.SEVERITY_ERROR == severity) {
-          image = sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
-        } else if (IMarker.SEVERITY_WARNING == severity) {
-          image = sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
-        } else if (IMarker.SEVERITY_INFO == severity) {
-          image = sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+        public MarkerStatsViewDetailDataProviders(IDialogSettings dialogSettings) {
+            this(new DetailContentProvider(), new DetailViewMultiProvider(dialogSettings));
         }
-      }
-      return image;
     }
 
-    @Override
-    public Comparable<?> getComparableValue(Object element, int colIndex) {
-      MarkerStat stat = (MarkerStat) element;
-      return switch (colIndex) {
-        case 0 -> Integer.valueOf(stat.getMaxSeverity() * -1);
-        case 1 -> stat.getIdentifiant();
-        case 2 -> Integer.valueOf(stat.getCount());
-        default -> "";
-      };
-    }
+    /**
+     * Content provider for the master table viewer.
+     *
+     * @author Lars Ködderitzsch
+     */
+    public static final class MasterContentProvider implements IStructuredContentProvider {
+        /** The current marker stats. */
+        private Object[] mCurrentMarkerStats;
 
-    @Override
-    public IDialogSettings getTableSettings() {
-      IDialogSettings settings = mainSettings.getSection(TAG_SECTION_MASTER);
-      if (settings == null) {
-        settings = mainSettings.addNewSection(TAG_SECTION_MASTER);
-      }
-      return settings;
-    }
-  }
+        private MasterContentProvider() {
 
-  /**
-   * Label provider for the detail table viewer.
-   *
-   * @author Lars Ködderitzsch
-   */
-  public static final class DetailViewMultiProvider extends LabelProvider
-          implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
-
-    /** The dialog settings. */
-    private final IDialogSettings mainSettings;
-
-    private DetailViewMultiProvider(IDialogSettings mainSettings) {
-      this.mainSettings = mainSettings;
-    }
-
-    @Override
-    public String getColumnText(Object obj, int index) {
-      String columnText;
-      IMarker marker = (IMarker) obj;
-      try {
-        columnText = switch (index) {
-          case 1 -> marker.getResource().getName();
-          case 2 -> marker.getResource().getParent().getFullPath().toString();
-          case 3 -> Objects.toString(marker.getAttribute(IMarker.LINE_NUMBER), "");
-          case 4 -> Objects.toString(marker.getAttribute(IMarker.MESSAGE), "");
-          default -> "";
-        };
-      } catch (Exception ex) {
-        // Can't do anything: let's put a default value
-        CheckstyleLog.log(ex);
-        columnText = Messages.MarkerStatsView_unknownProblem;
-      }
-      return columnText;
-    }
-
-    @Override
-    public Image getColumnImage(Object obj, int index) {
-      Image image = null;
-      IMarker marker = (IMarker) obj;
-
-      if (index == 0) {
-        int severity = MarkerUtilities.getSeverity(marker);
-        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
-
-        if (IMarker.SEVERITY_ERROR == severity) {
-          image = sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
-        } else if (IMarker.SEVERITY_WARNING == severity) {
-          image = sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
-        } else if (IMarker.SEVERITY_INFO == severity) {
-          image = sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
         }
-      }
-      return image;
+
+        @Override
+        public Object[] getElements(Object inputElement) {
+            if (mCurrentMarkerStats == null) {
+                // find the marker statistics for the current category
+                Stats currentStats = (Stats) inputElement;
+                mCurrentMarkerStats = currentStats.getMarkerStats().toArray();
+            }
+
+            return mCurrentMarkerStats;
+        }
+
+        @Override
+        public void dispose() {
+            mCurrentMarkerStats = null;
+        }
+
+        @Override
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+            mCurrentMarkerStats = null;
+        }
     }
 
-    @Override
-    public Comparable<?> getComparableValue(Object element, int colIndex) {
-      IMarker marker = (IMarker) element;
-      return switch (colIndex) {
-        case 0 -> Integer.valueOf(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
-        case 1 -> marker.getResource().getName();
-        case 2 -> marker.getResource().getParent().getFullPath().toString();
-        case 3 -> Integer.valueOf(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
-        case 4 -> marker.getAttribute(IMarker.MESSAGE, "");
-        default -> "";
-      };
+    /**
+     * Content provider for the detail table viewer.
+     *
+     * @author Lars Ködderitzsch
+     */
+    public static final class DetailContentProvider implements IStructuredContentProvider {
+
+        /** The current detail markers. */
+        private Object[] mCurrentDetails;
+        /** The current detail category. */
+        private String currentDetailCategory;
+
+        private DetailContentProvider() {
+
+        }
+
+        @Override
+        public Object[] getElements(Object inputElement) {
+            if (mCurrentDetails == null) {
+                // find the marker statistics for the current category
+                Stats currentStats = (Stats) inputElement;
+                Collection<MarkerStat> markerStats = currentStats.getMarkerStats();
+                Iterator<MarkerStat> iter = markerStats.iterator();
+                while (iter.hasNext()) {
+                    MarkerStat markerStat = iter.next();
+                    if (markerStat.getIdentifiant().equals(currentDetailCategory)) {
+                        mCurrentDetails = markerStat.getMarkers().toArray();
+                        break;
+                    }
+                }
+            }
+
+            return mCurrentDetails != null ? mCurrentDetails : new Object[0];
+        }
+
+        @Override
+        public void dispose() {
+            mCurrentDetails = null;
+        }
+
+        @Override
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+            mCurrentDetails = null;
+        }
+
+        public int getMarkerCount() {
+            return mCurrentDetails != null ? mCurrentDetails.length : 0;
+        }
+
+        public String getCurrentDetailCategory() {
+            return currentDetailCategory;
+        }
+
+        public void setCurrentDetailCategory(String currentDetailCategory) {
+            this.currentDetailCategory = currentDetailCategory;
+            this.mCurrentDetails = null;
+        }
+
     }
 
-    @Override
-    public IDialogSettings getTableSettings() {
-      IDialogSettings settings = mainSettings.getSection(TAG_SECTION_DETAIL);
+    /**
+     * Label provider for the master table viewer.
+     *
+     * @author Lars Ködderitzsch
+     */
+    public static final class MasterViewMultiProvider extends LabelProvider
+        implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
-      if (settings == null) {
-        settings = mainSettings.addNewSection(TAG_SECTION_DETAIL);
-      }
+        /** The dialog settings. */
+        private final IDialogSettings mainSettings;
 
-      return settings;
+        private MasterViewMultiProvider(IDialogSettings mainSettings) {
+            this.mainSettings = mainSettings;
+        }
+
+        @Override
+        public String getColumnText(Object obj, int index) {
+            MarkerStat stat = (MarkerStat) obj;
+            return switch (index) {
+                case 1 -> stat.getIdentifiant();
+                case 2 -> Integer.toString(stat.getCount());
+                default -> "";
+            };
+        }
+
+        @Override
+        public Image getColumnImage(Object obj, int index) {
+            Image image = null;
+            MarkerStat stat = (MarkerStat) obj;
+
+            if (index == 0) {
+                int severity = stat.getMaxSeverity();
+                ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+
+                if (IMarker.SEVERITY_ERROR == severity) {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+                }
+                else if (IMarker.SEVERITY_WARNING == severity) {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+                }
+                else if (IMarker.SEVERITY_INFO == severity) {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+                }
+            }
+            return image;
+        }
+
+        @Override
+        public Comparable<?> getComparableValue(Object element, int colIndex) {
+            MarkerStat stat = (MarkerStat) element;
+            return switch (colIndex) {
+                case 0 -> Integer.valueOf(stat.getMaxSeverity() * -1);
+                case 1 -> stat.getIdentifiant();
+                case 2 -> Integer.valueOf(stat.getCount());
+                default -> "";
+            };
+        }
+
+        @Override
+        public IDialogSettings getTableSettings() {
+            IDialogSettings settings = mainSettings.getSection(TAG_SECTION_MASTER);
+            if (settings == null) {
+                settings = mainSettings.addNewSection(TAG_SECTION_MASTER);
+            }
+            return settings;
+        }
     }
-  }
+
+    /**
+     * Label provider for the detail table viewer.
+     *
+     * @author Lars Ködderitzsch
+     */
+    public static final class DetailViewMultiProvider extends LabelProvider
+        implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+
+        /** The dialog settings. */
+        private final IDialogSettings mainSettings;
+
+        private DetailViewMultiProvider(IDialogSettings mainSettings) {
+            this.mainSettings = mainSettings;
+        }
+
+        @Override
+        public String getColumnText(Object obj, int index) {
+            String columnText;
+            IMarker marker = (IMarker) obj;
+            try {
+                columnText = switch (index) {
+                    case 1 -> marker.getResource().getName();
+                    case 2 -> marker.getResource().getParent().getFullPath().toString();
+                    case 3 -> Objects.toString(marker.getAttribute(IMarker.LINE_NUMBER), "");
+                    case 4 -> Objects.toString(marker.getAttribute(IMarker.MESSAGE), "");
+                    default -> "";
+                };
+            }
+            catch (Exception ex) {
+                // Can't do anything: let's put a default value
+                CheckstyleLog.log(ex);
+                columnText = Messages.MarkerStatsView_unknownProblem;
+            }
+            return columnText;
+        }
+
+        @Override
+        public Image getColumnImage(Object obj, int index) {
+            Image image = null;
+            IMarker marker = (IMarker) obj;
+
+            if (index == 0) {
+                int severity = MarkerUtilities.getSeverity(marker);
+                ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+
+                if (IMarker.SEVERITY_ERROR == severity) {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+                }
+                else if (IMarker.SEVERITY_WARNING == severity) {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+                }
+                else if (IMarker.SEVERITY_INFO == severity) {
+                    image = sharedImages.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+                }
+            }
+            return image;
+        }
+
+        @Override
+        public Comparable<?> getComparableValue(Object element, int colIndex) {
+            IMarker marker = (IMarker) element;
+            return switch (colIndex) {
+                case 0 -> Integer
+                    .valueOf(marker.getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE) * -1);
+                case 1 -> marker.getResource().getName();
+                case 2 -> marker.getResource().getParent().getFullPath().toString();
+                case 3 -> Integer
+                    .valueOf(marker.getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE));
+                case 4 -> marker.getAttribute(IMarker.MESSAGE, "");
+                default -> "";
+            };
+        }
+
+        @Override
+        public IDialogSettings getTableSettings() {
+            IDialogSettings settings = mainSettings.getSection(TAG_SECTION_DETAIL);
+
+            if (settings == null) {
+                settings = mainSettings.addNewSection(TAG_SECTION_DETAIL);
+            }
+
+            return settings;
+        }
+    }
 
 }

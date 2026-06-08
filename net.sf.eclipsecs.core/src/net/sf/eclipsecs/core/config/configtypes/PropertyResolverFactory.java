@@ -34,33 +34,34 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 public final class PropertyResolverFactory {
 
-  private PropertyResolverFactory() {
+    private PropertyResolverFactory() {
 
-  }
-
-  public static PropertyResolver getPropertyResolver(ICheckConfiguration config,
-          CheckstyleConfigurationFile configFile) throws IOException, URISyntaxException {
-    MultiPropertyResolver multiResolver = new MultiPropertyResolver();
-    multiResolver.addPropertyResolver(new ResolvablePropertyResolver(config));
-
-    File file = URIUtil.toFile(configFile.getResolvedConfigFileURL().toURI());
-    if (file != null) {
-      multiResolver.addPropertyResolver(new StandardPropertyResolver(file.toString()));
-    } else {
-      multiResolver.addPropertyResolver(
-              new StandardPropertyResolver(configFile.getResolvedConfigFileURL().toString()));
     }
 
-    multiResolver.addPropertyResolver(new ClasspathVariableResolver());
-    multiResolver.addPropertyResolver(new SystemPropertyResolver());
+    public static PropertyResolver getPropertyResolver(ICheckConfiguration config,
+        CheckstyleConfigurationFile configFile) throws IOException, URISyntaxException {
+        MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+        multiResolver.addPropertyResolver(new ResolvablePropertyResolver(config));
 
-    if (configFile.getAdditionalPropertiesBundleStream() != null) {
-      ResourceBundle bundle = new PropertyResourceBundle(
-              configFile.getAdditionalPropertiesBundleStream());
-      multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
+        File file = URIUtil.toFile(configFile.getResolvedConfigFileURL().toURI());
+        if (file != null) {
+            multiResolver.addPropertyResolver(new StandardPropertyResolver(file.toString()));
+        }
+        else {
+            multiResolver.addPropertyResolver(
+                new StandardPropertyResolver(configFile.getResolvedConfigFileURL().toString()));
+        }
+
+        multiResolver.addPropertyResolver(new ClasspathVariableResolver());
+        multiResolver.addPropertyResolver(new SystemPropertyResolver());
+
+        if (configFile.getAdditionalPropertiesBundleStream() != null) {
+            ResourceBundle bundle =
+                new PropertyResourceBundle(configFile.getAdditionalPropertiesBundleStream());
+            multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
+        }
+
+        return multiResolver;
     }
-
-    return multiResolver;
-  }
 
 }

@@ -27,39 +27,39 @@ package net.sf.eclipsecs.core.config;
  */
 public enum Severity {
 
-  /** Unspecified severity level, inherited from parent module. */
-  INHERIT,
+    /** Unspecified severity level, inherited from parent module. */
+    INHERIT,
 
-  /** Severity level 'ignore'. */
-  IGNORE,
+    /** Severity level 'ignore'. */
+    IGNORE,
 
-  /** Severity level 'info'. */
-  INFO,
+    /** Severity level 'info'. */
+    INFO,
 
-  /** Severity level 'warning'. */
-  WARNING,
+    /** Severity level 'warning'. */
+    WARNING,
 
-  /** Severity level 'error'. */
-  ERROR;
+    /** Severity level 'error'. */
+    ERROR;
 
-  public static Severity fromXmlValue(String xmlValue) {
-    return switch (xmlValue) {
-      case "inherit" -> INHERIT;
-      case "ignore" -> IGNORE;
-      case "info" -> INFO;
-      case "warning" -> WARNING;
-      case "error" -> ERROR;
-      default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
-    };
-  }
+    public static Severity fromXmlValue(String xmlValue) {
+        return switch (xmlValue) {
+            case "inherit" -> INHERIT;
+            case "ignore" -> IGNORE;
+            case "info" -> INFO;
+            case "warning" -> WARNING;
+            case "error" -> ERROR;
+            default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
+        };
+    }
 
-  public String toXmlValue() {
-    return switch (this) {
-      case INHERIT -> "inherit";
-      case IGNORE -> "ignore";
-      case INFO -> "info";
-      case WARNING -> "warning";
-      case ERROR -> "error";
-    };
-  }
+    public String toXmlValue() {
+        return switch (this) {
+            case INHERIT -> "inherit";
+            case IGNORE -> "ignore";
+            case INFO -> "info";
+            case WARNING -> "warning";
+            case ERROR -> "error";
+        };
+    }
 }

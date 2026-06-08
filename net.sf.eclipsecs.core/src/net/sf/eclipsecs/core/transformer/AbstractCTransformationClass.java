@@ -32,82 +32,83 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
  *
  */
 public abstract class AbstractCTransformationClass {
-  /** The eclipse-configuration for this rule. */
-  private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
+    /** The eclipse-configuration for this rule. */
+    private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
 
-  /** The map of attributes of this rule. */
-  private final Map<String, String> mAttributes = new HashMap<>();
+    /** The map of attributes of this rule. */
+    private final Map<String, String> mAttributes = new HashMap<>();
 
-  /**
-   * Method for transforming the checkstyle-rule this class is associated to. Every
-   * transformationclass has to implement this method. Should return the field formatterSetting
-   * after adding rules to it.
-   *
-   * @return The eclipse-formatter-configuration this rule needs.
-   */
-  public abstract FormatterConfiguration transformRule();
+    /**
+     * Method for transforming the checkstyle-rule this class is associated to. Every
+     * transformationclass has to implement this method. Should return the field formatterSetting
+     * after adding rules to it.
+     *
+     * @return The eclipse-formatter-configuration this rule needs.
+     */
+    public abstract FormatterConfiguration transformRule();
 
-  /**
-   * Method for setting the field attributes.
-   *
-   * @param rule
-   *          The checkstyle-rule associated to this class.
-   * @throws RuntimeException
-   *           an unexpected runtime exception occurred
-   */
-  protected final void setRule(final Configuration rule) {
-    final String[] attrs = rule.getAttributeNames();
-    for (final String att : attrs) {
-      try {
-        mAttributes.put(att, rule.getAttribute(att));
-      } catch (CheckstyleException ex) {
-        // shouldn't happen since we only use existing attribute names
-        throw new RuntimeException(ex);
-      }
+    /**
+     * Method for setting the field attributes.
+     *
+     * @param rule
+     *            The checkstyle-rule associated to this class.
+     * @throws RuntimeException
+     *             an unexpected runtime exception occurred
+     */
+    protected final void setRule(final Configuration rule) {
+        final String[] attrs = rule.getAttributeNames();
+        for (final String att : attrs) {
+            try {
+                mAttributes.put(att, rule.getAttribute(att));
+            }
+            catch (CheckstyleException ex) {
+                // shouldn't happen since we only use existing attribute names
+                throw new RuntimeException(ex);
+            }
+        }
     }
-  }
 
-  /**
-   * Method for reading the value of an attribute.
-   *
-   * @param attribute
-   *          The name of the attribute.
-   * @return The value of the attribute.
-   */
-  public final String getAttribute(final String attribute) {
-    return mAttributes.get(attribute);
-  }
+    /**
+     * Method for reading the value of an attribute.
+     *
+     * @param attribute
+     *            The name of the attribute.
+     * @return The value of the attribute.
+     */
+    public final String getAttribute(final String attribute) {
+        return mAttributes.get(attribute);
+    }
 
-  /**
-   * Method for defining which eclipse-formatter-rules should be used for transforming.
-   *
-   * @param rule
-   *          A eclipse-formatter-rule.
-   * @param val
-   *          The value for the rule.
-   */
-  public final void userFormatterSetting(final String rule, final String val) {
-    mFormatterSetting.addFormatterSetting("org.eclipse.jdt.core.formatter." + rule, val);
-  }
+    /**
+     * Method for defining which eclipse-formatter-rules should be used for transforming.
+     *
+     * @param rule
+     *            A eclipse-formatter-rule.
+     * @param val
+     *            The value for the rule.
+     */
+    public final void userFormatterSetting(final String rule, final String val) {
+        mFormatterSetting.addFormatterSetting("org.eclipse.jdt.core.formatter." + rule, val);
+    }
 
-  /**
-   * Method for defining which eclipse-editor-rules should be used for transforming.
-   *
-   * @param rule
-   *          A eclipse-editor-rule.
-   * @param val
-   *          The value for the rule.
-   */
-  public final void useCleanupSetting(final String rule, final String val) {
-    mFormatterSetting.addCleanupSetting("cleanup." + rule, val);
-  }
+    /**
+     * Method for defining which eclipse-editor-rules should be used for transforming.
+     *
+     * @param rule
+     *            A eclipse-editor-rule.
+     * @param val
+     *            The value for the rule.
+     */
+    public final void useCleanupSetting(final String rule, final String val) {
+        mFormatterSetting.addCleanupSetting("cleanup." + rule, val);
+    }
 
-  /**
-   * Getter to return the current formatter-settings.
-   *
-   * @return The formatter-settings.
-   */
-  public FormatterConfiguration getFormatterSetting() {
-    return mFormatterSetting;
-  }
+    /**
+     * Getter to return the current formatter-settings.
+     *
+     * @return The formatter-settings.
+     */
+    public FormatterConfiguration getFormatterSetting() {
+        return mFormatterSetting;
+    }
 }

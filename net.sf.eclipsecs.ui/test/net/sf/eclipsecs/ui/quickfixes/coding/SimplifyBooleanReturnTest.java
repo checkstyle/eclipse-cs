@@ -26,74 +26,76 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class SimplifyBooleanReturnTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void simplifyBooleanReturnWithoutCurlyBraces() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithoutCurlyBraces.xml",
+    @Test
+    void simplifyBooleanReturnWithoutCurlyBraces() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithoutCurlyBraces.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithCurlyBraces() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithCurlyBraces.xml", new SimplifyBooleanReturnQuickfix());
-  }
-
-  @Test
-  void simplifyBooleanReturnWithBooleanLiteralCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithBooleanLiteralCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithCurlyBraces() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithCurlyBraces.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithFieldAccessCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithFieldAccessCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithBooleanLiteralCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithBooleanLiteralCondition.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithMethodInvocationCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithMethodInvocationCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithFieldAccessCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithFieldAccessCondition.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithQualifiedNameCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithQualifiedNameCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithMethodInvocationCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithMethodInvocationCondition.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithSimpleNameCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithSimpleNameCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithQualifiedNameCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithQualifiedNameCondition.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithParanthesizedExpressionCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithParanthesizedExpressionCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithSimpleNameCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithSimpleNameCondition.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithSuperFieldAccessCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithSuperFieldAccessCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithParanthesizedExpressionCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithParanthesizedExpressionCondition.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithSuperMethodInvocationCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithSuperMethodInvocationCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithSuperFieldAccessCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithSuperFieldAccessCondition.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithThisExpressionCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithThisExpressionCondition.xml",
+    @Test
+    void simplifyBooleanReturnWithSuperMethodInvocationCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithSuperMethodInvocationCondition.xml",
             new SimplifyBooleanReturnQuickfix());
-  }
+    }
 
-  @Test
-  void simplifyBooleanReturnWithNotCondition() throws Exception {
-    testQuickfix("SimplifyBooleanReturnWithNotCondition.xml", new SimplifyBooleanReturnQuickfix());
-  }
+    @Test
+    void simplifyBooleanReturnWithThisExpressionCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithThisExpressionCondition.xml",
+            new SimplifyBooleanReturnQuickfix());
+    }
+
+    @Test
+    void simplifyBooleanReturnWithNotCondition() throws Exception {
+        testQuickfix("SimplifyBooleanReturnWithNotCondition.xml",
+            new SimplifyBooleanReturnQuickfix());
+    }
 
 }

@@ -29,41 +29,41 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class IndentationTransformer extends AbstractCTransformationClass {
-  @Override
-  public FormatterConfiguration transformRule() {
-    // basicOffset -> indentation.size, tabulation.size
-    String basicOffset = getAttribute("basicOffset");
-    if (basicOffset == null) {
-      basicOffset = "4";
-    }
-    userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
-    userFormatterSetting("tabulation.char", "space");
-    userFormatterSetting("indentation.size", basicOffset);
-    userFormatterSetting("tabulation.size", basicOffset);
+    @Override
+    public FormatterConfiguration transformRule() {
+        // basicOffset -> indentation.size, tabulation.size
+        String basicOffset = getAttribute("basicOffset");
+        if (basicOffset == null) {
+            basicOffset = "4";
+        }
+        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+        userFormatterSetting("tabulation.char", "space");
+        userFormatterSetting("indentation.size", basicOffset);
+        userFormatterSetting("tabulation.size", basicOffset);
 
-    // caseIndent -> indent_switchstatements_compare_to_switch
-    // (non-zero means cases are indented relative to the switch)
-    String caseIndent = getAttribute("caseIndent");
-    if (caseIndent == null) {
-      caseIndent = "4";
-    }
-    userFormatterSetting("indent_switchstatements_compare_to_switch",
+        // caseIndent -> indent_switchstatements_compare_to_switch
+        // (non-zero means cases are indented relative to the switch)
+        String caseIndent = getAttribute("caseIndent");
+        if (caseIndent == null) {
+            caseIndent = "4";
+        }
+        userFormatterSetting("indent_switchstatements_compare_to_switch",
             "0".equals(caseIndent) ? "false" : "true");
 
-    // lineWrappingIndentation -> continuation_indentation
-    String lineWrappingIndentation = getAttribute("lineWrappingIndentation");
-    if (lineWrappingIndentation == null) {
-      lineWrappingIndentation = "4";
-    }
-    userFormatterSetting("continuation_indentation", lineWrappingIndentation);
+        // lineWrappingIndentation -> continuation_indentation
+        String lineWrappingIndentation = getAttribute("lineWrappingIndentation");
+        if (lineWrappingIndentation == null) {
+            lineWrappingIndentation = "4";
+        }
+        userFormatterSetting("continuation_indentation", lineWrappingIndentation);
 
-    // arrayInitIndent -> continuation_indentation_for_array_initializer
-    String arrayInitIndent = getAttribute("arrayInitIndent");
-    if (arrayInitIndent == null) {
-      arrayInitIndent = "4";
-    }
-    userFormatterSetting("continuation_indentation_for_array_initializer", arrayInitIndent);
+        // arrayInitIndent -> continuation_indentation_for_array_initializer
+        String arrayInitIndent = getAttribute("arrayInitIndent");
+        if (arrayInitIndent == null) {
+            arrayInitIndent = "4";
+        }
+        userFormatterSetting("continuation_indentation_for_array_initializer", arrayInitIndent);
 
-    return getFormatterSetting();
-  }
+        return getFormatterSetting();
+    }
 }

@@ -53,14 +53,18 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
 /**
  * Quickfix implementation which simplifies a boolean if/return statement. It transforms an if
  * statement like
+ *
  * <pre>
  * if (condition) {
- *   return true;
- * } else {
- *   return false;
+ *     return true;
+ * }
+ * else {
+ *     return false;
  * }
  * </pre>
+ *
  * into a return statement like
+ *
  * <pre>
  * return condition;
  * </pre>
@@ -68,110 +72,115 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
 
-  /**
-   * If the condition is of one of these expression types, the parentheses are not necessary when
-   * negated. I.e the replacement can be written as <code>!condition</code> instead of
-   * <code>!(condition)</code>.
-   */
-  private static final Collection<Class<? extends Expression>> OMIT_PARANETHESES_CLASSES = Arrays
-          .asList(BooleanLiteral.class, FieldAccess.class, MethodInvocation.class,
-                  QualifiedName.class, SimpleName.class, ParenthesizedExpression.class,
-                  SuperFieldAccess.class, SuperMethodInvocation.class, ThisExpression.class);
+    /**
+     * If the condition is of one of these expression types, the parentheses are not necessary when
+     * negated. I.e the replacement can be written as <code>!condition</code> instead of
+     * <code>!(condition)</code>.
+     */
+    private static final Collection<Class<? extends Expression>> OMIT_PARANETHESES_CLASSES =
+        Arrays.asList(BooleanLiteral.class, FieldAccess.class, MethodInvocation.class,
+            QualifiedName.class, SimpleName.class, ParenthesizedExpression.class,
+            SuperFieldAccess.class, SuperMethodInvocation.class, ThisExpression.class);
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new ASTVisitor() {
-      @Override
-      public boolean visit(final IfStatement node) {
-        if (containsPosition(node, markerStartOffset)) {
-          computeReplacement(node).ifPresent(replacement -> replace(node, replacement));
-        }
-        return true;
-      }
-    };
-  }
-
-  private Optional<ReturnStatement> computeReplacement(final IfStatement node) {
-    final Optional<Boolean> isThenStatementTrue = isReturnStatementTrue(node.getThenStatement());
-    Optional<ReturnStatement> optionalReplacement;
-    if (isThenStatementTrue.isEmpty()) {
-      // the AST structure of the if statement is not as expected
-      optionalReplacement = Optional.empty();
-    } else {
-      final Expression condition = removeNotFromCondition(node.getExpression());
-      final boolean isNotCondition = condition != node.getExpression();
-
-      final ReturnStatement replacement;
-      if (isThenStatementTrue.get() ^ isNotCondition) {
-        // create replacement: return condition;
-        replacement = node.getAST().newReturnStatement();
-        replacement.setExpression(copy(condition));
-
-      } else {
-        // create replacement: return !(condition);
-        final AST ast = node.getAST();
-        replacement = ast.newReturnStatement();
-        final PrefixExpression not = ast.newPrefixExpression();
-        not.setOperator(Operator.NOT);
-        if (omitParantheses(condition)) {
-          not.setOperand(copy(condition));
-        } else {
-          final ParenthesizedExpression parentheses = ast.newParenthesizedExpression();
-          parentheses.setExpression(copy(condition));
-          not.setOperand(parentheses);
-        }
-        replacement.setExpression(not);
-      }
-      optionalReplacement = Optional.of(replacement);
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new ASTVisitor() {
+            @Override
+            public boolean visit(final IfStatement node) {
+                if (containsPosition(node, markerStartOffset)) {
+                    computeReplacement(node).ifPresent(replacement -> replace(node, replacement));
+                }
+                return true;
+            }
+        };
     }
-    return optionalReplacement;
-  }
 
-  private static Optional<Boolean> isReturnStatementTrue(final Statement node) {
-    Optional<Boolean> isReturnStatementTrue = Optional.empty();
-    if (node instanceof ReturnStatement returnStatement) {
-      final Expression expression = returnStatement.getExpression();
-      if (expression instanceof BooleanLiteral booleanLiteral) {
-        isReturnStatementTrue = Optional.of(booleanLiteral.booleanValue());
-      }
-    } else if (node instanceof Block block) {
-      // the return statement might be wrapped in a block statement
-      @SuppressWarnings("unchecked")
-      final List<Statement> statements = block.statements();
-      if (!statements.isEmpty()) {
-        isReturnStatementTrue = isReturnStatementTrue(statements.get(0));
-      }
+    private Optional<ReturnStatement> computeReplacement(final IfStatement node) {
+        final Optional<Boolean> isThenStatementTrue =
+            isReturnStatementTrue(node.getThenStatement());
+        Optional<ReturnStatement> optionalReplacement;
+        if (isThenStatementTrue.isEmpty()) {
+            // the AST structure of the if statement is not as expected
+            optionalReplacement = Optional.empty();
+        }
+        else {
+            final Expression condition = removeNotFromCondition(node.getExpression());
+            final boolean isNotCondition = condition != node.getExpression();
+
+            final ReturnStatement replacement;
+            if (isThenStatementTrue.get() ^ isNotCondition) {
+                // create replacement: return condition;
+                replacement = node.getAST().newReturnStatement();
+                replacement.setExpression(copy(condition));
+
+            }
+            else {
+                // create replacement: return !(condition);
+                final AST ast = node.getAST();
+                replacement = ast.newReturnStatement();
+                final PrefixExpression not = ast.newPrefixExpression();
+                not.setOperator(Operator.NOT);
+                if (omitParantheses(condition)) {
+                    not.setOperand(copy(condition));
+                }
+                else {
+                    final ParenthesizedExpression parentheses = ast.newParenthesizedExpression();
+                    parentheses.setExpression(copy(condition));
+                    not.setOperand(parentheses);
+                }
+                replacement.setExpression(not);
+            }
+            optionalReplacement = Optional.of(replacement);
+        }
+        return optionalReplacement;
     }
-    return isReturnStatementTrue;
-  }
 
-  private static Expression removeNotFromCondition(final Expression condition) {
-    Expression fixedCondition = condition;
-    if (condition instanceof PrefixExpression prefix
+    private static Optional<Boolean> isReturnStatementTrue(final Statement node) {
+        Optional<Boolean> isReturnStatementTrue = Optional.empty();
+        if (node instanceof ReturnStatement returnStatement) {
+            final Expression expression = returnStatement.getExpression();
+            if (expression instanceof BooleanLiteral booleanLiteral) {
+                isReturnStatementTrue = Optional.of(booleanLiteral.booleanValue());
+            }
+        }
+        else if (node instanceof Block block) {
+            // the return statement might be wrapped in a block statement
+            @SuppressWarnings("unchecked")
+            final List<Statement> statements = block.statements();
+            if (!statements.isEmpty()) {
+                isReturnStatementTrue = isReturnStatementTrue(statements.get(0));
+            }
+        }
+        return isReturnStatementTrue;
+    }
+
+    private static Expression removeNotFromCondition(final Expression condition) {
+        Expression fixedCondition = condition;
+        if (condition instanceof PrefixExpression prefix
             && PrefixExpression.Operator.NOT.equals(prefix.getOperator())) {
-      fixedCondition = prefix.getOperand();
+            fixedCondition = prefix.getOperand();
+        }
+        return fixedCondition;
     }
-    return fixedCondition;
-  }
 
-  private static boolean omitParantheses(final Expression condition) {
-    return OMIT_PARANETHESES_CLASSES.contains(condition.getClass());
-  }
+    private static boolean omitParantheses(final Expression condition) {
+        return OMIT_PARANETHESES_CLASSES.contains(condition.getClass());
+    }
 
-  @Override
-  public String getDescription() {
-    return Messages.SimplifyBooleanReturnQuickfix_description;
-  }
+    @Override
+    public String getDescription() {
+        return Messages.SimplifyBooleanReturnQuickfix_description;
+    }
 
-  @Override
-  public String getLabel() {
-    return Messages.SimplifyBooleanReturnQuickfix_label;
-  }
+    @Override
+    public String getLabel() {
+        return Messages.SimplifyBooleanReturnQuickfix_label;
+    }
 
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
-  }
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
+    }
 
 }
