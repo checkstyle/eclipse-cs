@@ -290,24 +290,34 @@ public class PackageFilterEditor implements IFilterEditor {
    * @since 2.0
    */
   public class CheckedTreeSelectionDialog extends SelectionStatusDialog {
+    /** The label provider. */
     private final ILabelProvider mLabelProvider;
 
+    /** The content provider. */
     private final ITreeContentProvider mContentProvider;
 
+    /** The checkbox tree viewer. */
     private CheckboxTreeViewer mViewer;
 
+    /** The recurse sub-packages checkbox. */
     private Button mBtnRecurseSubPackages;
 
+    /** The tree input. */
     private Object mInput;
 
+    /** Flag indicating whether the tree is empty. */
     private boolean mIsEmpty;
 
+    /** The width of the tree in characters. */
     private int mWidth = 60;
 
+    /** The height of the tree in characters. */
     private int mHeight = 18;
 
+    /** The elements to expand. */
     private Object[] mExpandedElements;
 
+    /** Flag for recursive exclusion of sub-packages. */
     private boolean mRecursivelyExcludeSubPackages = true;
 
     /**

@@ -36,17 +36,29 @@ import net.sf.eclipsecs.ui.stats.Messages;
 
 public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
 
+  /** The filter composite group. */
   private final Group mFilterComposite;
+  /** The "on any resource" radio button. */
   private final Button mRadioOnAnyResource;
+  /** The "any resource in same project" radio button. */
   private final Button mRadioAnyResourceInSameProject;
+  /** The "selected resource" radio button. */
   private final Button mRadioSelectedResource;
+  /** The "selected resource and children" radio button. */
   private final Button mRadioSelectedResourceAndChildren;
+  /** The "selected working set" radio button. */
   private final Button mRadioSelectedWorkingSet;
+  /** The selected working set label. */
   private final Label mLblSelectedWorkingSet;
+  /** The working set button. */
   private final Button mBtnWorkingSet;
+  /** The severity enabled checkbox. */
   private final Button mChkSeverityEnabled;
+  /** The severity error checkbox. */
   private final Button mChkSeverityError;
+  /** The severity warning checkbox. */
   private final Button mChkSeverityWarning;
+  /** The severity info checkbox. */
   private final Button mChkSeverityInfo;
 
   public CheckstyleMarkerFilterResourceFilterGroup(Composite parent, int style,

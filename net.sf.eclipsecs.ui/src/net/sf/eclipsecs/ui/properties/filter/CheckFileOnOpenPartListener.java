@@ -191,6 +191,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
   private class PartsOpenedJob extends AbstractCheckJob {
 
+    /** The collection of opened workbench parts. */
     private Collection<IWorkbenchPartReference> mParts;
 
     public PartsOpenedJob(Collection<IWorkbenchPartReference> parts) {

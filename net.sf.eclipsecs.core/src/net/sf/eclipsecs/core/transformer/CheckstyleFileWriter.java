@@ -37,6 +37,7 @@ public final class CheckstyleFileWriter {
 
   /** An object containing all settings for the checkstyle-file. */
   private final CheckstyleSetting mCheckstyleSetting;
+  /** The output file path. */
   private final String file;
 
   /**

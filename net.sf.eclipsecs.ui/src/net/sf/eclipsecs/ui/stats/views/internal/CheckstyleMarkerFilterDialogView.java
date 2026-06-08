@@ -34,11 +34,17 @@ import net.sf.eclipsecs.ui.stats.Messages;
 
 public final class CheckstyleMarkerFilterDialogView extends Composite {
 
+  /** The filter enabled checkbox. */
   private final Button mChkFilterEnabled;
+  /** The resource filter group. */
   private final CheckstyleMarkerFilterResourceFilterGroup resourceFilterGroup;
+  /** The regex group. */
   private final Group mGrpRegex;
+  /** The select by regex checkbox. */
   private final Button mChkSelectByRegex;
+  /** The regex filter label. */
   private final Label mLblRegexFilter;
+  /** The edit regex button. */
   private final Button mBtnEditRegex;
 
   public CheckstyleMarkerFilterDialogView(Composite parent, int style, Runnable selectWorkingSet,

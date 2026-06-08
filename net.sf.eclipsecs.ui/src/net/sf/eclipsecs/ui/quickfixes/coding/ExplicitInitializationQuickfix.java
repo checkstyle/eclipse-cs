@@ -45,6 +45,7 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 
+  /** The field name to be used in descriptions. */
   private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
 
   @Override

@@ -44,6 +44,7 @@ public class FormatterConfigWriter {
   /** A eclipse-configuration. */
   private final FormatterConfiguration mConfiguration;
 
+  /** The project. */
   private IProject mProject;
 
   /**

@@ -42,7 +42,9 @@ import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
 
 public final class CheckConfigurationPropertiesDialogView extends Composite {
 
+  /** The combo viewer for selecting the configuration type. */
   private final ComboViewer mConfigType;
+  /** The placeholder composite for the configuration editor. */
   private final Composite mEditorPlaceHolder;
 
   public CheckConfigurationPropertiesDialogView(Composite parent, int style,

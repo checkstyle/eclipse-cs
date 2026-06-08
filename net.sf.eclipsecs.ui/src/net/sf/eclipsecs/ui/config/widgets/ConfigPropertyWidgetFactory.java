@@ -34,6 +34,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyType;
  */
 public final class ConfigPropertyWidgetFactory {
 
+  /** The widget builder registry. */
   private static final Map<ConfigPropertyType, ConfigPropertyWidgetBuilder> REGISTRY = Map
           .of(ConfigPropertyType.STRING, ConfigPropertyWidgetString::create,
           ConfigPropertyType.STRING_ARRAY, ConfigPropertyWidgetStringArray::create,

@@ -34,12 +34,16 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  */
 public class FileSet implements Cloneable {
 
+  /** The file set name. */
   private String name;
 
+  /** The check configuration. */
   private ICheckConfiguration checkConfig;
 
+  /** Whether this file set is enabled. */
   private boolean enabled = true;
 
+  /** The file match patterns. */
   private List<FileMatchPattern> fileMatchPatterns = new LinkedList<>();
 
   /**

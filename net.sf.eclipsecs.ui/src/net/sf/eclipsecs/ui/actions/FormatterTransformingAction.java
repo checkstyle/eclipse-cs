@@ -34,6 +34,7 @@ import net.sf.eclipsecs.core.jobs.TransformFormatterRulesJob;
  */
 public class FormatterTransformingAction implements IActionDelegate {
 
+  /** The selected project. */
   private IProject project;
 
   @Override

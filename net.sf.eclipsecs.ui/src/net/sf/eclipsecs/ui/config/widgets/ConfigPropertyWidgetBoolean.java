@@ -34,6 +34,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
  */
 public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWidget {
 
+  /** The checkbox. */
   private Button mCheckbox;
 
   /**

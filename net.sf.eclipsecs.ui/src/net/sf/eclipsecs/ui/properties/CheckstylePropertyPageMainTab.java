@@ -42,11 +42,16 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class CheckstylePropertyPageMainTab extends Composite {
 
+  /** The property page context. */
   private final PropertyPageContext propertyPageContext;
+  /** The checkbox for simple configuration. */
   private final Button mChkSimpleConfig;
+  /** The checkbox to enable checkstyle. */
   private final Button mChkEnable;
+  /** The container for file sets editor. */
   private final Composite mFileSetsContainer;
 
+  /** The file sets editor. */
   private IFileSetsEditor mFileSetsEditor;
 
   public CheckstylePropertyPageMainTab(Composite parent, int style,

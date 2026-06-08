@@ -42,8 +42,10 @@ public class PackageFilter extends AbstractFilter {
    */
   public static final String RECURSE_OFF_MARKER = "<recurse=false>";
 
+  /** The package filter data. */
   private List<String> mData = new ArrayList<>();
 
+  /** Whether to exclude sub-packages. */
   private boolean mExcludeSubPackages = true;
 
   @Override

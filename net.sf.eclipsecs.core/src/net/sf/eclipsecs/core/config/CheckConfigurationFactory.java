@@ -78,8 +78,10 @@ public final class CheckConfigurationFactory {
   private static List<ICheckConfiguration> sConfigurations = Collections
           .synchronizedList(new ArrayList<ICheckConfiguration>());
 
+  /** The default check configuration. */
   private static ICheckConfiguration sDefaultCheckConfig;
 
+  /** The default built-in check configuration. */
   private static ICheckConfiguration sDefaultBuiltInConfig;
 
   static {

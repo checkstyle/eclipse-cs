@@ -50,6 +50,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
 
+  /** The files to check. */
   private List<IFile> mFilesToCheck;
 
   /**

@@ -36,6 +36,7 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class FileMatchPatternControl extends Composite {
 
+  /** The file match pattern table. */
   private final FileMatchPatternTable table;
 
   public FileMatchPatternControl(Composite parent, int style,

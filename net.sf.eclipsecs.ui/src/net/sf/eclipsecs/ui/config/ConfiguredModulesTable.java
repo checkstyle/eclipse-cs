@@ -54,6 +54,7 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class ConfiguredModulesTable extends Composite {
 
+  /** The checkbox table viewer for configured modules. */
   private final CheckboxTableViewer tableViewer;
 
   public ConfiguredModulesTable(Composite parent, int style, ViewerFilter ruleGroupModuleFilter,
@@ -149,6 +150,7 @@ public final class ConfiguredModulesTable extends Composite {
   private static final class ModuleLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
+    /** Singleton instance. */
     private static final ModuleLabelProvider INSTANCE = new ModuleLabelProvider();
 
     private ModuleLabelProvider() {

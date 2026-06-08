@@ -35,8 +35,11 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
  */
 public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
 
+  /** Plain apostrophe constant. */
   private static final String APOSTROPHE_PLAIN = "'";
+  /** Escaped apostrophe constant. */
   private static final String APOSTROPHE_ESCAPED = "''";
+  /** The text widget. */
   private Text mTextWidget;
 
   /**

@@ -44,6 +44,7 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class DeactivateProjectsAction implements IObjectActionDelegate {
 
+  /** The selected projects to deactivate Checkstyle on. */
   private Collection<IProject> mSelectedProjects;
 
   @Override
@@ -72,6 +73,7 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
    */
   private static class BulkCheckstyleActivateJob extends WorkspaceJob {
 
+    /** The projects to deactivate Checkstyle on. */
     private Collection<IProject> mProjectsToDeactivate;
 
     public BulkCheckstyleActivateJob(Collection<IProject> projectsToDeactivate) {

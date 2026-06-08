@@ -46,10 +46,13 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 
 public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
+  /** The default language code. */
   private static final String DEFAULT_LANGUAGE = "default";
 
+  /** The list of supported language codes. */
   private static final List<String> SUPPORTED_LANGUAGES = List.of(DEFAULT_LANGUAGE, "de", "en",
           "es", "fi", "fr", "ja", "pt", "tr", "zh");
+  /** The display items for the language combo. */
   private static final String[] LANGUAGE_ITEMS = SUPPORTED_LANGUAGES.stream().map(code -> {
     String displayLang;
     if (code == DEFAULT_LANGUAGE) {
@@ -61,13 +64,21 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     return displayLang;
   }).toArray(String[]::new);
 
+  /** The language selection combo. */
   private final Combo languageIf;
+  /** The rebuild preference combo. */
   private final Combo mRebuildIfNeeded;
+  /** The checkbox for warning before losing filesets. */
   private final Button mWarnBeforeLosingFilesets;
+  /** The checkbox to include rule names. */
   private final Button mIncludeRuleNamesButton;
+  /** The checkbox to include module IDs. */
   private final Button mIncludeModuleIdButton;
+  /** The checkbox to limit checkstyle markers. */
   private final Button mLimitCheckstyleMarkers;
+  /** The text field for the marker limit. */
   private final Text mTxtMarkerLimit;
+  /** The checkbox for running in background on full builds. */
   private final Button mBackgroundFullBuild;
 
   public CheckstylePreferencePageGeneralSettings(Composite parent, int style,

@@ -37,6 +37,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class FormatterTransformer {
 
+  /** All discovered transformer classes. */
   private final Map<String, Class<? extends AbstractFTransformationClass>> allTransformers;
 
   /**

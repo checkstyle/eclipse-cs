@@ -59,8 +59,11 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
  */
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
+  /** The working set of check configurations. */
   private final ICheckConfigurationWorkingSet mWorkingSet;
+  /** The general settings composite. */
   private CheckstylePreferencePageGeneralSettings generalSettings;
+  /** Flag indicating whether all projects need a rebuild. */
   private boolean mRebuildAll;
 
   /**

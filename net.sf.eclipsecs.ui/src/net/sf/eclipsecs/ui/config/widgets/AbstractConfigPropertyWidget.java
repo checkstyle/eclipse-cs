@@ -36,10 +36,13 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  */
 public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWidget {
 
+  /** The config property. */
   private ConfigProperty mProp;
 
+  /** The value widget control. */
   private Control mValueWidget;
 
+  /** The parent composite. */
   private Composite mParent;
 
   protected AbstractConfigPropertyWidget(Composite parent, ConfigProperty prop) {

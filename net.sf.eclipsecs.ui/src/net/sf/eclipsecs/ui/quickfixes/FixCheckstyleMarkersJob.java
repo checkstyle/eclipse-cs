@@ -39,6 +39,7 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class FixCheckstyleMarkersJob extends UIJob {
 
+  /** The file to fix markers in. */
   private IFile mFile;
 
   /**

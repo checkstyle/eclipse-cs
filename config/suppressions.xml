@@ -223,6 +223,7 @@
     
     <!-- NLS -->
     <suppress files="Messages.java" checks="VisibilityModifier"/>
+    <suppress files="Messages.java" checks="JavadocVariable"/>
 
     <!-- temporal suppression due to leak -->
     <suppress checks="JavadocVariable"

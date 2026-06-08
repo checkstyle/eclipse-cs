@@ -47,7 +47,9 @@ import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 
 public final class RuleConfigurationEditDialogGeneralSettings extends Composite {
 
+  /** The combo viewer for severity selection. */
   private final ComboViewer mSeverityCombo;
+  /** The list of configuration property widgets. */
   private final List<IConfigPropertyWidget> mConfigPropertyWidgets;
 
   public RuleConfigurationEditDialogGeneralSettings(Composite parent, int style, Module rule,

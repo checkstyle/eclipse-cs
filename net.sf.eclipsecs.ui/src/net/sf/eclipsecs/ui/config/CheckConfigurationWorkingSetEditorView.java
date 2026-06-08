@@ -43,11 +43,16 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditorButtonBar.Bu
 
 public final class CheckConfigurationWorkingSetEditorView extends Composite {
 
+  /** The config table. */
   private final CheckConfigurationWorkingSetEditorConfigTable configTable;
+  /** The button bar. */
   private final CheckConfigurationWorkingSetEditorButtonBar buttonBar;
+  /** The text field for the configuration description. */
   private final Text mConfigurationDescription;
+  /** The table viewer for project usage. */
   private final TableViewer mUsageView;
 
+  /** Whether this is a global working set. */
   private final boolean global;
 
   public CheckConfigurationWorkingSetEditorView(Composite parent, int style,

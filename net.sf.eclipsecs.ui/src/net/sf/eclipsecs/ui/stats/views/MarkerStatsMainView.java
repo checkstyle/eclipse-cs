@@ -52,8 +52,11 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class MarkerStatsMainView extends Composite {
 
+  /** The stack layout. */
   private final StackLayout mStackLayout;
+  /** The master table viewer. */
   private final MainTableViewer mMasterViewer;
+  /** The detail table viewer. */
   private final DetailTableViewer mDetailViewer;
 
   public MarkerStatsMainView(Composite parent, int style, MarkerStatsViewDataProviders providers,
@@ -137,6 +140,7 @@ public final class MarkerStatsMainView extends Composite {
 
   private static final class MainTableViewer extends AbstractStatTableViewer<MarkerStat> {
 
+    /** The table viewer. */
     private final TableViewer tableViewer;
 
     private MainTableViewer(Composite parent, int style,
@@ -192,6 +196,7 @@ public final class MarkerStatsMainView extends Composite {
 
   private static final class DetailTableViewer extends AbstractStatTableViewer<IMarker> {
 
+    /** The table viewer. */
     private final TableViewer tableViewer;
 
     private DetailTableViewer(Composite parent, int style,
@@ -250,6 +255,7 @@ public final class MarkerStatsMainView extends Composite {
 
   private abstract static class AbstractStatTableViewer<T> extends Composite {
 
+    /** The selection class type. */
     private final Class<T> selectionClass;
 
     private AbstractStatTableViewer(Composite parent, int style, Class<T> selectionClass) {

@@ -48,10 +48,13 @@ import net.sf.eclipsecs.ui.config.PropertiesContentAssistProcessor;
  */
 public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget {
 
+  /** The contents composite. */
   private Composite mContents;
 
+  /** The text widget. */
   private Text mTextWidget;
 
+  /** The browse button. */
   private Button mBtnBrowse;
 
   /**

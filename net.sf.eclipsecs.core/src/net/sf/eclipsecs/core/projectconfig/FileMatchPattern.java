@@ -34,10 +34,13 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class FileMatchPattern implements Cloneable {
 
+  /** Whether this is an include pattern. */
   private boolean isIncludePattern = true;
 
+  /** The compiled regex pattern. */
   private Pattern regexPattern;
 
+  /** The pattern string. */
   private String patternString;
 
   /**

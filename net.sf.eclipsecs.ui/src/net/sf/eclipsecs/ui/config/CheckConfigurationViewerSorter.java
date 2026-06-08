@@ -30,6 +30,7 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  */
 public final class CheckConfigurationViewerSorter extends ViewerComparator {
 
+  /** Singleton instance. */
   public static final CheckConfigurationViewerSorter INSTANCE =
           new CheckConfigurationViewerSorter();
 

@@ -46,9 +46,13 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
  */
 public class ComplexFileSetsEditor implements IFileSetsEditor {
 
+  /** The property page context. */
   private final PropertyPageContext propertyPageContext;
+  /** The editor view. */
   private ComplexFileSetsEditorView editorView;
+  /** The shell. */
   private Shell shell;
+  /** The list of file sets. */
   private List<FileSet> mFileSets;
 
   /**
@@ -147,6 +151,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
   public static final class FileSetLabelProvider extends LabelProvider
           implements ITableLabelProvider {
 
+    /** The singleton instance. */
     public static final FileSetLabelProvider INSTANCE = new FileSetLabelProvider();
 
     private FileSetLabelProvider() {
@@ -182,6 +187,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
    */
   public static final class FileSetViewerSorter extends ViewerComparator {
 
+    /** The singleton instance. */
     public static final FileSetViewerSorter INSTANCE = new FileSetViewerSorter();
 
     private FileSetViewerSorter() {

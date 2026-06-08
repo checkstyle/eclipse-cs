@@ -40,8 +40,10 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class AuditorJob extends AbstractCheckJob {
 
+  /** The project to audit. */
   private IProject mProject;
 
+  /** The auditor. */
   private Auditor mAuditor;
 
   /**

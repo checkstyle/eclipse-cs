@@ -63,8 +63,10 @@ public class MarkerStatsView extends AbstractStatsView {
   /** The main composite. */
   private MarkerStatsMainView mMainSection;
 
+  /** The view actions. */
   private MarkerStatsViewActions actions;
 
+  /** The detail content provider. */
   private DetailContentProvider detailContentProvider;
 
   /** The state if the view is currently drilled down to details. */

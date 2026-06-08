@@ -43,7 +43,9 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
 
 public final class FileSetEditDialogCommonArea extends Composite {
 
+  /** The text field for the file set name. */
   private final Text mFileSetNameText;
+  /** The combo viewer for check configuration selection. */
   private final ComboViewer mComboViewer;
 
   public FileSetEditDialogCommonArea(Composite parent, int style,

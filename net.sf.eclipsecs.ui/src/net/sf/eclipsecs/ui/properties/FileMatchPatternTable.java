@@ -44,6 +44,7 @@ import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternCo
 
 public final class FileMatchPatternTable extends Composite {
 
+  /** The checkbox table viewer for patterns. */
   private final CheckboxTableViewer mPatternViewer;
 
   public FileMatchPatternTable(Composite parent, int style,
@@ -135,6 +136,7 @@ public final class FileMatchPatternTable extends Composite {
   private static final class FileMatchPatternTableCheckStateProvider
           implements ICheckStateProvider {
 
+    /** The singleton instance. */
     private static final FileMatchPatternTableCheckStateProvider INSTANCE =
             new FileMatchPatternTableCheckStateProvider();
 

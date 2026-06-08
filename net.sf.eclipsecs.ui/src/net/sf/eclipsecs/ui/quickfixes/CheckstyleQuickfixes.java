@@ -53,6 +53,7 @@ public final class CheckstyleQuickfixes {
    */
   private static final String EXTENSION_MODULE_ATTRIBUTE = "module";
 
+  /** The registered quickfixes. */
   private final Collection<ICheckstyleMarkerResolution> quickfixes;
 
   private CheckstyleQuickfixes() {
@@ -110,6 +111,7 @@ public final class CheckstyleQuickfixes {
    * Initialization-on-demand-holder
    */
   private static final class LazyHolder {
+    /** The singleton instance. */
     static final CheckstyleQuickfixes INSTANCE = new CheckstyleQuickfixes();
   }
 

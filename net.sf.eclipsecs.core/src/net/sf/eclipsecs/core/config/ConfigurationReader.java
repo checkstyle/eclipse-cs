@@ -45,6 +45,7 @@ import net.sf.eclipsecs.core.util.XMLUtil;
  */
 public final class ConfigurationReader {
 
+  /** Pattern to detect property references in strings. */
   private static final Pattern PROPERTY_REF_PATTERN = Pattern.compile("^.*\\$\\{.*\\}.*$");
 
   //

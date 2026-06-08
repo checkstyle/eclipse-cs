@@ -34,12 +34,19 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite {
 
+  /** Whether the default button should be shown. */
   private final boolean useDefaultButton;
+  /** The edit button. */
   private final Button mEditButton;
+  /** The configure button. */
   private final Button mConfigureButton;
+  /** The copy button. */
   private final Button mCopyButton;
+  /** The remove button. */
   private final Button mRemoveButton;
+  /** The default button. */
   private final Button mDefaultButton;
+  /** The export button. */
   private final Button mExportButton;
 
   public CheckConfigurationWorkingSetEditorButtonBar(Composite parent, int style,

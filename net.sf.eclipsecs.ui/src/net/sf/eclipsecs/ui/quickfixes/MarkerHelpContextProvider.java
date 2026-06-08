@@ -109,6 +109,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
    * Help topic forwarding to the online help
    */
   private static final class CheckstyleHelpTopic implements IHelpResource {
+    /** The module name. */
     private final String moduleName;
 
     /**
@@ -134,6 +135,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
    * Dynamically created help context for a checkstyle marker
    */
   private static final class CheckstyleHelpContext implements IContext {
+    /** The module name. */
     private final String moduleName;
 
     private CheckstyleHelpContext(String moduleName) {

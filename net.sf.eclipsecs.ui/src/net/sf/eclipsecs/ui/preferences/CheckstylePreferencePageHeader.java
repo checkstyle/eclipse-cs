@@ -33,6 +33,7 @@ import net.sf.eclipsecs.ui.util.InternalBrowser;
 
 public class CheckstylePreferencePageHeader extends Composite {
 
+  /** The checkstyle version string. */
   private static final String CHECKSTYLE_VERSION = Main.class.getPackage()
           .getImplementationVersion();
 

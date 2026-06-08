@@ -37,6 +37,7 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
  */
 public final class CheckConfigurationContentProvider implements IStructuredContentProvider {
 
+  /** The singleton instance. */
   public static final CheckConfigurationContentProvider INSTANCE =
           new CheckConfigurationContentProvider();
 

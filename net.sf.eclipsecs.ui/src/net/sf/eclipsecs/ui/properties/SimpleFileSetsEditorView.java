@@ -40,6 +40,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
 
 public final class SimpleFileSetsEditorView extends Composite {
 
+  /** The combo viewer for check configuration selection. */
   private final ComboViewer mComboViewer;
 
   public SimpleFileSetsEditorView(Composite parent, int style, Runnable manageConfig,

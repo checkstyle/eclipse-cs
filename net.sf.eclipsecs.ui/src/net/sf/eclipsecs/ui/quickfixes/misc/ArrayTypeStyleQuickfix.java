@@ -67,6 +67,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
   }
 
   private final class ArrayTypeStyleQuickfixAstVisitor extends ASTVisitor {
+    /** The marker start offset. */
     private final int markerStartOffset;
 
     private ArrayTypeStyleQuickfixAstVisitor(int markerStartOffset) {

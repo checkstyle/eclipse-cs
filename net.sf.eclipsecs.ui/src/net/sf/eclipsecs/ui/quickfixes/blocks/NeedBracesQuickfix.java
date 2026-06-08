@@ -65,6 +65,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
 
   private final class NeedBracesQuickfixAstVisitor extends ASTVisitor {
 
+    /** The line info region. */
     private final IRegion lineInfo;
 
     private NeedBracesQuickfixAstVisitor(IRegion lineInfo) {

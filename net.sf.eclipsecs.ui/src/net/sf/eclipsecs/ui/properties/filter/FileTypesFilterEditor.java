@@ -100,14 +100,19 @@ public class FileTypesFilterEditor implements IFilterEditor {
    */
   private class FileTypesDialog extends Dialog {
 
+    /** The list viewer for file types. */
     private ListViewer mListViewer;
 
+    /** The add button. */
     private Button mAddButton;
 
+    /** The remove button. */
     private Button mRemoveButton;
 
+    /** The text field for file type input. */
     private Text mFileTypeText;
 
+    /** The list of file types. */
     private List<String> mFileTypesList;
 
     /**

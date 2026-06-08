@@ -43,8 +43,11 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class RuleConfigurationEditDialogAdvancedSettings extends Composite {
 
+  /** The text field for the module comment. */
   private final Text mCommentText;
+  /** The text field for the module id. */
   private final Text mIdText;
+  /** The map of custom message key to text field. */
   private final Map<String, Text> mCustomMessages;
 
   public RuleConfigurationEditDialogAdvancedSettings(Composite parent, int style, Module rule,

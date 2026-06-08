@@ -44,6 +44,7 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class ActivateProjectsAction implements IObjectActionDelegate {
 
+  /** The selected projects to activate Checkstyle on. */
   private Collection<IProject> mSelectedProjects;
 
   @Override
@@ -72,6 +73,7 @@ public class ActivateProjectsAction implements IObjectActionDelegate {
    */
   private static class BulkCheckstyleActivateJob extends WorkspaceJob {
 
+    /** The projects to activate Checkstyle on. */
     private Collection<IProject> mProjectsToActivate;
 
     public BulkCheckstyleActivateJob(Collection<IProject> projectsToActivate) {

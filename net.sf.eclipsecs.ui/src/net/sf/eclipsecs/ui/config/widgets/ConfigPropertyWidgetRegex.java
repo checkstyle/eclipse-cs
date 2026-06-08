@@ -45,18 +45,25 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
  */
 public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidget {
 
+  /** The default test message. */
   private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
 
+  /** The red color. */
   private final Color mRedColor;
 
+  /** The green color. */
   private final Color mGreenColor;
 
+  /** The contents composite. */
   private Composite mContents;
 
+  /** The text widget. */
   private Text mTextWidget;
 
+  /** The regex test text widget. */
   private Text mRegexTestWidget;
 
+  /** The text background color. */
   private Color mTextBgColor;
 
   /**

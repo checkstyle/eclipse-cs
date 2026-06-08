@@ -73,7 +73,9 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
 
   private final class RedundantModifierQuickfixAstVisitor extends ASTVisitor {
 
+    /** The line info region. */
     private final IRegion lineInfo;
+    /** The marker start offset. */
     private final int markerStartOffset;
 
     private RedundantModifierQuickfixAstVisitor(IRegion lineInfo, int markerStartOffset) {

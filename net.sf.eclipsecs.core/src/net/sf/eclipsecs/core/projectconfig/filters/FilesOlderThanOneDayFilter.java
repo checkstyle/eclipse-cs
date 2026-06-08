@@ -24,6 +24,7 @@ import org.eclipse.core.resources.IFile;
 
 public class FilesOlderThanOneDayFilter extends AbstractFilter {
 
+  /** Milliseconds in 24 hours. */
   private static final long MILLIS_IN_24_HOURS = 1000 * 60 * 60 * 24;
 
   @Override
