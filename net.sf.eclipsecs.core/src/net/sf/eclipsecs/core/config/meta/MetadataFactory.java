@@ -68,7 +68,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public final class MetadataFactory {
 
-    /** eclipse extension configuration file name. */
+    /** Eclipse extension configuration file name. */
     private static final String ECLIPSE_EXTENSION_CONFIG_FILE = "eclipse-metadata.yml";
 
     /** Name of the rules metadata XML file. */

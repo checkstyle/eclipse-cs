@@ -64,7 +64,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     /** The current check configuration. */
     private final CheckConfigurationWorkingCopy mConfiguration;
 
-    /** the list of modules. */
+    /** The list of modules. */
     private List<Module> mModules;
 
     /** Flags if the check configuration was changed. */

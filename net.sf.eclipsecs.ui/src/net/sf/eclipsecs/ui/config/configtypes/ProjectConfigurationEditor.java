@@ -68,22 +68,22 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     // attributes
     //
 
-    /** the working copy this editor edits. */
+    /** The working copy this editor edits. */
     private CheckConfigurationWorkingCopy mWorkingCopy;
 
     /** The shell. */
     private Shell shell;
 
-    /** the parent dialog element. */
+    /** The parent dialog element. */
     private CheckConfigurationPropertiesDialog mCheckConfigDialog;
 
-    /** the text field containing the config name. */
+    /** The text field containing the config name. */
     private Text mConfigName;
 
-    /** text field containing the location. */
+    /** Text field containing the location. */
     private Text mLocation;
 
-    /** the text containing the description. */
+    /** The text containing the description. */
     private Text mDescription;
 
     /**

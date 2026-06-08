@@ -198,47 +198,47 @@ public final class SWTUtil {
         // constants
         //
 
-        /** constant for the x location key. */
+        /** Constant for the x location key. */
         private static final String X = "x"; //$NON-NLS-1$
 
-        /** constant for the y location key. */
+        /** Constant for the y location key. */
         private static final String Y = "y"; //$NON-NLS-1$
 
-        /** constant for the width key. */
+        /** Constant for the width key. */
         private static final String WIDTH = "width"; //$NON-NLS-1$
 
-        /** constant for the height key. */
+        /** Constant for the height key. */
         private static final String HEIGHT = "height"; //$NON-NLS-1$
 
-        /** constant for the maximized key. */
+        /** Constant for the maximized key. */
         private static final String MAXIMIZED = "maximized"; //$NON-NLS-1$
 
-        /** constant for the minimized key. */
+        /** Constant for the minimized key. */
         private static final String MINIMIZED = "minimized"; //$NON-NLS-1$
 
         //
         // attributes
         //
 
-        /** the current bounds of the dialog shell. */
+        /** The current bounds of the dialog shell. */
         private Rectangle mNewBounds;
 
-        /** the maximized state of the shell. */
+        /** The maximized state of the shell. */
         private boolean mMaximized;
 
-        /** the minmized state of the shell. */
+        /** The minmized state of the shell. */
         private boolean mMinimized;
 
-        /** the dialog. */
+        /** The dialog. */
         private Dialog mDialog;
 
-        /** the plugins dialog settings instance. */
+        /** The plugins dialog settings instance. */
         private IDialogSettings mSettings;
 
-        /** the dialogs unique key. */
+        /** The dialogs unique key. */
         private String mDialogKey;
 
-        /** flag that indicates if the dialog was already initally activated. */
+        /** Flag that indicates if the dialog was already initally activated. */
         private boolean mInitialyActivated;
 
         //

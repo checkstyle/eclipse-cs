@@ -68,7 +68,7 @@ public final class CheckConfigurationFactory {
     /** The current file version. */
     protected static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
 
-    /** constant for the extension point id. */
+    /** Constant for the extension point id. */
     private static final String CONFIGS_EXTENSION_POINT =
         CheckstylePlugin.PLUGIN_ID + ".configurations"; //$NON-NLS-1$
 

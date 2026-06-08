@@ -32,19 +32,19 @@ import com.google.common.base.MoreObjects;
  */
 public abstract class AbstractFilter implements IFilter {
 
-    /** name of the filter. */
+    /** Name of the filter. */
     private String mFilterName;
 
-    /** internal name of the filter. */
+    /** Internal name of the filter. */
     private String mInternalName;
 
-    /** description of the filter. */
+    /** Description of the filter. */
     private String mFilterDescription;
 
-    /** flags if the filter is selected. */
+    /** Flags if the filter is selected. */
     private boolean mSelected;
 
-    /** flags, if the filter is readonly. */
+    /** Flags, if the filter is readonly. */
     private boolean mReadonly;
 
     @Override

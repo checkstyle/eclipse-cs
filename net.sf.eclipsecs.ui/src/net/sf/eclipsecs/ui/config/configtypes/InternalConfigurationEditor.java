@@ -61,7 +61,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     /** The properties dialog. */
     private CheckConfigurationPropertiesDialog mDialog;
 
-    /** the working copy this editor edits. */
+    /** The working copy this editor edits. */
     private CheckConfigurationWorkingCopy mWorkingCopy;
 
     /** The editor view. */

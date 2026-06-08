@@ -25,7 +25,7 @@ package net.sf.eclipsecs.core.util;
  */
 public class CheckstylePluginException extends Exception {
 
-    /** safe serialization support across different versions. */
+    /** Safe serialization support across different versions. */
     private static final long serialVersionUID = 8173568340314023129L;
 
     /**

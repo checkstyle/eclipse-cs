@@ -76,7 +76,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
     /** The map of additional data for this configuration. */
     private Map<String, String> mAdditionalData = new HashMap<>();
 
-    /** flags if the configuration is dirty. */
+    /** Flags if the configuration is dirty. */
     private boolean mHasConfigChanged;
 
     /**

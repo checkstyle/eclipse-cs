@@ -234,16 +234,16 @@ public final class Auditor {
      */
     private class CheckstyleAuditListener implements AuditListener {
 
-        /** the project. */
+        /** The project. */
         private final IProject mProject;
 
-        /** map containing the marker data. */
+        /** Map containing the marker data. */
         private final Map<String, Object> mMarkerAttributes = new HashMap<>();
 
-        /** flags if the amount of markers should be limited. */
+        /** Flags if the amount of markers should be limited. */
         private final boolean mLimitMarkers;
 
-        /** the max amount of markers per resource. */
+        /** The max amount of markers per resource. */
         private final int mMarkerLimit;
 
         /** The file currently being checked. */
@@ -252,10 +252,10 @@ public final class Auditor {
         /** Document model of the current file. */
         private IDocument mDocument;
 
-        /** internal counter used to time to actualisation of the monitor. */
+        /** Internal counter used to time the actualisation of the monitor. */
         private int mMonitorCounter;
 
-        /** the count of markers generated for the current resource. */
+        /** The count of markers generated for the current resource. */
         private int mMarkerCount;
 
         /**

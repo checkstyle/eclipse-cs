@@ -67,16 +67,16 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
     /** The global check configurations. */
     private final ICheckConfigurationWorkingSet globalConfigWorkingSet;
 
-    /** the file sets. */
+    /** The file sets. */
     private List<FileSet> fileSets = new LinkedList<>();
 
-    /** the filters. */
+    /** The filters. */
     private List<IFilter> filters = new LinkedList<>();
 
     /** Flags if the simple file set editor should be used. */
     private boolean useSimpleConfig;
 
-    /** if the formatter synching feature is enabled. */
+    /** If the formatter synching feature is enabled. */
     private boolean syncFormatter;
 
     /**

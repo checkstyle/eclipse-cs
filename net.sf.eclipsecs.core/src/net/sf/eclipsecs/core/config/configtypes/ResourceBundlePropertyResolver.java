@@ -31,7 +31,7 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 class ResourceBundlePropertyResolver implements PropertyResolver {
 
-    /** the resource bundle. */
+    /** The resource bundle. */
     private ResourceBundle mBundle;
 
     /**

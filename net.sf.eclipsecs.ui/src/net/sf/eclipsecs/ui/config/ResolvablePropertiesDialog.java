@@ -65,7 +65,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     // attributes
     //
 
-    /** the check configuration. */
+    /** The check configuration. */
     private CheckConfigurationWorkingCopy mCheckConfig;
 
     /** The list of properties. */

@@ -36,7 +36,7 @@ public class FiltersAction extends Action {
     // attributes
     //
 
-    /** the view that uses this action. */
+    /** The view that uses this action. */
     private AbstractStatsView mStatsView;
 
     //

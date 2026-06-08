@@ -31,25 +31,25 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class StandardPropertyResolver implements PropertyResolver, IContextAware {
 
-    /** constant for the workspace_loc variable. */
+    /** Constant for the workspace_loc variable. */
     private static final String WORKSPACE_LOC = "workspace_loc"; //$NON-NLS-1$
 
-    /** constant for the project_loc variable. */
+    /** Constant for the project_loc variable. */
     private static final String PROJECT_LOC = "project_loc"; //$NON-NLS-1$
 
-    /** constant for the basedir variable. */
+    /** Constant for the basedir variable. */
     private static final String BASEDIR_LOC = "basedir"; //$NON-NLS-1$
 
-    /** constant for the samedir variable. */
+    /** Constant for the samedir variable. */
     private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
 
-    /** constant for the config_loc variable. */
+    /** Constant for the config_loc variable. */
     private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
 
-    /** the location of the configuration file. */
+    /** The location of the configuration file. */
     private final String mConfigLocation;
 
-    /** the context project. */
+    /** The context project. */
     private IProject mProject;
 
     /**

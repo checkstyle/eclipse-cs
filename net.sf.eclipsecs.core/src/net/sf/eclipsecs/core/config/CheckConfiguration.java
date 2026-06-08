@@ -40,19 +40,19 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class CheckConfiguration extends AbstractCheckConfiguration {
 
-    /** the displayable name of the configuration. */
+    /** The displayable name of the configuration. */
     private final String mName;
 
-    /** the location of the checkstyle configuration file. */
+    /** The location of the checkstyle configuration file. */
     private final String mLocation;
 
-    /** the description of the configuration. */
+    /** The description of the configuration. */
     private final String mDescription;
 
-    /** the configuration type. */
+    /** The configuration type. */
     private final IConfigurationType mConfigType;
 
-    /** flags if the configuration is global. */
+    /** Flags if the configuration is global. */
     private final boolean mIsGlobal;
 
     /** The list of resolvable properties. */

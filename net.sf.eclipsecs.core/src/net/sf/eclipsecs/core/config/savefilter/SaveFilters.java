@@ -38,14 +38,14 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public final class SaveFilters {
 
-    /** constant for the extension point id. */
+    /** Constant for the extension point id. */
     private static final String FILTER_EXTENSION_POINT =
         CheckstylePlugin.PLUGIN_ID + ".saveFilters";
 
-    /** constant for the class attribute. */
+    /** Constant for the class attribute. */
     private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-    /** the filter prototypes configured to the extension point. */
+    /** The filter prototypes configured to the extension point. */
     private static final ISaveFilter[] SAVE_FILTERS;
 
     /**

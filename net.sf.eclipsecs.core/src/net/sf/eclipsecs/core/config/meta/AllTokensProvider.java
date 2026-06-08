@@ -33,7 +33,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  */
 public class AllTokensProvider implements IOptionProvider {
 
-    /** the list of options. */
+    /** The list of options. */
     private static List<String> sAllOptions = new ArrayList<>();
 
     /** Static initializer. Builds the option list. */
