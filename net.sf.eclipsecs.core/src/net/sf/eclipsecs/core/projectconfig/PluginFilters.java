@@ -41,28 +41,28 @@ public final class PluginFilters {
     private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.core.filters";
 
     /** Constant for the name attribute. */
-    private static final String ATTR_NAME = "name"; //$NON-NLS-1$
+    private static final String ATTR_NAME = "name";
 
     /** Constant for the name attribute. */
-    private static final String ATTR_INTERNAL_NAME = "internal-name"; //$NON-NLS-1$
+    private static final String ATTR_INTERNAL_NAME = "internal-name";
 
     /** Constant for the description attribute. */
-    private static final String ATTR_DESCRIPTION = "description"; //$NON-NLS-1$
+    private static final String ATTR_DESCRIPTION = "description";
 
     /** Constant for the class attribute. */
-    private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
+    private static final String ATTR_CLASS = "class";
 
     /** Constant for the readonly attribute. */
-    private static final String ATTR_READONLY = "readonly"; //$NON-NLS-1$
+    private static final String ATTR_READONLY = "readonly";
 
     /** Constant for the selected attribute. */
-    private static final String ATTR_SELECTED = "selected"; //$NON-NLS-1$
+    private static final String ATTR_SELECTED = "selected";
 
     /** Constant for the value attribute. */
-    private static final String ATTR_VALUE = "value"; //$NON-NLS-1$
+    private static final String ATTR_VALUE = "value";
 
     /** Constant for the data tag. */
-    private static final String TAG_DATA = "data"; //$NON-NLS-1$
+    private static final String TAG_DATA = "data";
 
     /** The filter prototypes configured to the extension point. */
     private static final IFilter[] FILTER_PROTOTYPES;

@@ -95,28 +95,28 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
     public static final int SEVERITY_INFO = 1 << 0;
 
     /** Dialog settings section name. */
-    private static final String TAG_DIALOG_SECTION = "filter"; //$NON-NLS-1$
+    private static final String TAG_DIALOG_SECTION = "filter";
 
     /** Dialog settings key for the enabled flag. */
-    private static final String TAG_ENABLED = "enabled"; //$NON-NLS-1$
+    private static final String TAG_ENABLED = "enabled";
 
     /** Dialog settings key for the resource scope. */
-    private static final String TAG_ON_RESOURCE = "onResource"; //$NON-NLS-1$
+    private static final String TAG_ON_RESOURCE = "onResource";
 
     /** Dialog settings key for the working set. */
-    private static final String TAG_WORKING_SET = "workingSet"; //$NON-NLS-1$
+    private static final String TAG_WORKING_SET = "workingSet";
 
     /** Dialog settings key for the severity selection flag. */
-    private static final String TAG_SELECT_BY_SEVERITY = "selectBySeverity"; //$NON-NLS-1$
+    private static final String TAG_SELECT_BY_SEVERITY = "selectBySeverity";
 
     /** Dialog settings key for the severity value. */
-    private static final String TAG_SEVERITY = "severity"; //$NON-NLS-1$
+    private static final String TAG_SEVERITY = "severity";
 
     /** Dialog settings key for the regex selection flag. */
-    private static final String TAG_SELECT_BY_REGEX = "selectByRegex"; //$NON-NLS-1$
+    private static final String TAG_SELECT_BY_REGEX = "selectByRegex";
 
     /** Dialog settings key for the regular expressions list. */
-    private static final String TAG_REGULAR_EXPRESSIONS = "regularExpressions"; //$NON-NLS-1$
+    private static final String TAG_REGULAR_EXPRESSIONS = "regularExpressions";
 
     /** Default severity value. */
     private static final int DEFAULT_SEVERITY = 0;

@@ -37,7 +37,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class ExternalFileConfigurationType extends AbstractConfigurationType {
 
     /** Key to access the information if the configuration is protected. */
-    public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
+    public static final String KEY_PROTECT_CONFIG = "protect-config-file";
 
     /** Property resolver used to add dynamic location support. */
     private static final PropertyResolver DYNAMIC_LOC_RESOLVER;

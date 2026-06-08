@@ -26,67 +26,67 @@ package net.sf.eclipsecs.core.projectconfig;
 public final class XMLTags {
 
     /** Common description tag. */
-    public static final String DESCRIPTION_TAG = "description"; //$NON-NLS-1$
+    public static final String DESCRIPTION_TAG = "description";
 
     /** Location tag. */
-    public static final String LOCATION_TAG = "location"; //$NON-NLS-1$
+    public static final String LOCATION_TAG = "location";
 
     /** Check configuration type tag. */
-    public static final String TYPE_TAG = "type"; //$NON-NLS-1$
+    public static final String TYPE_TAG = "type";
 
     /** Additional data tag. */
-    public static final String ADDITIONAL_DATA_TAG = "additional-data"; //$NON-NLS-1$
+    public static final String ADDITIONAL_DATA_TAG = "additional-data";
 
     /** Tag for a resolvable property. */
-    public static final String PROPERTY_TAG = "property"; //$NON-NLS-1$
+    public static final String PROPERTY_TAG = "property";
 
     /** Fileset config root tag. */
-    static final String FILESET_CONFIG_TAG = "fileset-config"; //$NON-NLS-1$
+    static final String FILESET_CONFIG_TAG = "fileset-config";
 
     /** Local check config tag. */
-    static final String CHECK_CONFIG_TAG = "local-check-config"; //$NON-NLS-1$
+    static final String CHECK_CONFIG_TAG = "local-check-config";
 
     /** Check config name tag. */
-    static final String CHECK_CONFIG_NAME_TAG = "check-config-name"; //$NON-NLS-1$
+    static final String CHECK_CONFIG_NAME_TAG = "check-config-name";
 
     /** Local flag tag. */
-    static final String LOCAL_TAG = "local"; //$NON-NLS-1$
+    static final String LOCAL_TAG = "local";
 
     /** Enabled flag tag. */
-    static final String ENABLED_TAG = "enabled"; //$NON-NLS-1$
+    static final String ENABLED_TAG = "enabled";
 
     /** File match pattern tag. */
-    static final String FILE_MATCH_PATTERN_TAG = "file-match-pattern"; //$NON-NLS-1$
+    static final String FILE_MATCH_PATTERN_TAG = "file-match-pattern";
 
     /** Fileset tag. */
-    static final String FILESET_TAG = "fileset"; //$NON-NLS-1$
+    static final String FILESET_TAG = "fileset";
 
     /** File format version tag. */
-    static final String FORMAT_VERSION_TAG = "file-format-version"; //$NON-NLS-1$
+    static final String FORMAT_VERSION_TAG = "file-format-version";
 
     /** Include pattern tag. */
-    static final String INCLUDE_PATTERN_TAG = "include-pattern"; //$NON-NLS-1$
+    static final String INCLUDE_PATTERN_TAG = "include-pattern";
 
     /** Match pattern tag. */
-    static final String MATCH_PATTERN_TAG = "match-pattern"; //$NON-NLS-1$
+    static final String MATCH_PATTERN_TAG = "match-pattern";
 
     /** Name attribute tag. */
-    static final String NAME_TAG = "name"; //$NON-NLS-1$
+    static final String NAME_TAG = "name";
 
     /** Filter tag. */
-    static final String FILTER_TAG = "filter"; //$NON-NLS-1$
+    static final String FILTER_TAG = "filter";
 
     /** Filter data tag. */
-    static final String FILTER_DATA_TAG = "filter-data"; //$NON-NLS-1$
+    static final String FILTER_DATA_TAG = "filter-data";
 
     /** Value tag. */
-    static final String VALUE_TAG = "value"; //$NON-NLS-1$
+    static final String VALUE_TAG = "value";
 
     /** Simple config flag tag. */
-    static final String SIMPLE_CONFIG_TAG = "simple-config"; //$NON-NLS-1$
+    static final String SIMPLE_CONFIG_TAG = "simple-config";
 
     /** Sync formatter flag tag. */
-    static final String SYNC_FORMATTER_TAG = "sync-formatter"; //$NON-NLS-1$
+    static final String SYNC_FORMATTER_TAG = "sync-formatter";
 
     private XMLTags() {
         // NOOP

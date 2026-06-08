@@ -61,8 +61,8 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
     private void retrieveFieldName(final IMarker marker) {
         try {
             final Map<String, Object> attributes = marker.getAttributes();
-            final int start = (Integer) attributes.get("charStart"); //$NON-NLS-1$
-            final int end = (Integer) attributes.get("charEnd"); //$NON-NLS-1$
+            final int start = (Integer) attributes.get("charStart");
+            final int end = (Integer) attributes.get("charEnd");
             final IFile resource = (IFile) marker.getResource();
             final InputStream in = resource.getContents();
             final byte[] buffer = new byte[end - start];

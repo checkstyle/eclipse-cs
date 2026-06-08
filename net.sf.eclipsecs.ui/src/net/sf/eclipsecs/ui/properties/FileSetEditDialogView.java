@@ -94,7 +94,7 @@ public final class FileSetEditDialogView extends Composite {
 
     public void setFileSet(FileSet fileSet) {
         // intitialize the name
-        commonArea.setText(fileSet.getName() != null ? fileSet.getName() : ""); //$NON-NLS-1$
+        commonArea.setText(fileSet.getName() != null ? fileSet.getName() : "");
 
         // init the check configuration combo
         if (fileSet.getCheckConfig() != null) {

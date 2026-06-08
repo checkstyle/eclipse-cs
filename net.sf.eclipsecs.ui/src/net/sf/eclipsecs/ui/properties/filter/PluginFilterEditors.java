@@ -42,10 +42,10 @@ public final class PluginFilterEditors {
     private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.ui.filtereditors";
 
     /** Constant for the name attribute. */
-    private static final String ATTR_FILTER = "filter"; //$NON-NLS-1$
+    private static final String ATTR_FILTER = "filter";
 
     /** Constant for the name attribute. */
-    private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
+    private static final String ATTR_CLASS = "class";
 
     /** The filter prototypes configured to the extension point. */
     private static Map<String, Class<? extends IFilterEditor>> sFilterEditorClasses;

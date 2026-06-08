@@ -44,7 +44,7 @@ public class CheckConfigurationLabelProvider extends LabelProvider {
     public String getText(Object element) {
         String text;
         if (element instanceof ICheckConfiguration checkConfig) {
-            text = checkConfig.getName() + " " //$NON-NLS-1$
+            text = checkConfig.getName() + " "
                 + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal
                     : Messages.CheckConfigurationLabelProvider_suffixLocal);
         }

@@ -142,7 +142,7 @@ public final class Messages extends NLS {
 
     public static String CheckstyleMarkerFilterDialog_msgEditRegex;
 
-    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.stats.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.stats.messages";
 
     static {
         // initialize resource bundle

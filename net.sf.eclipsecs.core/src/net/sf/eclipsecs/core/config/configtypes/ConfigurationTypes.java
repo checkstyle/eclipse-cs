@@ -42,25 +42,25 @@ public final class ConfigurationTypes {
 
     /** Constant for the extension point id. */
     private static final String CONFIGTYPES_EXTENSION_POINT =
-        CheckstylePlugin.PLUGIN_ID + ".configurationtypes"; //$NON-NLS-1$
+        CheckstylePlugin.PLUGIN_ID + ".configurationtypes";
 
     /** Constant for the name attribute. */
-    private static final String ATTR_NAME = "name"; //$NON-NLS-1$
+    private static final String ATTR_NAME = "name";
 
     /** Constant for the name attribute. */
-    private static final String ATTR_INTERNAL_NAME = "internal-name"; //$NON-NLS-1$
+    private static final String ATTR_INTERNAL_NAME = "internal-name";
 
     /** Constant for the class attribute. */
-    private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
+    private static final String ATTR_CLASS = "class";
 
     /** Constant for the creatable attribute. */
-    private static final String ATTR_CREATABLE = "creatable"; //$NON-NLS-1$
+    private static final String ATTR_CREATABLE = "creatable";
 
     /** Constant for the creatable attribute. */
-    private static final String ATTR_EDITABLE = "editable"; //$NON-NLS-1$
+    private static final String ATTR_EDITABLE = "editable";
 
     /** Constant for the creatable attribute. */
-    private static final String ATTR_CONFIGURABLE = "configurable"; //$NON-NLS-1$
+    private static final String ATTR_CONFIGURABLE = "configurable";
 
     /** The configuration types configured to the extension point. */
     private static final Map<String, IConfigurationType> CONFIGURATION_TYPES;
@@ -138,7 +138,7 @@ public final class ConfigurationTypes {
         List<IConfigurationType> configurableTypes = new ArrayList<>();
         configurableTypes.addAll(Arrays.asList(getCreatableConfigTypes()));
 
-        IConfigurationType remoteType = getByInternalName("remote"); //$NON-NLS-1$
+        final IConfigurationType remoteType = getByInternalName("remote");
         configurableTypes.remove(remoteType);
 
         return configurableTypes.toArray(new IConfigurationType[configurableTypes.size()]);

@@ -252,7 +252,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             String standardMessage = MetadataFactory.getStandardMessage(msgKey,
                 mRule.getMetaData().identity().internalName());
             if (standardMessage == null) {
-                standardMessage = ""; //$NON-NLS-1$
+                standardMessage = "";
             }
 
             String message = StringUtils.trimToNull(entry.getValue());
@@ -292,7 +292,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         // add resize support - for each different module the settings will be
         // stored separately
         SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
-            RuleConfigurationEditDialog.class.getName() + "#" //$NON-NLS-1$
+            RuleConfigurationEditDialog.class.getName() + "#"
                 + mRule.getMetaData().identity().internalName());
     }
 

@@ -96,8 +96,8 @@ public final class PropertyUtil {
                 final String propertyName = j.next();
                 fragment = aProps.resolve(propertyName);
                 if (fragment == null) {
-                    throw new CheckstyleException("Property ${" + propertyName //$NON-NLS-1$
-                        + "} has not been set"); //$NON-NLS-1$
+                    throw new CheckstyleException("Property ${" + propertyName
+                        + "} has not been set");
                 }
             }
             sb.append(fragment);
@@ -129,7 +129,7 @@ public final class PropertyUtil {
         int prev = 0;
         int pos;
         // search for the next instance of $ from the 'prev' position
-        while ((pos = aValue.indexOf("$", prev)) >= 0) { //$NON-NLS-1$
+        while ((pos = aValue.indexOf("$", prev)) >= 0) {
 
             // if there was any text before this, add it as a fragment
             // TODO, this check could be modified to go if pos>prev;
@@ -141,7 +141,7 @@ public final class PropertyUtil {
             // if we are at the end of the string, we tack on a $
             // then move past it
             if (pos == (aValue.length() - 1)) {
-                aFragments.add("$"); //$NON-NLS-1$
+                aFragments.add("$");
                 prev = pos + 1;
             } else if (aValue.charAt(pos + 1) != '{') {
                 // peek ahead to see if the next char is a property or not
@@ -149,7 +149,7 @@ public final class PropertyUtil {
                 // fragments.addElement(value.substring(pos + 1, pos + 2)); prev = pos + 2;
                 if (aValue.charAt(pos + 1) == '$') {
                     // backwards compatibility two $ map to one mode
-                    aFragments.add("$"); //$NON-NLS-1$
+                    aFragments.add("$");
                     prev = pos + 2;
                 } else {
                     // new behaviour: $X maps to $X for all values of X!='$'

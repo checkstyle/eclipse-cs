@@ -102,7 +102,7 @@ public final class Messages extends NLS {
 
     public static String TransformFormatterRulesJob_name;
 
-    private static final String BUNDLE_NAME = "net.sf.eclipsecs.core.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "net.sf.eclipsecs.core.messages";
 
     static {
         // initialize resource bundle

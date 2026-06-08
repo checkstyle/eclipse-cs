@@ -62,7 +62,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
 
     /** Resource bundle containing the token translations. */
     private static final ResourceBundle TOKEN_BUNDLE =
-        PropertyResourceBundle.getBundle("net.sf.eclipsecs.ui.config.token"); //$NON-NLS-1$
+        PropertyResourceBundle.getBundle("net.sf.eclipsecs.ui.config.token");
 
     /** The checkbox table viewer. */
     private CheckboxTableViewer mTable;
@@ -143,7 +143,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
 
     private List<String> getInitialValues() {
         List<String> result = new LinkedList<>();
-        StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ","); //$NON-NLS-1$
+        final StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ",");
         while (tokenizer.hasMoreTokens()) {
             result.add(tokenizer.nextToken().trim());
         }
@@ -170,7 +170,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
         List<String> result = new LinkedList<>();
 
         if (defaultValue != null) {
-            StringTokenizer tokenizer = new StringTokenizer(defaultValue, ","); //$NON-NLS-1$
+            final StringTokenizer tokenizer = new StringTokenizer(defaultValue, ",");
             while (tokenizer.hasMoreTokens()) {
                 result.add(tokenizer.nextToken().trim());
             }

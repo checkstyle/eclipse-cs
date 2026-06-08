@@ -72,7 +72,7 @@ public final class MetadataFactory {
     private static final String ECLIPSE_EXTENSION_CONFIG_FILE = "eclipse-metadata.yml";
 
     /** Name of the rules metadata XML file. */
-    private static final String METADATA_FILENAME = "checkstyle-metadata.xml"; //$NON-NLS-1$
+    private static final String METADATA_FILENAME = "checkstyle-metadata.xml";
 
     /** Metadata for the rule groups. */
     private static Map<String, RuleGroupMetadata> sRuleGroupMetadata;
@@ -316,10 +316,10 @@ public final class MetadataFactory {
                 try {
 
                     int endIndex = moduleClass.lastIndexOf('.');
-                    String messages = "messages"; //$NON-NLS-1$
+                    String messages = "messages";
                     if (endIndex >= 0) {
                         String packageName = moduleClass.substring(0, endIndex);
-                        messages = packageName + "." + messages; //$NON-NLS-1$
+                        messages = packageName + "." + messages;
                     }
                     ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
                         CheckstylePlugin.getPlatformLocale(),
@@ -375,7 +375,7 @@ public final class MetadataFactory {
                     parseMetadata(metadataStream, metadataBundle, groupId(metadataFile));
                 }
             } catch (DocumentException | IOException ex) {
-                CheckstyleLog.log(ex, "Could not read metadata " + metadataFile); //$NON-NLS-1$
+                CheckstyleLog.log(ex, "Could not read metadata " + metadataFile);
             }
         }
 

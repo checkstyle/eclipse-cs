@@ -104,8 +104,8 @@ public final class CheckConfigurationTester {
          * Properties that will be ignored, because they can always be resolved when the
          * configuration is used in the context of a project.
          */
-        private static final List<String> IGNORE_PROPS = Arrays.asList("basedir", //$NON-NLS-1$
-            "project_loc"); //$NON-NLS-1$
+        private static final List<String> IGNORE_PROPS = Arrays.asList("basedir",
+            "project_loc");
 
         /** The list of unresolved properties. */
         private List<ResolvableProperty> mUnresolvedProperties = new ArrayList<>();
@@ -123,7 +123,7 @@ public final class CheckConfigurationTester {
             }
             // return warning to prevent hiccups with properties used in module
             // severity. Bad hack, I know :-(
-            return "warning"; //$NON-NLS-1$
+            return "warning";
         }
 
         /**

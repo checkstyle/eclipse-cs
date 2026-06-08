@@ -524,14 +524,14 @@ public final class Auditor {
             }
             if (mAddModuleId && error.getModuleId() != null) {
                 if (prefix.length() > 0) {
-                    prefix.append(" - "); //$NON-NLS-1$
+                    prefix.append(" - ");
                 }
                 prefix.append(error.getModuleId());
             }
 
             StringBuilder buf = new StringBuilder();
             if (prefix.length() > 0) {
-                buf.append(prefix).append(": "); //$NON-NLS-1$
+                buf.append(prefix).append(": ");
             }
             buf.append(message);
 

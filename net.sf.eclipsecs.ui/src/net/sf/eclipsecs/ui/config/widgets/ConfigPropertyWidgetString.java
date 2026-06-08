@@ -82,7 +82,7 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
     public String getValue() {
         String result = mTextWidget.getText();
         if (result == null) {
-            result = ""; //$NON-NLS-1$
+            result = "";
         }
         return escape(result);
     }
@@ -109,6 +109,6 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
         ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
         String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+        mTextWidget.setText(defaultValue != null ? defaultValue : "");
     }
 }

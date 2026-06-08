@@ -48,10 +48,10 @@ import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
 public class CreateStatsJob extends Job {
 
     /** Regexp to find {0}-like strings. */
-    private static final Pattern REGEXP_HOLES = Pattern.compile("\\{[0-9]+(\\S)*\\}"); //$NON-NLS-1$
+    private static final Pattern REGEXP_HOLES = Pattern.compile("\\{[0-9]+(\\S)*\\}");
 
     /** Regexp to find suites of ' character. */
-    private static final Pattern REGEXP_QUOTE = Pattern.compile("'+"); //$NON-NLS-1$
+    private static final Pattern REGEXP_QUOTE = Pattern.compile("'+");
 
     /** The filter to analyze. */
     private final CheckstyleMarkerFilter mFilter;
@@ -181,8 +181,8 @@ public class CreateStatsJob extends Job {
      */
     public static String cleanMessage(String message) {
         // replacements
-        String finalMessage = REGEXP_HOLES.matcher(message).replaceAll("X"); //$NON-NLS-1$
-        finalMessage = REGEXP_QUOTE.matcher(finalMessage).replaceAll("'"); //$NON-NLS-1$
+        String finalMessage = REGEXP_HOLES.matcher(message).replaceAll("X");
+        finalMessage = REGEXP_QUOTE.matcher(finalMessage).replaceAll("'");
 
         return finalMessage;
     }

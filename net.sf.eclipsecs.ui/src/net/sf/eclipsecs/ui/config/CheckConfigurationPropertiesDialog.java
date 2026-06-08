@@ -329,7 +329,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                 config.setName(uniqueName);
                 break;
             } catch (CheckstylePluginException ex) {
-                uniqueName = checkConfigName + " (" + counter + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+                uniqueName = checkConfigName + " (" + counter + ")";
                 counter++;
             }
         }

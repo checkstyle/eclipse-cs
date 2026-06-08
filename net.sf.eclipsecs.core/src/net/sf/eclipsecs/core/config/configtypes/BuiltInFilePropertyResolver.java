@@ -37,10 +37,10 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 public class BuiltInFilePropertyResolver implements PropertyResolver {
 
     /** Constant for the samedir variable. */
-    private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
+    private static final String SAMEDIR_LOC = "samedir";
 
     /** Constant for the config_loc variable. */
-    private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
+    private static final String CONFIG_LOC = "config_loc";
 
     /** The built-in config file location. */
     private final String mBuiltInConfigLocation;
@@ -63,7 +63,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
         if (mBuiltInConfigLocation != null
             && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
 
-            int lastSlash = mBuiltInConfigLocation.lastIndexOf("/"); //$NON-NLS-1$
+            final int lastSlash = mBuiltInConfigLocation.lastIndexOf("/");
             if (lastSlash > -1) {
                 value = mBuiltInConfigLocation.substring(0, lastSlash + 1);
             }

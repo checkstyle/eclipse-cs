@@ -107,7 +107,7 @@ public final class AstQuickfixExecutor {
                         try {
                             bufferManager.disconnect(path, LocationKind.IFILE, null);
                         } catch (CoreException ex) {
-                            CheckstyleLog.log(ex, "Error processing quickfix"); //$NON-NLS-1$
+                            CheckstyleLog.log(ex, "Error processing quickfix");
                         }
                     }
                 }
