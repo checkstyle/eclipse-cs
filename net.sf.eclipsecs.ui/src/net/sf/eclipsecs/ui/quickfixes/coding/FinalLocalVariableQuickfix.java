@@ -37,50 +37,59 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
- * Quickfix implementation which adds final modifiers to parameters in method
- * declarations.
- *
+ * Quickfix implementation which adds final modifiers to parameters in method declarations.
  */
 public class FinalLocalVariableQuickfix extends AbstractASTResolution {
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new ASTVisitor() {
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(SingleVariableDeclaration node) {
-        return visit(node, node.getModifiers(), node.modifiers());
-      }
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new FinalLocalVariableQuickfixAstVisitor(markerStartOffset);
+    }
 
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(VariableDeclarationStatement node) {
-        return visit(node, node.getModifiers(), node.modifiers());
-      }
+    @Override
+    public String getDescription() {
+        return Messages.FinalLocalVariableQuickfix_description;
+    }
 
-      private boolean visit(ASTNode node, int bitModifiers, List<IExtendedModifier> modifiers) {
-        if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(bitModifiers)) {
-          modifiers.add(node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD));
+    @Override
+    public String getLabel() {
+        return Messages.FinalLocalVariableQuickfix_label;
+    }
+
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
+    }
+
+    private final class FinalLocalVariableQuickfixAstVisitor extends ASTVisitor {
+
+        /** The actual offset where the problem marker starts. */
+        private final int markerStartOffset;
+
+        private FinalLocalVariableQuickfixAstVisitor(int markerStartOffset) {
+            this.markerStartOffset = markerStartOffset;
         }
-        return true;
-      }
-    };
-  }
 
-  @Override
-  public String getDescription() {
-    return Messages.FinalLocalVariableQuickfix_description;
-  }
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean visit(SingleVariableDeclaration node) {
+            return visit(node, node.getModifiers(), node.modifiers());
+        }
 
-  @Override
-  public String getLabel() {
-    return Messages.FinalLocalVariableQuickfix_label;
-  }
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean visit(VariableDeclarationStatement node) {
+            return visit(node, node.getModifiers(), node.modifiers());
+        }
 
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
-  }
+        private boolean visit(ASTNode node, int bitModifiers,
+            List<IExtendedModifier> modifiers) {
+            if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(bitModifiers)) {
+                modifiers.add(node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD));
+            }
+            return true;
+        }
+    }
 
 }

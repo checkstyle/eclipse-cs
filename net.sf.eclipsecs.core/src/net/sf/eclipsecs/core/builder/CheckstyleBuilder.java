@@ -64,338 +64,344 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
-  /** Eclipse extension point ID for the builder. */
-  public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder";
+    /** Eclipse extension point ID for the builder. */
+    public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder";
 
-  /**
-   * Run the Checkstyle builder on all open projects in the workspace.
-   *
-   * @throws CheckstylePluginException
-   *           Error during the build.
-   */
-  public static void buildAllProjects() throws CheckstylePluginException {
-    IWorkspace workspace = ResourcesPlugin.getWorkspace();
-    IProject[] projects = workspace.getRoot().getProjects();
+    /**
+     * Run the Checkstyle builder on all open projects in the workspace.
+     *
+     * @throws CheckstylePluginException
+     *             Error during the build.
+     */
+    public static void buildAllProjects() throws CheckstylePluginException {
+        IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        IProject[] projects = workspace.getRoot().getProjects();
 
-    buildProjects(Arrays.asList(projects));
-  }
-
-  /**
-   * Builds all checkstyle enabled projects that are open from the given collection of projects.
-   *
-   * @param projects
-   *          the projects to build
-   * @throws CheckstylePluginException
-   *           Error during the build
-   */
-  public static void buildProjects(final Collection<IProject> projects)
-          throws CheckstylePluginException {
-
-    // Build only open projects with Checkstyle enabled
-    List<IProject> checkstyleProjects = new ArrayList<>();
-
-    for (IProject project : projects) {
-
-      try {
-        if (project.exists() && project.isOpen() && project.hasNature(CheckstyleNature.NATURE_ID)) {
-          checkstyleProjects.add(project);
-        }
-      } catch (CoreException ex) {
-        CheckstylePluginException.rethrow(ex);
-      }
+        buildProjects(Arrays.asList(projects));
     }
 
-    // uses the new Jobs API to run the build in the background
-    BuildProjectJob buildJob = new BuildProjectJob(
-            checkstyleProjects.toArray(new IProject[checkstyleProjects.size()]),
-            IncrementalProjectBuilder.FULL_BUILD);
-    buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
-    buildJob.schedule();
-  }
+    /**
+     * Builds all checkstyle enabled projects that are open from the given collection of projects.
+     *
+     * @param projects
+     *            the projects to build
+     * @throws CheckstylePluginException
+     *             Error during the build
+     */
+    public static void buildProjects(final Collection<IProject> projects)
+            throws CheckstylePluginException {
 
-  @Override
-  protected final IProject[] build(final int kind, @SuppressWarnings("rawtypes") final Map args,
-          final IProgressMonitor monitor) throws CoreException {
+        // Build only open projects with Checkstyle enabled
+        List<IProject> checkstyleProjects = new ArrayList<>();
 
-    // get the associated project for this builder
-    IProject project = getProject();
+        for (IProject project : projects) {
 
-    // remove project level error markers
-    project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
+            try {
+                if (project.exists() && project.isOpen()
+                    && project.hasNature(CheckstyleNature.NATURE_ID)) {
+                    checkstyleProjects.add(project);
+                }
+            }
+            catch (CoreException ex) {
+                CheckstylePluginException.rethrow(ex);
+            }
+        }
 
-    if (CheckstyleNature.hasCorrectBuilderOrder(project)) {
+        // uses the new Jobs API to run the build in the background
+        BuildProjectJob buildJob =
+            new BuildProjectJob(checkstyleProjects.toArray(new IProject[checkstyleProjects.size()]),
+                IncrementalProjectBuilder.FULL_BUILD);
+        buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
+        buildJob.schedule();
+    }
 
-      //
-      // get the project configuration
-      //
-      IProjectConfiguration config = null;
-      try {
-        config = ProjectConfigurationFactory.getConfiguration(project);
-      } catch (CheckstylePluginException ex) {
-        Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-                ex.getMessage() != null ? ex.getMessage()
+    @Override
+    protected final IProject[] build(final int kind, @SuppressWarnings("rawtypes") final Map args,
+        final IProgressMonitor monitor) throws CoreException {
+
+        // get the associated project for this builder
+        IProject project = getProject();
+
+        // remove project level error markers
+        project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
+
+        if (CheckstyleNature.hasCorrectBuilderOrder(project)) {
+
+            //
+            // get the project configuration
+            //
+            IProjectConfiguration config = null;
+            try {
+                config = ProjectConfigurationFactory.getConfiguration(project);
+            }
+            catch (CheckstylePluginException ex) {
+                Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+                    ex.getMessage() != null ? ex.getMessage()
                         : Messages.CheckstyleBuilder_msgErrorUnknown,
-                ex);
-        throw new CoreException(status);
-      }
+                    ex);
+                throw new CoreException(status);
+            }
 
-      Collection<IResource> resources;
+            Collection<IResource> resources;
 
-      // get the delta of the latest changes
-      IResourceDelta resourceDelta = getDelta(project);
+            // get the delta of the latest changes
+            IResourceDelta resourceDelta = getDelta(project);
 
-      // find the files for the build
-      if (resourceDelta != null) {
-        resources = getResources(resourceDelta, config.getFilters());
-      } else {
-        resources = getResources(project, config.getFilters());
-      }
+            // find the files for the build
+            if (resourceDelta != null) {
+                resources = getResources(resourceDelta, config.getFilters());
+            }
+            else {
+                resources = getResources(project, config.getFilters());
+            }
 
-      handleBuildSelection(resources, config, monitor, project, kind);
+            handleBuildSelection(resources, config, monitor, project, kind);
 
-    } else {
-
-      // the builder order is wrong. Refuse to check and create a error
-      // marker.
-
-      // remove all existing Checkstyle markers
-      project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
-
-      Map<String, Object> markerAttributes = new HashMap<>();
-      markerAttributes.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_HIGH));
-      markerAttributes.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
-      markerAttributes.put(IMarker.MESSAGE,
-              NLS.bind(Messages.CheckstyleBuilder_msgWrongBuilderOrder, project.getName()));
-
-      // enables own category under Java Problem Type
-      // setting for Problems view (RFE 1530366)
-      markerAttributes.put("categoryId", Integer.valueOf(999)); //$NON-NLS-1$
-
-      // create a marker for the actual resource
-      IMarker marker = project.createMarker(CheckstyleMarker.MARKER_ID);
-      marker.setAttributes(markerAttributes);
-    }
-
-    return new IProject[] {
-        project,
-    };
-  }
-
-  @Override
-  protected void clean(IProgressMonitor monitor) throws CoreException {
-    getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
-  }
-
-  /**
-   * Builds the selected resources.
-   *
-   * @param resources
-   *          the resources to build
-   * @param configuration
-   *          the project configuration
-   * @param monitor
-   *          the progress monitor
-   * @param project
-   *          the built project
-   * @param kind
-   *          the kind of build
-   * @param <T>
-   *          the resource type parameter
-   * @throws CoreException
-   *           if the build fails
-   */
-  public final <T extends IResource> void handleBuildSelection(final Collection<T> resources,
-          final IProjectConfiguration configuration, final IProgressMonitor monitor,
-          final IProject project, final int kind) throws CoreException {
-    // on full build remove all previous checkstyle markers
-    if (kind == IncrementalProjectBuilder.FULL_BUILD) {
-      project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
-    }
-
-    boolean backgroundFullBuild = CheckstylePluginPrefs
-            .getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD);
-
-    Map<ICheckConfiguration, Auditor> audits = resolveAudits(resources, configuration, project);
-
-    try {
-      // run all auditors
-      for (Auditor audit : audits.values()) {
-        if (monitor.isCanceled()) {
-          throw new OperationCanceledException();
-        }
-        if (!audit.hasFiles()) {
-          continue;
-        }
-        if (backgroundFullBuild && kind == FULL_BUILD) {
-          AuditorJob job = new AuditorJob(project, audit);
-          job.schedule();
-        } else {
-          audit.runAudit(project, monitor);
-        }
-      }
-    } catch (CheckstylePluginException ex) {
-      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-              ex.getLocalizedMessage(), ex);
-      throw new CoreException(status);
-    }
-  }
-
-  /**
-  * Build a set of auditors from the file sets of this project
-  * configuration.
-  * File sets that share the same check configuration merge into
-  * one Auditor.
-  *
-  * @param <T> the resource type
-  * @param resources the resources to audit
-  * @param configuration the project configuration
-  * @param project the project
-  * @return the map of check configurations to auditors
-  * @throws CoreException if an error occurs
-  */
-  private <T extends IResource> Map<ICheckConfiguration, Auditor> resolveAudits(
-          Collection<T> resources, IProjectConfiguration configuration,
-          IProject project) throws CoreException {
-    List<FileSet> enabledFileSets = configuration.getFileSets().stream()
-            .filter(FileSet::isEnabled)
-            .toList();
-
-    List<IFile> files = resources.stream()
-            .filter(resource -> resource instanceof IFile)
-            .map(resource -> (IFile) resource)
-            .toList();
-    Map<ICheckConfiguration, Auditor> audits = new HashMap<>();
-    for (FileSet fileSet : enabledFileSets) {
-      ICheckConfiguration checkConfig = fileSet.getCheckConfig();
-      if (checkConfig == null) {
-        throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                NLS.bind(Messages.errorNoCheckConfig, project.getName())));
-      }
-
-      Auditor audit = audits.computeIfAbsent(checkConfig, Auditor::new);
-
-      // check which files belong to the file set
-      List<IFile> filesInFileset = files.stream()
-              .filter(fileSet::includesFile)
-              .toList();
-
-      for (IFile file : filesInFileset) {
-        boolean hasCompileErrors = IMarker.SEVERITY_ERROR == file.findMaxProblemSeverity(
-                IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ZERO);
-
-        // remove markers on this file
-        file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
-
-        // avoid checkstyle parser errors being shown
-        if (hasCompileErrors) {
-          continue;
-        }
-
-        audit.addFile(file);
-
-        // remove markers from package to prevent
-        // packagehtml messages from accumulatin
-        file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
-      }
-    }
-    return audits;
-  }
-
-  /**
-   * Get the files for the build by analyzing the resource delta.
-   *
-   * @param delta
-   *          the delta of changes
-   * @param filters
-   *          filters to exclude elements from the check
-   * @return collection of files to build
-   * @throws CoreException
-   *           an unexpected error occurred
-   */
-  private Collection<IResource> getResources(final IResourceDelta delta,
-          final List<IFilter> filters) throws CoreException {
-
-    List<IResource> resources = new ArrayList<>();
-
-    for (IResourceDelta childDelta : delta.getAffectedChildren()) {
-      // check if a resource has changed
-      int deltaKind = childDelta.getKind();
-      if (deltaKind == IResourceDelta.ADDED || deltaKind == IResourceDelta.CHANGED) {
-
-        IResource child = childDelta.getResource();
-
-        // filter resources
-        boolean goesThrough = true;
-        for (IFilter filter : filters) {
-          if (filter.isEnabled() && !filter.accept(child)) {
-            goesThrough = false;
-            break;
-          }
-        }
-
-        // the child has made it through the filters
-        if (goesThrough) {
-
-          // add to the resources to check
-          resources.add(child);
         }
         else {
-          child.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_ZERO);
+
+            // the builder order is wrong. Refuse to check and create a error
+            // marker.
+
+            // remove all existing Checkstyle markers
+            project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
+
+            Map<String, Object> markerAttributes = new HashMap<>();
+            markerAttributes.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_HIGH));
+            markerAttributes.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
+            markerAttributes.put(IMarker.MESSAGE,
+                NLS.bind(Messages.CheckstyleBuilder_msgWrongBuilderOrder, project.getName()));
+
+            // enables own category under Java Problem Type
+            // setting for Problems view (RFE 1530366)
+            markerAttributes.put("categoryId", Integer.valueOf(999)); //$NON-NLS-1$
+
+            // create a marker for the actual resource
+            IMarker marker = project.createMarker(CheckstyleMarker.MARKER_ID);
+            marker.setAttributes(markerAttributes);
         }
 
-        // recurse over containers
-        if (child instanceof IContainer) {
-          resources.addAll(getResources(childDelta, filters));
-        }
-      }
+        return new IProject[] {
+            project,
+        };
     }
-    return resources;
-  }
 
-  /**
-   * Get all files to build from a given container.
-   *
-   * @param container
-   *          the container
-   * @param filters
-   *          filters to exclude elements from the check
-   * @return collection of files to build
-   * @throws CoreException
-   *           an unexpected error occurred
-   */
-  private Collection<IResource> getResources(final IContainer container,
-          final List<IFilter> filters) throws CoreException {
-
-    List<IResource> resources = new ArrayList<>();
-
-    // loop over children resources
-    for (IResource child : container.members()) {
-      // filter resources
-      boolean goesThrough = true;
-      for (IFilter filter : filters) {
-        if (filter.isEnabled() && !filter.accept(child)) {
-          goesThrough = false;
-          break;
-        }
-      }
-
-      // the child has made it through the filters
-      if (goesThrough) {
-
-        // add to the resources to check
-        resources.add(child);
-      }
-
-      // recurse over containers
-      if (child instanceof IContainer) {
-        resources.addAll(getResources((IContainer) child, filters));
-      }
+    @Override
+    protected void clean(IProgressMonitor monitor) throws CoreException {
+        getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
     }
-    return resources;
-  }
 
-  @Override
-  public ISchedulingRule getRule(int kind, Map<String, String> args) {
-    return getProject();
-  }
+    /**
+     * Builds the selected resources.
+     *
+     * @param resources
+     *            the resources to build
+     * @param configuration
+     *            the project configuration
+     * @param monitor
+     *            the progress monitor
+     * @param project
+     *            the built project
+     * @param kind
+     *            the kind of build
+     * @param <T>
+     *            the resource type parameter
+     * @throws CoreException
+     *             if the build fails
+     */
+    public final <T extends IResource> void handleBuildSelection(final Collection<T> resources,
+        final IProjectConfiguration configuration, final IProgressMonitor monitor,
+        final IProject project, final int kind) throws CoreException {
+        // on full build remove all previous checkstyle markers
+        if (kind == IncrementalProjectBuilder.FULL_BUILD) {
+            project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
+        }
+
+        boolean backgroundFullBuild =
+            CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD);
+
+        Map<ICheckConfiguration, Auditor> audits = resolveAudits(resources, configuration, project);
+
+        try {
+            // run all auditors
+            for (Auditor audit : audits.values()) {
+                if (monitor.isCanceled()) {
+                    throw new OperationCanceledException();
+                }
+                if (!audit.hasFiles()) {
+                    continue;
+                }
+                if (backgroundFullBuild && kind == FULL_BUILD) {
+                    AuditorJob job = new AuditorJob(project, audit);
+                    job.schedule();
+                }
+                else {
+                    audit.runAudit(project, monitor);
+                }
+            }
+        }
+        catch (CheckstylePluginException ex) {
+            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+                ex.getLocalizedMessage(), ex);
+            throw new CoreException(status);
+        }
+    }
+
+    /**
+     * Build a set of auditors from the file sets of this project configuration. File sets that
+     * share the same check configuration merge into one Auditor.
+     *
+     * @param <T>
+     *            the resource type
+     * @param resources
+     *            the resources to audit
+     * @param configuration
+     *            the project configuration
+     * @param project
+     *            the project
+     * @return the map of check configurations to auditors
+     * @throws CoreException
+     *             if an error occurs
+     */
+    private <T extends IResource> Map<ICheckConfiguration, Auditor> resolveAudits(
+        Collection<T> resources, IProjectConfiguration configuration, IProject project)
+            throws CoreException {
+        List<FileSet> enabledFileSets =
+            configuration.getFileSets().stream().filter(FileSet::isEnabled).toList();
+
+        List<IFile> files = resources.stream().filter(resource -> resource instanceof IFile)
+            .map(resource -> (IFile) resource).toList();
+        Map<ICheckConfiguration, Auditor> audits = new HashMap<>();
+        for (FileSet fileSet : enabledFileSets) {
+            ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+            if (checkConfig == null) {
+                throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                    NLS.bind(Messages.errorNoCheckConfig, project.getName())));
+            }
+
+            Auditor audit = audits.computeIfAbsent(checkConfig, Auditor::new);
+
+            // check which files belong to the file set
+            List<IFile> filesInFileset = files.stream().filter(fileSet::includesFile).toList();
+
+            for (IFile file : filesInFileset) {
+                boolean hasCompileErrors = IMarker.SEVERITY_ERROR == file.findMaxProblemSeverity(
+                    IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ZERO);
+
+                // remove markers on this file
+                file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
+
+                // avoid checkstyle parser errors being shown
+                if (hasCompileErrors) {
+                    continue;
+                }
+
+                audit.addFile(file);
+
+                // remove markers from package to prevent
+                // packagehtml messages from accumulatin
+                file.getParent().deleteMarkers(CheckstyleMarker.MARKER_ID, false,
+                    IResource.DEPTH_ZERO);
+            }
+        }
+        return audits;
+    }
+
+    /**
+     * Get the files for the build by analyzing the resource delta.
+     *
+     * @param delta
+     *            the delta of changes
+     * @param filters
+     *            filters to exclude elements from the check
+     * @return collection of files to build
+     * @throws CoreException
+     *             an unexpected error occurred
+     */
+    private Collection<IResource> getResources(final IResourceDelta delta,
+        final List<IFilter> filters) throws CoreException {
+
+        List<IResource> resources = new ArrayList<>();
+
+        for (IResourceDelta childDelta : delta.getAffectedChildren()) {
+            // check if a resource has changed
+            int deltaKind = childDelta.getKind();
+            if (deltaKind == IResourceDelta.ADDED || deltaKind == IResourceDelta.CHANGED) {
+
+                IResource child = childDelta.getResource();
+
+                // filter resources
+                boolean goesThrough = true;
+                for (IFilter filter : filters) {
+                    if (filter.isEnabled() && !filter.accept(child)) {
+                        goesThrough = false;
+                        break;
+                    }
+                }
+
+                // the child has made it through the filters
+                if (goesThrough) {
+
+                    // add to the resources to check
+                    resources.add(child);
+                }
+                else {
+                    child.deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_ZERO);
+                }
+
+                // recurse over containers
+                if (child instanceof IContainer) {
+                    resources.addAll(getResources(childDelta, filters));
+                }
+            }
+        }
+        return resources;
+    }
+
+    /**
+     * Get all files to build from a given container.
+     *
+     * @param container
+     *            the container
+     * @param filters
+     *            filters to exclude elements from the check
+     * @return collection of files to build
+     * @throws CoreException
+     *             an unexpected error occurred
+     */
+    private Collection<IResource> getResources(final IContainer container,
+        final List<IFilter> filters) throws CoreException {
+
+        List<IResource> resources = new ArrayList<>();
+
+        // loop over children resources
+        for (IResource child : container.members()) {
+            // filter resources
+            boolean goesThrough = true;
+            for (IFilter filter : filters) {
+                if (filter.isEnabled() && !filter.accept(child)) {
+                    goesThrough = false;
+                    break;
+                }
+            }
+
+            // the child has made it through the filters
+            if (goesThrough) {
+
+                // add to the resources to check
+                resources.add(child);
+            }
+
+            // recurse over containers
+            if (child instanceof IContainer) {
+                resources.addAll(getResources((IContainer) child, filters));
+            }
+        }
+        return resources;
+    }
+
+    @Override
+    public ISchedulingRule getRule(int kind, Map<String, String> args) {
+        return getProject();
+    }
 }

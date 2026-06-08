@@ -26,33 +26,33 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class NeedBracesTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void needBracesIf() throws Exception {
-    testQuickfix("NeedBracesInputIf.xml", new NeedBracesQuickfix());
-  }
+    @Test
+    void needBracesIf() throws Exception {
+        testQuickfix("NeedBracesInputIf.xml", new NeedBracesQuickfix());
+    }
 
-  @Test
-  void needBracesElse() throws Exception {
-    testQuickfix("NeedBracesInputElse.xml", new NeedBracesQuickfix());
-  }
+    @Test
+    void needBracesElse() throws Exception {
+        testQuickfix("NeedBracesInputElse.xml", new NeedBracesQuickfix());
+    }
 
-  @Test
-  void needBracesElseIf() throws Exception {
-    testQuickfix("NeedBracesInputElseIf.xml", new NeedBracesQuickfix());
-  }
+    @Test
+    void needBracesElseIf() throws Exception {
+        testQuickfix("NeedBracesInputElseIf.xml", new NeedBracesQuickfix());
+    }
 
-  @Test
-  void needBracesFor() throws Exception {
-    testQuickfix("NeedBracesInputFor.xml", new NeedBracesQuickfix());
-  }
+    @Test
+    void needBracesFor() throws Exception {
+        testQuickfix("NeedBracesInputFor.xml", new NeedBracesQuickfix());
+    }
 
-  @Test
-  void needBracesWhile() throws Exception {
-    testQuickfix("NeedBracesInputWhile.xml", new NeedBracesQuickfix());
-  }
+    @Test
+    void needBracesWhile() throws Exception {
+        testQuickfix("NeedBracesInputWhile.xml", new NeedBracesQuickfix());
+    }
 
-  @Test
-  void needBracesDoWhile() throws Exception {
-    testQuickfix("NeedBracesInputDoWhile.xml", new NeedBracesQuickfix());
-  }
+    @Test
+    void needBracesDoWhile() throws Exception {
+        testQuickfix("NeedBracesInputDoWhile.xml", new NeedBracesQuickfix());
+    }
 }

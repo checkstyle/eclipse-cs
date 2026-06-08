@@ -50,130 +50,133 @@ import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
 
 public class FilterSettings extends Composite {
 
-  public FilterSettings(Composite parent, int style, IProject project, List<IFilter> filters,
-          Runnable markDirty) {
-    super(parent, style);
-    setLayout(new FillLayout());
+    public FilterSettings(Composite parent, int style, IProject project, List<IFilter> filters,
+        Runnable markDirty) {
+        super(parent, style);
+        setLayout(new FillLayout());
 
-    Group group = new Group(this, style);
+        Group group = new Group(this, style);
 
-    group.setText(Messages.CheckstylePropertyPage_titleFilterGroup);
-    GridLayoutFactory.fillDefaults().numColumns(2).applyTo(group);
+        group.setText(Messages.CheckstylePropertyPage_titleFilterGroup);
+        GridLayoutFactory.fillDefaults().numColumns(2).applyTo(group);
 
-    CheckboxTableViewer filterList = createFilterList(group, project);
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(filterList.getTable());
+        CheckboxTableViewer filterList = createFilterList(group, project);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(filterList.getTable());
 
-    Button btnEditFilter = new Button(group, SWT.PUSH);
-    GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).applyTo(btnEditFilter);
+        Button btnEditFilter = new Button(group, SWT.PUSH);
+        GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).applyTo(btnEditFilter);
 
-    // Description
-    Label lblDesc = new Label(group, SWT.LEFT);
-    lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
-    GridDataFactory.fillDefaults().span(2, 1).applyTo(lblDesc);
+        // Description
+        Label lblDesc = new Label(group, SWT.LEFT);
+        lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
+        GridDataFactory.fillDefaults().span(2, 1).applyTo(lblDesc);
 
-    Text txtFilterDescription = new Text(group,
+        Text txtFilterDescription = new Text(group,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-    GridDataFactory.fillDefaults().span(2, 1).grab(true, true).hint(SWT.DEFAULT, 100)
+        GridDataFactory.fillDefaults().span(2, 1).grab(true, true).hint(SWT.DEFAULT, 100)
             .applyTo(txtFilterDescription);
 
-    filterList.addSelectionChangedListener(event -> {
-      if (event.getStructuredSelection().getFirstElement() instanceof IFilter filterDef) {
-        txtFilterDescription.setText(filterDef.getDescription());
-        // activate edit button
-        btnEditFilter.setEnabled(PluginFilterEditors.hasEditor(filterDef));
-      }
-    });
-
-    btnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
-    btnEditFilter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      openFilterEditor(filterList.getSelection(), filterList, project);
-      markDirty.run();
-    }));
-
-    // intialize filter list
-    filterList.setInput(filters);
-
-    btnEditFilter.setEnabled(false);
-  }
-
-  private CheckboxTableViewer createFilterList(Group group, IProject project) {
-    CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(group, SWT.BORDER);
-    filterList.setLabelProvider(new FilterListLabelProvider());
-    filterList.setContentProvider(ArrayContentProvider.getInstance());
-    filterList.setCheckStateProvider(new FilterListCheckStateProvider());
-    filterList.addDoubleClickListener(
-            event -> openFilterEditor(event.getSelection(), filterList, project));
-    filterList.addCheckStateListener(event -> {
-      if (event.getElement() instanceof IFilter filter) {
-        if (filter.isReadonly()) {
-          event.getCheckable().setChecked(event.getElement(), true);
-        } else {
-          filter.setEnabled(event.getChecked());
-        }
-      }
-    });
-    return filterList;
-  }
-
-  /**
-   * Open the filter editor on a given selection of the list.
-   *
-   * @param selection
-   *          the selection
-   * @param filterList
-   *          the filter list
-   * @param project
-   *          the project
-   */
-  private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList,
-          IProject project) {
-    if (selection instanceof IStructuredSelection structuredSelection) {
-      if (structuredSelection.getFirstElement() instanceof IFilter filterDef) {
-        try {
-          if (PluginFilterEditors.hasEditor(filterDef)) {
-            IFilterEditor editableFilter = PluginFilterEditors.getNewEditor(filterDef);
-            editableFilter.setInputProject(project);
-            editableFilter.setFilterData(filterDef.getFilterData());
-
-            if (Window.OK == editableFilter.openEditor(getShell())) {
-              filterDef.setFilterData(editableFilter.getFilterData());
-              filterList.refresh();
+        filterList.addSelectionChangedListener(event -> {
+            if (event.getStructuredSelection().getFirstElement() instanceof IFilter filterDef) {
+                txtFilterDescription.setText(filterDef.getDescription());
+                // activate edit button
+                btnEditFilter.setEnabled(PluginFilterEditors.hasEditor(filterDef));
             }
-          }
-        } catch (CheckstylePluginException ex) {
-          CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+        });
+
+        btnEditFilter.setText(Messages.CheckstylePropertyPage_btnChangeFilter);
+        btnEditFilter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            openFilterEditor(filterList.getSelection(), filterList, project);
+            markDirty.run();
+        }));
+
+        // intialize filter list
+        filterList.setInput(filters);
+
+        btnEditFilter.setEnabled(false);
+    }
+
+    private CheckboxTableViewer createFilterList(Group group, IProject project) {
+        CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(group, SWT.BORDER);
+        filterList.setLabelProvider(new FilterListLabelProvider());
+        filterList.setContentProvider(ArrayContentProvider.getInstance());
+        filterList.setCheckStateProvider(new FilterListCheckStateProvider());
+        filterList.addDoubleClickListener(
+            event -> openFilterEditor(event.getSelection(), filterList, project));
+        filterList.addCheckStateListener(event -> {
+            if (event.getElement() instanceof IFilter filter) {
+                if (filter.isReadonly()) {
+                    event.getCheckable().setChecked(event.getElement(), true);
+                }
+                else {
+                    filter.setEnabled(event.getChecked());
+                }
+            }
+        });
+        return filterList;
+    }
+
+    /**
+     * Open the filter editor on a given selection of the list.
+     *
+     * @param selection
+     *            the selection
+     * @param filterList
+     *            the filter list
+     * @param project
+     *            the project
+     */
+    private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList,
+        IProject project) {
+        if (selection instanceof IStructuredSelection structuredSelection) {
+            if (structuredSelection.getFirstElement() instanceof IFilter filterDef) {
+                try {
+                    if (PluginFilterEditors.hasEditor(filterDef)) {
+                        IFilterEditor editableFilter = PluginFilterEditors.getNewEditor(filterDef);
+                        editableFilter.setInputProject(project);
+                        editableFilter.setFilterData(filterDef.getFilterData());
+
+                        if (Window.OK == editableFilter.openEditor(getShell())) {
+                            filterDef.setFilterData(editableFilter.getFilterData());
+                            filterList.refresh();
+                        }
+                    }
+                }
+                catch (CheckstylePluginException ex) {
+                    CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+                }
+            }
         }
-      }
     }
-  }
 
-  private static final class FilterListLabelProvider extends LabelProvider {
-    @Override
-    public String getText(Object element) {
-      StringBuilder buf = new StringBuilder();
-      if (element instanceof IFilter filter) {
-        buf.append(filter.getName());
-        if (filter.getPresentableFilterData() != null) {
-          buf.append(": ").append(filter.getPresentableFilterData());
+    private static final class FilterListLabelProvider extends LabelProvider {
+        @Override
+        public String getText(Object element) {
+            StringBuilder buf = new StringBuilder();
+            if (element instanceof IFilter filter) {
+                buf.append(filter.getName());
+                if (filter.getPresentableFilterData() != null) {
+                    buf.append(": ").append(filter.getPresentableFilterData());
+                }
+            }
+            else {
+                buf.append(super.getText(element));
+            }
+            return buf.toString();
         }
-      } else {
-        buf.append(super.getText(element));
-      }
-      return buf.toString();
-    }
-  }
-
-  private static final class FilterListCheckStateProvider implements ICheckStateProvider {
-
-    @Override
-    public boolean isChecked(Object element) {
-      return ((IFilter) element).isEnabled();
     }
 
-    @Override
-    public boolean isGrayed(Object element) {
-      return ((IFilter) element).isReadonly();
-    }
+    private static final class FilterListCheckStateProvider implements ICheckStateProvider {
 
-  }
+        @Override
+        public boolean isChecked(Object element) {
+            return ((IFilter) element).isEnabled();
+        }
+
+        @Override
+        public boolean isGrayed(Object element) {
+            return ((IFilter) element).isReadonly();
+        }
+
+    }
 }

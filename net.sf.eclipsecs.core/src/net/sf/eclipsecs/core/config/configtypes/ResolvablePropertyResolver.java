@@ -32,34 +32,35 @@ import net.sf.eclipsecs.core.config.ResolvableProperty;
  */
 public class ResolvablePropertyResolver implements PropertyResolver {
 
-  /** The check configuration to resolve from. */
-  private ICheckConfiguration mCheckConfiguration;
+    /** The check configuration to resolve from. */
+    private ICheckConfiguration mCheckConfiguration;
 
-  /**
-   * Creates the resolver for the given check configuration.
-   *
-   * @param checkConfiguration
-   *          the check configuration
-   */
-  public ResolvablePropertyResolver(ICheckConfiguration checkConfiguration) {
-    mCheckConfiguration = checkConfiguration;
-  }
-
-  @Override
-  public String resolve(String aName) {
-
-    String value = null;
-
-    List<ResolvableProperty> resolvableProperties = mCheckConfiguration.getResolvableProperties();
-    for (ResolvableProperty prop : resolvableProperties) {
-
-      if (aName.equals(prop.getPropertyName())) {
-        value = prop.getValue();
-        break;
-      }
+    /**
+     * Creates the resolver for the given check configuration.
+     *
+     * @param checkConfiguration
+     *            the check configuration
+     */
+    public ResolvablePropertyResolver(ICheckConfiguration checkConfiguration) {
+        mCheckConfiguration = checkConfiguration;
     }
 
-    return value;
-  }
+    @Override
+    public String resolve(String aName) {
+
+        String value = null;
+
+        List<ResolvableProperty> resolvableProperties =
+            mCheckConfiguration.getResolvableProperties();
+        for (ResolvableProperty prop : resolvableProperties) {
+
+            if (aName.equals(prop.getPropertyName())) {
+                value = prop.getValue();
+                break;
+            }
+        }
+
+        return value;
+    }
 
 }

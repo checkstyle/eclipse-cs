@@ -35,80 +35,80 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
  */
 public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
 
-  /** Plain apostrophe constant. */
-  private static final String APOSTROPHE_PLAIN = "'";
-  /** Escaped apostrophe constant. */
-  private static final String APOSTROPHE_ESCAPED = "''";
-  /** The text widget. */
-  private Text mTextWidget;
+    /** Plain apostrophe constant. */
+    private static final String APOSTROPHE_PLAIN = "'";
+    /** Escaped apostrophe constant. */
+    private static final String APOSTROPHE_ESCAPED = "''";
+    /** The text widget. */
+    private Text mTextWidget;
 
-  /**
-   * Creates the widget.
-   *
-   * @param parent
-   *          the parent composite
-   * @param prop
-   *          the property
-   */
-  protected ConfigPropertyWidgetString(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-  }
-
-  public static ConfigPropertyWidgetString create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetString(parent, prop);
-  }
-
-  @Override
-  protected Control getValueWidget(Composite parent) {
-
-    if (mTextWidget == null) {
-
-      //
-      // Create a text entry field.
-      //
-      mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
-      mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-      String initValue = getInitValue();
-      if (initValue != null) {
-        mTextWidget.setText(unescape(initValue));
-      }
+    /**
+     * Creates the widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     */
+    protected ConfigPropertyWidgetString(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
     }
 
-    return mTextWidget;
-  }
-
-  @Override
-  public String getValue() {
-    String result = mTextWidget.getText();
-    if (result == null) {
-      result = ""; //$NON-NLS-1$
+    public static ConfigPropertyWidgetString create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetString(parent, prop);
     }
-    return escape(result);
-  }
 
-  private String unescape(String text) {
-    String escapedText = text;
-    // custom messages use MessageFormat, single quote is escaped as 2 single quotes there
-    if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
-      escapedText = text.replace(APOSTROPHE_ESCAPED, APOSTROPHE_PLAIN);
+    @Override
+    protected Control getValueWidget(Composite parent) {
+
+        if (mTextWidget == null) {
+
+            //
+            // Create a text entry field.
+            //
+            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+            String initValue = getInitValue();
+            if (initValue != null) {
+                mTextWidget.setText(unescape(initValue));
+            }
+        }
+
+        return mTextWidget;
     }
-    return escapedText;
-  }
 
-  private String escape(String text) {
-    String escapedText = text;
-    if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
-      escapedText = text.replace(APOSTROPHE_PLAIN, APOSTROPHE_ESCAPED);
+    @Override
+    public String getValue() {
+        String result = mTextWidget.getText();
+        if (result == null) {
+            result = ""; //$NON-NLS-1$
+        }
+        return escape(result);
     }
-    return escapedText;
-  }
 
-  @Override
-  public void restorePropertyDefault() {
-    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+    private String unescape(String text) {
+        String escapedText = text;
+        // custom messages use MessageFormat, single quote is escaped as 2 single quotes there
+        if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
+            escapedText = text.replace(APOSTROPHE_ESCAPED, APOSTROPHE_PLAIN);
+        }
+        return escapedText;
+    }
+
+    private String escape(String text) {
+        String escapedText = text;
+        if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {
+            escapedText = text.replace(APOSTROPHE_PLAIN, APOSTROPHE_ESCAPED);
+        }
+        return escapedText;
+    }
+
+    @Override
+    public void restorePropertyDefault() {
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-    mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
-  }
+        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+    }
 }

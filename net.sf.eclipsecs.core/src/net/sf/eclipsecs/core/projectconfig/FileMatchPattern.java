@@ -34,129 +34,129 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class FileMatchPattern implements Cloneable {
 
-  /** Whether this is an include pattern. */
-  private boolean isIncludePattern = true;
+    /** Whether this is an include pattern. */
+    private boolean isIncludePattern = true;
 
-  /** The compiled regex pattern. */
-  private Pattern regexPattern;
+    /** The compiled regex pattern. */
+    private Pattern regexPattern;
 
-  /** The pattern string. */
-  private String patternString;
+    /** The pattern string. */
+    private String patternString;
 
-  /**
-   * Construct a new <code>FileMatchPattern</code>.
-   *
-   * @param pattern
-   *          The new pattern.
-   * @throws CheckstylePluginException
-   *           Error during processing
-   */
-  public FileMatchPattern(String pattern) throws CheckstylePluginException {
-    setMatchPattern(pattern);
-  }
-
-  /**
-   * Returns the match pattern.
-   *
-   * @return String
-   */
-  public String getMatchPattern() {
-    return regexPattern.pattern();
-  }
-
-  /**
-   * Sets the match pattern.
-   *
-   * @param pattern
-   *          The match pattern to set
-   * @throws CheckstylePluginException
-   *           Error during processing
-   */
-  public final void setMatchPattern(String pattern) throws CheckstylePluginException {
-    if (pattern == null || pattern.trim().length() == 0) {
-      throw new CheckstylePluginException(Messages.errorEmptyPattern);
-    }
-    try {
-      regexPattern = Pattern.compile(pattern);
-      patternString = pattern;
-    } catch (PatternSyntaxException ex) {
-      // wrap the exception
-      CheckstylePluginException.rethrow(ex);
-    }
-  }
-
-  /**
-   * Tests a file name to see if it matches the pattern.
-   *
-   * @param fileName
-   *          File name to be tested.
-   * @return <code>true</code>= match, <code>false</code>= no match.
-   */
-  public boolean isMatch(String fileName) {
-    boolean result = false;
-
-    Matcher matcher = regexPattern.matcher(fileName);
-    result = matcher.find();
-
-    return result;
-  }
-
-  /**
-   * Returns the isIncludePattern.
-   *
-   * @return boolean
-   */
-  public boolean isIncludePattern() {
-    return isIncludePattern;
-  }
-
-  /**
-   * Sets the isIncludePattern.
-   *
-   * @param isIncludePattern
-   *          The isIncludePattern to set
-   */
-  public void setIsIncludePattern(boolean isIncludePattern) {
-    this.isIncludePattern = isIncludePattern;
-  }
-
-  /**
-   * Clone the object.
-   *
-   * @return The clone
-   */
-  @Override
-  public FileMatchPattern clone() {
-    try {
-      return (FileMatchPattern) super.clone();
-    } catch (CloneNotSupportedException ex) {
-      // should never happen
-      throw new InternalError(ex);
-    }
-  }
-
-  @Override
-  public boolean equals(Object obj) {
-    if (obj == null || !(obj instanceof FileMatchPattern)) {
-      return false;
-    }
-    if (this == obj) {
-      return true;
+    /**
+     * Construct a new <code>FileMatchPattern</code>.
+     *
+     * @param pattern
+     *            The new pattern.
+     * @throws CheckstylePluginException
+     *             Error during processing
+     */
+    public FileMatchPattern(String pattern) throws CheckstylePluginException {
+        setMatchPattern(pattern);
     }
 
-    FileMatchPattern rhs = (FileMatchPattern) obj;
-    return Objects.equals(isIncludePattern, rhs.isIncludePattern)
+    /**
+     * Returns the match pattern.
+     *
+     * @return String
+     */
+    public String getMatchPattern() {
+        return regexPattern.pattern();
+    }
+
+    /**
+     * Sets the match pattern.
+     *
+     * @param pattern
+     *            The match pattern to set
+     * @throws CheckstylePluginException
+     *             Error during processing
+     */
+    public final void setMatchPattern(String pattern) throws CheckstylePluginException {
+        if (pattern == null || pattern.trim().length() == 0) {
+            throw new CheckstylePluginException(Messages.errorEmptyPattern);
+        }
+        try {
+            regexPattern = Pattern.compile(pattern);
+            patternString = pattern;
+        } catch (PatternSyntaxException ex) {
+            // wrap the exception
+            CheckstylePluginException.rethrow(ex);
+        }
+    }
+
+    /**
+     * Tests a file name to see if it matches the pattern.
+     *
+     * @param fileName
+     *            File name to be tested.
+     * @return <code>true</code>= match, <code>false</code>= no match.
+     */
+    public boolean isMatch(String fileName) {
+        boolean result = false;
+
+        Matcher matcher = regexPattern.matcher(fileName);
+        result = matcher.find();
+
+        return result;
+    }
+
+    /**
+     * Returns the isIncludePattern.
+     *
+     * @return boolean
+     */
+    public boolean isIncludePattern() {
+        return isIncludePattern;
+    }
+
+    /**
+     * Sets the isIncludePattern.
+     *
+     * @param isIncludePattern
+     *            The isIncludePattern to set
+     */
+    public void setIsIncludePattern(boolean isIncludePattern) {
+        this.isIncludePattern = isIncludePattern;
+    }
+
+    /**
+     * Clone the object.
+     *
+     * @return The clone
+     */
+    @Override
+    public FileMatchPattern clone() {
+        try {
+            return (FileMatchPattern) super.clone();
+        } catch (CloneNotSupportedException ex) {
+            // should never happen
+            throw new InternalError(ex);
+        }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == null || !(obj instanceof FileMatchPattern)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+
+        FileMatchPattern rhs = (FileMatchPattern) obj;
+        return Objects.equals(isIncludePattern, rhs.isIncludePattern)
             && Objects.equals(patternString, rhs.patternString);
-  }
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(isIncludePattern, patternString);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(isIncludePattern, patternString);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this).add("patternString", patternString)
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("patternString", patternString)
             .add("isIncludePattern", isIncludePattern).toString();
-  }
+    }
 }

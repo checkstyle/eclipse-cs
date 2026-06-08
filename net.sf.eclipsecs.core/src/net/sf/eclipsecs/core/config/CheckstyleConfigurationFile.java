@@ -34,134 +34,135 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class CheckstyleConfigurationFile {
 
-  /** The checkstyle configuration file bytes. */
-  private byte[] mCheckConfigFileBytes;
+    /** The checkstyle configuration file bytes. */
+    private byte[] mCheckConfigFileBytes;
 
-  /** The additional property bundle bytes. */
-  private byte[] mAdditionalPropertyBundleBytes;
+    /** The additional property bundle bytes. */
+    private byte[] mAdditionalPropertyBundleBytes;
 
-  /** The modification timestamp of the configuration file. */
-  private long mModificationStamp;
+    /** The modification timestamp of the configuration file. */
+    private long mModificationStamp;
 
-  /** The resolved configuration file URL. */
-  private URL mResolvedConfigFileURL;
+    /** The resolved configuration file URL. */
+    private URL mResolvedConfigFileURL;
 
-  /** The property resolver. */
-  private PropertyResolver mPropertyResolver;
+    /** The property resolver. */
+    private PropertyResolver mPropertyResolver;
 
-  /**
-   * Returns an input stream containing the contents of the Checkstyle configuration file.
-   *
-   * @return the input stream containing the Checkstyle configuration file
-   */
-  public ByteArrayInputStream getCheckConfigFileStream() {
-    return new ByteArrayInputStream(mCheckConfigFileBytes);
-  }
-
-  /**
-   * Returns a SAX input source of the Checkstyle configuration file. The resolved URL of the
-   * configuration file will be set as SystemId to allow for parser resolution of relative entities.
-   *
-   * @return a SAX input source of the
-   */
-  public InputSource getCheckConfigFileInputSource() {
-
-    InputSource input = new InputSource(getCheckConfigFileStream());
-    input.setSystemId(getResolvedConfigFileURL().toString());
-
-    return input;
-  }
-
-  /**
-   * Sets the content of the Checkstyle configuration file as a byte array.
-   *
-   * @param checkConfigFileBytes
-   *          the Checkstyle configuration file contents
-   */
-  public void setCheckConfigFileBytes(byte[] checkConfigFileBytes) {
-    mCheckConfigFileBytes = checkConfigFileBytes;
-  }
-
-  /**
-   * Returns an <code>ByteArrayInputStream</code> of the addional property bundle.
-   *
-   * @return the stream containing the bundle data
-   */
-  public ByteArrayInputStream getAdditionalPropertiesBundleStream() {
-    ByteArrayInputStream stream = null;
-    if (mAdditionalPropertyBundleBytes != null) {
-      stream = new ByteArrayInputStream(mAdditionalPropertyBundleBytes);
+    /**
+     * Returns an input stream containing the contents of the Checkstyle configuration file.
+     *
+     * @return the input stream containing the Checkstyle configuration file
+     */
+    public ByteArrayInputStream getCheckConfigFileStream() {
+        return new ByteArrayInputStream(mCheckConfigFileBytes);
     }
-    return stream;
-  }
 
-  /**
-   * Sets the content of an addtional property bundle which contains values for property references
-   * in the Checkstyle configuration file.
-   *
-   * @param additionalPropertyBundleBytes
-   *          the content of the additional property bundle
-   */
-  public void setAdditionalPropertyBundleBytes(byte[] additionalPropertyBundleBytes) {
-    mAdditionalPropertyBundleBytes = additionalPropertyBundleBytes;
-  }
+    /**
+     * Returns a SAX input source of the Checkstyle configuration file. The resolved URL of the
+     * configuration file will be set as SystemId to allow for parser resolution of relative
+     * entities.
+     *
+     * @return a SAX input source of the
+     */
+    public InputSource getCheckConfigFileInputSource() {
 
-  /**
-   * Returns the modification timestamp or 0 if none can be determined.
-   *
-   * @return the modification timestamp of the Checkstyle configuration file
-   */
-  public long getModificationStamp() {
-    return mModificationStamp;
-  }
+        InputSource input = new InputSource(getCheckConfigFileStream());
+        input.setSystemId(getResolvedConfigFileURL().toString());
 
-  /**
-   * Sets the modification timestamp of the Checkstyle configuration file.
-   *
-   * @param modificationStamp
-   *          the modification timestamp
-   */
-  public void setModificationStamp(long modificationStamp) {
-    this.mModificationStamp = modificationStamp;
-  }
+        return input;
+    }
 
-  /**
-   * Returns the resolved URL of the Checkstyle configuration file. Clients are expected to
-   * <b>not</b> use this to access the underlying Checkstyle configuration file
-   *
-   * @return the resolved URL
-   */
-  public URL getResolvedConfigFileURL() {
-    return mResolvedConfigFileURL;
-  }
+    /**
+     * Sets the content of the Checkstyle configuration file as a byte array.
+     *
+     * @param checkConfigFileBytes
+     *            the Checkstyle configuration file contents
+     */
+    public void setCheckConfigFileBytes(byte[] checkConfigFileBytes) {
+        mCheckConfigFileBytes = checkConfigFileBytes;
+    }
 
-  /**
-   * Sets the resolved URL of the Checkstyle configuration file.
-   *
-   * @param resolvedConfigFileURL
-   *          the resolved URL
-   */
-  public void setResolvedConfigFileURL(URL resolvedConfigFileURL) {
-    this.mResolvedConfigFileURL = resolvedConfigFileURL;
-  }
+    /**
+     * Returns an <code>ByteArrayInputStream</code> of the addional property bundle.
+     *
+     * @return the stream containing the bundle data
+     */
+    public ByteArrayInputStream getAdditionalPropertiesBundleStream() {
+        ByteArrayInputStream stream = null;
+        if (mAdditionalPropertyBundleBytes != null) {
+            stream = new ByteArrayInputStream(mAdditionalPropertyBundleBytes);
+        }
+        return stream;
+    }
 
-  /**
-   * Returns the property resolver or <code>null</code> if none has been set.
-   *
-   * @return the property resolver
-   */
-  public PropertyResolver getPropertyResolver() {
-    return mPropertyResolver;
-  }
+    /**
+     * Sets the content of an addtional property bundle which contains values for property
+     * references in the Checkstyle configuration file.
+     *
+     * @param additionalPropertyBundleBytes
+     *            the content of the additional property bundle
+     */
+    public void setAdditionalPropertyBundleBytes(byte[] additionalPropertyBundleBytes) {
+        mAdditionalPropertyBundleBytes = additionalPropertyBundleBytes;
+    }
 
-  /**
-   * Sets the property resolver for this Checkstyle configuration.
-   *
-   * @param propertyResolver
-   *          the property resolver
-   */
-  public void setPropertyResolver(PropertyResolver propertyResolver) {
-    mPropertyResolver = propertyResolver;
-  }
+    /**
+     * Returns the modification timestamp or 0 if none can be determined.
+     *
+     * @return the modification timestamp of the Checkstyle configuration file
+     */
+    public long getModificationStamp() {
+        return mModificationStamp;
+    }
+
+    /**
+     * Sets the modification timestamp of the Checkstyle configuration file.
+     *
+     * @param modificationStamp
+     *            the modification timestamp
+     */
+    public void setModificationStamp(long modificationStamp) {
+        this.mModificationStamp = modificationStamp;
+    }
+
+    /**
+     * Returns the resolved URL of the Checkstyle configuration file. Clients are expected to
+     * <b>not</b> use this to access the underlying Checkstyle configuration file
+     *
+     * @return the resolved URL
+     */
+    public URL getResolvedConfigFileURL() {
+        return mResolvedConfigFileURL;
+    }
+
+    /**
+     * Sets the resolved URL of the Checkstyle configuration file.
+     *
+     * @param resolvedConfigFileURL
+     *            the resolved URL
+     */
+    public void setResolvedConfigFileURL(URL resolvedConfigFileURL) {
+        this.mResolvedConfigFileURL = resolvedConfigFileURL;
+    }
+
+    /**
+     * Returns the property resolver or <code>null</code> if none has been set.
+     *
+     * @return the property resolver
+     */
+    public PropertyResolver getPropertyResolver() {
+        return mPropertyResolver;
+    }
+
+    /**
+     * Sets the property resolver for this Checkstyle configuration.
+     *
+     * @param propertyResolver
+     *            the property resolver
+     */
+    public void setPropertyResolver(PropertyResolver propertyResolver) {
+        mPropertyResolver = propertyResolver;
+    }
 
 }

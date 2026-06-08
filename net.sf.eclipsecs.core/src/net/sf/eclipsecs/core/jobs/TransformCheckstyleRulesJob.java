@@ -56,90 +56,96 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
-  /** Selected project in workspace. */
-  private IProject mProject;
+    /** Selected project in workspace. */
+    private IProject mProject;
 
-  /**
-   * Job for transforming checkstyle to formatter-rules.
-   *
-   * @param project
-   *          The current selected project in the workspace.
-   */
-  public TransformCheckstyleRulesJob(final IProject project) {
-    super(Messages.TransformCheckstyleRulesJob_name);
+    /**
+     * Job for transforming checkstyle to formatter-rules.
+     *
+     * @param project
+     *            The current selected project in the workspace.
+     */
+    public TransformCheckstyleRulesJob(final IProject project) {
+        super(Messages.TransformCheckstyleRulesJob_name);
 
-    this.mProject = project;
-  }
+        this.mProject = project;
+    }
 
-  @Override
-  public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
-    SubMonitor subMonitor = SubMonitor.convert(monitor);
-    subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
-    IStatus status;
-    try {
-      final IProjectConfiguration conf = ProjectConfigurationFactory.getConfiguration(mProject);
-
-      final List<Configuration> rules = new ArrayList<>();
-
-      // collect rules from all configured filesets
-      for (FileSet fileSet : conf.getFileSets()) {
-
-        ICheckConfiguration checkConfig = fileSet.getCheckConfig();
-
-        CheckstyleConfigurationFile configFile = checkConfig.getCheckstyleConfiguration();
-
-        PropertyResolver resolver = configFile.getPropertyResolver();
-
-        // set the project context if the property resolver needs the
-        // context
-        if (resolver instanceof IContextAware) {
-          ((IContextAware) resolver).setProjectContext(mProject);
-        }
-
-        InputSource input = null;
+    @Override
+    public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
+        SubMonitor subMonitor = SubMonitor.convert(monitor);
+        subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
+        IStatus status;
         try {
-          input = configFile.getCheckConfigFileInputSource();
+            final IProjectConfiguration conf =
+                ProjectConfigurationFactory.getConfiguration(mProject);
 
-          Configuration configuration = ConfigurationLoader.loadConfiguration(input, resolver,
-                  IgnoredModulesOptions.OMIT);
+            final List<Configuration> rules = new ArrayList<>();
 
-          // flatten the nested configuration tree into a list
-          recurseConfiguration(configuration, rules);
-        } finally {
-          Closeables.closeQuietly(input.getByteStream());
+            // collect rules from all configured filesets
+            for (FileSet fileSet : conf.getFileSets()) {
+
+                ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+
+                CheckstyleConfigurationFile configFile = checkConfig.getCheckstyleConfiguration();
+
+                PropertyResolver resolver = configFile.getPropertyResolver();
+
+                // set the project context if the property resolver needs the
+                // context
+                if (resolver instanceof IContextAware) {
+                    ((IContextAware) resolver).setProjectContext(mProject);
+                }
+
+                InputSource input = null;
+                try {
+                    input = configFile.getCheckConfigFileInputSource();
+
+                    Configuration configuration = ConfigurationLoader.loadConfiguration(input,
+                        resolver, IgnoredModulesOptions.OMIT);
+
+                    // flatten the nested configuration tree into a list
+                    recurseConfiguration(configuration, rules);
+                }
+                finally {
+                    Closeables.closeQuietly(input.getByteStream());
+                }
+            }
+
+            if (rules.isEmpty()) {
+                status = Status.CANCEL_STATUS;
+            }
+            else {
+                final CheckstyleTransformer transformer =
+                    new CheckstyleTransformer(mProject, rules);
+                transformer.transformRules();
+                status = Status.OK_STATUS;
+            }
         }
-      }
-
-      if (rules.isEmpty()) {
-        status = Status.CANCEL_STATUS;
-      } else {
-        final CheckstyleTransformer transformer = new CheckstyleTransformer(mProject, rules);
-        transformer.transformRules();
-        status = Status.OK_STATUS;
-      }
-    } catch (CheckstyleException | CheckstylePluginException ex) {
-      throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-              ex.getMessage(), ex));
+        catch (CheckstyleException | CheckstylePluginException ex) {
+            throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                IStatus.ERROR, ex.getMessage(), ex));
+        }
+        return status;
     }
-    return status;
-  }
 
-  private static void recurseConfiguration(Configuration module, List<Configuration> flatModules) {
+    private static void recurseConfiguration(Configuration module,
+        List<Configuration> flatModules) {
 
-    flatModules.add(module);
+        flatModules.add(module);
 
-    Configuration[] childs = module.getChildren();
-    if (childs != null && childs.length > 0) {
+        Configuration[] childs = module.getChildren();
+        if (childs != null && childs.length > 0) {
 
-      for (Configuration child : childs) {
-        recurseConfiguration(child, flatModules);
-      }
+            for (Configuration child : childs) {
+                recurseConfiguration(child, flatModules);
+            }
+        }
     }
-  }
 
-  @Override
-  public boolean belongsTo(Object family) {
-    return AbstractCheckJob.CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
-  }
+    @Override
+    public boolean belongsTo(Object family) {
+        return AbstractCheckJob.CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
+    }
 
 }

@@ -32,126 +32,127 @@ import com.google.common.base.MoreObjects;
  */
 public abstract class AbstractFilter implements IFilter {
 
-  /** name of the filter. */
-  private String mFilterName;
+    /** name of the filter. */
+    private String mFilterName;
 
-  /** internal name of the filter. */
-  private String mInternalName;
+    /** internal name of the filter. */
+    private String mInternalName;
 
-  /** description of the filter. */
-  private String mFilterDescription;
+    /** description of the filter. */
+    private String mFilterDescription;
 
-  /** flags if the filter is selected. */
-  private boolean mSelected;
+    /** flags if the filter is selected. */
+    private boolean mSelected;
 
-  /** flags, if the filter is readonly. */
-  private boolean mReadonly;
+    /** flags, if the filter is readonly. */
+    private boolean mReadonly;
 
-  @Override
-  public void initialize(String name, String internalName, String desc, boolean readonly) {
+    @Override
+    public void initialize(String name, String internalName, String desc, boolean readonly) {
 
-    this.mFilterName = name;
-    this.mInternalName = internalName;
-    this.mFilterDescription = desc;
-    this.mReadonly = readonly;
-  }
-
-  /**
-   * Gets the name of the filter.
-   *
-   * @return the filter name
-   */
-  @Override
-  public final String getName() {
-    return this.mFilterName;
-  }
-
-  /**
-   * Gets the internal name of the filter.
-   *
-   * @return the internal filter name
-   */
-  @Override
-  public final String getInternalName() {
-    return this.mInternalName;
-  }
-
-  /**
-   * Gets the description of the filter.
-   *
-   * @return the description
-   */
-  @Override
-  public final String getDescription() {
-    return this.mFilterDescription;
-  }
-
-  @Override
-  public boolean isEnabled() {
-    return mSelected;
-  }
-
-  @Override
-  public void setEnabled(boolean selected) {
-    mSelected = selected;
-  }
-
-  @Override
-  public boolean isReadonly() {
-    return mReadonly;
-  }
-
-  @Override
-  public List<String> getFilterData() {
-    // NOOP
-    return Collections.emptyList();
-  }
-
-  @Override
-  public void setFilterData(List<String> filterData) {
-    // NOOP
-  }
-
-  @Override
-  public String getPresentableFilterData() {
-    return null;
-  }
-
-  @Override
-  public IFilter clone() {
-    try {
-      return (IFilter) super.clone();
-    } catch (CloneNotSupportedException cnse) {
-      // this shouldn't happen, since we are Cloneable
-      throw new IllegalStateException(cnse);
-    }
-  }
-
-  @Override
-  public boolean equals(Object o) {
-    if (o == null || !(o instanceof AbstractFilter)) {
-      return false;
-    }
-    if (this == o) {
-      return true;
+        this.mFilterName = name;
+        this.mInternalName = internalName;
+        this.mFilterDescription = desc;
+        this.mReadonly = readonly;
     }
 
-    AbstractFilter rhs = (AbstractFilter) o;
-    return Objects.equals(mFilterName, rhs.mFilterName)
+    /**
+     * Gets the name of the filter.
+     *
+     * @return the filter name
+     */
+    @Override
+    public final String getName() {
+        return this.mFilterName;
+    }
+
+    /**
+     * Gets the internal name of the filter.
+     *
+     * @return the internal filter name
+     */
+    @Override
+    public final String getInternalName() {
+        return this.mInternalName;
+    }
+
+    /**
+     * Gets the description of the filter.
+     *
+     * @return the description
+     */
+    @Override
+    public final String getDescription() {
+        return this.mFilterDescription;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return mSelected;
+    }
+
+    @Override
+    public void setEnabled(boolean selected) {
+        mSelected = selected;
+    }
+
+    @Override
+    public boolean isReadonly() {
+        return mReadonly;
+    }
+
+    @Override
+    public List<String> getFilterData() {
+        // NOOP
+        return Collections.emptyList();
+    }
+
+    @Override
+    public void setFilterData(List<String> filterData) {
+        // NOOP
+    }
+
+    @Override
+    public String getPresentableFilterData() {
+        return null;
+    }
+
+    @Override
+    public IFilter clone() {
+        try {
+            return (IFilter) super.clone();
+        }
+        catch (CloneNotSupportedException cnse) {
+            // this shouldn't happen, since we are Cloneable
+            throw new IllegalStateException(cnse);
+        }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || !(o instanceof AbstractFilter)) {
+            return false;
+        }
+        if (this == o) {
+            return true;
+        }
+
+        AbstractFilter rhs = (AbstractFilter) o;
+        return Objects.equals(mFilterName, rhs.mFilterName)
             && Objects.equals(mInternalName, rhs.mInternalName)
             && Objects.equals(mFilterDescription, rhs.mFilterDescription)
             && Objects.equals(mSelected, rhs.mSelected) && Objects.equals(mReadonly, rhs.mReadonly);
-  }
+    }
 
-  @Override
-  public int hashCode() {
-    return Objects.hash(mFilterName, mInternalName, mFilterDescription, mSelected, mReadonly);
-  }
+    @Override
+    public int hashCode() {
+        return Objects.hash(mFilterName, mInternalName, mFilterDescription, mSelected, mReadonly);
+    }
 
-  @Override
-  public String toString() {
-    return MoreObjects.toStringHelper(this).add("filterName", mFilterName)
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("filterName", mFilterName)
             .add("internalName", mInternalName).add("filterDescription", mFilterDescription)
             .add("selected", mSelected).add("readonly", mReadonly).toString();
-  }
+    }
 }

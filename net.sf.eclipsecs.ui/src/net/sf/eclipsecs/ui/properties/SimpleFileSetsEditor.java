@@ -44,91 +44,95 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
  */
 public class SimpleFileSetsEditor implements IFileSetsEditor {
 
-  /** The property page context. */
-  private final PropertyPageContext propertyPageContext;
-  /** The shell. */
-  private final Shell shell;
+    /** The property page context. */
+    private final PropertyPageContext propertyPageContext;
+    /** The shell. */
+    private final Shell shell;
 
-  /** The editor view. */
-  private SimpleFileSetsEditorView editorView;
+    /** The editor view. */
+    private SimpleFileSetsEditorView editorView;
 
-  /** The list of file sets. */
-  private List<FileSet> mFileSets;
+    /** The list of file sets. */
+    private List<FileSet> mFileSets;
 
-  /** The default file set. */
-  private FileSet mDefaultFileSet;
+    /** The default file set. */
+    private FileSet mDefaultFileSet;
 
-  /**
-   * Creates the SimpleFileSetsEditor.
-   *
-   * @param shell the shell
-   * @param propertyPageContext
-   *          the property page context
-   */
-  public SimpleFileSetsEditor(Shell shell, PropertyPageContext propertyPageContext) {
-    this.shell = shell;
-    this.propertyPageContext = propertyPageContext;
-  }
-
-  @Override
-  public void setFileSets(List<FileSet> fileSets) {
-    mFileSets = fileSets;
-
-    ICheckConfiguration config = null;
-    if (!mFileSets.isEmpty()) {
-      config = (mFileSets.get(0)).getCheckConfig();
+    /**
+     * Creates the SimpleFileSetsEditor.
+     *
+     * @param shell
+     *            the shell
+     * @param propertyPageContext
+     *            the property page context
+     */
+    public SimpleFileSetsEditor(Shell shell, PropertyPageContext propertyPageContext) {
+        this.shell = shell;
+        this.propertyPageContext = propertyPageContext;
     }
 
-    if (config == null) {
-      CheckConfigurationWorkingCopy[] allConfigs = propertyPageContext.configuration()
-              .getGlobalCheckConfigWorkingSet().getWorkingCopies();
-      if (allConfigs.length > 0) {
-        config = allConfigs[0];
-      }
+    @Override
+    public void setFileSets(List<FileSet> fileSets) {
+        mFileSets = fileSets;
+
+        ICheckConfiguration config = null;
+        if (!mFileSets.isEmpty()) {
+            config = (mFileSets.get(0)).getCheckConfig();
+        }
+
+        if (config == null) {
+            CheckConfigurationWorkingCopy[] allConfigs = propertyPageContext.configuration()
+                .getGlobalCheckConfigWorkingSet().getWorkingCopies();
+            if (allConfigs.length > 0) {
+                config = allConfigs[0];
+            }
+        }
+
+        mDefaultFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset, config);
+        try {
+            mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern("."));
+        }
+        catch (CheckstylePluginException ex) {
+            // impossible
+        }
+        mFileSets.clear();
+        mFileSets.add(mDefaultFileSet);
     }
 
-    mDefaultFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset, config);
-    try {
-      mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern("."));
-    } catch (CheckstylePluginException ex) {
-      // impossible
+    @Override
+    public List<FileSet> getFileSets() {
+        return mFileSets;
     }
-    mFileSets.clear();
-    mFileSets.add(mDefaultFileSet);
-  }
 
-  @Override
-  public List<FileSet> getFileSets() {
-    return mFileSets;
-  }
-
-  @Override
-  public Control createContents(Composite parent) {
-    this.editorView = new SimpleFileSetsEditorView(parent, SWT.NONE, this::manageConfig,
+    @Override
+    public Control createContents(Composite parent) {
+        this.editorView = new SimpleFileSetsEditorView(parent, SWT.NONE, this::manageConfig,
             mDefaultFileSet, propertyPageContext);
-    return editorView;
-  }
-
-  private void manageConfig() {
-    ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
-    if (config != null) {
-      try {
-        config.getCheckstyleConfiguration();
-        CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(shell,
-                (CheckConfigurationWorkingCopy) config);
-        dialog.setBlockOnOpen(true);
-        dialog.open();
-      } catch (CheckstylePluginException ex) {
-        CheckstyleUIPlugin.warningDialog(shell,
-                NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
-                        propertyPageContext.project(), config.getLocation()), ex);
-      }
+        return editorView;
     }
-  }
 
-  @Override
-  public void refresh() {
-    editorView.refresh();
-  }
+    private void manageConfig() {
+        ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
+        if (config != null) {
+            try {
+                config.getCheckstyleConfiguration();
+                CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
+                    shell, (CheckConfigurationWorkingCopy) config);
+                dialog.setBlockOnOpen(true);
+                dialog.open();
+            }
+            catch (CheckstylePluginException ex) {
+                CheckstyleUIPlugin.warningDialog(shell,
+                    NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
+                        propertyPageContext.project(), config.getLocation()),
+                    ex);
+            }
+        }
+    }
+
+    @Override
+    public void refresh() {
+        editorView.refresh();
+    }
 
 }

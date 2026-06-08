@@ -24,21 +24,21 @@ import org.eclipse.osgi.util.NLS;
 
 public final class Messages extends NLS {
 
-  public static String ModifierOrderQuickfix_description;
+    public static String ModifierOrderQuickfix_description;
 
-  public static String ModifierOrderQuickfix_label;
+    public static String ModifierOrderQuickfix_label;
 
-  public static String RedundantModifierQuickfix_description;
+    public static String RedundantModifierQuickfix_description;
 
-  public static String RedundantModifierQuickfix_label;
+    public static String RedundantModifierQuickfix_label;
 
-  private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.quickfixes.modifier.messages";
+    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.quickfixes.modifier.messages";
 
-  static {
-    // initialize resource bundle
-    NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-  }
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
 
-  private Messages() {
-  }
+    private Messages() {
+    }
 }

@@ -26,13 +26,13 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class DefaultComesLastTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void defaultComesLast() throws Exception {
-    testQuickfix("DefaultComesLastInput.xml", new DefaultComesLastQuickfix());
-  }
+    @Test
+    void defaultComesLast() throws Exception {
+        testQuickfix("DefaultComesLastInput.xml", new DefaultComesLastQuickfix());
+    }
 
-  @Test
-  void defaultComesLastInner() throws Exception {
-    testQuickfix("DefaultComesLastInputInner.xml", new DefaultComesLastQuickfix());
-  }
+    @Test
+    void defaultComesLastInner() throws Exception {
+        testQuickfix("DefaultComesLastInputInner.xml", new DefaultComesLastQuickfix());
+    }
 }

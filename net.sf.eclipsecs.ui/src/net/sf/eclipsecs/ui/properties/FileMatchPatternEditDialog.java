@@ -46,105 +46,107 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
  */
 public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
-  /** The include/exclude checkbox. */
-  private Button mIncludeButton;
+    /** The include/exclude checkbox. */
+    private Button mIncludeButton;
 
-  /** The text field for the match pattern. */
-  private Text mFileMatchPatternText;
+    /** The text field for the match pattern. */
+    private Text mFileMatchPatternText;
 
-  /** The file match pattern being edited. */
-  private FileMatchPattern mPattern;
+    /** The file match pattern being edited. */
+    private FileMatchPattern mPattern;
 
-  /**
-   * Creates a file matching pattern editor dialog.
-   *
-   * @param parentShell
-   *          the parent shell
-   * @param pattern
-   *          the pattern
-   */
-  public FileMatchPatternEditDialog(Shell parentShell, FileMatchPattern pattern) {
-    super(parentShell);
-    setHelpAvailable(false);
-    mPattern = pattern;
-  }
-
-  /**
-   * Returns the pattern edited by this dialog.
-   *
-   * @return the pattern
-   */
-  public FileMatchPattern getPattern() {
-    return mPattern;
-  }
-
-  @Override
-  protected Control createDialogArea(Composite parent) {
-    Composite composite = (Composite) super.createDialogArea(parent);
-
-    Composite dialog = new Composite(composite, SWT.NONE);
-    dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
-    dialog.setLayout(new GridLayout(1, false));
-
-    Label nameLabel = new Label(dialog, SWT.NULL);
-    nameLabel.setText(Messages.FileMatchPatternEditDialog_lblRegex);
-
-    mFileMatchPatternText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-    mFileMatchPatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-    mIncludeButton = new Button(dialog, SWT.CHECK);
-    mIncludeButton.setText(Messages.FileMatchPatternEditDialog_chkIncludesFiles);
-    mIncludeButton.setLayoutData(new GridData());
-
-    // integrate content assist
-    RegexCompletionProposalFactory.createForText(mFileMatchPatternText);
-
-    // init the controls
-    if (mPattern != null) {
-      mFileMatchPatternText.setText(mPattern.getMatchPattern());
-      mIncludeButton.setSelection(mPattern.isIncludePattern());
-    } else {
-      mIncludeButton.setSelection(true);
+    /**
+     * Creates a file matching pattern editor dialog.
+     *
+     * @param parentShell
+     *            the parent shell
+     * @param pattern
+     *            the pattern
+     */
+    public FileMatchPatternEditDialog(Shell parentShell, FileMatchPattern pattern) {
+        super(parentShell);
+        setHelpAvailable(false);
+        mPattern = pattern;
     }
 
-    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
-    this.setTitle(Messages.FileMatchPatternEditDialog_title);
-    this.setMessage(Messages.FileMatchPatternEditDialog_message);
-
-    return dialog;
-  }
-
-  @Override
-  protected void okPressed() {
-    String pattern = mFileMatchPatternText.getText();
-
-    try {
-      //
-      // Try compiling the pattern using the regular expression compiler.
-      //
-      Pattern.compile(pattern);
-
-      if (mPattern == null) {
-        mPattern = new FileMatchPattern(pattern);
-      } else {
-        mPattern.setMatchPattern(pattern);
-      }
-
-      mPattern.setIsIncludePattern(mIncludeButton.getSelection());
-      super.okPressed();
-    } catch (PatternSyntaxException | CheckstylePluginException ex) {
-      this.setErrorMessage(ex.getLocalizedMessage());
+    /**
+     * Returns the pattern edited by this dialog.
+     *
+     * @return the pattern
+     */
+    public FileMatchPattern getPattern() {
+        return mPattern;
     }
-  }
 
-  /**
-   * Over-rides method from Window to configure the shell (e.g. the enclosing
-   * window).
-   */
-  @Override
-  protected void configureShell(Shell shell) {
-    super.configureShell(shell);
-    shell.setText(Messages.FileMatchPatternEditDialog_titleRegexEditor);
-  }
+    @Override
+    protected Control createDialogArea(Composite parent) {
+        Composite composite = (Composite) super.createDialogArea(parent);
+
+        Composite dialog = new Composite(composite, SWT.NONE);
+        dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
+        dialog.setLayout(new GridLayout(1, false));
+
+        Label nameLabel = new Label(dialog, SWT.NULL);
+        nameLabel.setText(Messages.FileMatchPatternEditDialog_lblRegex);
+
+        mFileMatchPatternText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+        mFileMatchPatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        mIncludeButton = new Button(dialog, SWT.CHECK);
+        mIncludeButton.setText(Messages.FileMatchPatternEditDialog_chkIncludesFiles);
+        mIncludeButton.setLayoutData(new GridData());
+
+        // integrate content assist
+        RegexCompletionProposalFactory.createForText(mFileMatchPatternText);
+
+        // init the controls
+        if (mPattern != null) {
+            mFileMatchPatternText.setText(mPattern.getMatchPattern());
+            mIncludeButton.setSelection(mPattern.isIncludePattern());
+        }
+        else {
+            mIncludeButton.setSelection(true);
+        }
+
+        this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+        this.setTitle(Messages.FileMatchPatternEditDialog_title);
+        this.setMessage(Messages.FileMatchPatternEditDialog_message);
+
+        return dialog;
+    }
+
+    @Override
+    protected void okPressed() {
+        String pattern = mFileMatchPatternText.getText();
+
+        try {
+            //
+            // Try compiling the pattern using the regular expression compiler.
+            //
+            Pattern.compile(pattern);
+
+            if (mPattern == null) {
+                mPattern = new FileMatchPattern(pattern);
+            }
+            else {
+                mPattern.setMatchPattern(pattern);
+            }
+
+            mPattern.setIsIncludePattern(mIncludeButton.getSelection());
+            super.okPressed();
+        }
+        catch (PatternSyntaxException | CheckstylePluginException ex) {
+            this.setErrorMessage(ex.getLocalizedMessage());
+        }
+    }
+
+    /**
+     * Over-rides method from Window to configure the shell (e.g. the enclosing window).
+     */
+    @Override
+    protected void configureShell(Shell shell) {
+        super.configureShell(shell);
+        shell.setText(Messages.FileMatchPatternEditDialog_titleRegexEditor);
+    }
 
 }

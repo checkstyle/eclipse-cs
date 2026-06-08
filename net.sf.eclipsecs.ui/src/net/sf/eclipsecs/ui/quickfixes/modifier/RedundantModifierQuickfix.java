@@ -47,134 +47,145 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class RedundantModifierQuickfix extends AbstractASTResolution {
 
-  /** The length of the javadoc comment declaration. */
-  private static final int JAVADOC_COMMENT_LENGTH = 6;
+    /** The length of the javadoc comment declaration. */
+    private static final int JAVADOC_COMMENT_LENGTH = 6;
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new RedundantModifierQuickfixAstVisitor(lineInfo, markerStartOffset);
-  }
-
-  @Override
-  public String getDescription() {
-    return Messages.RedundantModifierQuickfix_description;
-  }
-
-  @Override
-  public String getLabel() {
-    return Messages.RedundantModifierQuickfix_label;
-  }
-
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
-  }
-
-  private final class RedundantModifierQuickfixAstVisitor extends ASTVisitor {
-
-    /** The line info region. */
-    private final IRegion lineInfo;
-    /** The marker start offset. */
-    private final int markerStartOffset;
-
-    private RedundantModifierQuickfixAstVisitor(IRegion lineInfo, int markerStartOffset) {
-      this.lineInfo = lineInfo;
-      this.markerStartOffset = markerStartOffset;
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new RedundantModifierQuickfixAstVisitor(lineInfo, markerStartOffset);
     }
 
-    @SuppressWarnings("unchecked")
     @Override
-    public boolean visit(MethodDeclaration node) {
+    public String getDescription() {
+        return Messages.RedundantModifierQuickfix_description;
+    }
 
-      if (containsPosition(node, markerStartOffset)) {
-        List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
+    @Override
+    public String getLabel() {
+        return Messages.RedundantModifierQuickfix_label;
+    }
 
-        if (node.getParent() instanceof TypeDeclaration) {
-          TypeDeclaration type = (TypeDeclaration) node.getParent();
-          if (type.isInterface()) {
-            redundantKeyWords = List.of(ModifierKeyword.PUBLIC_KEYWORD,
-                    ModifierKeyword.ABSTRACT_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
-          } else if (Modifier.isFinal(type.getModifiers())) {
-            redundantKeyWords = List.of(ModifierKeyword.FINAL_KEYWORD);
-          }
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
+    }
+
+    private final class RedundantModifierQuickfixAstVisitor extends ASTVisitor {
+
+        /** The line info region. */
+        private final IRegion lineInfo;
+        /** The marker start offset. */
+        private final int markerStartOffset;
+
+        private RedundantModifierQuickfixAstVisitor(IRegion lineInfo, int markerStartOffset) {
+            this.lineInfo = lineInfo;
+            this.markerStartOffset = markerStartOffset;
         }
 
-        deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
-      }
-      return true;
-    }
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean visit(MethodDeclaration node) {
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean visit(FieldDeclaration node) {
-      // recalculate start position because optional javadoc is mixed
-      // into the original start position
-      int pos = node.getStartPosition() + (node.getJavadoc() != null
-              ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
-              : 0);
-      if (containsPosition(lineInfo, pos)) {
-        List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
+            if (containsPosition(node, markerStartOffset)) {
+                List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
 
-        if (node.getParent() instanceof TypeDeclaration) {
-          TypeDeclaration type = (TypeDeclaration) node.getParent();
-          if (type.isInterface()) {
-            redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
-                ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-                ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
-          }
-        } else if (node.getParent() instanceof AnnotationTypeDeclaration) {
+                if (node.getParent() instanceof TypeDeclaration) {
+                    TypeDeclaration type = (TypeDeclaration) node.getParent();
+                    if (type.isInterface()) {
+                        redundantKeyWords = List.of(ModifierKeyword.PUBLIC_KEYWORD,
+                            ModifierKeyword.ABSTRACT_KEYWORD, ModifierKeyword.FINAL_KEYWORD);
+                    }
+                    else if (Modifier.isFinal(type.getModifiers())) {
+                        redundantKeyWords = List.of(ModifierKeyword.FINAL_KEYWORD);
+                    }
+                }
 
-          redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
-              ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-              ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
+                deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
+            }
+            return true;
         }
 
-        deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
-      }
-      return true;
-    }
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean visit(FieldDeclaration node) {
+            // recalculate start position because optional javadoc is mixed
+            // into the original start position
+            int pos = node.getStartPosition() + (node.getJavadoc() != null
+                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
+                : 0);
+            if (containsPosition(lineInfo, pos)) {
+                List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
 
-    @SuppressWarnings("unchecked")
-    @Override
-    public boolean visit(AnnotationTypeMemberDeclaration node) {
+                if (node.getParent() instanceof TypeDeclaration) {
+                    TypeDeclaration type = (TypeDeclaration) node.getParent();
+                    if (type.isInterface()) {
+                        redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
+                            ModifierKeyword.PUBLIC_KEYWORD,
+                            ModifierKeyword.ABSTRACT_KEYWORD,
+                            ModifierKeyword.FINAL_KEYWORD,
+                            ModifierKeyword.STATIC_KEYWORD,
+                        });
+                    }
+                }
+                else if (node.getParent() instanceof AnnotationTypeDeclaration) {
 
-      // recalculate start position because optional javadoc is mixed
-      // into the original start position
-      int pos = node.getStartPosition() + (node.getJavadoc() != null
-              ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
-              : 0);
-      if (containsPosition(lineInfo, pos)) {
+                    redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
+                        ModifierKeyword.PUBLIC_KEYWORD,
+                        ModifierKeyword.ABSTRACT_KEYWORD,
+                        ModifierKeyword.FINAL_KEYWORD,
+                        ModifierKeyword.STATIC_KEYWORD,
+                    });
+                }
 
-        if (node.getParent() instanceof AnnotationTypeDeclaration) {
-
-          List<ModifierKeyword> redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
-              ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
-              ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.STATIC_KEYWORD });
-
-          deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
+                deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
+            }
+            return true;
         }
 
-      }
-      return true;
-    }
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean visit(AnnotationTypeMemberDeclaration node) {
 
-    private void deleteRedundantModifiers(List<ASTNode> modifiers,
+            // recalculate start position because optional javadoc is mixed
+            // into the original start position
+            int pos = node.getStartPosition() + (node.getJavadoc() != null
+                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
+                : 0);
+            if (containsPosition(lineInfo, pos)) {
+
+                if (node.getParent() instanceof AnnotationTypeDeclaration) {
+
+                    List<ModifierKeyword> redundantKeyWords = Arrays.asList(new ModifierKeyword[] {
+                        ModifierKeyword.PUBLIC_KEYWORD,
+                        ModifierKeyword.ABSTRACT_KEYWORD,
+                        ModifierKeyword.FINAL_KEYWORD,
+                        ModifierKeyword.STATIC_KEYWORD,
+                    });
+
+                    deleteRedundantModifiers(node.modifiers(), redundantKeyWords);
+                }
+
+            }
+            return true;
+        }
+
+        private void deleteRedundantModifiers(List<ASTNode> modifiers,
             List<ModifierKeyword> redundantModifierKeywords) {
 
-      Iterator<ASTNode> iter = modifiers.iterator();
+            Iterator<ASTNode> iter = modifiers.iterator();
 
-      while (iter.hasNext()) {
-        ASTNode node = iter.next();
+            while (iter.hasNext()) {
+                ASTNode node = iter.next();
 
-        if (node instanceof Modifier) {
-          Modifier modifier = (Modifier) node;
-          if (redundantModifierKeywords.contains(modifier.getKeyword())) {
-            iter.remove();
-          }
+                if (node instanceof Modifier) {
+                    Modifier modifier = (Modifier) node;
+                    if (redundantModifierKeywords.contains(modifier.getKeyword())) {
+                        iter.remove();
+                    }
+                }
+            }
         }
-      }
     }
-  }
 
 }

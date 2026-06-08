@@ -45,52 +45,53 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class TransformFormatterRulesJob extends WorkspaceJob {
 
-  /** Selected project in workspace. */
-  private final IProject mProject;
+    /** Selected project in workspace. */
+    private final IProject mProject;
 
-  /**
-   * Job for transforming formatter-rules to checkstyle-settings.
-   *
-   * @param project
-   *          The current selected project in the workspace.
-   */
-  public TransformFormatterRulesJob(final IProject project) {
-    super(Messages.TransformFormatterRulesJob_name);
+    /**
+     * Job for transforming formatter-rules to checkstyle-settings.
+     *
+     * @param project
+     *            The current selected project in the workspace.
+     */
+    public TransformFormatterRulesJob(final IProject project) {
+        super(Messages.TransformFormatterRulesJob_name);
 
-    this.mProject = project;
-  }
-
-  @Override
-  public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
-    IStatus status = Status.CANCEL_STATUS;
-    SubMonitor subMonitor = SubMonitor.convert(monitor);
-    subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
-
-    IJavaProject javaProject = JavaCore.create(mProject);
-    if (javaProject != null) {
-      final String projectPath = mProject.getLocation().toString();
-
-      Map<String, String> formatterSettings = javaProject.getOptions(true).entrySet().stream()
-              .filter(entry -> entry.getKey().startsWith("org.eclipse.jdt.core.formatter."))
-              .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
-
-      if (!formatterSettings.isEmpty()) {
-        try {
-          FormatterTransformer transformer = new FormatterTransformer();
-          transformer.transformRules(projectPath + "/test-checkstyle.xml", formatterSettings);
-        } catch (CheckstylePluginException ex) {
-          throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                  IStatus.ERROR, ex.getMessage(), ex));
-        }
-        status = Status.OK_STATUS;
-      }
+        this.mProject = project;
     }
-    return status;
-  }
 
-  @Override
-  public boolean belongsTo(Object family) {
-    return AbstractCheckJob.CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
-  }
+    @Override
+    public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
+        IStatus status = Status.CANCEL_STATUS;
+        SubMonitor subMonitor = SubMonitor.convert(monitor);
+        subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
+
+        IJavaProject javaProject = JavaCore.create(mProject);
+        if (javaProject != null) {
+            final String projectPath = mProject.getLocation().toString();
+
+            Map<String, String> formatterSettings = javaProject.getOptions(true).entrySet().stream()
+                .filter(entry -> entry.getKey().startsWith("org.eclipse.jdt.core.formatter."))
+                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+
+            if (!formatterSettings.isEmpty()) {
+                try {
+                    FormatterTransformer transformer = new FormatterTransformer();
+                    transformer.transformRules(projectPath + "/test-checkstyle.xml",
+                        formatterSettings);
+                } catch (CheckstylePluginException ex) {
+                    throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                        IStatus.ERROR, ex.getMessage(), ex));
+                }
+                status = Status.OK_STATUS;
+            }
+        }
+        return status;
+    }
+
+    @Override
+    public boolean belongsTo(Object family) {
+        return AbstractCheckJob.CHECKSTYLE_JOB_FAMILY.equals(family) || super.belongsTo(family);
+    }
 
 }

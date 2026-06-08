@@ -56,283 +56,291 @@ import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
 import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
- * Dialog to show/edit the properties (name, location, description) of a check
- * configuration. Also used to create new check configurations.
+ * Dialog to show/edit the properties (name, location, description) of a check configuration. Also
+ * used to create new check configurations.
  *
  */
 public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
-  //
-  // attributes
-  //
+    //
+    // attributes
+    //
 
-  /** the check configuration. */
-  private CheckConfigurationWorkingCopy mCheckConfig;
+    /** the check configuration. */
+    private CheckConfigurationWorkingCopy mCheckConfig;
 
-  /** The list of properties. */
-  private List<ResolvableProperty> mResolvableProperties;
+    /** The list of properties. */
+    private List<ResolvableProperty> mResolvableProperties;
 
-  /** The dialog view managing the UI components. */
-  private ResolvablePropertiesDialogView dialogView;
+    /** The dialog view managing the UI components. */
+    private ResolvablePropertiesDialogView dialogView;
 
-  //
-  // constructor
-  //
+    //
+    // constructor
+    //
 
-  /**
-   * Creates the properties dialog for check configurations.
-   *
-   * @param parent
-   *          the parent shell
-   * @param checkConfig
-   *          the check configuration to edit
-   */
-  public ResolvablePropertiesDialog(Shell parent, CheckConfigurationWorkingCopy checkConfig) {
-    super(parent);
-    setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
-    setHelpAvailable(false);
-    mCheckConfig = checkConfig;
-  }
+    /**
+     * Creates the properties dialog for check configurations.
+     *
+     * @param parent
+     *            the parent shell
+     * @param checkConfig
+     *            the check configuration to edit
+     */
+    public ResolvablePropertiesDialog(Shell parent, CheckConfigurationWorkingCopy checkConfig) {
+        super(parent);
+        setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
+        setHelpAvailable(false);
+        mCheckConfig = checkConfig;
+    }
 
-  //
-  // methods
-  //
+    //
+    // methods
+    //
 
-  /**
-   * Get the check configuration from the editor.
-   *
-   * @return the check configuration
-   */
-  public CheckConfigurationWorkingCopy getCheckConfiguration() {
-    return mCheckConfig;
-  }
+    /**
+     * Get the check configuration from the editor.
+     *
+     * @return the check configuration
+     */
+    public CheckConfigurationWorkingCopy getCheckConfiguration() {
+        return mCheckConfig;
+    }
 
-  @Override
-  public void create() {
-    super.create();
-    initialize();
+    @Override
+    public void create() {
+        super.create();
+        initialize();
 
-    SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
+        SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
             ResolvablePropertiesDialog.class.getName());
-  }
+    }
 
-  /**
-   * Creates the dialogs main contents.
-   *
-   * @param parent
-   *          the parent composite
-   */
-  @Override
-  protected Control createDialogArea(Composite parent) {
-    // set the logo
-    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
-    this.setTitle(Messages.ResolvablePropertiesDialog_titleMessageArea);
-    this.setMessage(Messages.ResolvablePropertiesDialog_msgAdditionalProperties);
+    /**
+     * Creates the dialogs main contents.
+     *
+     * @param parent
+     *            the parent composite
+     */
+    @Override
+    protected Control createDialogArea(Composite parent) {
+        // set the logo
+        this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+        this.setTitle(Messages.ResolvablePropertiesDialog_titleMessageArea);
+        this.setMessage(Messages.ResolvablePropertiesDialog_msgAdditionalProperties);
 
-    Composite composite = (Composite) super.createDialogArea(parent);
+        Composite composite = (Composite) super.createDialogArea(parent);
 
-    this.dialogView = new ResolvablePropertiesDialogView(composite, SWT.NULL,
+        this.dialogView = new ResolvablePropertiesDialogView(composite, SWT.NULL,
             this::openPropertyItemEditor, this::removePropertyItems);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
 
-    return composite;
-  }
+        return composite;
+    }
 
-  @Override
-  protected Control createButtonBar(Composite parent) {
-    Composite composite = new Composite(parent, SWT.NONE);
-    GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
+    @Override
+    protected Control createButtonBar(Composite parent) {
+        Composite composite = new Composite(parent, SWT.NONE);
+        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
-    Button mBtnFind = new Button(composite, SWT.PUSH);
-    mBtnFind.setText(Messages.ResolvablePropertiesDialog_btnFind);
-    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0).applyTo(mBtnFind);
-    mBtnFind.addSelectionListener(
+        Button mBtnFind = new Button(composite, SWT.PUSH);
+        mBtnFind.setText(Messages.ResolvablePropertiesDialog_btnFind);
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0)
+            .applyTo(mBtnFind);
+        mBtnFind.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> findPropertyItems()));
 
-    Control buttonBar = super.createButtonBar(composite);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER).applyTo(buttonBar);
+        Control buttonBar = super.createButtonBar(composite);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER)
+            .applyTo(buttonBar);
 
-    return composite;
-  }
-
-  @Override
-  protected void configureShell(Shell newShell) {
-
-    super.configureShell(newShell);
-    newShell.setText(Messages.ResolvablePropertiesDialog_titleDialog);
-  }
-
-  @Override
-  protected Point getInitialSize() {
-    return new Point(650, 500);
-  }
-
-  @Override
-  protected void okPressed() {
-    // check for properties without value - these must be fixed before
-    // OK'ing
-    boolean error = false;
-    for (ResolvableProperty prop : mResolvableProperties) {
-      if (StringUtils.isBlank(prop.getValue())) {
-        this.setErrorMessage(NLS.bind(Messages.ResolvablePropertiesDialog_msgMissingPropertyValue,
-                prop.getPropertyName()));
-        error = true;
-        break;
-      }
+        return composite;
     }
 
-    if (!error) {
-      mCheckConfig.getResolvableProperties().clear();
-      mCheckConfig.getResolvableProperties().addAll(mResolvableProperties);
-      super.okPressed();
+    @Override
+    protected void configureShell(Shell newShell) {
+
+        super.configureShell(newShell);
+        newShell.setText(Messages.ResolvablePropertiesDialog_titleDialog);
     }
-  }
 
-  /**
-   * Initialize the dialogs controls with the data.
-   */
-  private void initialize() {
-    // clone the properties so that changes don't directly reflect back into
-    // the configuration
-    mResolvableProperties = new ArrayList<>();
-    for (ResolvableProperty prop : mCheckConfig.getResolvableProperties()) {
-      mResolvableProperties.add(prop.clone());
+    @Override
+    protected Point getInitialSize() {
+        return new Point(650, 500);
     }
-    dialogView.setResolvableProperties(mResolvableProperties);
-  }
 
-  private void openPropertyItemEditor(ResolvableProperty prop) {
+    @Override
+    protected void okPressed() {
+        // check for properties without value - these must be fixed before
+        // OK'ing
+        boolean error = false;
+        for (ResolvableProperty prop : mResolvableProperties) {
+            if (StringUtils.isBlank(prop.getValue())) {
+                this.setErrorMessage(
+                    NLS.bind(Messages.ResolvablePropertiesDialog_msgMissingPropertyValue,
+                        prop.getPropertyName()));
+                error = true;
+                break;
+            }
+        }
 
-    if (prop == null) {
-      ResolvableProperty newProp = new ResolvableProperty(null, null);
-
-      ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(), newProp);
-      if (Window.OK == dialog.open()) {
-        mResolvableProperties.add(newProp);
-        dialogView.refresh();
-      }
-    } else {
-      ResolvablePropertyEditDialog dialog = new ResolvablePropertyEditDialog(getShell(), prop);
-      if (Window.OK == dialog.open()) {
-        dialogView.refresh();
-      }
+        if (!error) {
+            mCheckConfig.getResolvableProperties().clear();
+            mCheckConfig.getResolvableProperties().addAll(mResolvableProperties);
+            super.okPressed();
+        }
     }
-  }
 
-  private void removePropertyItems(List<ResolvableProperty> resolvableProperties) {
-    boolean confirm = MessageDialog.openQuestion(getShell(),
+    /**
+     * Initialize the dialogs controls with the data.
+     */
+    private void initialize() {
+        // clone the properties so that changes don't directly reflect back into
+        // the configuration
+        mResolvableProperties = new ArrayList<>();
+        for (ResolvableProperty prop : mCheckConfig.getResolvableProperties()) {
+            mResolvableProperties.add(prop.clone());
+        }
+        dialogView.setResolvableProperties(mResolvableProperties);
+    }
+
+    private void openPropertyItemEditor(ResolvableProperty prop) {
+
+        if (prop == null) {
+            ResolvableProperty newProp = new ResolvableProperty(null, null);
+
+            ResolvablePropertyEditDialog dialog =
+                new ResolvablePropertyEditDialog(getShell(), newProp);
+            if (Window.OK == dialog.open()) {
+                mResolvableProperties.add(newProp);
+                dialogView.refresh();
+            }
+        }
+        else {
+            ResolvablePropertyEditDialog dialog =
+                new ResolvablePropertyEditDialog(getShell(), prop);
+            if (Window.OK == dialog.open()) {
+                dialogView.refresh();
+            }
+        }
+    }
+
+    private void removePropertyItems(List<ResolvableProperty> resolvableProperties) {
+        boolean confirm = MessageDialog.openQuestion(getShell(),
             Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
             Messages.ResolvablePropertiesDialog_msgRemoveConfirmation);
-    if (confirm) {
-      mResolvableProperties.removeAll(resolvableProperties);
-      dialogView.refresh();
-    }
-  }
-
-  private void findPropertyItems() {
-    CheckConfigurationWorkingCopy clone = mCheckConfig.clone();
-    clone.getResolvableProperties().clear();
-    clone.getResolvableProperties().addAll(mResolvableProperties);
-
-    try {
-      List<ResolvableProperty> unresolvedProps = CheckConfigurationTester
-              .getUnresolvedProperties(clone);
-
-      // filter props already in the dialogs list
-      Iterator<ResolvableProperty> iter = unresolvedProps.iterator();
-      while (iter.hasNext()) {
-
-        ResolvableProperty prop = iter.next();
-
-        Iterator<ResolvableProperty> it2 = mResolvableProperties.iterator();
-        while (it2.hasNext()) {
-
-          if (prop.getPropertyName().equals(it2.next().getPropertyName())) {
-            // remove the current entry
-            iter.remove();
-            break;
-          }
-        }
-      }
-
-      if (!unresolvedProps.isEmpty()) {
-
-        StringBuilder buf = new StringBuilder();
-        iter = unresolvedProps.iterator();
-        while (iter.hasNext()) {
-          buf.append("\t${").append(iter.next().getPropertyName()).append("}\n");
-        }
-
-        boolean confirm = MessageDialog.openQuestion(getShell(),
-                Messages.ResolvablePropertiesDialog_titleFoundProperties,
-                NLS.bind(Messages.ResolvablePropertiesDialog_msgFoundProperties, buf));
         if (confirm) {
-          mResolvableProperties.addAll(unresolvedProps);
-          dialogView.refresh();
+            mResolvableProperties.removeAll(resolvableProperties);
+            dialogView.refresh();
         }
-      } else {
-        MessageDialog.openInformation(getShell(),
-                Messages.ResolvablePropertiesDialog_titleNoUnresolvedProps,
-                Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
-      }
-    } catch (CheckstylePluginException ex) {
-      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
-    }
-  }
-
-  /**
-   * Label provider for the check configuration table. Implements also support
-   * for table sorting and storing of the table settings.
-   *
-   */
-  public static final class PropertiesLabelProvider extends LabelProvider
-          implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
-
-    /** Singleton instance. */
-    public static final PropertiesLabelProvider INSTANCE = new PropertiesLabelProvider();
-
-    private PropertiesLabelProvider() {
-
     }
 
-    @Override
-    public String getColumnText(Object element, int columnIndex) {
-      String result = element.toString();
-      if (element instanceof ResolvableProperty) {
-        ResolvableProperty prop = (ResolvableProperty) element;
-        if (columnIndex == 0) {
-          result = prop.getPropertyName();
+    private void findPropertyItems() {
+        CheckConfigurationWorkingCopy clone = mCheckConfig.clone();
+        clone.getResolvableProperties().clear();
+        clone.getResolvableProperties().addAll(mResolvableProperties);
+
+        try {
+            List<ResolvableProperty> unresolvedProps =
+                CheckConfigurationTester.getUnresolvedProperties(clone);
+
+            // filter props already in the dialogs list
+            Iterator<ResolvableProperty> iter = unresolvedProps.iterator();
+            while (iter.hasNext()) {
+
+                ResolvableProperty prop = iter.next();
+
+                Iterator<ResolvableProperty> it2 = mResolvableProperties.iterator();
+                while (it2.hasNext()) {
+
+                    if (prop.getPropertyName().equals(it2.next().getPropertyName())) {
+                        // remove the current entry
+                        iter.remove();
+                        break;
+                    }
+                }
+            }
+
+            if (!unresolvedProps.isEmpty()) {
+
+                StringBuilder buf = new StringBuilder();
+                iter = unresolvedProps.iterator();
+                while (iter.hasNext()) {
+                    buf.append("\t${").append(iter.next().getPropertyName()).append("}\n");
+                }
+
+                boolean confirm = MessageDialog.openQuestion(getShell(),
+                    Messages.ResolvablePropertiesDialog_titleFoundProperties,
+                    NLS.bind(Messages.ResolvablePropertiesDialog_msgFoundProperties, buf));
+                if (confirm) {
+                    mResolvableProperties.addAll(unresolvedProps);
+                    dialogView.refresh();
+                }
+            }
+            else {
+                MessageDialog.openInformation(getShell(),
+                    Messages.ResolvablePropertiesDialog_titleNoUnresolvedProps,
+                    Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
+            }
         }
-        if (columnIndex == 1) {
-          result = prop.getValue();
+        catch (CheckstylePluginException ex) {
+            CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
         }
-      }
-      return result;
     }
 
-    @Override
-    public Image getColumnImage(Object element, int columnIndex) {
-      return columnIndex == 0 ? getImage(element) : null;
+    /**
+     * Label provider for the check configuration table. Implements also support for table sorting
+     * and storing of the table settings.
+     *
+     */
+    public static final class PropertiesLabelProvider extends LabelProvider
+        implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+
+        /** Singleton instance. */
+        public static final PropertiesLabelProvider INSTANCE = new PropertiesLabelProvider();
+
+        private PropertiesLabelProvider() {
+
+        }
+
+        @Override
+        public String getColumnText(Object element, int columnIndex) {
+            String result = element.toString();
+            if (element instanceof ResolvableProperty) {
+                ResolvableProperty prop = (ResolvableProperty) element;
+                if (columnIndex == 0) {
+                    result = prop.getPropertyName();
+                }
+                if (columnIndex == 1) {
+                    result = prop.getValue();
+                }
+            }
+            return result;
+        }
+
+        @Override
+        public Image getColumnImage(Object element, int columnIndex) {
+            return columnIndex == 0 ? getImage(element) : null;
+        }
+
+        @Override
+        public Comparable<String> getComparableValue(Object element, int col) {
+            return getColumnText(element, col);
+        }
+
+        @Override
+        public IDialogSettings getTableSettings() {
+            String concreteViewId = ResolvablePropertiesDialog.class.getName();
+
+            IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
+            IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
+
+            if (settings == null) {
+                settings = workbenchSettings.addNewSection(concreteViewId);
+            }
+
+            return settings;
+        }
     }
-
-    @Override
-    public Comparable<String> getComparableValue(Object element, int col) {
-      return getColumnText(element, col);
-    }
-
-    @Override
-    public IDialogSettings getTableSettings() {
-      String concreteViewId = ResolvablePropertiesDialog.class.getName();
-
-      IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
-      IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
-
-      if (settings == null) {
-        settings = workbenchSettings.addNewSection(concreteViewId);
-      }
-
-      return settings;
-    }
-  }
 }

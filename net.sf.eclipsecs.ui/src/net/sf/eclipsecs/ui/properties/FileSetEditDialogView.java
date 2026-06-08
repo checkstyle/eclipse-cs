@@ -39,76 +39,74 @@ import net.sf.eclipsecs.ui.properties.FileSetEditDialogMatchedFilesPreview.FileS
 
 public final class FileSetEditDialogView extends Composite {
 
-  /** The common area with name and config selection. */
-  private final FileSetEditDialogCommonArea commonArea;
-  /** The file match pattern table. */
-  private final FileMatchPatternControl fileMatchPatternTable;
-  /** The matched files preview area. */
-  private final FileSetEditDialogMatchedFilesPreview matchArea;
+    /** The common area with name and config selection. */
+    private final FileSetEditDialogCommonArea commonArea;
+    /** The file match pattern table. */
+    private final FileMatchPatternControl fileMatchPatternTable;
+    /** The matched files preview area. */
+    private final FileSetEditDialogMatchedFilesPreview matchArea;
 
-  public FileSetEditDialogView(Composite parent, int style,
-          FileMatchPatternControlCallbacks fileMatchPatternTableCallbacks,
-          FileSetEditDialogMatchedFilesPreviewFilter previewFilter,
-          String projectName,
-          Consumer<ICheckConfiguration> checkConfigSelectionChanged,
-          Runnable configureFileSetConfig) {
-    super(parent, style);
-    GridLayoutFactory.swtDefaults().applyTo(this);
+    public FileSetEditDialogView(Composite parent, int style,
+        FileMatchPatternControlCallbacks fileMatchPatternTableCallbacks,
+        FileSetEditDialogMatchedFilesPreviewFilter previewFilter, String projectName,
+        Consumer<ICheckConfiguration> checkConfigSelectionChanged,
+        Runnable configureFileSetConfig) {
+        super(parent, style);
+        GridLayoutFactory.swtDefaults().applyTo(this);
 
-    this.commonArea = new FileSetEditDialogCommonArea(this, SWT.NONE, checkConfigSelectionChanged,
-            configureFileSetConfig);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(commonArea);
+        this.commonArea = new FileSetEditDialogCommonArea(this, SWT.NONE,
+            checkConfigSelectionChanged, configureFileSetConfig);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(commonArea);
 
-    SashForm sashForm = new SashForm(this, SWT.VERTICAL);
-    GridDataFactory.create(GridData.FILL_BOTH).hint(500, 400).applyTo(sashForm);
-    GridLayoutFactory.swtDefaults().applyTo(sashForm);
+        SashForm sashForm = new SashForm(this, SWT.VERTICAL);
+        GridDataFactory.create(GridData.FILL_BOTH).hint(500, 400).applyTo(sashForm);
+        GridLayoutFactory.swtDefaults().applyTo(sashForm);
 
-    this.fileMatchPatternTable = new FileMatchPatternControl(sashForm, SWT.NONE,
-            fileMatchPatternTableCallbacks);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(fileMatchPatternTable);
+        this.fileMatchPatternTable =
+            new FileMatchPatternControl(sashForm, SWT.NONE, fileMatchPatternTableCallbacks);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(fileMatchPatternTable);
 
-    this.matchArea = new FileSetEditDialogMatchedFilesPreview(sashForm, SWT.NONE, previewFilter,
+        this.matchArea = new FileSetEditDialogMatchedFilesPreview(sashForm, SWT.NONE, previewFilter,
             projectName);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(matchArea);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(matchArea);
 
-    sashForm.setWeights(new int[] {
-        50,
-        50,
-    });
-  }
-
-  public void refreshMatchArea() {
-    matchArea.refresh();
-  }
-
-  public void setProjectFiles(List<IFile> projectFiles) {
-    matchArea.setInput(projectFiles);
-  }
-
-  public void refreshFileMatchPatternTable() {
-    fileMatchPatternTable.refresh();
-    matchArea.refresh();
-  }
-
-  public void setProjectConfiguration(ProjectConfigurationWorkingCopy configuration) {
-    commonArea.setInput(configuration);
-  }
-
-  public void setFileSet(FileSet fileSet) {
-    // intitialize the name
-    commonArea.setText(fileSet.getName() != null ? fileSet.getName() : ""); //$NON-NLS-1$
-
-    // init the check configuration combo
-    if (fileSet.getCheckConfig() != null) {
-      commonArea.setSelection(fileSet.getCheckConfig());
+        sashForm.setWeights(new int[] {
+            50, 50,
+        });
     }
 
-    // init the pattern area
-    fileMatchPatternTable.setInput(fileSet.getFileMatchPatterns());
-  }
+    public void refreshMatchArea() {
+        matchArea.refresh();
+    }
 
-  public String getFileSetName() {
-    return commonArea.getText();
-  }
+    public void setProjectFiles(List<IFile> projectFiles) {
+        matchArea.setInput(projectFiles);
+    }
+
+    public void refreshFileMatchPatternTable() {
+        fileMatchPatternTable.refresh();
+        matchArea.refresh();
+    }
+
+    public void setProjectConfiguration(ProjectConfigurationWorkingCopy configuration) {
+        commonArea.setInput(configuration);
+    }
+
+    public void setFileSet(FileSet fileSet) {
+        // intitialize the name
+        commonArea.setText(fileSet.getName() != null ? fileSet.getName() : ""); //$NON-NLS-1$
+
+        // init the check configuration combo
+        if (fileSet.getCheckConfig() != null) {
+            commonArea.setSelection(fileSet.getCheckConfig());
+        }
+
+        // init the pattern area
+        fileMatchPatternTable.setInput(fileSet.getFileMatchPatterns());
+    }
+
+    public String getFileSetName() {
+        return commonArea.getText();
+    }
 
 }

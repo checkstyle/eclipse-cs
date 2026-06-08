@@ -28,73 +28,74 @@ import java.util.HashMap;
  *
  */
 public abstract class AbstractFTransformationClass {
-  /** The checkstyle-configuration for this rule. */
-  private final CheckstyleSetting mCheckstyleSetting = new CheckstyleSetting();
+    /** The checkstyle-configuration for this rule. */
+    private final CheckstyleSetting mCheckstyleSetting = new CheckstyleSetting();
 
-  /** The value of this rule. */
-  private String mValue;
+    /** The value of this rule. */
+    private String mValue;
 
-  /**
-   * Method for transforming the checkstyle-rule this class is associated to. Every
-   * transformationclass has to implement this method. Should return the field formatterSetting
-   * after adding rules to it.
-   *
-   * @return The eclipse-formatter-configuration this rule needs.
-   */
-  public abstract CheckstyleSetting transformRule();
+    /**
+     * Method for transforming the checkstyle-rule this class is associated to. Every
+     * transformationclass has to implement this method. Should return the field formatterSetting
+     * after adding rules to it.
+     *
+     * @return The eclipse-formatter-configuration this rule needs.
+     */
+    public abstract CheckstyleSetting transformRule();
 
-  /**
-   * Method for setting the field mValue.
-   *
-   * @param value
-   *          The value of the setting.
-   */
-  protected final void setValue(final String value) {
-    mValue = value;
-  }
+    /**
+     * Method for setting the field mValue.
+     *
+     * @param value
+     *            The value of the setting.
+     */
+    protected final void setValue(final String value) {
+        mValue = value;
+    }
 
-  /**
-   * Method for reading the value the setting.
-   *
-   * @return The value of the setting.
-   */
-  public final String getValue() {
-    return mValue;
-  }
+    /**
+     * Method for reading the value the setting.
+     *
+     * @return The value of the setting.
+     */
+    public final String getValue() {
+        return mValue;
+    }
 
-  /**
-   * Method for defining which checkstyle-rules should be used for transforming.
-   *
-   * @param name
-   *          The name of the checkstyle treewalker-module.
-   * @param properties
-   *          Properties of the module.
-   */
-  public final void useTreeWalkerModule(final String name,
-          final HashMap<String, String> properties) {
+    /**
+     * Method for defining which checkstyle-rules should be used for transforming.
+     *
+     * @param name
+     *            The name of the checkstyle treewalker-module.
+     * @param properties
+     *            Properties of the module.
+     */
+    public final void useTreeWalkerModule(final String name,
+        final HashMap<String, String> properties) {
 
-    mCheckstyleSetting.addTreeWalkerModule(name, properties);
-  }
+        mCheckstyleSetting.addTreeWalkerModule(name, properties);
+    }
 
-  /**
-   * Method for defining which checkstyle-rules should be used for transforming.
-   *
-   * @param name
-   *          The name of the checkstyle treewalker-module.
-   * @param properties
-   *          Properties of the module.
-   */
-  public final void useCheckerModule(final String name, final HashMap<String, String> properties) {
+    /**
+     * Method for defining which checkstyle-rules should be used for transforming.
+     *
+     * @param name
+     *            The name of the checkstyle treewalker-module.
+     * @param properties
+     *            Properties of the module.
+     */
+    public final void useCheckerModule(final String name,
+        final HashMap<String, String> properties) {
 
-    mCheckstyleSetting.addCheckerModule(name, properties);
-  }
+        mCheckstyleSetting.addCheckerModule(name, properties);
+    }
 
-  /**
-   * Getter to return the current checkstyle-settings.
-   *
-   * @return The formatter-settings.
-   */
-  public CheckstyleSetting getCheckstyleSetting() {
-    return mCheckstyleSetting;
-  }
+    /**
+     * Getter to return the current checkstyle-settings.
+     *
+     * @return The formatter-settings.
+     */
+    public CheckstyleSetting getCheckstyleSetting() {
+        return mCheckstyleSetting;
+    }
 }

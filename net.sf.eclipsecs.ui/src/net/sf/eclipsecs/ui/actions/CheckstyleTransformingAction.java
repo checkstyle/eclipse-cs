@@ -34,19 +34,19 @@ import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
  */
 public class CheckstyleTransformingAction implements IActionDelegate {
 
-  /** Selection in workspace. */
-  private ISelection mSelection;
+    /** Selection in workspace. */
+    private ISelection mSelection;
 
-  @Override
-  public void run(final IAction arg0) {
-    final TransformCheckstyleRulesJob job = new TransformCheckstyleRulesJob(
+    @Override
+    public void run(final IAction arg0) {
+        final TransformCheckstyleRulesJob job = new TransformCheckstyleRulesJob(
             (IProject) ((IStructuredSelection) mSelection).getFirstElement());
-    job.schedule();
-  }
+        job.schedule();
+    }
 
-  @Override
-  public void selectionChanged(final IAction arg0, final ISelection arg1) {
-    mSelection = arg1;
-  }
+    @Override
+    public void selectionChanged(final IAction arg0, final ISelection arg1) {
+        mSelection = arg1;
+    }
 
 }

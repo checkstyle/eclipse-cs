@@ -39,169 +39,171 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
- * Quickfix implementation which moves the array declaration (C-style to
- * Java-style and reverse).
+ * Quickfix implementation which moves the array declaration (C-style to Java-style and reverse).
  *
  */
 public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new ArrayTypeStyleQuickfixAstVisitor(markerStartOffset);
-  }
-
-  @Override
-  public String getDescription() {
-    return Messages.ArrayTypeStyleQuickfix_description;
-  }
-
-  @Override
-  public String getLabel() {
-    return Messages.ArrayTypeStyleQuickfix_label;
-  }
-
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
-  }
-
-  private final class ArrayTypeStyleQuickfixAstVisitor extends ASTVisitor {
-    /** The marker start offset. */
-    private final int markerStartOffset;
-
-    private ArrayTypeStyleQuickfixAstVisitor(int markerStartOffset) {
-      this.markerStartOffset = markerStartOffset;
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new ArrayTypeStyleQuickfixAstVisitor(markerStartOffset);
     }
 
     @Override
-    public boolean visit(VariableDeclarationStatement node) {
+    public String getDescription() {
+        return Messages.ArrayTypeStyleQuickfix_description;
+    }
 
-      if (containsPosition(node, markerStartOffset)) {
+    @Override
+    public String getLabel() {
+        return Messages.ArrayTypeStyleQuickfix_label;
+    }
 
-        if (isCStyle(node.fragments())) {
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
+    }
 
-          int dimensions = 0;
+    private final class ArrayTypeStyleQuickfixAstVisitor extends ASTVisitor {
+        /** The marker start offset. */
+        private final int markerStartOffset;
 
-          List<?> fragments = node.fragments();
-          for (int i = 0, size = fragments.size(); i < size; i++) {
-            VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
-            if (decl.getExtraDimensions() > dimensions) {
-              dimensions = decl.getExtraDimensions();
+        private ArrayTypeStyleQuickfixAstVisitor(int markerStartOffset) {
+            this.markerStartOffset = markerStartOffset;
+        }
 
+        @Override
+        public boolean visit(VariableDeclarationStatement node) {
+
+            if (containsPosition(node, markerStartOffset)) {
+
+                if (isCStyle(node.fragments())) {
+
+                    int dimensions = 0;
+
+                    List<?> fragments = node.fragments();
+                    for (int i = 0, size = fragments.size(); i < size; i++) {
+                        VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                        if (decl.getExtraDimensions() > dimensions) {
+                            dimensions = decl.getExtraDimensions();
+
+                        }
+                        decl.setExtraDimensions(0);
+                    }
+
+                    // wrap current type into ArrayType
+                    ArrayType arrayType = createArrayType(node.getType(), dimensions);
+                    node.setType(arrayType);
+
+                }
+                else if (isJavaStyle(node.getType())) {
+
+                    int dimensions = ((ArrayType) node.getType()).getDimensions();
+
+                    List<?> fragments = node.fragments();
+                    for (int i = 0, size = fragments.size(); i < size; i++) {
+                        VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                        decl.setExtraDimensions(dimensions);
+                    }
+
+                    Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
+                        ((ArrayType) node.getType()).getElementType());
+                    node.setType(elementType);
+                }
             }
-            decl.setExtraDimensions(0);
-          }
-
-          // wrap current type into ArrayType
-          ArrayType arrayType = createArrayType(node.getType(), dimensions);
-          node.setType(arrayType);
-
-        } else if (isJavaStyle(node.getType())) {
-
-          int dimensions = ((ArrayType) node.getType()).getDimensions();
-
-          List<?> fragments = node.fragments();
-          for (int i = 0, size = fragments.size(); i < size; i++) {
-            VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
-            decl.setExtraDimensions(dimensions);
-          }
-
-          Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
-                  ((ArrayType) node.getType()).getElementType());
-          node.setType(elementType);
+            return true;
         }
-      }
-      return true;
-    }
 
-    @Override
-    public boolean visit(SingleVariableDeclaration node) {
+        @Override
+        public boolean visit(SingleVariableDeclaration node) {
 
-      if (containsPosition(node, markerStartOffset)) {
-        if (isCStyle(node)) {
-          // wrap the existing type into an array type
-          node.setType(createArrayType(node.getType(), node.getExtraDimensions()));
-          node.setExtraDimensions(0);
-        } else if (isJavaStyle(node.getType())) {
+            if (containsPosition(node, markerStartOffset)) {
+                if (isCStyle(node)) {
+                    // wrap the existing type into an array type
+                    node.setType(createArrayType(node.getType(), node.getExtraDimensions()));
+                    node.setExtraDimensions(0);
+                }
+                else if (isJavaStyle(node.getType())) {
 
-          ArrayType arrayType = (ArrayType) node.getType();
-          Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
-                  arrayType.getElementType());
+                    ArrayType arrayType = (ArrayType) node.getType();
+                    Type elementType =
+                        (Type) ASTNode.copySubtree(node.getAST(), arrayType.getElementType());
 
-          node.setType(elementType);
-          node.setExtraDimensions(arrayType.getDimensions());
-        }
-      }
-
-      return true;
-    }
-
-    @Override
-    public boolean visit(FieldDeclaration node) {
-
-      if (containsPosition(node, markerStartOffset)) {
-
-        if (isCStyle(node.fragments())) {
-
-          int dimensions = 0;
-
-          List<?> fragments = node.fragments();
-          for (int i = 0, size = fragments.size(); i < size; i++) {
-            VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
-            if (decl.getExtraDimensions() > dimensions) {
-              dimensions = decl.getExtraDimensions();
-
+                    node.setType(elementType);
+                    node.setExtraDimensions(arrayType.getDimensions());
+                }
             }
-            decl.setExtraDimensions(0);
-          }
 
-          // wrap current type into ArrayType
-          ArrayType arrayType = createArrayType(node.getType(), dimensions);
-          node.setType(arrayType);
-        } else if (isJavaStyle(node.getType())) {
-
-          int dimensions = ((ArrayType) node.getType()).getDimensions();
-
-          List<?> fragments = node.fragments();
-          for (int i = 0, size = fragments.size(); i < size; i++) {
-            VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
-            decl.setExtraDimensions(dimensions);
-          }
-
-          Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
-                  ((ArrayType) node.getType()).getElementType());
-          node.setType(elementType);
+            return true;
         }
-      }
-      return true;
-    }
 
-    private boolean isJavaStyle(Type type) {
-      return type instanceof ArrayType;
-    }
+        @Override
+        public boolean visit(FieldDeclaration node) {
 
-    private boolean isCStyle(VariableDeclaration decl) {
-      return decl.getExtraDimensions() > 0;
-    }
+            if (containsPosition(node, markerStartOffset)) {
 
-    private boolean isCStyle(List<?> fragments) {
-      boolean isCStyle = false;
-      Iterator<?> iter = fragments.iterator();
-      while (iter.hasNext()) {
-        VariableDeclaration decl = (VariableDeclaration) iter.next();
-        if (isCStyle(decl)) {
-          isCStyle = true;
-          break;
+                if (isCStyle(node.fragments())) {
+
+                    int dimensions = 0;
+
+                    List<?> fragments = node.fragments();
+                    for (int i = 0, size = fragments.size(); i < size; i++) {
+                        VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                        if (decl.getExtraDimensions() > dimensions) {
+                            dimensions = decl.getExtraDimensions();
+
+                        }
+                        decl.setExtraDimensions(0);
+                    }
+
+                    // wrap current type into ArrayType
+                    ArrayType arrayType = createArrayType(node.getType(), dimensions);
+                    node.setType(arrayType);
+                }
+                else if (isJavaStyle(node.getType())) {
+
+                    int dimensions = ((ArrayType) node.getType()).getDimensions();
+
+                    List<?> fragments = node.fragments();
+                    for (int i = 0, size = fragments.size(); i < size; i++) {
+                        VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                        decl.setExtraDimensions(dimensions);
+                    }
+
+                    Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
+                        ((ArrayType) node.getType()).getElementType());
+                    node.setType(elementType);
+                }
+            }
+            return true;
         }
-      }
-      return isCStyle;
-    }
 
-    private ArrayType createArrayType(Type componentType, int dimensions) {
-      Type type = (Type) ASTNode.copySubtree(componentType.getAST(), componentType);
-      return componentType.getAST().newArrayType(type, dimensions);
+        private boolean isJavaStyle(Type type) {
+            return type instanceof ArrayType;
+        }
+
+        private boolean isCStyle(VariableDeclaration decl) {
+            return decl.getExtraDimensions() > 0;
+        }
+
+        private boolean isCStyle(List<?> fragments) {
+            boolean isCStyle = false;
+            Iterator<?> iter = fragments.iterator();
+            while (iter.hasNext()) {
+                VariableDeclaration decl = (VariableDeclaration) iter.next();
+                if (isCStyle(decl)) {
+                    isCStyle = true;
+                    break;
+                }
+            }
+            return isCStyle;
+        }
+
+        private ArrayType createArrayType(Type componentType, int dimensions) {
+            Type type = (Type) ASTNode.copySubtree(componentType.getAST(), componentType);
+            return componentType.getAST().newArrayType(type, dimensions);
+        }
     }
-  }
 
 }

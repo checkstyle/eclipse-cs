@@ -31,45 +31,44 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
- * Quickfix implementation that add a missing default statement to a switch
- * case.
+ * Quickfix implementation that add a missing default statement to a switch case.
  *
  */
 public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
 
-    return new ASTVisitor() {
+        return new ASTVisitor() {
 
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(SwitchStatement node) {
-        if (containsPosition(lineInfo, node.getStartPosition())) {
-          SwitchCase defNode = node.getAST().newSwitchCase();
-          defNode.setExpression(null);
-          node.statements().add(defNode);
-          node.statements().add(node.getAST().newBreakStatement());
-        }
-        // also visit children
-        return true;
-      }
-    };
-  }
+            @SuppressWarnings("unchecked")
+            @Override
+            public boolean visit(SwitchStatement node) {
+                if (containsPosition(lineInfo, node.getStartPosition())) {
+                    SwitchCase defNode = node.getAST().newSwitchCase();
+                    defNode.setExpression(null);
+                    node.statements().add(defNode);
+                    node.statements().add(node.getAST().newBreakStatement());
+                }
+                // also visit children
+                return true;
+            }
+        };
+    }
 
-  @Override
-  public String getDescription() {
-    return Messages.MissingSwitchDefaultQuickfix_description;
-  }
+    @Override
+    public String getDescription() {
+        return Messages.MissingSwitchDefaultQuickfix_description;
+    }
 
-  @Override
-  public String getLabel() {
-    return Messages.MissingSwitchDefaultQuickfix_label;
-  }
+    @Override
+    public String getLabel() {
+        return Messages.MissingSwitchDefaultQuickfix_label;
+    }
 
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
-  }
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
+    }
 }

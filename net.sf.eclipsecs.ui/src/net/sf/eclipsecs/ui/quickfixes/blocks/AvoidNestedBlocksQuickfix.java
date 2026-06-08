@@ -39,44 +39,56 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
 
-    return new ASTVisitor() {
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(Block node) {
-        if (containsPosition(lineInfo, node.getStartPosition())) {
-          if (node.getParent() instanceof Block) {
-            List<?> statements = ((Block) node.getParent()).statements();
-            int index = statements.indexOf(node);
-            statements.remove(node);
-            statements.addAll(index, ASTNode.copySubtrees(node.getAST(), node.statements()));
-          } else if (node.getParent() instanceof SwitchStatement) {
-            List<?> statements = ((SwitchStatement) node.getParent()).statements();
-            int index = statements.indexOf(node);
-            statements.remove(node);
-            statements.addAll(index, ASTNode.copySubtrees(node.getAST(), node.statements()));
-          }
+        return new AvoidNestedBlocksQuickfixAstVisitor(lineInfo);
+    }
+
+    @Override
+    public String getDescription() {
+        return Messages.AvoidNestedBlocksQuickfix_description;
+    }
+
+    @Override
+    public String getLabel() {
+        return Messages.AvoidNestedBlocksQuickfix_label;
+    }
+
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
+    }
+
+    private final class AvoidNestedBlocksQuickfixAstVisitor extends ASTVisitor {
+
+        /** The line info region. */
+        private final IRegion lineInfo;
+
+        private AvoidNestedBlocksQuickfixAstVisitor(IRegion lineInfo) {
+            this.lineInfo = lineInfo;
         }
-        return true;
-      }
-    };
-  }
 
-  @Override
-  public String getDescription() {
-    return Messages.AvoidNestedBlocksQuickfix_description;
-  }
-
-  @Override
-  public String getLabel() {
-    return Messages.AvoidNestedBlocksQuickfix_label;
-  }
-
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
-  }
+        @SuppressWarnings("unchecked")
+        @Override
+        public boolean visit(Block node) {
+            if (containsPosition(lineInfo, node.getStartPosition())) {
+                if (node.getParent() instanceof Block) {
+                    List<?> statements = ((Block) node.getParent()).statements();
+                    int index = statements.indexOf(node);
+                    statements.remove(node);
+                    statements.addAll(index,
+                        ASTNode.copySubtrees(node.getAST(), node.statements()));
+                } else if (node.getParent() instanceof SwitchStatement) {
+                    List<?> statements = ((SwitchStatement) node.getParent()).statements();
+                    int index = statements.indexOf(node);
+                    statements.remove(node);
+                    statements.addAll(index,
+                        ASTNode.copySubtrees(node.getAST(), node.statements()));
+                }
+            }
+            return true;
+        }
+    }
 }

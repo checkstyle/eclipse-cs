@@ -34,43 +34,42 @@ import org.eclipse.ui.part.FileEditorInput;
 import org.eclipse.ui.texteditor.ITextEditor;
 
 /**
- * Command handler to enable key-binding support for the "Apply Checkstyle
- * fixes" action.
+ * Command handler to enable key-binding support for the "Apply Checkstyle fixes" action.
  *
  */
 public class FixCheckstyleMarkersHandler extends AbstractHandler {
 
-  @Override
-  public Object execute(ExecutionEvent arg0) throws ExecutionException {
+    @Override
+    public Object execute(ExecutionEvent arg0) throws ExecutionException {
 
-    ITextEditor editor = getActiveEditor();
-    IEditorInput input = editor.getEditorInput();
+        ITextEditor editor = getActiveEditor();
+        IEditorInput input = editor.getEditorInput();
 
-    if (input instanceof FileEditorInput) {
+        if (input instanceof FileEditorInput) {
 
-      IFile file = ((FileEditorInput) input).getFile();
+            IFile file = ((FileEditorInput) input).getFile();
 
-      // call the fixing job
-      Job job = new FixCheckstyleMarkersJob(file);
-      job.setUser(true);
-      job.schedule();
-    }
-    return null;
-  }
-
-  private ITextEditor getActiveEditor() {
-    ITextEditor activeEditor = null;
-    IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
-    if (window != null) {
-      IWorkbenchPage page = window.getActivePage();
-      if (page != null) {
-        IEditorPart editor = page.getActiveEditor();
-        if (editor instanceof ITextEditor) {
-          activeEditor = (ITextEditor) editor;
+            // call the fixing job
+            Job job = new FixCheckstyleMarkersJob(file);
+            job.setUser(true);
+            job.schedule();
         }
-      }
+        return null;
     }
-    return activeEditor;
-  }
+
+    private ITextEditor getActiveEditor() {
+        ITextEditor activeEditor = null;
+        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        if (window != null) {
+            IWorkbenchPage page = window.getActivePage();
+            if (page != null) {
+                IEditorPart editor = page.getActiveEditor();
+                if (editor instanceof ITextEditor) {
+                    activeEditor = (ITextEditor) editor;
+                }
+            }
+        }
+        return activeEditor;
+    }
 
 }

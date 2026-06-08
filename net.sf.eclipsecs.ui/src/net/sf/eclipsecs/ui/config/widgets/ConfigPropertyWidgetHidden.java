@@ -30,37 +30,37 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
  */
 public final class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidget {
 
-  /** The hidden value. */
-  private String mValue = ""; //$NON-NLS-1$
+    /** The hidden value. */
+    private String mValue = ""; //$NON-NLS-1$
 
-  /**
-   * Creates the widget.
-   *
-   * @param parent
-   *          the parent composite
-   * @param prop
-   *          the property
-   */
-  private ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-  }
+    /**
+     * Creates the widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     */
+    private ConfigPropertyWidgetHidden(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
+    }
 
-  public static ConfigPropertyWidgetHidden create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetHidden(parent, prop);
-  }
+    public static ConfigPropertyWidgetHidden create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetHidden(parent, prop);
+    }
 
-  @Override
-  protected Control getValueWidget(Composite parent) {
-    return null;
-  }
+    @Override
+    protected Control getValueWidget(Composite parent) {
+        return null;
+    }
 
-  @Override
-  public String getValue() {
-    return mValue;
-  }
+    @Override
+    public String getValue() {
+        return mValue;
+    }
 
-  @Override
-  public void restorePropertyDefault() {
-    // NOOP
-  }
+    @Override
+    public void restorePropertyDefault() {
+        // NOOP
+    }
 }

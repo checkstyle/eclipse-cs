@@ -49,118 +49,121 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class ModifierOrderQuickfix extends AbstractASTResolution {
 
-  /**
-   * List containing modifier keywords in the order proposed by Java Language specification,
-   * sections 8.1.1, 8.3.1 and 8.4.3.
-   */
-  private static final List<Object> MODIFIER_ORDER = List.of(ModifierKeyword.PUBLIC_KEYWORD,
-          ModifierKeyword.PROTECTED_KEYWORD, ModifierKeyword.PRIVATE_KEYWORD,
-          ModifierKeyword.ABSTRACT_KEYWORD, ModifierKeyword.STATIC_KEYWORD,
-          ModifierKeyword.FINAL_KEYWORD, ModifierKeyword.TRANSIENT_KEYWORD,
-          ModifierKeyword.VOLATILE_KEYWORD, ModifierKeyword.SYNCHRONIZED_KEYWORD,
-          ModifierKeyword.NATIVE_KEYWORD, ModifierKeyword.STRICTFP_KEYWORD,
-          ModifierKeyword.DEFAULT_KEYWORD);
+    /**
+     * List containing modifier keywords in the order proposed by Java Language specification,
+     * sections 8.1.1, 8.3.1 and 8.4.3.
+     */
+    private static final List<Object> MODIFIER_ORDER =
+        List.of(ModifierKeyword.PUBLIC_KEYWORD, ModifierKeyword.PROTECTED_KEYWORD,
+            ModifierKeyword.PRIVATE_KEYWORD, ModifierKeyword.ABSTRACT_KEYWORD,
+            ModifierKeyword.STATIC_KEYWORD, ModifierKeyword.FINAL_KEYWORD,
+            ModifierKeyword.TRANSIENT_KEYWORD, ModifierKeyword.VOLATILE_KEYWORD,
+            ModifierKeyword.SYNCHRONIZED_KEYWORD, ModifierKeyword.NATIVE_KEYWORD,
+            ModifierKeyword.STRICTFP_KEYWORD, ModifierKeyword.DEFAULT_KEYWORD);
 
-  /**
-   * Reorders the given list of <code>Modifier</code> nodes into their suggested order by the JLS.
-   *
-   * @param modifiers
-   *          the list of modifiers to reorder
-   * @return the reordered list of modifiers
-   */
-  public static List<ASTNode> reOrderModifiers(List<ASTNode> modifiers) {
+    /**
+     * Reorders the given list of <code>Modifier</code> nodes into their suggested order by the JLS.
+     *
+     * @param modifiers
+     *            the list of modifiers to reorder
+     * @return the reordered list of modifiers
+     */
+    public static List<ASTNode> reOrderModifiers(List<ASTNode> modifiers) {
 
-    List<ASTNode> copies = new ArrayList<>();
-    Iterator<ASTNode> iter = modifiers.iterator();
-    while (iter.hasNext()) {
-      ASTNode mod = iter.next();
-      copies.add(ASTNode.copySubtree(mod.getAST(), mod));
-    }
-
-    // oder modifiers to correct order
-    Collections.sort(copies, new Comparator<ASTNode>() {
-      @Override
-      public int compare(ASTNode arg0, ASTNode arg1) {
-        int comp = 0;
-        if (arg0 instanceof Modifier modifier1 && arg1 instanceof Modifier modifier2) {
-          int modifierIndex1 = MODIFIER_ORDER.indexOf(modifier1.getKeyword());
-          int modifierIndex2 = MODIFIER_ORDER.indexOf(modifier2.getKeyword());
-          comp = Integer.valueOf(modifierIndex1).compareTo(Integer.valueOf(modifierIndex2));
+        List<ASTNode> copies = new ArrayList<>();
+        Iterator<ASTNode> iter = modifiers.iterator();
+        while (iter.hasNext()) {
+            ASTNode mod = iter.next();
+            copies.add(ASTNode.copySubtree(mod.getAST(), mod));
         }
-        return comp;
-      }
-    });
 
-    return copies;
-  }
+        // oder modifiers to correct order
+        Collections.sort(copies, new Comparator<ASTNode>() {
+            @Override
+            public int compare(ASTNode arg0, ASTNode arg1) {
+                int comp = 0;
+                if (arg0 instanceof Modifier modifier1 && arg1 instanceof Modifier modifier2) {
+                    int modifierIndex1 = MODIFIER_ORDER.indexOf(modifier1.getKeyword());
+                    int modifierIndex2 = MODIFIER_ORDER.indexOf(modifier2.getKeyword());
+                    comp =
+                        Integer.valueOf(modifierIndex1).compareTo(Integer.valueOf(modifierIndex2));
+                }
+                return comp;
+            }
+        });
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new ModifierOrderQuickfixAstVisitor(markerStartOffset);
-  }
-
-  @Override
-  public String getDescription() {
-    return Messages.ModifierOrderQuickfix_description;
-  }
-
-  @Override
-  public String getLabel() {
-    return Messages.ModifierOrderQuickfix_label;
-  }
-
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
-  }
-
-  private static final class ModifierOrderQuickfixAstVisitor extends ASTVisitor {
-    /** The marker start offset. */
-    private final int markerStartOffset;
-
-    private ModifierOrderQuickfixAstVisitor(int markerStartOffset) {
-      this.markerStartOffset = markerStartOffset;
+        return copies;
     }
 
     @Override
-    public boolean visit(TypeDeclaration node) {
-      return visitBodyDecl(node);
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new ModifierOrderQuickfixAstVisitor(markerStartOffset);
     }
 
     @Override
-    public boolean visit(MethodDeclaration node) {
-      return visitBodyDecl(node);
+    public String getDescription() {
+        return Messages.ModifierOrderQuickfix_description;
     }
 
     @Override
-    public boolean visit(FieldDeclaration node) {
-      return visitBodyDecl(node);
+    public String getLabel() {
+        return Messages.ModifierOrderQuickfix_label;
     }
 
     @Override
-    public boolean visit(AnnotationTypeMemberDeclaration node) {
-      return visitBodyDecl(node);
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
     }
 
-    @SuppressWarnings("unchecked")
-    private boolean visitBodyDecl(BodyDeclaration node) {
-      List<Modifier> modifiers = (List<Modifier>) node.modifiers().stream()
-              .filter(Modifier.class::isInstance).map(Modifier.class::cast)
-              .collect(Collectors.toList());
-      if (modifiers != null && !modifiers.isEmpty()) {
-        // find the range from first to last modifier. marker must be in between
-        int minPos = modifiers.stream().mapToInt(Modifier::getStartPosition).min().getAsInt();
-        int maxPos = modifiers.stream().mapToInt(Modifier::getStartPosition).max().getAsInt();
+    private static final class ModifierOrderQuickfixAstVisitor extends ASTVisitor {
+        /** The marker start offset. */
+        private final int markerStartOffset;
 
-        if (minPos <= markerStartOffset && markerStartOffset <= maxPos) {
-          List<?> reorderedModifiers = reOrderModifiers(node.modifiers());
-          node.modifiers().clear();
-          node.modifiers().addAll(reorderedModifiers);
+        private ModifierOrderQuickfixAstVisitor(int markerStartOffset) {
+            this.markerStartOffset = markerStartOffset;
         }
-      }
-      return true;
+
+        @Override
+        public boolean visit(TypeDeclaration node) {
+            return visitBodyDecl(node);
+        }
+
+        @Override
+        public boolean visit(MethodDeclaration node) {
+            return visitBodyDecl(node);
+        }
+
+        @Override
+        public boolean visit(FieldDeclaration node) {
+            return visitBodyDecl(node);
+        }
+
+        @Override
+        public boolean visit(AnnotationTypeMemberDeclaration node) {
+            return visitBodyDecl(node);
+        }
+
+        @SuppressWarnings("unchecked")
+        private boolean visitBodyDecl(BodyDeclaration node) {
+            List<Modifier> modifiers =
+                (List<Modifier>) node.modifiers().stream().filter(Modifier.class::isInstance)
+                    .map(Modifier.class::cast).collect(Collectors.toList());
+            if (modifiers != null && !modifiers.isEmpty()) {
+                // find the range from first to last modifier. marker must be in between
+                int minPos =
+                    modifiers.stream().mapToInt(Modifier::getStartPosition).min().getAsInt();
+                int maxPos =
+                    modifiers.stream().mapToInt(Modifier::getStartPosition).max().getAsInt();
+
+                if (minPos <= markerStartOffset && markerStartOffset <= maxPos) {
+                    List<?> reorderedModifiers = reOrderModifiers(node.modifiers());
+                    node.modifiers().clear();
+                    node.modifiers().addAll(reorderedModifiers);
+                }
+            }
+            return true;
+        }
     }
-  }
 
 }

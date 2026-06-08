@@ -37,57 +37,58 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  */
 public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
-  /** The list of PropertyResolvers. */
-  private List<PropertyResolver> mChildResolver = new ArrayList<>();
+    /** The list of PropertyResolvers. */
+    private List<PropertyResolver> mChildResolver = new ArrayList<>();
 
-  /**
-   * Adds a PropertyResolver to this aggregation property resolver.
-   *
-   * @param resolver
-   *          the PropertyResolver to add
-   */
-  public void addPropertyResolver(PropertyResolver resolver) {
-    mChildResolver.add(resolver);
-  }
-
-  @Override
-  public void setProjectContext(IProject project) {
-
-    // propagate context to the childs
-    for (int i = 0, size = mChildResolver.size(); i < size; i++) {
-      PropertyResolver aChildResolver = mChildResolver.get(i);
-      if (aChildResolver instanceof IContextAware) {
-        ((IContextAware) aChildResolver).setProjectContext(project);
-      }
-    }
-  }
-
-  @Override
-  public String resolve(String property) {
-
-    String value = null;
-
-    for (int i = 0, size = mChildResolver.size(); i < size; i++) {
-
-      PropertyResolver aChildResolver = mChildResolver.get(i);
-      value = aChildResolver.resolve(property);
-
-      if (value != null) {
-        break;
-      }
+    /**
+     * Adds a PropertyResolver to this aggregation property resolver.
+     *
+     * @param resolver
+     *            the PropertyResolver to add
+     */
+    public void addPropertyResolver(PropertyResolver resolver) {
+        mChildResolver.add(resolver);
     }
 
-    try {
+    @Override
+    public void setProjectContext(IProject project) {
 
-      // property chaining - might recurse internally
-      while (PropertyUtil.hasUnresolvedProperties(value)) {
-        value = PropertyUtil.replaceProperties(value, this);
-      }
-    } catch (CheckstyleException ex) {
-      throw new RuntimeException(ex);
+        // propagate context to the childs
+        for (int i = 0, size = mChildResolver.size(); i < size; i++) {
+            PropertyResolver aChildResolver = mChildResolver.get(i);
+            if (aChildResolver instanceof IContextAware) {
+                ((IContextAware) aChildResolver).setProjectContext(project);
+            }
+        }
     }
 
-    return value;
-  }
+    @Override
+    public String resolve(String property) {
+
+        String value = null;
+
+        for (int i = 0, size = mChildResolver.size(); i < size; i++) {
+
+            PropertyResolver aChildResolver = mChildResolver.get(i);
+            value = aChildResolver.resolve(property);
+
+            if (value != null) {
+                break;
+            }
+        }
+
+        try {
+
+            // property chaining - might recurse internally
+            while (PropertyUtil.hasUnresolvedProperties(value)) {
+                value = PropertyUtil.replaceProperties(value, this);
+            }
+        }
+        catch (CheckstyleException ex) {
+            throw new RuntimeException(ex);
+        }
+
+        return value;
+    }
 
 }

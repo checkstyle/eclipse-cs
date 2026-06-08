@@ -30,20 +30,20 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class TypecastParenPadTransformer extends AbstractCTransformationClass {
 
-  @Override
-  public FormatterConfiguration transformRule() {
-    String option = getAttribute("option");
-    if (option == null) {
-      option = "nospace";
+    @Override
+    public FormatterConfiguration transformRule() {
+        String option = getAttribute("option");
+        if (option == null) {
+            option = "nospace";
+        }
+        if ("space".equals(option)) {
+            option = "insert";
+        } else {
+            option = "do not insert";
+        }
+        userFormatterSetting("insert_space_before_closing_paren_in_cast", option);
+        userFormatterSetting("insert_space_after_opening_paren_in_cast", option);
+        return getFormatterSetting();
     }
-    if ("space".equals(option)) {
-      option = "insert";
-    } else {
-      option = "do not insert";
-    }
-    userFormatterSetting("insert_space_before_closing_paren_in_cast", option);
-    userFormatterSetting("insert_space_after_opening_paren_in_cast", option);
-    return getFormatterSetting();
-  }
 
 }

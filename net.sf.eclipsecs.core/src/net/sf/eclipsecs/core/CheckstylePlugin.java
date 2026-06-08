@@ -39,94 +39,95 @@ import net.sf.eclipsecs.core.util.ExtensionClassLoader;
  */
 public class CheckstylePlugin extends Plugin {
 
-  /** Identifier of the plug-in. */
-  public static final String PLUGIN_ID = "net.sf.eclipsecs.core"; //$NON-NLS-1$
+    /** Identifier of the plug-in. */
+    public static final String PLUGIN_ID = "net.sf.eclipsecs.core"; //$NON-NLS-1$
 
-  /** Extension point id for Checkstyle addon providers. */
-  private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider";
+    /** Extension point id for Checkstyle addon providers. */
+    private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider";
 
-  /**
-   *  Platform Locale.
-   */
-  private static Locale platformLocale;
+    /**
+     * Platform Locale.
+     */
+    private static Locale platformLocale;
 
-  /** The shared instance. */
-  private static CheckstylePlugin sPlugin;
+    /** The shared instance. */
+    private static CheckstylePlugin sPlugin;
 
-  /** The addon extension class loader. */
-  private ClassLoader mAddonExtensionClassLoader;
+    /** The addon extension class loader. */
+    private ClassLoader mAddonExtensionClassLoader;
 
-  /**
-   * The constructor.
-   */
-  public CheckstylePlugin() {
-    sPlugin = this;
-  }
-
-  @Override
-  public void start(BundleContext context) throws Exception {
-    super.start(context);
-
-    mAddonExtensionClassLoader = new ExtensionClassLoader(context.getBundle(),
-            ADDON_PROVIDER_EXT_PT_ID);
-
-    try {
-      Logger checkstyleErrorLog = Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog");
-
-      checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
-      checkstyleErrorLog.setLevel(Level.ALL);
-
-    } catch (Exception ioe) {
-      CheckstyleLog.log(ioe);
+    /**
+     * The constructor.
+     */
+    public CheckstylePlugin() {
+        sPlugin = this;
     }
-  }
 
-  /**
-   * Returns the shared instance.
-   *
-   * @return The shared plug-in instance.
-   */
-  public static CheckstylePlugin getDefault() {
-    return sPlugin;
-  }
+    @Override
+    public void start(BundleContext context) throws Exception {
+        super.start(context);
 
-  /**
-   * Returns the workspace instance.
-   *
-   * @return Workspace instance.
-   */
-  public static IWorkspace getWorkspace() {
-    return ResourcesPlugin.getWorkspace();
-  }
+        mAddonExtensionClassLoader =
+            new ExtensionClassLoader(context.getBundle(), ADDON_PROVIDER_EXT_PT_ID);
 
-  /**
-   * Helper method to get the current plattform locale.
-   *
-   * @return the platform locale
-   */
-  public static Locale getPlatformLocale() {
-    if (platformLocale == null) {
-      final String language = Platform.getNL();
-      final String[] parts = language.split("_");
-      if (parts.length > 0) {
-        platformLocale = new Locale(parts[0]);
-      } else {
-        platformLocale = Locale.getDefault();
-      }
+        try {
+            Logger checkstyleErrorLog =
+                Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog");
+
+            checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
+            checkstyleErrorLog.setLevel(Level.ALL);
+
+        } catch (Exception ioe) {
+            CheckstyleLog.log(ioe);
+        }
     }
-    return platformLocale;
-  }
 
-  public static void setPlatformLocale(final Locale locale) {
-    platformLocale = locale;
-  }
+    /**
+     * Returns the shared instance.
+     *
+     * @return The shared plug-in instance.
+     */
+    public static CheckstylePlugin getDefault() {
+        return sPlugin;
+    }
 
-  /**
-   * Returns the extension classloader.
-   *
-   * @return the classloader to use when potentially accessing classes from extending plugins.
-   */
-  public ClassLoader getAddonExtensionClassLoader() {
-    return mAddonExtensionClassLoader;
-  }
+    /**
+     * Returns the workspace instance.
+     *
+     * @return Workspace instance.
+     */
+    public static IWorkspace getWorkspace() {
+        return ResourcesPlugin.getWorkspace();
+    }
+
+    /**
+     * Helper method to get the current plattform locale.
+     *
+     * @return the platform locale
+     */
+    public static Locale getPlatformLocale() {
+        if (platformLocale == null) {
+            final String language = Platform.getNL();
+            final String[] parts = language.split("_");
+            if (parts.length > 0) {
+                platformLocale = new Locale(parts[0]);
+            } else {
+                platformLocale = Locale.getDefault();
+            }
+        }
+        return platformLocale;
+    }
+
+    public static void setPlatformLocale(final Locale locale) {
+        platformLocale = locale;
+    }
+
+    /**
+     * Returns the extension classloader.
+     *
+     * @return the classloader to use when potentially accessing classes from extending plugins.
+     */
+    public ClassLoader getAddonExtensionClassLoader() {
+        return mAddonExtensionClassLoader;
+    }
 }

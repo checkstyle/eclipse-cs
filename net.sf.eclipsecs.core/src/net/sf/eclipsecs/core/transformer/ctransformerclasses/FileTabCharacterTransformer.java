@@ -29,11 +29,11 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class FileTabCharacterTransformer extends AbstractCTransformationClass {
-  @Override
-  public FormatterConfiguration transformRule() {
-    userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
-    userFormatterSetting("tabulation.char", "space");
-    return getFormatterSetting();
-  }
+    @Override
+    public FormatterConfiguration transformRule() {
+        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+        userFormatterSetting("tabulation.char", "space");
+        return getFormatterSetting();
+    }
 
 }

@@ -24,23 +24,23 @@ import org.eclipse.core.resources.IFile;
 
 public class FilesOlderThanOneDayFilter extends AbstractFilter {
 
-  /** Milliseconds in 24 hours. */
-  private static final long MILLIS_IN_24_HOURS = 1000 * 60 * 60 * 24;
+    /** Milliseconds in 24 hours. */
+    private static final long MILLIS_IN_24_HOURS = 1000 * 60 * 60 * 24;
 
-  @Override
-  public boolean accept(Object o) {
-    boolean goesThrough = true;
+    @Override
+    public boolean accept(Object o) {
+        boolean goesThrough = true;
 
-    if (o instanceof IFile) {
-      IFile file = (IFile) o;
-      if ((System.currentTimeMillis() - file.getLocalTimeStamp()) < MILLIS_IN_24_HOURS) {
-        goesThrough = true;
-      } else {
-        goesThrough = false;
-      }
+        if (o instanceof IFile) {
+            IFile file = (IFile) o;
+            if ((System.currentTimeMillis() - file.getLocalTimeStamp()) < MILLIS_IN_24_HOURS) {
+                goesThrough = true;
+            } else {
+                goesThrough = false;
+            }
+        }
+
+        return goesThrough;
     }
-
-    return goesThrough;
-  }
 
 }

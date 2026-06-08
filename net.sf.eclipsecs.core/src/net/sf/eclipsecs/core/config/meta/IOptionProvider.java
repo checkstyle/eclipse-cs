@@ -30,10 +30,10 @@ import java.util.List;
  */
 public interface IOptionProvider {
 
-  /**
-   * Returns a list of options.
-   *
-   * @return the options
-   */
-  List<String> getOptions();
+    /**
+     * Returns a list of options.
+     *
+     * @return the options
+     */
+    List<String> getOptions();
 }

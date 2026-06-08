@@ -37,68 +37,68 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
  */
 public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigPropertyWidget {
 
-  /** The combo item. */
-  private Combo mComboItem;
+    /** The combo item. */
+    private Combo mComboItem;
 
-  /**
-   * Creates the widget.
-   *
-   * @param parent
-   *          the parent composite
-   * @param prop
-   *          the property
-   */
-  private ConfigPropertyWidgetSingleSelect(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-  }
+    /**
+     * Creates the widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     */
+    private ConfigPropertyWidgetSingleSelect(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
+    }
 
-  public static ConfigPropertyWidgetSingleSelect create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetSingleSelect(parent, prop);
-  }
+    public static ConfigPropertyWidgetSingleSelect create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetSingleSelect(parent, prop);
+    }
 
-  @Override
-  protected Control getValueWidget(Composite parent) {
+    @Override
+    protected Control getValueWidget(Composite parent) {
 
-    if (mComboItem == null) {
+        if (mComboItem == null) {
 
-      //
-      // Create a combo box for selecting a value from the enumeration.
-      //
-      List<String> valueList = getConfigProperty().getMetaData().getPropertyEnumeration();
-      String[] valueLabels = new String[valueList.size()];
-      int initialIndex = 0;
-      String initValue = getInitValue();
-      Iterator<String> iter = valueList.iterator();
-      for (int i = 0; iter.hasNext(); i++) {
-        String value = iter.next();
-        valueLabels[i] = value;
-        if (initValue != null && initValue.equals(value)) {
-          initialIndex = i;
+            //
+            // Create a combo box for selecting a value from the enumeration.
+            //
+            List<String> valueList = getConfigProperty().getMetaData().getPropertyEnumeration();
+            String[] valueLabels = new String[valueList.size()];
+            int initialIndex = 0;
+            String initValue = getInitValue();
+            Iterator<String> iter = valueList.iterator();
+            for (int i = 0; iter.hasNext(); i++) {
+                String value = iter.next();
+                valueLabels[i] = value;
+                if (initValue != null && initValue.equals(value)) {
+                    initialIndex = i;
+                }
+            }
+            mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+            mComboItem.setLayoutData(new GridData());
+            mComboItem.setItems(valueLabels);
+            mComboItem.select(initialIndex);
         }
-      }
-      mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
-      mComboItem.setLayoutData(new GridData());
-      mComboItem.setItems(valueLabels);
-      mComboItem.select(initialIndex);
+
+        return mComboItem;
     }
 
-    return mComboItem;
-  }
+    @Override
+    public String getValue() {
+        return mComboItem.getItem(mComboItem.getSelectionIndex());
+    }
 
-  @Override
-  public String getValue() {
-    return mComboItem.getItem(mComboItem.getSelectionIndex());
-  }
-
-  @Override
-  public void restorePropertyDefault() {
-    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+    @Override
+    public void restorePropertyDefault() {
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-    if (defaultValue == null) {
-      mComboItem.select(0);
-    } else {
-      mComboItem.select(mComboItem.indexOf(defaultValue));
+        if (defaultValue == null) {
+            mComboItem.select(0);
+        } else {
+            mComboItem.select(mComboItem.indexOf(defaultValue));
+        }
     }
-  }
 }

@@ -40,140 +40,142 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
 
-  /** The project configuration. */
-  private final IProjectConfiguration mProjectConfig;
+    /** The project configuration. */
+    private final IProjectConfiguration mProjectConfig;
 
-  /** The internal list of working copies belonging to this working set. */
-  private final List<CheckConfigurationWorkingCopy> mWorkingCopies;
+    /** The internal list of working copies belonging to this working set. */
+    private final List<CheckConfigurationWorkingCopy> mWorkingCopies;
 
-  /** List of working copies that were deleted from the working set. */
-  private final List<CheckConfigurationWorkingCopy> mDeletedConfigurations;
+    /** List of working copies that were deleted from the working set. */
+    private final List<CheckConfigurationWorkingCopy> mDeletedConfigurations;
 
-  /**
-   * Creates a working set to manage local configurations.
-   *
-   * @param projectConfig
-   *          the project configuration
-   * @param checkConfigs
-   *          the list of local check configurations
-   */
-  LocalCheckConfigurationWorkingSet(IProjectConfiguration projectConfig,
-          List<ICheckConfiguration> checkConfigs) {
+    /**
+     * Creates a working set to manage local configurations.
+     *
+     * @param projectConfig
+     *            the project configuration
+     * @param checkConfigs
+     *            the list of local check configurations
+     */
+    LocalCheckConfigurationWorkingSet(IProjectConfiguration projectConfig,
+        List<ICheckConfiguration> checkConfigs) {
 
-    mProjectConfig = projectConfig;
-    mWorkingCopies = new ArrayList<>();
-    mDeletedConfigurations = new ArrayList<>();
+        mProjectConfig = projectConfig;
+        mWorkingCopies = new ArrayList<>();
+        mDeletedConfigurations = new ArrayList<>();
 
-    for (ICheckConfiguration cfg : checkConfigs) {
-      CheckConfigurationWorkingCopy workingCopy = new CheckConfigurationWorkingCopy(cfg, this);
-      mWorkingCopies.add(workingCopy);
-    }
-  }
-
-  @Override
-  public CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig) {
-    return new CheckConfigurationWorkingCopy(checkConfig, this);
-  }
-
-  @Override
-  public CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType) {
-    return new CheckConfigurationWorkingCopy(configType, this, false);
-  }
-
-  @Override
-  public CheckConfigurationWorkingCopy[] getWorkingCopies() {
-    return mWorkingCopies.toArray(new CheckConfigurationWorkingCopy[mWorkingCopies.size()]);
-  }
-
-  @Override
-  public void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
-    mWorkingCopies.add(checkConfig);
-  }
-
-  @Override
-  public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
-
-    boolean inUse = mProjectConfig.isConfigInUse(checkConfig);
-
-    if (!inUse) {
-      mWorkingCopies.remove(checkConfig);
-      mDeletedConfigurations.add(checkConfig);
-    }
-
-    return !inUse;
-  }
-
-  @Override
-  public void store() throws CheckstylePluginException {
-    notifyDeletedCheckConfigs();
-  }
-
-  @Override
-  public boolean isDirty() {
-    boolean dirty = false;
-    if (mDeletedConfigurations.isEmpty()) {
-      for (CheckConfigurationWorkingCopy workingCopy : mWorkingCopies) {
-        dirty = workingCopy.isDirty();
-        if (dirty) {
-          break;
+        for (ICheckConfiguration cfg : checkConfigs) {
+            CheckConfigurationWorkingCopy workingCopy =
+                new CheckConfigurationWorkingCopy(cfg, this);
+            mWorkingCopies.add(workingCopy);
         }
-      }
-    } else {
-      dirty = true;
-    }
-    return dirty;
-  }
-
-  @Override
-  public boolean isNameCollision(CheckConfigurationWorkingCopy configuration) {
-
-    boolean result = false;
-    for (CheckConfigurationWorkingCopy tmp : mWorkingCopies) {
-      if (tmp != configuration && tmp.getName().equals(configuration.getName())) {
-        result = true;
-        break;
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Returns the project of the local check configuration working set.
-   *
-   * @return the project
-   */
-  public IProject getProject() {
-    return mProjectConfig.getProject();
-  }
-
-  @Override
-  public Collection<IProject> getAffectedProjects() {
-    Set<IProject> projects = new HashSet<>();
-
-    CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
-    for (int i = 0; i < workingCopies.length; i++) {
-
-      // skip non dirty configurations
-      if (workingCopies[i].hasConfigurationChanged()
-              && mProjectConfig.isConfigInUse(workingCopies[i])) {
-        projects.add(mProjectConfig.getProject());
-        break;
-      }
     }
 
-    return projects;
-  }
-
-  /**
-   * Notifies the check configurations that have been deleted.
-   *
-   * @throws CheckstylePluginException
-   *           an exception while notifiing for deletion
-   */
-  private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
-    for (ICheckConfiguration checkConfig : mDeletedConfigurations) {
-      checkConfig.getType().notifyCheckConfigRemoved(checkConfig);
+    @Override
+    public CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig) {
+        return new CheckConfigurationWorkingCopy(checkConfig, this);
     }
-  }
+
+    @Override
+    public CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType) {
+        return new CheckConfigurationWorkingCopy(configType, this, false);
+    }
+
+    @Override
+    public CheckConfigurationWorkingCopy[] getWorkingCopies() {
+        return mWorkingCopies.toArray(new CheckConfigurationWorkingCopy[mWorkingCopies.size()]);
+    }
+
+    @Override
+    public void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
+        mWorkingCopies.add(checkConfig);
+    }
+
+    @Override
+    public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
+
+        boolean inUse = mProjectConfig.isConfigInUse(checkConfig);
+
+        if (!inUse) {
+            mWorkingCopies.remove(checkConfig);
+            mDeletedConfigurations.add(checkConfig);
+        }
+
+        return !inUse;
+    }
+
+    @Override
+    public void store() throws CheckstylePluginException {
+        notifyDeletedCheckConfigs();
+    }
+
+    @Override
+    public boolean isDirty() {
+        boolean dirty = false;
+        if (mDeletedConfigurations.isEmpty()) {
+            for (CheckConfigurationWorkingCopy workingCopy : mWorkingCopies) {
+                dirty = workingCopy.isDirty();
+                if (dirty) {
+                    break;
+                }
+            }
+        }
+        else {
+            dirty = true;
+        }
+        return dirty;
+    }
+
+    @Override
+    public boolean isNameCollision(CheckConfigurationWorkingCopy configuration) {
+
+        boolean result = false;
+        for (CheckConfigurationWorkingCopy tmp : mWorkingCopies) {
+            if (tmp != configuration && tmp.getName().equals(configuration.getName())) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Returns the project of the local check configuration working set.
+     *
+     * @return the project
+     */
+    public IProject getProject() {
+        return mProjectConfig.getProject();
+    }
+
+    @Override
+    public Collection<IProject> getAffectedProjects() {
+        Set<IProject> projects = new HashSet<>();
+
+        CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
+        for (int i = 0; i < workingCopies.length; i++) {
+
+            // skip non dirty configurations
+            if (workingCopies[i].hasConfigurationChanged()
+                && mProjectConfig.isConfigInUse(workingCopies[i])) {
+                projects.add(mProjectConfig.getProject());
+                break;
+            }
+        }
+
+        return projects;
+    }
+
+    /**
+     * Notifies the check configurations that have been deleted.
+     *
+     * @throws CheckstylePluginException
+     *             an exception while notifiing for deletion
+     */
+    private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
+        for (ICheckConfiguration checkConfig : mDeletedConfigurations) {
+            checkConfig.getType().notifyCheckConfigRemoved(checkConfig);
+        }
+    }
 
 }

@@ -23,16 +23,16 @@ package net.sf.eclipsecs.ui.util.table;
 import org.eclipse.jface.dialogs.IDialogSettings;
 
 /**
- * Interface for implementations that provide settings where the
- * <code>EnhancedTableViewer</code> can store its current state.
+ * Interface for implementations that provide settings where the <code>EnhancedTableViewer</code>
+ * can store its current state.
  *
  */
 public interface ITableSettingsProvider {
 
-  /**
-   * Provides a settings instance.
-   *
-   * @return the settings
-   */
-  IDialogSettings getTableSettings();
+    /**
+     * Provides a settings instance.
+     *
+     * @return the settings
+     */
+    IDialogSettings getTableSettings();
 }

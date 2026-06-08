@@ -42,94 +42,93 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class ConfiguredModules extends Composite {
 
-  /** The group containing the configured modules. */
-  private final Group configuredModulesGroup;
-  /** The table of configured modules. */
-  private final ConfiguredModulesTable table;
+    /** The group containing the configured modules. */
+    private final Group configuredModulesGroup;
+    /** The table of configured modules. */
+    private final ConfiguredModulesTable table;
 
-  /** The currently selected rule group. */
-  private RuleGroupMetadata currentGroup;
+    /** The currently selected rule group. */
+    private RuleGroupMetadata currentGroup;
 
-  public ConfiguredModules(Composite parent, int style, boolean configurable,
-          List<Module> modules, ConfiguredModulesCallbacks callbacks) {
-    super(parent, style);
-    GridLayoutFactory.fillDefaults().applyTo(this);
+    public ConfiguredModules(Composite parent, int style, boolean configurable,
+        List<Module> modules, ConfiguredModulesCallbacks callbacks) {
+        super(parent, style);
+        GridLayoutFactory.fillDefaults().applyTo(this);
 
-    this.configuredModulesGroup = new Group(this, SWT.NONE);
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(configuredModulesGroup);
-    GridLayoutFactory.fillDefaults().applyTo(configuredModulesGroup);
-    configuredModulesGroup.setText("\0");
+        this.configuredModulesGroup = new Group(this, SWT.NONE);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(configuredModulesGroup);
+        GridLayoutFactory.fillDefaults().applyTo(configuredModulesGroup);
+        configuredModulesGroup.setText("\0");
 
-    this.table = new ConfiguredModulesTable(configuredModulesGroup, SWT.NONE,
+        this.table = new ConfiguredModulesTable(configuredModulesGroup, SWT.NONE,
             new RuleGroupModuleFilter(), configurable, new TableCheckStateProvider(configurable),
             callbacks, modules);
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
-    Runnable removeModule = () -> callbacks.removeModule.accept(table.getSelectedModules());
-    Runnable openModule = () -> {
-      if (!table.getSelectedModules().isEmpty()) {
-        callbacks.openModule.accept(table.getSelectedModules().getFirst());
-      }
-    };
+        Runnable removeModule = () -> callbacks.removeModule.accept(table.getSelectedModules());
+        Runnable openModule = () -> {
+            if (!table.getSelectedModules().isEmpty()) {
+                callbacks.openModule.accept(table.getSelectedModules().getFirst());
+            }
+        };
 
-    Composite buttons = new ConfiguredModulesButtons(configuredModulesGroup, SWT.NONE,
+        Composite buttons = new ConfiguredModulesButtons(configuredModulesGroup, SWT.NONE,
             configurable, removeModule, openModule);
-    GridDataFactory.swtDefaults().applyTo(buttons);
-  }
+        GridDataFactory.swtDefaults().applyTo(buttons);
+    }
 
-  public void refresh() {
-    table.refresh();
-  }
+    public void refresh() {
+        table.refresh();
+    }
 
-  public void setCurrentGroup(RuleGroupMetadata currentGroup) {
-    this.currentGroup = currentGroup;
-    this.configuredModulesGroup
+    public void setCurrentGroup(RuleGroupMetadata currentGroup) {
+        this.currentGroup = currentGroup;
+        this.configuredModulesGroup
             .setText(NLS.bind(Messages.CheckConfigurationConfigureDialog_lblConfiguredModules,
-                    currentGroup.getGroupName()));
-    table.refresh();
-  }
-
-  public record ConfiguredModulesCallbacks(Consumer<Module> openModule,
-          Consumer<List<Module>> removeModule, Consumer<String> updateDescription,
-          BiConsumer<Module, Boolean> checkStateChanged) {
-
-  }
-
-  /**
-   * Viewer filter that includes all modules that belong to the currently selected group.
-   *
-   */
-  private final class RuleGroupModuleFilter extends ViewerFilter {
-
-    @Override
-    public boolean select(Viewer viewer, Object parentElement, Object element) {
-      RuleMetadata rule = ((Module) element).getMetaData();
-      return rule == null
-              || currentGroup != null
-                      && !rule.hidden()
-                      && currentGroup.getGroupName().equals(rule.identity().group().getGroupName());
-
-    }
-  }
-
-  private static final class TableCheckStateProvider implements ICheckStateProvider {
-
-    /** Whether the table is configurable. */
-    private final boolean configurable;
-
-    private TableCheckStateProvider(boolean configurable) {
-      this.configurable = configurable;
+                currentGroup.getGroupName()));
+        table.refresh();
     }
 
-    @Override
-    public boolean isGrayed(Object element) {
-      return !configurable;
+    public record ConfiguredModulesCallbacks(Consumer<Module> openModule,
+        Consumer<List<Module>> removeModule, Consumer<String> updateDescription,
+        BiConsumer<Module, Boolean> checkStateChanged) {
+
     }
 
-    @Override
-    public boolean isChecked(Object element) {
-      Module module = (Module) element;
-      return !Severity.IGNORE.equals(module.getSeverity()) || !module.getMetaData().hasSeverity();
+    /**
+     * Viewer filter that includes all modules that belong to the currently selected group.
+     *
+     */
+    private final class RuleGroupModuleFilter extends ViewerFilter {
+
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+            RuleMetadata rule = ((Module) element).getMetaData();
+            return rule == null || currentGroup != null && !rule.hidden()
+                && currentGroup.getGroupName().equals(rule.identity().group().getGroupName());
+
+        }
     }
-  }
+
+    private static final class TableCheckStateProvider implements ICheckStateProvider {
+
+        /** Whether the table is configurable. */
+        private final boolean configurable;
+
+        private TableCheckStateProvider(boolean configurable) {
+            this.configurable = configurable;
+        }
+
+        @Override
+        public boolean isGrayed(Object element) {
+            return !configurable;
+        }
+
+        @Override
+        public boolean isChecked(Object element) {
+            Module module = (Module) element;
+            return !Severity.IGNORE.equals(module.getSeverity())
+                || !module.getMetaData().hasSeverity();
+        }
+    }
 }

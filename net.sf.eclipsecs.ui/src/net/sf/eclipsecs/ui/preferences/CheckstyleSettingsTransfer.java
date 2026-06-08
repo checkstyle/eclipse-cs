@@ -31,28 +31,28 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 
 /**
- * Support for transferring internal eclipse-cs workspace settings to another
- * workspace.
+ * Support for transferring internal eclipse-cs workspace settings to another workspace.
  *
  */
 public class CheckstyleSettingsTransfer extends SettingsTransfer {
 
-  @Override
-  public String getName() {
-    return Messages.CheckstylePreferenceTransfer_name;
-  }
-
-  @Override
-  public IStatus transferSettings(IPath newWorkspaceRoot) {
-    IStatus status;
-    try {
-      CheckConfigurationFactory.transferInternalConfiguration(newWorkspaceRoot);
-      status = Status.OK_STATUS;
-    } catch (CheckstylePluginException ex) {
-      status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID,
-              "Checkstyle settings transfer failed", ex);
+    @Override
+    public String getName() {
+        return Messages.CheckstylePreferenceTransfer_name;
     }
-    return status;
-  }
+
+    @Override
+    public IStatus transferSettings(IPath newWorkspaceRoot) {
+        IStatus status;
+        try {
+            CheckConfigurationFactory.transferInternalConfiguration(newWorkspaceRoot);
+            status = Status.OK_STATUS;
+        }
+        catch (CheckstylePluginException ex) {
+            status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID,
+                "Checkstyle settings transfer failed", ex);
+        }
+        return status;
+    }
 
 }

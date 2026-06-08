@@ -34,53 +34,53 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
  */
 public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWidget {
 
-  /** The checkbox. */
-  private Button mCheckbox;
+    /** The checkbox. */
+    private Button mCheckbox;
 
-  /**
-   * Creates the widget.
-   *
-   * @param parent
-   *          the parent composite
-   * @param prop
-   *          the property
-   */
-  private ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-  }
-
-  public static ConfigPropertyWidgetBoolean create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetBoolean(parent, prop);
-  }
-
-  @Override
-  protected Control getValueWidget(Composite parent) {
-    if (mCheckbox == null) {
-
-      //
-      // Create a check box for selecting true or false.
-      //
-
-      mCheckbox = new Button(parent, SWT.CHECK);
-      mCheckbox.setLayoutData(new GridData());
-
-      String initValue = getInitValue();
-      mCheckbox.setSelection(Boolean.parseBoolean(initValue));
-
+    /**
+     * Creates the widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     */
+    private ConfigPropertyWidgetBoolean(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
     }
-    return mCheckbox;
-  }
 
-  @Override
-  public String getValue() {
-    return Boolean.toString(mCheckbox.getSelection());
-  }
+    public static ConfigPropertyWidgetBoolean create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetBoolean(parent, prop);
+    }
 
-  @Override
-  public void restorePropertyDefault() {
-    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+    @Override
+    protected Control getValueWidget(Composite parent) {
+        if (mCheckbox == null) {
+
+            //
+            // Create a check box for selecting true or false.
+            //
+
+            mCheckbox = new Button(parent, SWT.CHECK);
+            mCheckbox.setLayoutData(new GridData());
+
+            String initValue = getInitValue();
+            mCheckbox.setSelection(Boolean.parseBoolean(initValue));
+
+        }
+        return mCheckbox;
+    }
+
+    @Override
+    public String getValue() {
+        return Boolean.toString(mCheckbox.getSelection());
+    }
+
+    @Override
+    public void restorePropertyDefault() {
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-    mCheckbox.setSelection(Boolean.parseBoolean(defaultValue));
-  }
+        mCheckbox.setSelection(Boolean.parseBoolean(defaultValue));
+    }
 }

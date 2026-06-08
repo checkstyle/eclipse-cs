@@ -65,527 +65,540 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class PackageFilterEditor implements IFilterEditor {
 
-  /** the dialog for this editor. */
-  private CheckedTreeSelectionDialog mDialog;
+    /** the dialog for this editor. */
+    private CheckedTreeSelectionDialog mDialog;
 
-  /** the input for the editor. */
-  private IProject mInputProject;
+    /** the input for the editor. */
+    private IProject mInputProject;
 
-  /** the filter data. */
-  private List<String> mFilterData;
+    /** the filter data. */
+    private List<String> mFilterData;
 
-  @Override
-  public int openEditor(Shell parent) {
+    @Override
+    public int openEditor(Shell parent) {
 
-    this.mDialog = new CheckedTreeSelectionDialog(parent,
+        this.mDialog = new CheckedTreeSelectionDialog(parent,
             WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider(),
             new SourceFolderContentProvider());
 
-    // initialize the dialog with the filter data
-    initCheckedTreeSelectionDialog();
+        // initialize the dialog with the filter data
+        initCheckedTreeSelectionDialog();
 
-    // open the dialog
-    int retCode = this.mDialog.open();
+        // open the dialog
+        int retCode = this.mDialog.open();
 
-    // actualize the filter data
-    if (Window.OK == retCode) {
-      this.mFilterData = this.getFilterDataFromDialog();
+        // actualize the filter data
+        if (Window.OK == retCode) {
+            this.mFilterData = this.getFilterDataFromDialog();
 
-      if (!mDialog.isRecursivelyExcludeSubTree()) {
-        mFilterData.add(PackageFilter.RECURSE_OFF_MARKER);
-      }
-    }
-
-    return retCode;
-  }
-
-  @Override
-  public void setInputProject(IProject input) {
-    this.mInputProject = input;
-  }
-
-  @Override
-  public void setFilterData(List<String> filterData) {
-    this.mFilterData = filterData;
-  }
-
-  @Override
-  public List<String> getFilterData() {
-    return this.mFilterData;
-  }
-
-  /**
-   * Helper method to initialize the dialog.
-   */
-  private void initCheckedTreeSelectionDialog() {
-
-    this.mDialog.setTitle(Messages.PackageFilterEditor_titleFilterPackages);
-    this.mDialog.setMessage(Messages.PackageFilterEditor_msgFilterPackages);
-    this.mDialog.setBlockOnOpen(true);
-
-    this.mDialog.setInput(this.mInputProject);
-
-    // display the filter data
-    if (this.mInputProject != null && this.mFilterData != null) {
-
-      List<IResource> selectedElements = new ArrayList<>();
-      List<IResource> expandedElements = new ArrayList<>();
-
-      boolean recurse = true;
-
-      int size = mFilterData != null ? mFilterData.size() : 0;
-      for (int i = 0; i < size; i++) {
-
-        String element = mFilterData.get(i);
-
-        if (PackageFilter.RECURSE_OFF_MARKER.equals(element)) {
-          recurse = false;
-          continue;
-        }
-
-        IPath path = new Path(element);
-
-        IResource selElement = this.mInputProject.findMember(path);
-        if (selElement != null) {
-          selectedElements.add(selElement);
-        }
-
-        // get all parent elements to expand
-        while (path.segmentCount() > 0) {
-          path = path.removeLastSegments(1);
-
-          IResource expElement = this.mInputProject.findMember(path);
-          if (expElement != null) {
-            expandedElements.add(expElement);
-          }
-        }
-      }
-
-      this.mDialog.setInitialSelections(selectedElements.toArray());
-      this.mDialog.setExpandedElements(expandedElements.toArray());
-      this.mDialog.setRecursivelyExcludeSubTree(recurse);
-    }
-  }
-
-  /**
-   * Helper method to extract the edited data from the dialog.
-   *
-   * @return the filter data
-   */
-  private List<String> getFilterDataFromDialog() {
-
-    Object[] checked = this.mDialog.getResult();
-
-    List<String> result = new ArrayList<>();
-    for (int i = 0; i < checked.length; i++) {
-
-      if (checked[i] instanceof IResource) {
-        result.add(((IResource) checked[i]).getProjectRelativePath().toString());
-      }
-    }
-    return result;
-  }
-
-  /**
-   * Content provider that provides the source folders of a project and their container members.
-   *
-   */
-  private static final class SourceFolderContentProvider implements ITreeContentProvider {
-
-    @Override
-    public Object[] getChildren(Object parentElement) {
-      List<IResource> children = null;
-
-      if (parentElement instanceof IProject) {
-
-        IProject project = (IProject) parentElement;
-        children = handleProject(project);
-      } else if (parentElement instanceof IContainer) {
-
-        IContainer container = (IContainer) parentElement;
-        children = handleContainer(container);
-      } else {
-        children = new ArrayList<>();
-      }
-
-      return children.toArray();
-    }
-
-    private List<IResource> handleProject(IProject project) {
-      List<IResource> children = new ArrayList<>();
-      if (project.isAccessible()) {
-        IJavaProject javaProject = JavaCore.create(project);
-        if (javaProject.exists()) {
-          try {
-            IPackageFragmentRoot[] packageRoots = javaProject.getAllPackageFragmentRoots();
-            for (IPackageFragmentRoot packageRoot : packageRoots) {
-              // special case - project itself is package root
-              if (project.equals(packageRoot.getResource())) {
-                Arrays.stream(project.members())
-                        .filter(member -> member.getType() != IResource.FILE)
-                        .forEach(children::add);
-              } else if (!packageRoot.isArchive() && packageRoot.getParent().equals(javaProject)) {
-                children.add(packageRoot.getResource());
-              }
+            if (!mDialog.isRecursivelyExcludeSubTree()) {
+                mFilterData.add(PackageFilter.RECURSE_OFF_MARKER);
             }
-
-          } catch (JavaModelException ex) {
-            CheckstyleLog.log(ex);
-          } catch (CoreException ex) {
-            // this should never happen because we call
-            // #isAccessible before invoking #members
-          }
         }
-      }
-      return children;
-    }
 
-    private List<IResource> handleContainer(IContainer container) {
-      List<IResource> children = new ArrayList<>();
-      if (container.isAccessible()) {
-        try {
-          IResource[] members = container.members();
-          for (int i = 0; i < members.length; i++) {
-            if (members[i].getType() != IResource.FILE) {
-              children.add(members[i]);
-            }
-          }
-        } catch (CoreException ex) {
-          // this should never happen because we call
-          // #isAccessible before invoking #members
-        }
-      }
-      return children;
+        return retCode;
     }
 
     @Override
-    public Object getParent(Object element) {
-      return element instanceof IResource ? ((IResource) element).getParent() : null;
+    public void setInputProject(IProject input) {
+        this.mInputProject = input;
     }
 
     @Override
-    public boolean hasChildren(Object element) {
-      return getChildren(element).length > 0;
+    public void setFilterData(List<String> filterData) {
+        this.mFilterData = filterData;
     }
 
     @Override
-    public Object[] getElements(Object inputElement) {
-      return getChildren(inputElement);
+    public List<String> getFilterData() {
+        return this.mFilterData;
     }
-
-    @Override
-    public void dispose() {
-      // NOOP
-    }
-
-    @Override
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-      // NOOP
-    }
-  }
-
-  /**
-   * A class to select elements out of a tree structure.
-   *
-   * @since 2.0
-   */
-  public class CheckedTreeSelectionDialog extends SelectionStatusDialog {
-    /** The label provider. */
-    private final ILabelProvider mLabelProvider;
-
-    /** The content provider. */
-    private final ITreeContentProvider mContentProvider;
-
-    /** The checkbox tree viewer. */
-    private CheckboxTreeViewer mViewer;
-
-    /** The recurse sub-packages checkbox. */
-    private Button mBtnRecurseSubPackages;
-
-    /** The tree input. */
-    private Object mInput;
-
-    /** Flag indicating whether the tree is empty. */
-    private boolean mIsEmpty;
-
-    /** The width of the tree in characters. */
-    private int mWidth = 60;
-
-    /** The height of the tree in characters. */
-    private int mHeight = 18;
-
-    /** The elements to expand. */
-    private Object[] mExpandedElements;
-
-    /** Flag for recursive exclusion of sub-packages. */
-    private boolean mRecursivelyExcludeSubPackages = true;
 
     /**
-     * Constructs an instance of <code>ElementTreeSelectionDialog</code>.
-     *
-     * @param parent
-     *          The shell to parent from.
-     * @param labelProvider
-     *          the label provider to render the entries
-     * @param contentProvider
-     *          the content provider to evaluate the tree structure
+     * Helper method to initialize the dialog.
      */
-    public CheckedTreeSelectionDialog(Shell parent, ILabelProvider labelProvider,
+    private void initCheckedTreeSelectionDialog() {
+
+        this.mDialog.setTitle(Messages.PackageFilterEditor_titleFilterPackages);
+        this.mDialog.setMessage(Messages.PackageFilterEditor_msgFilterPackages);
+        this.mDialog.setBlockOnOpen(true);
+
+        this.mDialog.setInput(this.mInputProject);
+
+        // display the filter data
+        if (this.mInputProject != null && this.mFilterData != null) {
+
+            List<IResource> selectedElements = new ArrayList<>();
+            List<IResource> expandedElements = new ArrayList<>();
+
+            boolean recurse = true;
+
+            int size = mFilterData != null ? mFilterData.size() : 0;
+            for (int i = 0; i < size; i++) {
+
+                String element = mFilterData.get(i);
+
+                if (PackageFilter.RECURSE_OFF_MARKER.equals(element)) {
+                    recurse = false;
+                    continue;
+                }
+
+                IPath path = new Path(element);
+
+                IResource selElement = this.mInputProject.findMember(path);
+                if (selElement != null) {
+                    selectedElements.add(selElement);
+                }
+
+                // get all parent elements to expand
+                while (path.segmentCount() > 0) {
+                    path = path.removeLastSegments(1);
+
+                    IResource expElement = this.mInputProject.findMember(path);
+                    if (expElement != null) {
+                        expandedElements.add(expElement);
+                    }
+                }
+            }
+
+            this.mDialog.setInitialSelections(selectedElements.toArray());
+            this.mDialog.setExpandedElements(expandedElements.toArray());
+            this.mDialog.setRecursivelyExcludeSubTree(recurse);
+        }
+    }
+
+    /**
+     * Helper method to extract the edited data from the dialog.
+     *
+     * @return the filter data
+     */
+    private List<String> getFilterDataFromDialog() {
+
+        Object[] checked = this.mDialog.getResult();
+
+        List<String> result = new ArrayList<>();
+        for (int i = 0; i < checked.length; i++) {
+
+            if (checked[i] instanceof IResource) {
+                result.add(((IResource) checked[i]).getProjectRelativePath().toString());
+            }
+        }
+        return result;
+    }
+
+    /**
+     * Content provider that provides the source folders of a project and their container members.
+     *
+     */
+    private static final class SourceFolderContentProvider implements ITreeContentProvider {
+
+        @Override
+        public Object[] getChildren(Object parentElement) {
+            List<IResource> children = null;
+
+            if (parentElement instanceof IProject) {
+
+                IProject project = (IProject) parentElement;
+                children = handleProject(project);
+            }
+            else if (parentElement instanceof IContainer) {
+
+                IContainer container = (IContainer) parentElement;
+                children = handleContainer(container);
+            }
+            else {
+                children = new ArrayList<>();
+            }
+
+            return children.toArray();
+        }
+
+        private List<IResource> handleProject(IProject project) {
+            List<IResource> children = new ArrayList<>();
+            if (project.isAccessible()) {
+                IJavaProject javaProject = JavaCore.create(project);
+                if (javaProject.exists()) {
+                    try {
+                        IPackageFragmentRoot[] packageRoots =
+                            javaProject.getAllPackageFragmentRoots();
+                        for (IPackageFragmentRoot packageRoot : packageRoots) {
+                            // special case - project itself is package root
+                            if (project.equals(packageRoot.getResource())) {
+                                Arrays.stream(project.members())
+                                    .filter(member -> member.getType() != IResource.FILE)
+                                    .forEach(children::add);
+                            }
+                            else if (!packageRoot.isArchive()
+                                && packageRoot.getParent().equals(javaProject)) {
+                                children.add(packageRoot.getResource());
+                            }
+                        }
+
+                    }
+                    catch (JavaModelException ex) {
+                        CheckstyleLog.log(ex);
+                    }
+                    catch (CoreException ex) {
+                        // this should never happen because we call
+                        // #isAccessible before invoking #members
+                    }
+                }
+            }
+            return children;
+        }
+
+        private List<IResource> handleContainer(IContainer container) {
+            List<IResource> children = new ArrayList<>();
+            if (container.isAccessible()) {
+                try {
+                    IResource[] members = container.members();
+                    for (int i = 0; i < members.length; i++) {
+                        if (members[i].getType() != IResource.FILE) {
+                            children.add(members[i]);
+                        }
+                    }
+                }
+                catch (CoreException ex) {
+                    // this should never happen because we call
+                    // #isAccessible before invoking #members
+                }
+            }
+            return children;
+        }
+
+        @Override
+        public Object getParent(Object element) {
+            return element instanceof IResource ? ((IResource) element).getParent() : null;
+        }
+
+        @Override
+        public boolean hasChildren(Object element) {
+            return getChildren(element).length > 0;
+        }
+
+        @Override
+        public Object[] getElements(Object inputElement) {
+            return getChildren(inputElement);
+        }
+
+        @Override
+        public void dispose() {
+            // NOOP
+        }
+
+        @Override
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+            // NOOP
+        }
+    }
+
+    /**
+     * A class to select elements out of a tree structure.
+     *
+     * @since 2.0
+     */
+    public class CheckedTreeSelectionDialog extends SelectionStatusDialog {
+        /** The label provider. */
+        private final ILabelProvider mLabelProvider;
+
+        /** The content provider. */
+        private final ITreeContentProvider mContentProvider;
+
+        /** The checkbox tree viewer. */
+        private CheckboxTreeViewer mViewer;
+
+        /** The recurse sub-packages checkbox. */
+        private Button mBtnRecurseSubPackages;
+
+        /** The tree input. */
+        private Object mInput;
+
+        /** Flag indicating whether the tree is empty. */
+        private boolean mIsEmpty;
+
+        /** The width of the tree in characters. */
+        private int mWidth = 60;
+
+        /** The height of the tree in characters. */
+        private int mHeight = 18;
+
+        /** The elements to expand. */
+        private Object[] mExpandedElements;
+
+        /** Flag for recursive exclusion of sub-packages. */
+        private boolean mRecursivelyExcludeSubPackages = true;
+
+        /**
+         * Constructs an instance of <code>ElementTreeSelectionDialog</code>.
+         *
+         * @param parent
+         *            The shell to parent from.
+         * @param labelProvider
+         *            the label provider to render the entries
+         * @param contentProvider
+         *            the content provider to evaluate the tree structure
+         */
+        public CheckedTreeSelectionDialog(Shell parent, ILabelProvider labelProvider,
             ITreeContentProvider contentProvider) {
-      super(parent);
-      setHelpAvailable(false);
-      mLabelProvider = labelProvider;
-      mContentProvider = contentProvider;
-      setResult(new ArrayList<>(0));
-      setStatusLineAboveButtons(true);
-      mExpandedElements = null;
-      int shellStyle = getShellStyle();
-      setShellStyle(shellStyle | SWT.MAX | SWT.RESIZE);
-    }
+            super(parent);
+            setHelpAvailable(false);
+            mLabelProvider = labelProvider;
+            mContentProvider = contentProvider;
+            setResult(new ArrayList<>(0));
+            setStatusLineAboveButtons(true);
+            mExpandedElements = null;
+            int shellStyle = getShellStyle();
+            setShellStyle(shellStyle | SWT.MAX | SWT.RESIZE);
+        }
 
-    /**
-     * Sets the initial selection. Convenience method.
-     *
-     * @param selection
-     *          the initial selection.
-     */
-    public void setInitialSelection(Object selection) {
-      setInitialSelections(new Object[] {
-          selection,
-      });
-    }
+        /**
+         * Sets the initial selection. Convenience method.
+         *
+         * @param selection
+         *            the initial selection.
+         */
+        public void setInitialSelection(Object selection) {
+            setInitialSelections(new Object[] {
+                selection,
+            });
+        }
 
-    /**
-     * Sets the tree input.
-     *
-     * @param input
-     *          the tree input.
-     */
-    public void setInput(Object input) {
-      mInput = input;
-    }
+        /**
+         * Sets the tree input.
+         *
+         * @param input
+         *            the tree input.
+         */
+        public void setInput(Object input) {
+            mInput = input;
+        }
 
-    /**
-     * Expands elements in the tree.
-     *
-     * @param elements
-     *          The elements that will be expanded.
-     */
-    public void setExpandedElements(Object[] elements) {
-      mExpandedElements = elements;
-    }
+        /**
+         * Expands elements in the tree.
+         *
+         * @param elements
+         *            The elements that will be expanded.
+         */
+        public void setExpandedElements(Object[] elements) {
+            mExpandedElements = elements;
+        }
 
-    /**
-     * Sets the size of the tree in unit of characters.
-     *
-     * @param width
-     *          the width of the tree.
-     * @param height
-     *          the height of the tree.
-     */
-    public void setSize(int width, int height) {
-      mWidth = width;
-      mHeight = height;
-    }
+        /**
+         * Sets the size of the tree in unit of characters.
+         *
+         * @param width
+         *            the width of the tree.
+         * @param height
+         *            the height of the tree.
+         */
+        public void setSize(int width, int height) {
+            mWidth = width;
+            mHeight = height;
+        }
 
-    /**
-     * Sets if subtree should be recursively excluded. Default is true.
-     *
-     * @param recursivelyExcludeSubTree
-     *          the recursive checking state
-     */
-    public void setRecursivelyExcludeSubTree(boolean recursivelyExcludeSubTree) {
+        /**
+         * Sets if subtree should be recursively excluded. Default is true.
+         *
+         * @param recursivelyExcludeSubTree
+         *            the recursive checking state
+         */
+        public void setRecursivelyExcludeSubTree(boolean recursivelyExcludeSubTree) {
 
-      mRecursivelyExcludeSubPackages = recursivelyExcludeSubTree;
-    }
+            mRecursivelyExcludeSubPackages = recursivelyExcludeSubTree;
+        }
 
-    /**
-     * Returns if the subtrees should be recursively excluded.
-     *
-     * @return <code>true</code> if subtrees should be excluded
-     */
-    protected boolean isRecursivelyExcludeSubTree() {
-      return mRecursivelyExcludeSubPackages;
-    }
-
-    @Override
-    public int open() {
-      mIsEmpty = evaluateIfTreeEmpty(mInput);
-      super.open();
-      return getReturnCode();
-    }
-
-    /**
-     * Handles cancel button pressed event.
-     */
-    @Override
-    protected void cancelPressed() {
-      setResult(null);
-      super.cancelPressed();
-    }
-
-    @Override
-    protected void computeResult() {
-
-      List<Object> checked = Arrays.asList(mViewer.getCheckedElements());
-
-      if (mRecursivelyExcludeSubPackages) {
-        List<Object> grayed = Arrays.asList(mViewer.getGrayedElements());
-
-        List<Object> pureChecked = new ArrayList<>(checked);
-        pureChecked.removeAll(grayed);
-
-        setResult(pureChecked);
-      } else {
-        setResult(checked);
-      }
-
-    }
-
-    @Override
-    protected Control createButtonBar(Composite parent) {
-
-      Composite composite = new Composite(parent, SWT.NONE);
-      GridLayout layout = new GridLayout(3, false);
-      layout.marginHeight = 0;
-      layout.marginWidth = 0;
-      composite.setLayout(layout);
-      composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-      mBtnRecurseSubPackages = new Button(composite, SWT.CHECK);
-      mBtnRecurseSubPackages.setText("Recursively exclude sub-packages");
-      GridData gridData = new GridData();
-      gridData.horizontalAlignment = GridData.BEGINNING;
-      gridData.horizontalIndent = 5;
-      mBtnRecurseSubPackages.setLayoutData(gridData);
-
-      mBtnRecurseSubPackages.setSelection(mRecursivelyExcludeSubPackages);
-      mBtnRecurseSubPackages.addSelectionListener(new SelectionListener() {
-
-        @Override
-        public void widgetSelected(SelectionEvent e) {
-          mRecursivelyExcludeSubPackages = mBtnRecurseSubPackages.getSelection();
-          adaptRecurseBehaviour();
+        /**
+         * Returns if the subtrees should be recursively excluded.
+         *
+         * @return <code>true</code> if subtrees should be excluded
+         */
+        protected boolean isRecursivelyExcludeSubTree() {
+            return mRecursivelyExcludeSubPackages;
         }
 
         @Override
-        public void widgetDefaultSelected(SelectionEvent e) {
-          // NOOP
+        public int open() {
+            mIsEmpty = evaluateIfTreeEmpty(mInput);
+            super.open();
+            return getReturnCode();
         }
-      });
 
-      Control buttonBar = super.createButtonBar(composite);
-      gridData = new GridData(GridData.FILL_HORIZONTAL);
-      gridData.horizontalAlignment = GridData.END;
-      buttonBar.setLayoutData(gridData);
-
-      return composite;
-    }
-
-    @Override
-    protected Control createDialogArea(Composite parent) {
-      Composite composite = (Composite) super.createDialogArea(parent);
-      Label messageLabel = createMessageArea(composite);
-      if (mIsEmpty) {
-        messageLabel.setEnabled(false);
-      }
-
-      CheckboxTreeViewer treeViewer = createTreeViewer(composite);
-      GridData data = new GridData(GridData.FILL_BOTH);
-      data.widthHint = convertWidthInCharsToPixels(mWidth);
-      data.heightHint = convertHeightInCharsToPixels(mHeight);
-      Tree treeWidget = treeViewer.getTree();
-      treeWidget.setLayoutData(data);
-      treeWidget.setFont(parent.getFont());
-      if (mIsEmpty) {
-        treeWidget.setEnabled(false);
-      }
-      return composite;
-    }
-
-    /**
-     * Creates the tree viewer.
-     *
-     * @param parent
-     *          the parent composite
-     * @return the tree viewer
-     */
-    protected CheckboxTreeViewer createTreeViewer(Composite parent) {
-
-      mViewer = new CheckboxTreeViewer(parent, SWT.BORDER);
-      mViewer.setContentProvider(mContentProvider);
-      mViewer.setLabelProvider(mLabelProvider);
-
-      mViewer.addCheckStateListener(event -> {
-        IContainer element = (IContainer) event.getElement();
-
-        if (isRecursivelyExcludeSubTree() && !isGrayed(element)) {
-          setSubElementsGrayedChecked(element, event.getChecked());
-        } else if (isRecursivelyExcludeSubTree() && isGrayed(element)) {
-          mViewer.setGrayChecked(element, true);
+        /**
+         * Handles cancel button pressed event.
+         */
+        @Override
+        protected void cancelPressed() {
+            setResult(null);
+            super.cancelPressed();
         }
-      });
 
-      mViewer.setInput(mInput);
-      mViewer.setCheckedElements(getInitialElementSelections().toArray());
-      adaptRecurseBehaviour();
-      if (mExpandedElements != null) {
-        mViewer.setExpandedElements(mExpandedElements);
-      }
+        @Override
+        protected void computeResult() {
 
-      return mViewer;
-    }
+            List<Object> checked = Arrays.asList(mViewer.getCheckedElements());
 
-    private boolean evaluateIfTreeEmpty(Object input) {
-      Object[] elements = mContentProvider.getElements(input);
+            if (mRecursivelyExcludeSubPackages) {
+                List<Object> grayed = Arrays.asList(mViewer.getGrayedElements());
 
-      return elements.length == 0;
-    }
+                List<Object> pureChecked = new ArrayList<>(checked);
+                pureChecked.removeAll(grayed);
 
-    private void adaptRecurseBehaviour() {
-
-      if (isRecursivelyExcludeSubTree()) {
-
-        Object[] checked = mViewer.getCheckedElements();
-        for (Object element : checked) {
-          setSubElementsGrayedChecked((IContainer) element, true);
-        }
-      } else {
-        Object[] grayed = mViewer.getGrayedElements();
-        for (Object element : grayed) {
-          mViewer.setGrayChecked(element, false);
-        }
-      }
-    }
-
-    private boolean isGrayed(Object element) {
-
-      Object[] grayed = mViewer.getGrayedElements();
-      return Arrays.asList(grayed).contains(element);
-    }
-
-    private void setSubElementsGrayedChecked(final IContainer container, final boolean checked) {
-
-      final List<IContainer> subContainers = new ArrayList<>();
-
-      try {
-        container.accept(new IResourceVisitor() {
-          @Override
-          public boolean visit(IResource resource) {
-            if (!resource.equals(container) && resource instanceof IContainer) {
-              subContainers.add((IContainer) resource);
+                setResult(pureChecked);
             }
-            return true;
-          }
-        });
-      } catch (CoreException ex) {
-        CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
-      }
+            else {
+                setResult(checked);
+            }
 
-      for (IContainer grayedChild : subContainers) {
-        mViewer.setGrayChecked(grayedChild, checked);
-      }
+        }
+
+        @Override
+        protected Control createButtonBar(Composite parent) {
+
+            Composite composite = new Composite(parent, SWT.NONE);
+            GridLayout layout = new GridLayout(3, false);
+            layout.marginHeight = 0;
+            layout.marginWidth = 0;
+            composite.setLayout(layout);
+            composite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+            mBtnRecurseSubPackages = new Button(composite, SWT.CHECK);
+            mBtnRecurseSubPackages.setText("Recursively exclude sub-packages");
+            GridData gridData = new GridData();
+            gridData.horizontalAlignment = GridData.BEGINNING;
+            gridData.horizontalIndent = 5;
+            mBtnRecurseSubPackages.setLayoutData(gridData);
+
+            mBtnRecurseSubPackages.setSelection(mRecursivelyExcludeSubPackages);
+            mBtnRecurseSubPackages.addSelectionListener(new SelectionListener() {
+
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    mRecursivelyExcludeSubPackages = mBtnRecurseSubPackages.getSelection();
+                    adaptRecurseBehaviour();
+                }
+
+                @Override
+                public void widgetDefaultSelected(SelectionEvent e) {
+                    // NOOP
+                }
+            });
+
+            Control buttonBar = super.createButtonBar(composite);
+            gridData = new GridData(GridData.FILL_HORIZONTAL);
+            gridData.horizontalAlignment = GridData.END;
+            buttonBar.setLayoutData(gridData);
+
+            return composite;
+        }
+
+        @Override
+        protected Control createDialogArea(Composite parent) {
+            Composite composite = (Composite) super.createDialogArea(parent);
+            Label messageLabel = createMessageArea(composite);
+            if (mIsEmpty) {
+                messageLabel.setEnabled(false);
+            }
+
+            CheckboxTreeViewer treeViewer = createTreeViewer(composite);
+            GridData data = new GridData(GridData.FILL_BOTH);
+            data.widthHint = convertWidthInCharsToPixels(mWidth);
+            data.heightHint = convertHeightInCharsToPixels(mHeight);
+            Tree treeWidget = treeViewer.getTree();
+            treeWidget.setLayoutData(data);
+            treeWidget.setFont(parent.getFont());
+            if (mIsEmpty) {
+                treeWidget.setEnabled(false);
+            }
+            return composite;
+        }
+
+        /**
+         * Creates the tree viewer.
+         *
+         * @param parent
+         *            the parent composite
+         * @return the tree viewer
+         */
+        protected CheckboxTreeViewer createTreeViewer(Composite parent) {
+
+            mViewer = new CheckboxTreeViewer(parent, SWT.BORDER);
+            mViewer.setContentProvider(mContentProvider);
+            mViewer.setLabelProvider(mLabelProvider);
+
+            mViewer.addCheckStateListener(event -> {
+                IContainer element = (IContainer) event.getElement();
+
+                if (isRecursivelyExcludeSubTree() && !isGrayed(element)) {
+                    setSubElementsGrayedChecked(element, event.getChecked());
+                }
+                else if (isRecursivelyExcludeSubTree() && isGrayed(element)) {
+                    mViewer.setGrayChecked(element, true);
+                }
+            });
+
+            mViewer.setInput(mInput);
+            mViewer.setCheckedElements(getInitialElementSelections().toArray());
+            adaptRecurseBehaviour();
+            if (mExpandedElements != null) {
+                mViewer.setExpandedElements(mExpandedElements);
+            }
+
+            return mViewer;
+        }
+
+        private boolean evaluateIfTreeEmpty(Object input) {
+            Object[] elements = mContentProvider.getElements(input);
+
+            return elements.length == 0;
+        }
+
+        private void adaptRecurseBehaviour() {
+
+            if (isRecursivelyExcludeSubTree()) {
+
+                Object[] checked = mViewer.getCheckedElements();
+                for (Object element : checked) {
+                    setSubElementsGrayedChecked((IContainer) element, true);
+                }
+            }
+            else {
+                Object[] grayed = mViewer.getGrayedElements();
+                for (Object element : grayed) {
+                    mViewer.setGrayChecked(element, false);
+                }
+            }
+        }
+
+        private boolean isGrayed(Object element) {
+
+            Object[] grayed = mViewer.getGrayedElements();
+            return Arrays.asList(grayed).contains(element);
+        }
+
+        private void setSubElementsGrayedChecked(final IContainer container,
+            final boolean checked) {
+
+            final List<IContainer> subContainers = new ArrayList<>();
+
+            try {
+                container.accept(new IResourceVisitor() {
+                    @Override
+                    public boolean visit(IResource resource) {
+                        if (!resource.equals(container) && resource instanceof IContainer) {
+                            subContainers.add((IContainer) resource);
+                        }
+                        return true;
+                    }
+                });
+            }
+            catch (CoreException ex) {
+                CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+            }
+
+            for (IContainer grayedChild : subContainers) {
+                mViewer.setGrayChecked(grayedChild, checked);
+            }
+        }
     }
-  }
 
 }

@@ -45,68 +45,68 @@ import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 @Component(property = EventConstants.EVENT_TOPIC + "=" + UIEvents.UILifeCycle.APP_STARTUP_COMPLETE)
 public final class ApplicationStartedHandler implements EventHandler {
 
-  /** Part listener for check-on-open support. */
-  private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
+    /** Part listener for check-on-open support. */
+    private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
 
-  /** Window listener for the workbench. */
-  private final IWindowListener mWindowListener = new IWindowListener() {
-    @Override
-    public void windowOpened(IWorkbenchWindow window) {
-      window.getPartService().addPartListener(mPartListener);
-    }
-
-    @Override
-    public void windowActivated(IWorkbenchWindow window) {
-    }
-
-    @Override
-    public void windowClosed(IWorkbenchWindow window) {
-      window.getPartService().removePartListener(mPartListener);
-    }
-
-    @Override
-    public void windowDeactivated(IWorkbenchWindow window) {
-    }
-  };
-
-  @Override
-  public void handleEvent(org.osgi.service.event.Event event) {
-    if (UIEvents.UILifeCycle.APP_STARTUP_COMPLETE.equals(event.getTopic())) {
-      registerListener();
-      registerProgressIcon();
-    }
-  }
-
-  private void registerListener() {
-    // add listeners for the Check-On-Open support
-    final IWorkbench workbench = PlatformUI.getWorkbench();
-    workbench.getDisplay().asyncExec(new Runnable() {
-      @Override
-      public void run() {
-        for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {
-          // collect open editors and have then run against Checkstyle if appropriate
-          // add already opened files to the filter - bugfix for 2923044
-          Set<IWorkbenchPartReference> parts = Arrays.stream(window.getPages())
-              .map(IWorkbenchPage::getEditorReferences)
-              .flatMap(Arrays::stream)
-              .collect(Collectors.toSet());
-          mPartListener.partsOpened(parts);
-          // remove listener first for safety,
-          // we don't want to register the same listener twice accidently
-          window.getPartService().removePartListener(mPartListener);
-          window.getPartService().addPartListener(mPartListener);
+    /** Window listener for the workbench. */
+    private final IWindowListener mWindowListener = new IWindowListener() {
+        @Override
+        public void windowOpened(IWorkbenchWindow window) {
+            window.getPartService().addPartListener(mPartListener);
         }
-        workbench.addWindowListener(mWindowListener);
-      }
-    });
-  }
 
-  protected void registerProgressIcon() {
-    IProgressService service = PlatformUI.getWorkbench().getProgressService();
-    if (service != null) {
-      service.registerIconForFamily(CheckstyleUIPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),
-              AbstractCheckJob.CHECKSTYLE_JOB_FAMILY);
+        @Override
+        public void windowActivated(IWorkbenchWindow window) {
+        }
+
+        @Override
+        public void windowClosed(IWorkbenchWindow window) {
+            window.getPartService().removePartListener(mPartListener);
+        }
+
+        @Override
+        public void windowDeactivated(IWorkbenchWindow window) {
+        }
+    };
+
+    @Override
+    public void handleEvent(org.osgi.service.event.Event event) {
+        if (UIEvents.UILifeCycle.APP_STARTUP_COMPLETE.equals(event.getTopic())) {
+            registerListener();
+            registerProgressIcon();
+        }
     }
-  }
+
+    private void registerListener() {
+        // add listeners for the Check-On-Open support
+        final IWorkbench workbench = PlatformUI.getWorkbench();
+        workbench.getDisplay().asyncExec(new Runnable() {
+            @Override
+            public void run() {
+                for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {
+                    // collect open editors and have then run against Checkstyle if appropriate
+                    // add already opened files to the filter - bugfix for 2923044
+                    Set<IWorkbenchPartReference> parts =
+                        Arrays.stream(window.getPages()).map(IWorkbenchPage::getEditorReferences)
+                            .flatMap(Arrays::stream).collect(Collectors.toSet());
+                    mPartListener.partsOpened(parts);
+                    // remove listener first for safety,
+                    // we don't want to register the same listener twice accidently
+                    window.getPartService().removePartListener(mPartListener);
+                    window.getPartService().addPartListener(mPartListener);
+                }
+                workbench.addWindowListener(mWindowListener);
+            }
+        });
+    }
+
+    protected void registerProgressIcon() {
+        IProgressService service = PlatformUI.getWorkbench().getProgressService();
+        if (service != null) {
+            service.registerIconForFamily(
+                CheckstyleUIPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),
+                AbstractCheckJob.CHECKSTYLE_JOB_FAMILY);
+        }
+    }
 
 }

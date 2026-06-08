@@ -40,79 +40,80 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public final class CheckstyleQuickfixes {
 
-  /**
-   * ID of the quickfix extension point
-   */
-  private static final String QUICKFIX_EXTENSION_POINT = "net.sf.eclipsecs.ui.quickfix";
-  /**
-   * Attribute under which the fully qualified class name of the quick fix is registered
-   */
-  private static final String EXTENSION_CLASS_ATTRIBUTE = "class";
-  /**
-   * Attribute under which the module id is registered
-   */
-  private static final String EXTENSION_MODULE_ATTRIBUTE = "module";
+    /**
+     * ID of the quickfix extension point
+     */
+    private static final String QUICKFIX_EXTENSION_POINT = "net.sf.eclipsecs.ui.quickfix";
+    /**
+     * Attribute under which the fully qualified class name of the quick fix is registered
+     */
+    private static final String EXTENSION_CLASS_ATTRIBUTE = "class";
+    /**
+     * Attribute under which the module id is registered
+     */
+    private static final String EXTENSION_MODULE_ATTRIBUTE = "module";
 
-  /** The registered quickfixes. */
-  private final Collection<ICheckstyleMarkerResolution> quickfixes;
+    /** The registered quickfixes. */
+    private final Collection<ICheckstyleMarkerResolution> quickfixes;
 
-  private CheckstyleQuickfixes() {
-    quickfixes = readRegistry();
-  }
+    private CheckstyleQuickfixes() {
+        quickfixes = readRegistry();
+    }
 
-  public static CheckstyleQuickfixes getInstance() {
-    return LazyHolder.INSTANCE;
-  }
+    public static CheckstyleQuickfixes getInstance() {
+        return LazyHolder.INSTANCE;
+    }
 
-  /**
-   * @return the quickfixes
-   */
-  public Collection<ICheckstyleMarkerResolution> getQuickfixes() {
-    return quickfixes;
-  }
+    /**
+     * @return the quickfixes
+     */
+    public Collection<ICheckstyleMarkerResolution> getQuickfixes() {
+        return quickfixes;
+    }
 
-  /**
-   * @return all registered quickfixes
-   */
-  private Collection<ICheckstyleMarkerResolution> readRegistry() {
-    List<ICheckstyleMarkerResolution> result = new ArrayList<>();
-    IExtensionRegistry registry = Platform.getExtensionRegistry();
-    IConfigurationElement[] elements = registry
-            .getConfigurationElementsFor(QUICKFIX_EXTENSION_POINT);
-    for (IConfigurationElement element : elements) {
-      var module = element.getAttribute(EXTENSION_MODULE_ATTRIBUTE);
-      if (StringUtils.isNotBlank(module)) {
-        var resolution = toClass(element);
-        if (resolution != null) {
-          resolution.setModule(module);
-          result.add(resolution);
+    /**
+     * @return all registered quickfixes
+     */
+    private Collection<ICheckstyleMarkerResolution> readRegistry() {
+        List<ICheckstyleMarkerResolution> result = new ArrayList<>();
+        IExtensionRegistry registry = Platform.getExtensionRegistry();
+        IConfigurationElement[] elements =
+            registry.getConfigurationElementsFor(QUICKFIX_EXTENSION_POINT);
+        for (IConfigurationElement element : elements) {
+            var module = element.getAttribute(EXTENSION_MODULE_ATTRIBUTE);
+            if (StringUtils.isNotBlank(module)) {
+                var resolution = toClass(element);
+                if (resolution != null) {
+                    resolution.setModule(module);
+                    result.add(resolution);
+                }
+            }
         }
-      }
+
+        return result;
     }
 
-    return result;
-  }
-
-  private ICheckstyleMarkerResolution toClass(IConfigurationElement element) {
-    ICheckstyleMarkerResolution resolution = null;
-    try {
-      var extension = element.createExecutableExtension(EXTENSION_CLASS_ATTRIBUTE);
-      if (extension instanceof ICheckstyleMarkerResolution) {
-        resolution = (ICheckstyleMarkerResolution) extension;
-      }
-    } catch (CoreException ex) {
-      CheckstyleLog.log(ex,
-              "cannot create quickfix for " + element.getAttribute(EXTENSION_CLASS_ATTRIBUTE));
+    private ICheckstyleMarkerResolution toClass(IConfigurationElement element) {
+        ICheckstyleMarkerResolution resolution = null;
+        try {
+            var extension = element.createExecutableExtension(EXTENSION_CLASS_ATTRIBUTE);
+            if (extension instanceof ICheckstyleMarkerResolution) {
+                resolution = (ICheckstyleMarkerResolution) extension;
+            }
+        }
+        catch (CoreException ex) {
+            CheckstyleLog.log(ex,
+                "cannot create quickfix for " + element.getAttribute(EXTENSION_CLASS_ATTRIBUTE));
+        }
+        return resolution;
     }
-    return resolution;
-  }
 
-  /**
-   * Initialization-on-demand-holder
-   */
-  private static final class LazyHolder {
-    /** The singleton instance. */
-    static final CheckstyleQuickfixes INSTANCE = new CheckstyleQuickfixes();
-  }
+    /**
+     * Initialization-on-demand-holder
+     */
+    private static final class LazyHolder {
+        /** The singleton instance. */
+        static final CheckstyleQuickfixes INSTANCE = new CheckstyleQuickfixes();
+    }
 
 }

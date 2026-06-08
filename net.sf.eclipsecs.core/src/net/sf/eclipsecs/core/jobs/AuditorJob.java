@@ -40,44 +40,44 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class AuditorJob extends AbstractCheckJob {
 
-  /** The project to audit. */
-  private IProject mProject;
+    /** The project to audit. */
+    private IProject mProject;
 
-  /** The auditor. */
-  private Auditor mAuditor;
+    /** The auditor. */
+    private Auditor mAuditor;
 
-  /**
-   * Creates an operation which runs a pre-configured auditor.
-   *
-   * @param project
-   *          the project to build
-   * @param auditor
-   *          the auditor to run
-   */
-  public AuditorJob(IProject project, Auditor auditor) {
-    super(NLS.bind(Messages.AuditorJob_msgBuildProject, project.getName()));
+    /**
+     * Creates an operation which runs a pre-configured auditor.
+     *
+     * @param project
+     *            the project to build
+     * @param auditor
+     *            the auditor to run
+     */
+    public AuditorJob(IProject project, Auditor auditor) {
+        super(NLS.bind(Messages.AuditorJob_msgBuildProject, project.getName()));
 
-    this.mProject = project;
-    this.mAuditor = auditor;
-  }
-
-  @Override
-  public boolean contains(ISchedulingRule arg0) {
-    return arg0 instanceof AuditorJob;
-  }
-
-  @Override
-  public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-
-    try {
-
-      mAuditor.runAudit(mProject, monitor);
-    } catch (CheckstylePluginException ex) {
-      Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-              ex.getLocalizedMessage(), ex);
-      throw new CoreException(status);
+        this.mProject = project;
+        this.mAuditor = auditor;
     }
-    return Status.OK_STATUS;
-  }
+
+    @Override
+    public boolean contains(ISchedulingRule arg0) {
+        return arg0 instanceof AuditorJob;
+    }
+
+    @Override
+    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+
+        try {
+
+            mAuditor.runAudit(mProject, monitor);
+        } catch (CheckstylePluginException ex) {
+            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
+                ex.getLocalizedMessage(), ex);
+            throw new CoreException(status);
+        }
+        return Status.OK_STATUS;
+    }
 
 }

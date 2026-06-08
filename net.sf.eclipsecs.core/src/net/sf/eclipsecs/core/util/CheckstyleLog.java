@@ -33,38 +33,38 @@ import net.sf.eclipsecs.core.Messages;
  */
 public final class CheckstyleLog {
 
-  /** The platform log. */
-  private static ILog log;
+    /** The platform log. */
+    private static ILog log;
 
-  private CheckstyleLog() {
-  }
+    private CheckstyleLog() {
+    }
 
-  static {
-    log = CheckstylePlugin.getDefault().getLog();
-  }
+    static {
+        log = CheckstylePlugin.getDefault().getLog();
+    }
 
-  /**
-   * Logs the exceptions.
-   *
-   * @param error
-   *          the exception to log
-   */
-  public static void log(Throwable error) {
-    log(error, error.getLocalizedMessage());
-  }
+    /**
+     * Logs the exceptions.
+     *
+     * @param error
+     *            the exception to log
+     */
+    public static void log(Throwable error) {
+        log(error, error.getLocalizedMessage());
+    }
 
-  /**
-   * Logs the exception, describing it with the given message.
-   *
-   * @param throwable
-   *          the exception to log
-   * @param message
-   *          the message
-   */
-  public static void log(Throwable throwable, String message) {
-    Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
+    /**
+     * Logs the exception, describing it with the given message.
+     *
+     * @param throwable
+     *            the exception to log
+     * @param message
+     *            the message
+     */
+    public static void log(Throwable throwable, String message) {
+        Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
             NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), throwable);
-    log.log(status);
-  }
+        log.log(status);
+    }
 
 }

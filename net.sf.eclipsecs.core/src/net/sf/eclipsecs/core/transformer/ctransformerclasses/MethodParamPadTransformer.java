@@ -29,41 +29,42 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class MethodParamPadTransformer extends AbstractCTransformationClass {
-  @Override
-  public FormatterConfiguration transformRule() {
-    String option = getAttribute("option");
-    if (option == null) {
-      option = "nospace";
-    }
-    String space = switch (option) {
-      case "space" -> "insert";
-      default -> "do not insert";
-    };
-
-    String val = getAttribute("tokens");
-    if (val == null) {
-      val = "CTOR_DEF, CTOR_CALL, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL, "
-              + "ENUM_CONSTANT_DEF, RECORD_DEF, RECORD_PATTERN_DEF";
-    }
-
-    for (String token : val.split("\\s*,\\s*")) {
-      switch (token) {
-        case "CTOR_DEF" -> userFormatterSetting(
-                "insert_space_before_opening_paren_in_constructor_declaration", space);
-        case "METHOD_CALL", "SUPER_CTOR_CALL", "CTOR_CALL", "LITERAL_NEW" -> userFormatterSetting(
-                "insert_space_before_opening_paren_in_method_invocation", space);
-        case "METHOD_DEF" -> userFormatterSetting(
-                "insert_space_before_opening_paren_in_method_declaration", space);
-        case "ENUM_CONSTANT_DEF" -> userFormatterSetting(
-                "insert_space_before_opening_paren_in_enum_constant", space);
-        case "RECORD_DEF" -> userFormatterSetting(
-                "insert_space_before_opening_paren_in_record_declaration", space);
-        default -> {
-          // nothing to transform
+    @Override
+    public FormatterConfiguration transformRule() {
+        String option = getAttribute("option");
+        if (option == null) {
+            option = "nospace";
         }
-      }
+        String space = switch (option) {
+            case "space" -> "insert";
+            default -> "do not insert";
+        };
+
+        String val = getAttribute("tokens");
+        if (val == null) {
+            val = "CTOR_DEF, CTOR_CALL, LITERAL_NEW, METHOD_CALL, METHOD_DEF, SUPER_CTOR_CALL, "
+                + "ENUM_CONSTANT_DEF, RECORD_DEF, RECORD_PATTERN_DEF";
+        }
+
+        for (String token : val.split("\\s*,\\s*")) {
+            switch (token) {
+                case "CTOR_DEF" -> userFormatterSetting(
+                    "insert_space_before_opening_paren_in_constructor_declaration", space);
+                case "METHOD_CALL", "SUPER_CTOR_CALL", "CTOR_CALL",
+                    "LITERAL_NEW" -> userFormatterSetting(
+                        "insert_space_before_opening_paren_in_method_invocation", space);
+                case "METHOD_DEF" -> userFormatterSetting(
+                    "insert_space_before_opening_paren_in_method_declaration", space);
+                case "ENUM_CONSTANT_DEF" -> userFormatterSetting(
+                    "insert_space_before_opening_paren_in_enum_constant", space);
+                case "RECORD_DEF" -> userFormatterSetting(
+                    "insert_space_before_opening_paren_in_record_declaration", space);
+                default -> {
+                    // nothing to transform
+                }
+            }
+        }
+        return getFormatterSetting();
     }
-    return getFormatterSetting();
-  }
 
 }

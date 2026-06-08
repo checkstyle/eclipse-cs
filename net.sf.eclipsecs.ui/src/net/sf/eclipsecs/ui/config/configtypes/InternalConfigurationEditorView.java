@@ -34,68 +34,69 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class InternalConfigurationEditorView extends Composite {
 
-  /** The config name text field. */
-  private final Text mConfigName;
-  /** The location text field. */
-  private final Text mLocation;
-  /** The description text field. */
-  private final Text mDescription;
+    /** The config name text field. */
+    private final Text mConfigName;
+    /** The location text field. */
+    private final Text mLocation;
+    /** The description text field. */
+    private final Text mDescription;
 
-  public InternalConfigurationEditorView(Composite parent, int style, Runnable importConfig) {
-    super(parent, style);
-    GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(this);
+    public InternalConfigurationEditorView(Composite parent, int style, Runnable importConfig) {
+        super(parent, style);
+        GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(this);
 
-    Label lblConfigName = new Label(this, SWT.NULL);
-    lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
-    GridDataFactory.swtDefaults().applyTo(lblConfigName);
+        Label lblConfigName = new Label(this, SWT.NULL);
+        lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
+        GridDataFactory.swtDefaults().applyTo(lblConfigName);
 
-    mConfigName = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mConfigName);
-    mConfigName.setFocus();
+        mConfigName = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mConfigName);
+        mConfigName.setFocus();
 
-    Label lblConfigLocation = new Label(this, SWT.NULL);
-    lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
-    GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING).applyTo(lblConfigLocation);
+        Label lblConfigLocation = new Label(this, SWT.NULL);
+        lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
+            .applyTo(lblConfigLocation);
 
-    mLocation = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-    mLocation.setEditable(false);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mLocation);
+        mLocation = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        mLocation.setEditable(false);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mLocation);
 
-    Label lblDescription = new Label(this, SWT.NULL);
-    lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
-    GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
+        Label lblDescription = new Label(this, SWT.NULL);
+        lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
+        GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
-    mDescription = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-    GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
+        mDescription = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
+        GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
             .applyTo(mDescription);
 
-    Button mBtnImport = new Button(this, SWT.PUSH);
-    mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
-    GridDataFactory.swtDefaults().span(2, 1).align(GridData.END, GridData.CENTER)
+        Button mBtnImport = new Button(this, SWT.PUSH);
+        mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
+        GridDataFactory.swtDefaults().span(2, 1).align(GridData.END, GridData.CENTER)
             .applyTo(mBtnImport);
 
-    mBtnImport.addSelectionListener(SelectionListener.widgetSelectedAdapter(
-            event -> importConfig.run()));
-  }
+        mBtnImport.addSelectionListener(
+            SelectionListener.widgetSelectedAdapter(event -> importConfig.run()));
+    }
 
-  public String getConfigName() {
-    return mConfigName.getText();
-  }
+    public String getConfigName() {
+        return mConfigName.getText();
+    }
 
-  public String getDescription() {
-    return mDescription.getText();
-  }
+    public String getDescription() {
+        return mDescription.getText();
+    }
 
-  public void setConfigName(String configName) {
-    mConfigName.setText(configName);
-  }
+    public void setConfigName(String configName) {
+        mConfigName.setText(configName);
+    }
 
-  public void setDescription(String description) {
-    mDescription.setText(description);
-  }
+    public void setDescription(String description) {
+        mDescription.setText(description);
+    }
 
-  public void setConfigLocation(String location) {
-    mLocation.setText(location);
-  }
+    public void setConfigLocation(String location) {
+        mLocation.setText(location);
+    }
 
 }

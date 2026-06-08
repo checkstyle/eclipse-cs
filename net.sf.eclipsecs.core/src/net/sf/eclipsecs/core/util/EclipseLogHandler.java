@@ -40,59 +40,61 @@ import net.sf.eclipsecs.core.Messages;
  */
 public class EclipseLogHandler extends Handler {
 
-  /** The plugin Id. */
-  private final String mPluginID;
+    /** The plugin Id. */
+    private final String mPluginID;
 
-  /** The eclipse log to log into. */
-  private final ILog mPluginLog;
+    /** The eclipse log to log into. */
+    private final ILog mPluginLog;
 
-  /**
-   * Creates an handler that passes java.util.logging messages to the eclipse log of a certain
-   * plugin.
-   *
-   * @param loggingPlugin
-   *          the plugin for which should be logged
-   */
-  public EclipseLogHandler(Plugin loggingPlugin) {
-    mPluginLog = loggingPlugin.getLog();
-    mPluginID = loggingPlugin.getBundle().getSymbolicName();
-  }
-
-  @Override
-  public void publish(LogRecord record) {
-
-    // translate log levels into severity
-    int severity = 0;
-    Level level = record.getLevel();
-    if (Level.CONFIG.equals(level) || Level.INFO.equals(level) || Level.FINE.equals(level)
-            || Level.FINER.equals(level) || Level.FINEST.equals(level)) {
-      severity = IStatus.INFO;
-    } else if (Level.WARNING.equals(level)) {
-      severity = IStatus.WARNING;
-    } else if (Level.SEVERE.equals(level)) {
-      severity = IStatus.ERROR;
+    /**
+     * Creates an handler that passes java.util.logging messages to the eclipse log of a certain
+     * plugin.
+     *
+     * @param loggingPlugin
+     *            the plugin for which should be logged
+     */
+    public EclipseLogHandler(Plugin loggingPlugin) {
+        mPluginLog = loggingPlugin.getLog();
+        mPluginID = loggingPlugin.getBundle().getSymbolicName();
     }
 
-    // get message
-    String message = record.getMessage();
+    @Override
+    public void publish(LogRecord record) {
 
-    // get throwable
-    Throwable thrown = record.getThrown();
+        // translate log levels into severity
+        int severity = 0;
+        Level level = record.getLevel();
+        if (Level.CONFIG.equals(level) || Level.INFO.equals(level) || Level.FINE.equals(level)
+            || Level.FINER.equals(level) || Level.FINEST.equals(level)) {
+            severity = IStatus.INFO;
+        }
+        else if (Level.WARNING.equals(level)) {
+            severity = IStatus.WARNING;
+        }
+        else if (Level.SEVERE.equals(level)) {
+            severity = IStatus.ERROR;
+        }
 
-    Status status = new Status(severity, mPluginID, IStatus.OK,
+        // get message
+        String message = record.getMessage();
+
+        // get throwable
+        Throwable thrown = record.getThrown();
+
+        Status status = new Status(severity, mPluginID, IStatus.OK,
             NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), thrown);
-    mPluginLog.log(status);
-  }
+        mPluginLog.log(status);
+    }
 
-  @Override
-  public void close() {
-    // NOOP
-  }
+    @Override
+    public void close() {
+        // NOOP
+    }
 
-  @Override
-  public void flush() {
-    // NOOP
+    @Override
+    public void flush() {
+        // NOOP
 
-  }
+    }
 
 }

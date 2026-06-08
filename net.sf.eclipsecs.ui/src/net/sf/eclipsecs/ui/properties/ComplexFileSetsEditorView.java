@@ -38,55 +38,55 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class ComplexFileSetsEditorView extends Composite {
 
-  /** The table viewer for file sets. */
-  private final ComplexFileSetsEditorTableView mViewer;
+    /** The table viewer for file sets. */
+    private final ComplexFileSetsEditorTableView mViewer;
 
-  public ComplexFileSetsEditorView(Composite parent, int style,
-          ICheckStateListener changeEnabledState, Consumer<FileSet> editFileSet,
-          Runnable addFileSet, Consumer<FileSet> removeFileSet, List<FileSet> mFileSets) {
-    super(parent, style);
-    setLayout(new FillLayout());
+    public ComplexFileSetsEditorView(Composite parent, int style,
+        ICheckStateListener changeEnabledState, Consumer<FileSet> editFileSet, Runnable addFileSet,
+        Consumer<FileSet> removeFileSet, List<FileSet> mFileSets) {
+        super(parent, style);
+        setLayout(new FillLayout());
 
-    Group composite = new Group(this, SWT.NONE);
-    composite.setText(Messages.ComplexFileSetsEditor_titleAdvancedFilesetEditor);
-    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
+        Group composite = new Group(this, SWT.NONE);
+        composite.setText(Messages.ComplexFileSetsEditor_titleAdvancedFilesetEditor);
+        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
 
-    mViewer = new ComplexFileSetsEditorTableView(composite, SWT.NONE, changeEnabledState,
+        mViewer = new ComplexFileSetsEditorTableView(composite, SWT.NONE, changeEnabledState,
             editFileSet, mFileSets);
-    GridDataFactory.fillDefaults().grab(true, true).applyTo(mViewer);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(mViewer);
 
-    //
-    // Build the buttons.
-    //
-    Composite buttons = new Composite(composite, SWT.NULL);
-    GridDataFactory.create(GridData.VERTICAL_ALIGN_BEGINNING).applyTo(buttons);
-    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttons);
+        //
+        // Build the buttons.
+        //
+        Composite buttons = new Composite(composite, SWT.NULL);
+        GridDataFactory.create(GridData.VERTICAL_ALIGN_BEGINNING).applyTo(buttons);
+        GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttons);
 
-    Button mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
-    mAddButton.addListener(SWT.Selection, event -> addFileSet.run());
+        Button mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
+        mAddButton.addListener(SWT.Selection, event -> addFileSet.run());
 
-    Button mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
-    mEditButton.addListener(SWT.Selection,
+        Button mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
+        mEditButton.addListener(SWT.Selection,
             event -> editFileSet.accept(mViewer.getSelectedFileSet()));
 
-    Button mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
-    mRemoveButton.addListener(SWT.Selection,
+        Button mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
+        mRemoveButton.addListener(SWT.Selection,
             event -> removeFileSet.accept(mViewer.getSelectedFileSet()));
-  }
+    }
 
-  public void refresh() {
-    mViewer.refresh();
-  }
+    public void refresh() {
+        mViewer.refresh();
+    }
 
-  public void setChecked(FileSet fileSet, boolean enabled) {
-    mViewer.setChecked(fileSet, enabled);
-  }
+    public void setChecked(FileSet fileSet, boolean enabled) {
+        mViewer.setChecked(fileSet, enabled);
+    }
 
-  private static Button createPushButton(Composite parent, String label) {
-    Button button = new Button(parent, SWT.PUSH);
-    button.setText(label);
-    GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).applyTo(button);
-    return button;
-  }
+    private static Button createPushButton(Composite parent, String label) {
+        Button button = new Button(parent, SWT.PUSH);
+        button.setText(label);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).applyTo(button);
+        return button;
+    }
 
 }

@@ -44,58 +44,58 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class ActivateProjectsAction implements IObjectActionDelegate {
 
-  /** The selected projects to activate Checkstyle on. */
-  private Collection<IProject> mSelectedProjects;
+    /** The selected projects to activate Checkstyle on. */
+    private Collection<IProject> mSelectedProjects;
 
-  @Override
-  public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-  }
-
-  @Override
-  @SuppressWarnings("unchecked")
-  public void selectionChanged(IAction action, ISelection selection) {
-
-    if (selection instanceof IStructuredSelection) {
-      IStructuredSelection sel = (IStructuredSelection) selection;
-      mSelectedProjects = sel.toList();
-    }
-  }
-
-  @Override
-  public void run(IAction action) {
-    BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
-    job.schedule();
-  }
-
-  /**
-   * Activates Checkstyle on a collection of projects.
-   *
-   */
-  private static class BulkCheckstyleActivateJob extends WorkspaceJob {
-
-    /** The projects to activate Checkstyle on. */
-    private Collection<IProject> mProjectsToActivate;
-
-    public BulkCheckstyleActivateJob(Collection<IProject> projectsToActivate) {
-      super(Messages.ActivateProjectsPrintAction_msgActivateSelectedProjects);
-      this.mProjectsToActivate = projectsToActivate;
+    @Override
+    public void setActivePart(IAction action, IWorkbenchPart targetPart) {
     }
 
     @Override
-    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+    @SuppressWarnings("unchecked")
+    public void selectionChanged(IAction action, ISelection selection) {
 
-      for (IProject configurationTarget : mProjectsToActivate) {
-
-        if (configurationTarget.isOpen()
-                && !configurationTarget.hasNature(CheckstyleNature.NATURE_ID)) {
-
-          ConfigureDeconfigureNatureJob job = new ConfigureDeconfigureNatureJob(configurationTarget,
-                  CheckstyleNature.NATURE_ID);
-          job.schedule();
+        if (selection instanceof IStructuredSelection) {
+            IStructuredSelection sel = (IStructuredSelection) selection;
+            mSelectedProjects = sel.toList();
         }
-      }
-
-      return Status.OK_STATUS;
     }
-  }
+
+    @Override
+    public void run(IAction action) {
+        BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
+        job.schedule();
+    }
+
+    /**
+     * Activates Checkstyle on a collection of projects.
+     *
+     */
+    private static class BulkCheckstyleActivateJob extends WorkspaceJob {
+
+        /** The projects to activate Checkstyle on. */
+        private Collection<IProject> mProjectsToActivate;
+
+        public BulkCheckstyleActivateJob(Collection<IProject> projectsToActivate) {
+            super(Messages.ActivateProjectsPrintAction_msgActivateSelectedProjects);
+            this.mProjectsToActivate = projectsToActivate;
+        }
+
+        @Override
+        public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+
+            for (IProject configurationTarget : mProjectsToActivate) {
+
+                if (configurationTarget.isOpen()
+                    && !configurationTarget.hasNature(CheckstyleNature.NATURE_ID)) {
+
+                    ConfigureDeconfigureNatureJob job = new ConfigureDeconfigureNatureJob(
+                        configurationTarget, CheckstyleNature.NATURE_ID);
+                    job.schedule();
+                }
+            }
+
+            return Status.OK_STATUS;
+        }
+    }
 }

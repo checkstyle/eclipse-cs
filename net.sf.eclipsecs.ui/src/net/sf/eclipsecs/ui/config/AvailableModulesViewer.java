@@ -55,278 +55,278 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class AvailableModulesViewer extends Composite {
 
-  /** The filtered tree viewer for available modules. */
-  private final FilteredTree treeViewer;
-  /** The add button for adding modules. */
-  private final Button addButton;
-  /** The callback for adding new modules. */
-  private final Consumer<List<RuleMetadata>> newModule;
+    /** The filtered tree viewer for available modules. */
+    private final FilteredTree treeViewer;
+    /** The add button for adding modules. */
+    private final Button addButton;
+    /** The callback for adding new modules. */
+    private final Consumer<List<RuleMetadata>> newModule;
 
-  public AvailableModulesViewer(Composite parent, int style,
-          AvailableModulesViewerLabelProvider labelProvider, boolean configurable,
-          Consumer<List<RuleMetadata>> newModule, Consumer<Object> selectionChanged) {
-    super(parent, style);
-    this.newModule = newModule;
+    public AvailableModulesViewer(Composite parent, int style,
+        AvailableModulesViewerLabelProvider labelProvider, boolean configurable,
+        Consumer<List<RuleMetadata>> newModule, Consumer<Object> selectionChanged) {
+        super(parent, style);
+        this.newModule = newModule;
 
-    setLayout(new FillLayout());
+        setLayout(new FillLayout());
 
-    Group knownModules = new Group(this, SWT.NULL);
-    GridLayoutFactory.swtDefaults().applyTo(knownModules);
-    knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblAvailableModules);
+        Group knownModules = new Group(this, SWT.NULL);
+        GridLayoutFactory.swtDefaults().applyTo(knownModules);
+        knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblAvailableModules);
 
-    this.treeViewer = new FilteredTree(knownModules,
-            SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER, new ModulePatternFilter(), true,
-            true);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(treeViewer.getViewer().getControl());
-    treeViewer.getViewer().setContentProvider(MetaDataContentProvider.INSTANCE);
-    treeViewer.getViewer().setLabelProvider(labelProvider);
-    treeViewer.getViewer().setComparator(new ViewerComparator());
-    treeViewer.getViewer().addSelectionChangedListener(event -> {
-      selectionChanged.accept(event.getStructuredSelection().getFirstElement());
-    });
-    treeViewer.getViewer().addDoubleClickListener(event -> {
-      IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-      Object element = selection.getFirstElement();
-      if (element instanceof RuleGroupMetadata) {
-        treeViewer.getViewer().setExpandedState(element,
-                !treeViewer.getViewer().getExpandedState(element));
-      } else if (configurable) {
-        newModule((IStructuredSelection) event.getSelection());
-      }
-    });
+        this.treeViewer =
+            new FilteredTree(knownModules, SWT.MULTI | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER,
+                new ModulePatternFilter(), true, true);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(treeViewer.getViewer().getControl());
+        treeViewer.getViewer().setContentProvider(MetaDataContentProvider.INSTANCE);
+        treeViewer.getViewer().setLabelProvider(labelProvider);
+        treeViewer.getViewer().setComparator(new ViewerComparator());
+        treeViewer.getViewer().addSelectionChangedListener(event -> {
+            selectionChanged.accept(event.getStructuredSelection().getFirstElement());
+        });
+        treeViewer.getViewer().addDoubleClickListener(event -> {
+            IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+            Object element = selection.getFirstElement();
+            if (element instanceof RuleGroupMetadata) {
+                treeViewer.getViewer().setExpandedState(element,
+                    !treeViewer.getViewer().getExpandedState(element));
+            } else if (configurable) {
+                newModule((IStructuredSelection) event.getSelection());
+            }
+        });
 
-    // filter hidden elements
-    treeViewer.getViewer().addFilter(AvailableModulesViewerFilter.INSTANCE);
+        // filter hidden elements
+        treeViewer.getViewer().addFilter(AvailableModulesViewerFilter.INSTANCE);
 
-    this.addButton = new Button(knownModules, SWT.PUSH);
-    addButton.setText(Messages.CheckConfigurationConfigureDialog_btnAdd);
-    GridDataFactory.swtDefaults().align(SWT.END, SWT.CENTER).applyTo(addButton);
-    if (configurable) {
-      treeViewer.addKeyListener(KeyListener.keyReleasedAdapter(event -> {
-        if (event.keyCode == SWT.ARROW_RIGHT || event.character == ' ') {
-          if (treeViewer.getViewer().getStructuredSelection()
-                  .getFirstElement() instanceof RuleMetadata) {
-            newModule(treeViewer.getViewer().getStructuredSelection());
-          }
+        this.addButton = new Button(knownModules, SWT.PUSH);
+        addButton.setText(Messages.CheckConfigurationConfigureDialog_btnAdd);
+        GridDataFactory.swtDefaults().align(SWT.END, SWT.CENTER).applyTo(addButton);
+        if (configurable) {
+            treeViewer.addKeyListener(KeyListener.keyReleasedAdapter(event -> {
+                if (event.keyCode == SWT.ARROW_RIGHT || event.character == ' ') {
+                    if (treeViewer.getViewer().getStructuredSelection()
+                        .getFirstElement() instanceof RuleMetadata) {
+                        newModule(treeViewer.getViewer().getStructuredSelection());
+                    }
+                }
+            }));
+            addButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(
+                event -> newModule(treeViewer.getViewer().getStructuredSelection())));
+        } else {
+            addButton.setEnabled(false);
         }
-      }));
-      addButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(
-              event -> newModule(treeViewer.getViewer().getStructuredSelection())));
-    } else {
-      addButton.setEnabled(false);
+
+        treeViewer.getViewer().setInput(MetadataFactory.getRuleGroupMetadata());
     }
 
-    treeViewer.getViewer().setInput(MetadataFactory.getRuleGroupMetadata());
-  }
+    private void newModule(IStructuredSelection selection) {
+        List<RuleMetadata> rules = new ArrayList<>();
+        for (Object element : selection) {
+            if (element instanceof RuleGroupMetadata group) {
+                // if group is selected add all modules from this group
+                rules.addAll(group.getRuleMetadata());
 
-  private void newModule(IStructuredSelection selection) {
-    List<RuleMetadata> rules = new ArrayList<>();
-    for (Object element : selection) {
-      if (element instanceof RuleGroupMetadata group) {
-        // if group is selected add all modules from this group
-        rules.addAll(group.getRuleMetadata());
-
-      } else if (element instanceof RuleMetadata rule) {
-        rules.add(rule);
-      }
-    }
-    newModule.accept(rules);
-  }
-
-  public void refresh() {
-    treeViewer.getViewer().refresh();
-  }
-
-  public void focus() {
-    treeViewer.getViewer().getTree().forceFocus();
-  }
-
-  public void setSelection(ISelection selection) {
-    treeViewer.getViewer().setSelection(selection);
-  }
-
-  public void selectFirstGroup() {
-    List<RuleGroupMetadata> groups = MetadataFactory.getRuleGroupMetadata();
-    if (!groups.isEmpty()) {
-      treeViewer.getViewer().setSelection(new StructuredSelection(groups.get(0)), true);
-    }
-  }
-
-  /**
-   * Filter implementation that filters the module tree with respect of a filter text field to input
-   * a search word.
-   *
-   */
-  private static final class ModulePatternFilter extends PatternFilter {
-
-    private ModulePatternFilter() {
-      setIncludeLeadingWildcard(true);
-    }
-
-    @Override
-    protected boolean isLeafMatch(Viewer viewer, Object element) {
-      return element instanceof RuleMetadata rule
-              && (wordMatches(rule.identity().ruleName())
-                      || wordMatches(rule.identity().internalName())
-                      || wordMatches(rule.identity().description()));
-    }
-  }
-
-  /**
-   * TreeContentProvider that provides the structure of the rule metadata.
-   *
-   */
-  private static final class MetaDataContentProvider implements ITreeContentProvider {
-
-    /** Singleton instance. */
-    private static final MetaDataContentProvider INSTANCE = new MetaDataContentProvider();
-
-    private MetaDataContentProvider() {
-
-    }
-
-    @Override
-    public Object[] getElements(Object inputElement) {
-      Object[] ruleGroups = null;
-      if (inputElement instanceof List) {
-        ruleGroups = ((List<?>) inputElement).toArray();
-      }
-      return ruleGroups;
-    }
-
-    @Override
-    public Object[] getChildren(Object parentElement) {
-      Object[] children = null;
-      if (parentElement instanceof List) {
-        children = getElements(parentElement);
-      } else if (parentElement instanceof RuleGroupMetadata) {
-        children = ((RuleGroupMetadata) parentElement).getRuleMetadata().toArray();
-      }
-
-      return children;
-    }
-
-    @Override
-    public Object getParent(Object element) {
-      Object parent = null;
-      if (element instanceof RuleMetadata) {
-        parent = ((RuleMetadata) element).identity().group();
-      }
-      return parent;
-    }
-
-    @Override
-    public boolean hasChildren(Object element) {
-      boolean hasChildren = false;
-
-      if (element instanceof RuleGroupMetadata) {
-        hasChildren = ((RuleGroupMetadata) element).getRuleMetadata().size() > 0;
-      } else if (element instanceof RuleMetadata) {
-        hasChildren = false;
-      }
-      return hasChildren;
-    }
-
-    @Override
-    public void dispose() {
-      // NOOP
-    }
-
-    @Override
-    public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-      // NOOP
-    }
-  }
-
-  /**
-   * Label-provider for meta data information.
-   *
-   */
-  public static class AvailableModulesViewerLabelProvider extends LabelProvider {
-
-    /** The list of configured modules. */
-    private final List<Module> modules;
-
-    public AvailableModulesViewerLabelProvider(List<Module> modules) {
-      this.modules = modules;
-    }
-
-    @Override
-    public String getText(Object element) {
-      String text = null;
-      if (element instanceof RuleGroupMetadata) {
-        text = ((RuleGroupMetadata) element).getGroupName();
-      } else if (element instanceof RuleMetadata) {
-        text = ((RuleMetadata) element).identity().ruleName();
-      }
-      return text;
-    }
-
-    @Override
-    public Image getImage(Object element) {
-      Image image = null;
-
-      if (element instanceof RuleGroupMetadata) {
-        image = isGroupUsed((RuleGroupMetadata) element)
-                ? CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON.getImage()
-                : CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage();
-      } else if (element instanceof RuleMetadata) {
-
-        image = isMetadataUsed((RuleMetadata) element)
-                ? CheckstyleUIPluginImages.MODULE_TICKED_ICON.getImage()
-                : CheckstyleUIPluginImages.MODULE_ICON.getImage();
-      }
-      return image;
-    }
-
-    private boolean isGroupUsed(RuleGroupMetadata group) {
-      boolean used = true;
-
-      for (RuleMetadata metadata : group.getRuleMetadata()) {
-
-        if (!isMetadataUsed(metadata)) {
-          used = false;
-          break;
+            } else if (element instanceof RuleMetadata rule) {
+                rules.add(rule);
+            }
         }
-      }
-      return used;
+        newModule.accept(rules);
     }
 
-    private boolean isMetadataUsed(RuleMetadata metadata) {
-      boolean used = false;
-      if (modules != null) {
-        for (Module module : modules) {
+    public void refresh() {
+        treeViewer.getViewer().refresh();
+    }
 
-          if (metadata.equals(module.getMetaData())) {
-            used = true;
-            break;
-          }
+    public void focus() {
+        treeViewer.getViewer().getTree().forceFocus();
+    }
+
+    public void setSelection(ISelection selection) {
+        treeViewer.getViewer().setSelection(selection);
+    }
+
+    public void selectFirstGroup() {
+        List<RuleGroupMetadata> groups = MetadataFactory.getRuleGroupMetadata();
+        if (!groups.isEmpty()) {
+            treeViewer.getViewer().setSelection(new StructuredSelection(groups.get(0)), true);
         }
-      }
-
-      return used;
-    }
-  }
-
-  private static final class AvailableModulesViewerFilter extends ViewerFilter {
-
-    /** Singleton instance. */
-    private static final AvailableModulesViewerFilter INSTANCE = new AvailableModulesViewerFilter();
-
-    private AvailableModulesViewerFilter() {
-
     }
 
-    @Override
-    public boolean select(Viewer viewer, Object parentElement, Object element) {
-      boolean passes = true;
-      if (element instanceof RuleGroupMetadata) {
-        passes = !((RuleGroupMetadata) element).isHidden();
-      } else if (element instanceof RuleMetadata) {
-        passes = !((RuleMetadata) element).hidden();
-      }
-      return passes;
+    /**
+     * Filter implementation that filters the module tree with respect of a filter text field to
+     * input a search word.
+     *
+     */
+    private static final class ModulePatternFilter extends PatternFilter {
+
+        private ModulePatternFilter() {
+            setIncludeLeadingWildcard(true);
+        }
+
+        @Override
+        protected boolean isLeafMatch(Viewer viewer, Object element) {
+            return element instanceof RuleMetadata rule && (wordMatches(rule.identity().ruleName())
+                || wordMatches(rule.identity().internalName())
+                || wordMatches(rule.identity().description()));
+        }
     }
 
-  }
+    /**
+     * TreeContentProvider that provides the structure of the rule metadata.
+     *
+     */
+    private static final class MetaDataContentProvider implements ITreeContentProvider {
+
+        /** Singleton instance. */
+        private static final MetaDataContentProvider INSTANCE = new MetaDataContentProvider();
+
+        private MetaDataContentProvider() {
+
+        }
+
+        @Override
+        public Object[] getElements(Object inputElement) {
+            Object[] ruleGroups = null;
+            if (inputElement instanceof List) {
+                ruleGroups = ((List<?>) inputElement).toArray();
+            }
+            return ruleGroups;
+        }
+
+        @Override
+        public Object[] getChildren(Object parentElement) {
+            Object[] children = null;
+            if (parentElement instanceof List) {
+                children = getElements(parentElement);
+            } else if (parentElement instanceof RuleGroupMetadata) {
+                children = ((RuleGroupMetadata) parentElement).getRuleMetadata().toArray();
+            }
+
+            return children;
+        }
+
+        @Override
+        public Object getParent(Object element) {
+            Object parent = null;
+            if (element instanceof RuleMetadata) {
+                parent = ((RuleMetadata) element).identity().group();
+            }
+            return parent;
+        }
+
+        @Override
+        public boolean hasChildren(Object element) {
+            boolean hasChildren = false;
+
+            if (element instanceof RuleGroupMetadata) {
+                hasChildren = ((RuleGroupMetadata) element).getRuleMetadata().size() > 0;
+            } else if (element instanceof RuleMetadata) {
+                hasChildren = false;
+            }
+            return hasChildren;
+        }
+
+        @Override
+        public void dispose() {
+            // NOOP
+        }
+
+        @Override
+        public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
+            // NOOP
+        }
+    }
+
+    /**
+     * Label-provider for meta data information.
+     *
+     */
+    public static class AvailableModulesViewerLabelProvider extends LabelProvider {
+
+        /** The list of configured modules. */
+        private final List<Module> modules;
+
+        public AvailableModulesViewerLabelProvider(List<Module> modules) {
+            this.modules = modules;
+        }
+
+        @Override
+        public String getText(Object element) {
+            String text = null;
+            if (element instanceof RuleGroupMetadata) {
+                text = ((RuleGroupMetadata) element).getGroupName();
+            } else if (element instanceof RuleMetadata) {
+                text = ((RuleMetadata) element).identity().ruleName();
+            }
+            return text;
+        }
+
+        @Override
+        public Image getImage(Object element) {
+            Image image = null;
+
+            if (element instanceof RuleGroupMetadata) {
+                image = isGroupUsed((RuleGroupMetadata) element)
+                    ? CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON.getImage()
+                    : CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage();
+            } else if (element instanceof RuleMetadata) {
+
+                image = isMetadataUsed((RuleMetadata) element)
+                    ? CheckstyleUIPluginImages.MODULE_TICKED_ICON.getImage()
+                    : CheckstyleUIPluginImages.MODULE_ICON.getImage();
+            }
+            return image;
+        }
+
+        private boolean isGroupUsed(RuleGroupMetadata group) {
+            boolean used = true;
+
+            for (RuleMetadata metadata : group.getRuleMetadata()) {
+
+                if (!isMetadataUsed(metadata)) {
+                    used = false;
+                    break;
+                }
+            }
+            return used;
+        }
+
+        private boolean isMetadataUsed(RuleMetadata metadata) {
+            boolean used = false;
+            if (modules != null) {
+                for (Module module : modules) {
+
+                    if (metadata.equals(module.getMetaData())) {
+                        used = true;
+                        break;
+                    }
+                }
+            }
+
+            return used;
+        }
+    }
+
+    private static final class AvailableModulesViewerFilter extends ViewerFilter {
+
+        /** Singleton instance. */
+        private static final AvailableModulesViewerFilter INSTANCE =
+            new AvailableModulesViewerFilter();
+
+        private AvailableModulesViewerFilter() {
+
+        }
+
+        @Override
+        public boolean select(Viewer viewer, Object parentElement, Object element) {
+            boolean passes = true;
+            if (element instanceof RuleGroupMetadata) {
+                passes = !((RuleGroupMetadata) element).isHidden();
+            } else if (element instanceof RuleMetadata) {
+                passes = !((RuleMetadata) element).hidden();
+            }
+            return passes;
+        }
+
+    }
 }

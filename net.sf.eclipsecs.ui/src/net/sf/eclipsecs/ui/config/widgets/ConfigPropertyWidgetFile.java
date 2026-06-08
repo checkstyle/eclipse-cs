@@ -48,106 +48,108 @@ import net.sf.eclipsecs.ui.config.PropertiesContentAssistProcessor;
  */
 public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget {
 
-  /** The contents composite. */
-  private Composite mContents;
+    /** The contents composite. */
+    private Composite mContents;
 
-  /** The text widget. */
-  private Text mTextWidget;
+    /** The text widget. */
+    private Text mTextWidget;
 
-  /** The browse button. */
-  private Button mBtnBrowse;
+    /** The browse button. */
+    private Button mBtnBrowse;
 
-  /**
-   * Creates the widget.
-   *
-   * @param parent
-   *          the parent composite
-   * @param prop
-   *          the property
-   */
-  private ConfigPropertyWidgetFile(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-  }
+    /**
+     * Creates the widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     */
+    private ConfigPropertyWidgetFile(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
+    }
 
-  public static ConfigPropertyWidgetFile create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetFile(parent, prop);
-  }
+    public static ConfigPropertyWidgetFile create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetFile(parent, prop);
+    }
 
-  @Override
-  protected Control getValueWidget(Composite parent) {
-    if (mContents == null) {
-      mContents = new Composite(parent, SWT.NULL);
-      GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mContents);
-      GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(mContents);
+    @Override
+    protected Control getValueWidget(Composite parent) {
+        if (mContents == null) {
+            mContents = new Composite(parent, SWT.NULL);
+            GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mContents);
+            GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(mContents);
 
-      mTextWidget = new Text(mContents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-      GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTextWidget);
+            mTextWidget = new Text(mContents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+            GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTextWidget);
 
-      // integrate content assist
-      ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
+            // integrate content assist
+            ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
 
-      mBtnBrowse = new Button(mContents, SWT.PUSH);
-      mBtnBrowse.setText(Messages.ConfigPropertyWidgetFile_btnBrowse0);
-      GridDataFactory.swtDefaults().applyTo(mBtnBrowse);
+            mBtnBrowse = new Button(mContents, SWT.PUSH);
+            mBtnBrowse.setText(Messages.ConfigPropertyWidgetFile_btnBrowse0);
+            GridDataFactory.swtDefaults().applyTo(mBtnBrowse);
 
-      mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-        FileDialog fileDialog = new FileDialog(mTextWidget.getShell());
-        fileDialog.setFileName(mTextWidget.getText());
-        String file = fileDialog.open();
-        if (file != null) {
-          mTextWidget.setText(file);
+            mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+                FileDialog fileDialog = new FileDialog(mTextWidget.getShell());
+                fileDialog.setFileName(mTextWidget.getText());
+                String file = fileDialog.open();
+                if (file != null) {
+                    mTextWidget.setText(file);
+                }
+            }));
+
+            String initValue = getInitValue();
+            if (initValue != null) {
+                mTextWidget.setText(initValue);
+            }
         }
-      }));
 
-      String initValue = getInitValue();
-      if (initValue != null) {
-        mTextWidget.setText(initValue);
-      }
+        return mContents;
     }
 
-    return mContents;
-  }
-
-  @Override
-  public String getValue() {
-    String result = mTextWidget.getText();
-    if (result == null) {
-      result = ""; //$NON-NLS-1$
+    @Override
+    public String getValue() {
+        String result = mTextWidget.getText();
+        if (result == null) {
+            result = ""; //$NON-NLS-1$
+        }
+        return result;
     }
-    return result;
-  }
 
-  @Override
-  public void setEnabled(boolean enabled) {
-    mTextWidget.setEnabled(enabled);
-    mBtnBrowse.setEnabled(enabled);
-  }
+    @Override
+    public void setEnabled(boolean enabled) {
+        mTextWidget.setEnabled(enabled);
+        mBtnBrowse.setEnabled(enabled);
+    }
 
-  @Override
-  public void restorePropertyDefault() {
-    ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-    String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+    @Override
+    public void restorePropertyDefault() {
+        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-    mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
-  }
+        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+    }
 
-  /**
-   * Creates the content assistant.
-   *
-   * @return the content assistant
-   */
-  private SubjectControlContentAssistant createContentAssistant() {
+    /**
+     * Creates the content assistant.
+     *
+     * @return the content assistant
+     */
+    private SubjectControlContentAssistant createContentAssistant() {
 
-    final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
+        final SubjectControlContentAssistant contentAssistant =
+            new SubjectControlContentAssistant();
 
-    contentAssistant
+        contentAssistant
             .setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
 
-    IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
-    contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
-    contentAssistant.setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
-    contentAssistant.setInformationControlCreator(DefaultInformationControl::new);
+        IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
+        contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
+        contentAssistant
+            .setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);
+        contentAssistant.setInformationControlCreator(DefaultInformationControl::new);
 
-    return contentAssistant;
-  }
+        return contentAssistant;
+    }
 }

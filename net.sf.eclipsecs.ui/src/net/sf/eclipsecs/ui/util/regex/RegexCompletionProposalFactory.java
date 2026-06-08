@@ -32,25 +32,23 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  */
 public final class RegexCompletionProposalFactory {
 
-  private RegexCompletionProposalFactory() {
-    // factory
-  }
+    private RegexCompletionProposalFactory() {
+        // factory
+    }
 
-  /**
-   * Create content assistant for regex pattern completion.
-   * @param widget text widget to complete
-   */
-  public static void createForText(Text widget) {
-    TextContentAdapter contentAdapter = new TextContentAdapter();
-    FindReplaceDocumentAdapterContentProposalProvider proposer =
+    /**
+     * Create content assistant for regex pattern completion.
+     *
+     * @param widget
+     *            text widget to complete
+     */
+    public static void createForText(Text widget) {
+        TextContentAdapter contentAdapter = new TextContentAdapter();
+        FindReplaceDocumentAdapterContentProposalProvider proposer =
             new FindReplaceDocumentAdapterContentProposalProvider(true);
-    ContentAssistCommandAdapter contentAssist = new ContentAssistCommandAdapter(
-        widget,
-        contentAdapter,
-        proposer,
-        ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS,
-        new char[0],
-        true);
-    contentAssist.setEnabled(true);
-  }
+        ContentAssistCommandAdapter contentAssist =
+            new ContentAssistCommandAdapter(widget, contentAdapter, proposer,
+                ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS, new char[0], true);
+        contentAssist.setEnabled(true);
+    }
 }

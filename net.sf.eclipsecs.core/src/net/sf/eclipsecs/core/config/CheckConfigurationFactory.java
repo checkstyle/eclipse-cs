@@ -58,315 +58,325 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public final class CheckConfigurationFactory {
 
-  /** Name of the internal file storing the plugin check configurations. */
-  protected static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml"; //$NON-NLS-1$
+    /** Name of the internal file storing the plugin check configurations. */
+    protected static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml"; //$NON-NLS-1$
 
-  /** Name of the actual config file version. */
-  private static final String VERSION_5_0_0 = "5.0.0"; //$NON-NLS-1$
+    /** Name of the actual config file version. */
+    private static final String VERSION_5_0_0 = "5.0.0"; //$NON-NLS-1$
 
-  // -@cs[CustomDeclarationOrder] until sevntu.checkstyle/issues/415
-  /** The current file version. */
-  protected static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
+    // -@cs[CustomDeclarationOrder] until sevntu.checkstyle/issues/415
+    /** The current file version. */
+    protected static final String CURRENT_CONFIG_FILE_FORMAT_VERSION = VERSION_5_0_0;
 
-  /** constant for the extension point id. */
-  private static final String CONFIGS_EXTENSION_POINT = CheckstylePlugin.PLUGIN_ID
-          + ".configurations"; //$NON-NLS-1$
+    /** constant for the extension point id. */
+    private static final String CONFIGS_EXTENSION_POINT =
+        CheckstylePlugin.PLUGIN_ID + ".configurations"; //$NON-NLS-1$
 
-  /**
-   * List of known check configurations. Synchronized because of possible concurrend access.
-   */
-  private static List<ICheckConfiguration> sConfigurations = Collections
-          .synchronizedList(new ArrayList<ICheckConfiguration>());
+    /**
+     * List of known check configurations. Synchronized because of possible concurrend access.
+     */
+    private static List<ICheckConfiguration> sConfigurations =
+        Collections.synchronizedList(new ArrayList<ICheckConfiguration>());
 
-  /** The default check configuration. */
-  private static ICheckConfiguration sDefaultCheckConfig;
+    /** The default check configuration. */
+    private static ICheckConfiguration sDefaultCheckConfig;
 
-  /** The default built-in check configuration. */
-  private static ICheckConfiguration sDefaultBuiltInConfig;
+    /** The default built-in check configuration. */
+    private static ICheckConfiguration sDefaultBuiltInConfig;
 
-  static {
-    refresh();
-  }
-
-  private CheckConfigurationFactory() {
-  }
-
-  /**
-   * Creates a new working set from the existing configurations.
-   *
-   * @return a new configuration working set
-   */
-  public static ICheckConfigurationWorkingSet newWorkingSet() {
-    return new GlobalCheckConfigurationWorkingSet(sConfigurations, getDefaultCheckConfiguration(),
-            sDefaultBuiltInConfig);
-  }
-
-  /**
-   * Get an <code>CheckConfiguration</code> instance by its name.
-   *
-   * @param name
-   *          Name of the requested instance.
-   * @return The requested instance or <code>null</code> if the named instance could not be found.
-   */
-  public static ICheckConfiguration getByName(String name) {
-    ICheckConfiguration result = null;
-    for (ICheckConfiguration config : sConfigurations) {
-      if (config.getName().equals(name)) {
-        result = config;
-        break;
-      }
+    static {
+        refresh();
     }
-    return result;
-  }
 
-  /**
-   * Get a list of the currently defined check configurations.
-   *
-   * @return A list containing all instances.
-   */
-  public static List<ICheckConfiguration> getCheckConfigurations() {
-    return Collections.unmodifiableList(sConfigurations);
-  }
-
-  /**
-   * Returns the default check configuration if one is set, if none is set the Sun Checks built-in
-   * configuration will be returned.
-   *
-   * @return the default check configuration to use with unconfigured projects
-   */
-  public static ICheckConfiguration getDefaultCheckConfiguration() {
-    ICheckConfiguration defaultConfig;
-    if (sDefaultCheckConfig != null) {
-      defaultConfig = sDefaultCheckConfig;
-    } else if (sDefaultBuiltInConfig != null) {
-      defaultConfig = sDefaultBuiltInConfig;
-    } else if (sConfigurations.isEmpty()) {
-      defaultConfig = null;
-    } else {
-      defaultConfig = sConfigurations.get(0);
+    private CheckConfigurationFactory() {
     }
-    return defaultConfig;
-  }
 
-  /**
-   * Refreshes the check configurations from the persistent store.
-   */
-  public static void refresh() {
-    try {
-      sDefaultCheckConfig = null;
-      sDefaultBuiltInConfig = null;
-      sConfigurations.clear();
-      loadBuiltinConfigurations();
-      loadFromPersistence();
-
-    } catch (CheckstylePluginException ex) {
-      CheckstyleLog.log(ex);
+    /**
+     * Creates a new working set from the existing configurations.
+     *
+     * @return a new configuration working set
+     */
+    public static ICheckConfigurationWorkingSet newWorkingSet() {
+        return new GlobalCheckConfigurationWorkingSet(sConfigurations,
+            getDefaultCheckConfiguration(), sDefaultBuiltInConfig);
     }
-  }
 
-  /**
-   * Transfers the internal checkstyle settings and configurations to a new workspace.
-   *
-   * @param targetWorkspaceRoot
-   *          the target workspace root
-   * @throws CheckstylePluginException
-   *           if the transfer failed
-   */
-  public static void transferInternalConfiguration(IPath targetWorkspaceRoot)
-          throws CheckstylePluginException {
-
-    IPath targetStateLocation = getTargetStateLocation(targetWorkspaceRoot);
-
-    File targetLocationFile = targetStateLocation.toFile();
-
-    try {
-
-      targetLocationFile.mkdirs();
-
-      final Path sourcePath = CheckstylePlugin.getDefault().getStateLocation().toFile().toPath();
-      final Path targetPath = targetLocationFile.toPath();
-
-      // copy the entire directory contents
-      Files.walkFileTree(sourcePath, new SimpleFileVisitor<Path>() {
-        @Override
-        public FileVisitResult preVisitDirectory(final Path dir, final BasicFileAttributes attrs)
-                throws IOException {
-          Files.createDirectories(targetPath.resolve(sourcePath.relativize(dir)));
-          return FileVisitResult.CONTINUE;
-        }
-
-        @Override
-        public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs)
-                throws IOException {
-          Files.copy(file, targetPath.resolve(sourcePath.relativize(file)));
-          return FileVisitResult.CONTINUE;
-        }
-      });
-    } catch (IllegalStateException | IOException ex) {
-      CheckstylePluginException.rethrow(ex);
-    }
-  }
-
-  private static IPath getTargetStateLocation(IPath newWorkspaceRoot) {
-    IPath currentWorkspaceRoot = Platform.getLocation();
-    IPath currentStateLocation = CheckstylePlugin.getDefault().getStateLocation();
-
-    IPath targetStateLocation = null;
-    if (currentStateLocation != null) {
-      int segmentsToRemove = currentStateLocation.matchingFirstSegments(currentWorkspaceRoot);
-
-      // Strip it down to the extension
-      currentStateLocation = currentStateLocation.removeFirstSegments(segmentsToRemove);
-
-      // Now add to the target workspace root
-      targetStateLocation = newWorkspaceRoot.append(currentStateLocation);
-    }
-    return targetStateLocation;
-  }
-
-  /**
-   * Load the check configurations from the persistent state storage.
-   *
-   * @throws CheckstylePluginException
-   *           an unexpected exception occurred
-   */
-  private static void loadFromPersistence() throws CheckstylePluginException {
-    File configFile = getInternalConfigurationFile();
-
-    //
-    // Make sure the files exists, it might not.
-    //
-    if (configFile.exists()) {
-      try (InputStream inStream = new BufferedInputStream(new FileInputStream(configFile))) {
-        SAXReader reader = new SAXReader();
-        Document document = reader.read(inStream);
-
-        Element root = document.getRootElement();
-
-        String version = root.attributeValue(XMLTags.VERSION_TAG);
-        if (CURRENT_CONFIG_FILE_FORMAT_VERSION.equals(version)) {
-          String defaultConfigName = root.attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
-
-          sConfigurations.addAll(getGlobalCheckConfigurations(root));
-
-          for (ICheckConfiguration config : sConfigurations) {
-            if (config != sDefaultBuiltInConfig && config.getName().equals(defaultConfigName)) {
-              sDefaultCheckConfig = config;
+    /**
+     * Get an <code>CheckConfiguration</code> instance by its name.
+     *
+     * @param name
+     *            Name of the requested instance.
+     * @return The requested instance or <code>null</code> if the named instance could not be found.
+     */
+    public static ICheckConfiguration getByName(String name) {
+        ICheckConfiguration result = null;
+        for (ICheckConfiguration config : sConfigurations) {
+            if (config.getName().equals(name)) {
+                result = config;
+                break;
             }
-          }
-        } else {
-          // the old (pre 4.0.0) configuration files aren't supported
-          // anymore
-          CheckstyleLog.log(null,
-                  "eclipse-cs version 3.x type configuration files are not supported anymore.");
         }
-      } catch (IOException | DocumentException ex) {
-        CheckstylePluginException.rethrow(ex, Messages.errorLoadingConfigFile);
-      }
-    }
-  }
-
-  private static File getInternalConfigurationFile() {
-    IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
-    configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
-    return configPath.toFile();
-  }
-
-  /**
-   * Loads the built-in check configurations defined in plugin.xml or custom fragments.
-   */
-  private static void loadBuiltinConfigurations() {
-
-    IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
-
-    IConfigurationElement[] elements = pluginRegistry
-            .getConfigurationElementsFor(CONFIGS_EXTENSION_POINT);
-
-    int currentMaxDefaultWeight = -1;
-
-    ICheckConfiguration defaultBuiltInCheckConfig = null;
-
-    for (int i = 0; i < elements.length; i++) {
-      String name = elements[i].getAttribute(XMLTags.NAME_TAG);
-      String description = elements[i].getAttribute(XMLTags.DESCRIPTION_TAG);
-      String location = elements[i].getAttribute(XMLTags.LOCATION_TAG);
-
-      String defaultWeightAsString = elements[i].getAttribute(XMLTags.DEFAULT_WEIGHT);
-      final int defaultWeight = defaultWeightAsString != null
-              ? Integer.parseInt(defaultWeightAsString)
-              : 0;
-
-      IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
-
-      Map<String, String> additionalData = new HashMap<>();
-      additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY,
-              elements[i].getContributor().getName());
-
-      List<ResolvableProperty> props = new ArrayList<>();
-      IConfigurationElement[] propEls = elements[i].getChildren(XMLTags.PROPERTY_TAG);
-      for (IConfigurationElement propEl : propEls) {
-        props.add(new ResolvableProperty(propEl.getAttribute(XMLTags.NAME_TAG),
-                propEl.getAttribute(XMLTags.VALUE_TAG)));
-      }
-
-      ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
-              configType, true, props, additionalData);
-      sConfigurations.add(checkConfig);
-
-      if (defaultWeight > currentMaxDefaultWeight) {
-        currentMaxDefaultWeight = defaultWeight;
-        defaultBuiltInCheckConfig = checkConfig;
-      }
+        return result;
     }
 
-    sDefaultBuiltInConfig = defaultBuiltInCheckConfig;
-  }
-
-  /**
-   * Gets the check configurations from the configuration file document.
-   *
-   * @param root
-   *          the root element of the plugins central configuration file
-   * @return the global check configurations configured therein
-   */
-  private static List<ICheckConfiguration> getGlobalCheckConfigurations(Element root) {
-
-    List<ICheckConfiguration> configs = new ArrayList<>();
-
-    List<Element> configElements = root.elements(XMLTags.CHECK_CONFIG_TAG);
-
-    for (Element configEl : configElements) {
-
-      String name = configEl.attributeValue(XMLTags.NAME_TAG);
-      String description = configEl.attributeValue(XMLTags.DESCRIPTION_TAG);
-      String location = configEl.attributeValue(XMLTags.LOCATION_TAG);
-
-      String type = configEl.attributeValue(XMLTags.TYPE_TAG);
-      IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
-
-      // get resolvable properties
-      List<ResolvableProperty> props = new ArrayList<>();
-      List<Element> propertiesElements = configEl.elements(XMLTags.PROPERTY_TAG);
-      for (Element propsEl : propertiesElements) {
-
-        ResolvableProperty prop = new ResolvableProperty(propsEl.attributeValue(XMLTags.NAME_TAG),
-                propsEl.attributeValue(XMLTags.VALUE_TAG));
-        props.add(prop);
-      }
-
-      // get additional data
-      Map<String, String> additionalData = new HashMap<>();
-      List<Element> dataElements = configEl.elements(XMLTags.ADDITIONAL_DATA_TAG);
-      for (Element dataEl : dataElements) {
-
-        additionalData.put(dataEl.attributeValue(XMLTags.NAME_TAG),
-                dataEl.attributeValue(XMLTags.VALUE_TAG));
-      }
-
-      ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
-              configType, true, props, additionalData);
-      configs.add(checkConfig);
+    /**
+     * Get a list of the currently defined check configurations.
+     *
+     * @return A list containing all instances.
+     */
+    public static List<ICheckConfiguration> getCheckConfigurations() {
+        return Collections.unmodifiableList(sConfigurations);
     }
-    return configs;
-  }
+
+    /**
+     * Returns the default check configuration if one is set, if none is set the Sun Checks built-in
+     * configuration will be returned.
+     *
+     * @return the default check configuration to use with unconfigured projects
+     */
+    public static ICheckConfiguration getDefaultCheckConfiguration() {
+        ICheckConfiguration defaultConfig;
+        if (sDefaultCheckConfig != null) {
+            defaultConfig = sDefaultCheckConfig;
+        }
+        else if (sDefaultBuiltInConfig != null) {
+            defaultConfig = sDefaultBuiltInConfig;
+        }
+        else if (sConfigurations.isEmpty()) {
+            defaultConfig = null;
+        }
+        else {
+            defaultConfig = sConfigurations.get(0);
+        }
+        return defaultConfig;
+    }
+
+    /**
+     * Refreshes the check configurations from the persistent store.
+     */
+    public static void refresh() {
+        try {
+            sDefaultCheckConfig = null;
+            sDefaultBuiltInConfig = null;
+            sConfigurations.clear();
+            loadBuiltinConfigurations();
+            loadFromPersistence();
+
+        }
+        catch (CheckstylePluginException ex) {
+            CheckstyleLog.log(ex);
+        }
+    }
+
+    /**
+     * Transfers the internal checkstyle settings and configurations to a new workspace.
+     *
+     * @param targetWorkspaceRoot
+     *            the target workspace root
+     * @throws CheckstylePluginException
+     *             if the transfer failed
+     */
+    public static void transferInternalConfiguration(IPath targetWorkspaceRoot)
+            throws CheckstylePluginException {
+
+        IPath targetStateLocation = getTargetStateLocation(targetWorkspaceRoot);
+
+        File targetLocationFile = targetStateLocation.toFile();
+
+        try {
+
+            targetLocationFile.mkdirs();
+
+            final Path sourcePath =
+                CheckstylePlugin.getDefault().getStateLocation().toFile().toPath();
+            final Path targetPath = targetLocationFile.toPath();
+
+            // copy the entire directory contents
+            Files.walkFileTree(sourcePath, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult preVisitDirectory(final Path dir,
+                    final BasicFileAttributes attrs) throws IOException {
+                    Files.createDirectories(targetPath.resolve(sourcePath.relativize(dir)));
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult visitFile(final Path file, final BasicFileAttributes attrs)
+                        throws IOException {
+                    Files.copy(file, targetPath.resolve(sourcePath.relativize(file)));
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        }
+        catch (IllegalStateException | IOException ex) {
+            CheckstylePluginException.rethrow(ex);
+        }
+    }
+
+    private static IPath getTargetStateLocation(IPath newWorkspaceRoot) {
+        IPath currentWorkspaceRoot = Platform.getLocation();
+        IPath currentStateLocation = CheckstylePlugin.getDefault().getStateLocation();
+
+        IPath targetStateLocation = null;
+        if (currentStateLocation != null) {
+            int segmentsToRemove = currentStateLocation.matchingFirstSegments(currentWorkspaceRoot);
+
+            // Strip it down to the extension
+            currentStateLocation = currentStateLocation.removeFirstSegments(segmentsToRemove);
+
+            // Now add to the target workspace root
+            targetStateLocation = newWorkspaceRoot.append(currentStateLocation);
+        }
+        return targetStateLocation;
+    }
+
+    /**
+     * Load the check configurations from the persistent state storage.
+     *
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
+    private static void loadFromPersistence() throws CheckstylePluginException {
+        File configFile = getInternalConfigurationFile();
+
+        //
+        // Make sure the files exists, it might not.
+        //
+        if (configFile.exists()) {
+            try (InputStream inStream = new BufferedInputStream(new FileInputStream(configFile))) {
+                SAXReader reader = new SAXReader();
+                Document document = reader.read(inStream);
+
+                Element root = document.getRootElement();
+
+                String version = root.attributeValue(XMLTags.VERSION_TAG);
+                if (CURRENT_CONFIG_FILE_FORMAT_VERSION.equals(version)) {
+                    String defaultConfigName =
+                        root.attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
+
+                    sConfigurations.addAll(getGlobalCheckConfigurations(root));
+
+                    for (ICheckConfiguration config : sConfigurations) {
+                        if (config != sDefaultBuiltInConfig
+                            && config.getName().equals(defaultConfigName)) {
+                            sDefaultCheckConfig = config;
+                        }
+                    }
+                }
+                else {
+                    // the old (pre 4.0.0) configuration files aren't supported
+                    // anymore
+                    CheckstyleLog.log(null, "eclipse-cs version 3.x type configuration files are "
+                        + "not supported anymore.");
+                }
+            }
+            catch (IOException | DocumentException ex) {
+                CheckstylePluginException.rethrow(ex, Messages.errorLoadingConfigFile);
+            }
+        }
+    }
+
+    private static File getInternalConfigurationFile() {
+        IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
+        configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);
+        return configPath.toFile();
+    }
+
+    /**
+     * Loads the built-in check configurations defined in plugin.xml or custom fragments.
+     */
+    private static void loadBuiltinConfigurations() {
+
+        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+
+        IConfigurationElement[] elements =
+            pluginRegistry.getConfigurationElementsFor(CONFIGS_EXTENSION_POINT);
+
+        int currentMaxDefaultWeight = -1;
+
+        ICheckConfiguration defaultBuiltInCheckConfig = null;
+
+        for (int i = 0; i < elements.length; i++) {
+            String name = elements[i].getAttribute(XMLTags.NAME_TAG);
+            String description = elements[i].getAttribute(XMLTags.DESCRIPTION_TAG);
+            String location = elements[i].getAttribute(XMLTags.LOCATION_TAG);
+
+            String defaultWeightAsString = elements[i].getAttribute(XMLTags.DEFAULT_WEIGHT);
+            final int defaultWeight =
+                defaultWeightAsString != null ? Integer.parseInt(defaultWeightAsString) : 0;
+
+            IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
+
+            Map<String, String> additionalData = new HashMap<>();
+            additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY,
+                elements[i].getContributor().getName());
+
+            List<ResolvableProperty> props = new ArrayList<>();
+            IConfigurationElement[] propEls = elements[i].getChildren(XMLTags.PROPERTY_TAG);
+            for (IConfigurationElement propEl : propEls) {
+                props.add(new ResolvableProperty(propEl.getAttribute(XMLTags.NAME_TAG),
+                    propEl.getAttribute(XMLTags.VALUE_TAG)));
+            }
+
+            ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
+                configType, true, props, additionalData);
+            sConfigurations.add(checkConfig);
+
+            if (defaultWeight > currentMaxDefaultWeight) {
+                currentMaxDefaultWeight = defaultWeight;
+                defaultBuiltInCheckConfig = checkConfig;
+            }
+        }
+
+        sDefaultBuiltInConfig = defaultBuiltInCheckConfig;
+    }
+
+    /**
+     * Gets the check configurations from the configuration file document.
+     *
+     * @param root
+     *            the root element of the plugins central configuration file
+     * @return the global check configurations configured therein
+     */
+    private static List<ICheckConfiguration> getGlobalCheckConfigurations(Element root) {
+
+        List<ICheckConfiguration> configs = new ArrayList<>();
+
+        List<Element> configElements = root.elements(XMLTags.CHECK_CONFIG_TAG);
+
+        for (Element configEl : configElements) {
+
+            String name = configEl.attributeValue(XMLTags.NAME_TAG);
+            String description = configEl.attributeValue(XMLTags.DESCRIPTION_TAG);
+            String location = configEl.attributeValue(XMLTags.LOCATION_TAG);
+
+            String type = configEl.attributeValue(XMLTags.TYPE_TAG);
+            IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
+
+            // get resolvable properties
+            List<ResolvableProperty> props = new ArrayList<>();
+            List<Element> propertiesElements = configEl.elements(XMLTags.PROPERTY_TAG);
+            for (Element propsEl : propertiesElements) {
+
+                ResolvableProperty prop =
+                    new ResolvableProperty(propsEl.attributeValue(XMLTags.NAME_TAG),
+                        propsEl.attributeValue(XMLTags.VALUE_TAG));
+                props.add(prop);
+            }
+
+            // get additional data
+            Map<String, String> additionalData = new HashMap<>();
+            List<Element> dataElements = configEl.elements(XMLTags.ADDITIONAL_DATA_TAG);
+            for (Element dataEl : dataElements) {
+
+                additionalData.put(dataEl.attributeValue(XMLTags.NAME_TAG),
+                    dataEl.attributeValue(XMLTags.VALUE_TAG));
+            }
+
+            ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
+                configType, true, props, additionalData);
+            configs.add(checkConfig);
+        }
+        return configs;
+    }
 }

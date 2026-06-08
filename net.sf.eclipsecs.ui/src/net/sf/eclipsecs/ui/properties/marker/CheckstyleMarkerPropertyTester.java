@@ -32,23 +32,24 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public class CheckstyleMarkerPropertyTester extends PropertyTester {
 
-  @Override
-  public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
-    boolean result = false;
-    if (receiver instanceof IMarker) {
-      IMarker marker = (IMarker) receiver;
-      try {
-        if (CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
-          // avoid property page for markers that show runtime errors instead of violations
-          Object module = marker.getAttribute(CheckstyleMarker.MODULE_NAME);
-          result = module instanceof String && !((String) module).isBlank();
+    @Override
+    public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
+        boolean result = false;
+        if (receiver instanceof IMarker) {
+            IMarker marker = (IMarker) receiver;
+            try {
+                if (CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
+                    // avoid property page for markers that show runtime errors instead of
+                    // violations
+                    Object module = marker.getAttribute(CheckstyleMarker.MODULE_NAME);
+                    result = module instanceof String && !((String) module).isBlank();
+                }
+            } catch (CoreException ex) {
+                CheckstyleLog.log(ex);
+            }
         }
-      } catch (CoreException ex) {
-        CheckstyleLog.log(ex);
-      }
-    }
 
-    return result;
-  }
+        return result;
+    }
 
 }

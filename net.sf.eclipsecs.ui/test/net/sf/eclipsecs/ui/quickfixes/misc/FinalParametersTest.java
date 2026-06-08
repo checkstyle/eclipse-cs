@@ -26,8 +26,8 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class FinalParametersTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void finalParameters() throws Exception {
-    testQuickfix("FinalParametersInput.xml", new FinalParametersQuickfix());
-  }
+    @Test
+    void finalParameters() throws Exception {
+        testQuickfix("FinalParametersInput.xml", new FinalParametersQuickfix());
+    }
 }

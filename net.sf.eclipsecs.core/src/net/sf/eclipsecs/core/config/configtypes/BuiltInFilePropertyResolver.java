@@ -36,51 +36,52 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class BuiltInFilePropertyResolver implements PropertyResolver {
 
-  /** constant for the samedir variable. */
-  private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
+    /** constant for the samedir variable. */
+    private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
 
-  /** constant for the config_loc variable. */
-  private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
+    /** constant for the config_loc variable. */
+    private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
 
-  /** The built-in config file location. */
-  private final String mBuiltInConfigLocation;
+    /** The built-in config file location. */
+    private final String mBuiltInConfigLocation;
 
-  /**
-   * Creates the resolver.
-   *
-   * @param builtInConfigLocation
-   *          the bundle based url of the builtin configuration file
-   */
-  public BuiltInFilePropertyResolver(String builtInConfigLocation) {
-    mBuiltInConfigLocation = builtInConfigLocation;
-  }
+    /**
+     * Creates the resolver.
+     *
+     * @param builtInConfigLocation
+     *            the bundle based url of the builtin configuration file
+     */
+    public BuiltInFilePropertyResolver(String builtInConfigLocation) {
+        mBuiltInConfigLocation = builtInConfigLocation;
+    }
 
-  @Override
-  public String resolve(String property) {
+    @Override
+    public String resolve(String property) {
 
-    String value = null;
+        String value = null;
 
-    if (mBuiltInConfigLocation != null
+        if (mBuiltInConfigLocation != null
             && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
 
-      int lastSlash = mBuiltInConfigLocation.lastIndexOf("/"); //$NON-NLS-1$
-      if (lastSlash > -1) {
-        value = mBuiltInConfigLocation.substring(0, lastSlash + 1);
-      }
+            int lastSlash = mBuiltInConfigLocation.lastIndexOf("/"); //$NON-NLS-1$
+            if (lastSlash > -1) {
+                value = mBuiltInConfigLocation.substring(0, lastSlash + 1);
+            }
+        }
+
+        if (value != null) {
+            try {
+                URL bundleLocatedURL = new URL(value);
+                URL fileURL = FileLocator.toFileURL(bundleLocatedURL);
+
+                value = URIUtil.toFile(fileURL.toURI()).getAbsolutePath();
+            }
+            catch (IOException | URISyntaxException ex) {
+                throw new RuntimeException(ex.getMessage(), ex);
+            }
+        }
+
+        return value;
     }
-
-    if (value != null) {
-      try {
-        URL bundleLocatedURL = new URL(value);
-        URL fileURL = FileLocator.toFileURL(bundleLocatedURL);
-
-        value = URIUtil.toFile(fileURL.toURI()).getAbsolutePath();
-      } catch (IOException | URISyntaxException ex) {
-        throw new RuntimeException(ex.getMessage(), ex);
-      }
-    }
-
-    return value;
-  }
 
 }

@@ -26,9 +26,9 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class ExplicitInitializationTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void explicitInitialization() throws Exception {
-    testQuickfix("ExplicitInitialization.xml", new ExplicitInitializationQuickfix());
-  }
+    @Test
+    void explicitInitialization() throws Exception {
+        testQuickfix("ExplicitInitialization.xml", new ExplicitInitializationQuickfix());
+    }
 
 }

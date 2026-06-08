@@ -33,30 +33,30 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
  */
 public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
 
-  @Override
-  public IMarkerResolution[] getResolutions(IMarker marker) {
-    return CheckstyleQuickfixes.getInstance().getQuickfixes().stream()
-            .filter(fix -> fix.canFix(marker))
-            .toArray(IMarkerResolution[]::new);
-  }
-
-  @Override
-  public boolean hasResolutions(IMarker marker) {
-    return isCheckstyleMarker(marker) && CheckstyleQuickfixes.getInstance().getQuickfixes().stream()
-            .anyMatch(fix -> fix.canFix(marker));
-  }
-
-  /**
-   * @param marker the marker to check
-   * @return {@code true} if this is a checkstyle marker
-   */
-  private boolean isCheckstyleMarker(IMarker marker) {
-    boolean isCheckstyleMarker;
-    try {
-      isCheckstyleMarker = CheckstyleMarker.MARKER_ID.equals(marker.getType());
-    } catch (CoreException ex) {
-      isCheckstyleMarker = false;
+    @Override
+    public IMarkerResolution[] getResolutions(IMarker marker) {
+        return CheckstyleQuickfixes.getInstance().getQuickfixes().stream()
+            .filter(fix -> fix.canFix(marker)).toArray(IMarkerResolution[]::new);
     }
-    return isCheckstyleMarker;
-  }
+
+    @Override
+    public boolean hasResolutions(IMarker marker) {
+        return isCheckstyleMarker(marker) && CheckstyleQuickfixes.getInstance().getQuickfixes()
+            .stream().anyMatch(fix -> fix.canFix(marker));
+    }
+
+    /**
+     * @param marker
+     *            the marker to check
+     * @return {@code true} if this is a checkstyle marker
+     */
+    private boolean isCheckstyleMarker(IMarker marker) {
+        boolean isCheckstyleMarker;
+        try {
+            isCheckstyleMarker = CheckstyleMarker.MARKER_ID.equals(marker.getType());
+        } catch (CoreException ex) {
+            isCheckstyleMarker = false;
+        }
+        return isCheckstyleMarker;
+    }
 }

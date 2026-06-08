@@ -30,13 +30,13 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class NeedBracesTransformer extends AbstractCTransformationClass {
 
-  @Override
-  public FormatterConfiguration transformRule() {
-    useCleanupSetting("use_blocks", "true");
-    useCleanupSetting("never_use_blocks", "false");
-    useCleanupSetting("use_blocks_only_for_return_and_throw", "false");
-    useCleanupSetting("always_use_blocks", "true");
-    return getFormatterSetting();
-  }
+    @Override
+    public FormatterConfiguration transformRule() {
+        useCleanupSetting("use_blocks", "true");
+        useCleanupSetting("never_use_blocks", "false");
+        useCleanupSetting("use_blocks_only_for_return_and_throw", "false");
+        useCleanupSetting("always_use_blocks", "true");
+        return getFormatterSetting();
+    }
 
 }

@@ -32,44 +32,44 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 
 public class MethodLimitQuickfix extends AbstractASTResolution {
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-      final int markerStartOffset) {
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
 
-    return new ASTVisitor() {
+        return new ASTVisitor() {
 
-      @Override
-      @SuppressWarnings("unchecked")
-      public boolean visit(MethodDeclaration node) {
-        Javadoc doc = node.getJavadoc();
+            @Override
+            @SuppressWarnings("unchecked")
+            public boolean visit(MethodDeclaration node) {
+                Javadoc doc = node.getJavadoc();
 
-        if (doc == null) {
-          doc = node.getAST().newJavadoc();
-          node.setJavadoc(doc);
-        }
+                if (doc == null) {
+                    doc = node.getAST().newJavadoc();
+                    node.setJavadoc(doc);
+                }
 
-        TagElement newTag = node.getAST().newTagElement();
-        newTag.setTagName("TODO Added by MethodLimit Sample quickfix");
+                TagElement newTag = node.getAST().newTagElement();
+                newTag.setTagName("TODO Added by MethodLimit Sample quickfix");
 
-        doc.tags().add(0, newTag);
+                doc.tags().add(0, newTag);
 
-        return true;
-      }
-    };
-  }
+                return true;
+            }
+        };
+    }
 
-  @Override
-  public String getDescription() {
-    return "Sample MethodLimit Quickfix";
-  }
+    @Override
+    public String getDescription() {
+        return "Sample MethodLimit Quickfix";
+    }
 
-  @Override
-  public String getLabel() {
-    return "Sample MethodLimit Quickfix";
-  }
+    @Override
+    public String getLabel() {
+        return "Sample MethodLimit Quickfix";
+    }
 
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
-  }
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
+    }
 }

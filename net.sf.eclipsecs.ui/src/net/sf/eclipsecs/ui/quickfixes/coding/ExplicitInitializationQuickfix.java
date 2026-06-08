@@ -39,77 +39,78 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
- * Quickfix implementation which removes the explicit default initialization of
- * a class or object member.
+ * Quickfix implementation which removes the explicit default initialization of a class or object
+ * member.
  *
  */
 public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 
-  /** The field name to be used in descriptions. */
-  private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
+    /** The field name to be used in descriptions. */
+    private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
 
-  @Override
-  public boolean canFix(final IMarker marker) {
-    boolean fixed = false;
-    if (super.canFix(marker)) {
-      retrieveFieldName(marker);
-      fixed = true;
-    }
-    return fixed;
-  }
-
-  private void retrieveFieldName(final IMarker marker) {
-    try {
-      final Map<String, Object> attributes = marker.getAttributes();
-      final int start = (Integer) attributes.get("charStart"); //$NON-NLS-1$
-      final int end = (Integer) attributes.get("charEnd"); //$NON-NLS-1$
-      final IFile resource = (IFile) marker.getResource();
-      final InputStream in = resource.getContents();
-      final byte[] buffer = new byte[end - start];
-      in.skip(start);
-      in.read(buffer, 0, buffer.length);
-      in.close();
-      final String snippet = new String(buffer, resource.getCharset());
-      mFieldName = snippet.substring(0, snippet.indexOf('=')).trim();
-    } catch (final CoreException | IOException | IndexOutOfBoundsException | ClassCastException
-            | NullPointerException ex) {
-      handleRetrieveFieldNameException(ex);
-    }
-  }
-
-  private void handleRetrieveFieldNameException(final Exception error) {
-    CheckstyleLog.log(error, Messages.ExplicitInitializationQuickfix_errorMessageFieldName);
-  }
-
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new ASTVisitor() {
-
-      @Override
-      public boolean visit(final VariableDeclarationFragment node) {
-        if (containsPosition(node, markerStartOffset)) {
-          node.getInitializer().delete();
+    @Override
+    public boolean canFix(final IMarker marker) {
+        boolean fixed = false;
+        if (super.canFix(marker)) {
+            retrieveFieldName(marker);
+            fixed = true;
         }
-        return false;
-      }
+        return fixed;
+    }
 
-    };
-  }
+    private void retrieveFieldName(final IMarker marker) {
+        try {
+            final Map<String, Object> attributes = marker.getAttributes();
+            final int start = (Integer) attributes.get("charStart"); //$NON-NLS-1$
+            final int end = (Integer) attributes.get("charEnd"); //$NON-NLS-1$
+            final IFile resource = (IFile) marker.getResource();
+            final InputStream in = resource.getContents();
+            final byte[] buffer = new byte[end - start];
+            in.skip(start);
+            in.read(buffer, 0, buffer.length);
+            in.close();
+            final String snippet = new String(buffer, resource.getCharset());
+            mFieldName = snippet.substring(0, snippet.indexOf('=')).trim();
+        }
+        catch (final CoreException | IOException | IndexOutOfBoundsException | ClassCastException
+            | NullPointerException ex) {
+            handleRetrieveFieldNameException(ex);
+        }
+    }
 
-  @Override
-  public String getDescription() {
-    return NLS.bind(Messages.ExplicitInitializationQuickfix_description, mFieldName);
-  }
+    private void handleRetrieveFieldNameException(final Exception error) {
+        CheckstyleLog.log(error, Messages.ExplicitInitializationQuickfix_errorMessageFieldName);
+    }
 
-  @Override
-  public String getLabel() {
-    return NLS.bind(Messages.ExplicitInitializationQuickfix_label, mFieldName);
-  }
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new ASTVisitor() {
 
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
-  }
+            @Override
+            public boolean visit(final VariableDeclarationFragment node) {
+                if (containsPosition(node, markerStartOffset)) {
+                    node.getInitializer().delete();
+                }
+                return false;
+            }
+
+        };
+    }
+
+    @Override
+    public String getDescription() {
+        return NLS.bind(Messages.ExplicitInitializationQuickfix_description, mFieldName);
+    }
+
+    @Override
+    public String getLabel() {
+        return NLS.bind(Messages.ExplicitInitializationQuickfix_label, mFieldName);
+    }
+
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
+    }
 
 }

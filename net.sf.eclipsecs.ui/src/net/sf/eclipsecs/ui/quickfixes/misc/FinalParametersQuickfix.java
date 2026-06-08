@@ -32,44 +32,45 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
- * Quickfix implementation which adds final modifiers to parameters in method
- * declarations.
+ * Quickfix implementation which adds final modifiers to parameters in method declarations.
  *
  */
 public class FinalParametersQuickfix extends AbstractASTResolution {
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartOffset) {
-    return new ASTVisitor() {
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartOffset) {
+        return new ASTVisitor() {
 
-      @SuppressWarnings("unchecked")
-      @Override
-      public boolean visit(SingleVariableDeclaration node) {
-        if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(node.getModifiers())) {
-          if (!Modifier.isFinal(node.getModifiers())) {
-            Modifier finalModifier = node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
-            node.modifiers().add(finalModifier);
-          }
-        }
-        return true;
-      }
-    };
-  }
+            @SuppressWarnings("unchecked")
+            @Override
+            public boolean visit(SingleVariableDeclaration node) {
+                if (containsPosition(node, markerStartOffset)
+                    && !Modifier.isFinal(node.getModifiers())) {
+                    if (!Modifier.isFinal(node.getModifiers())) {
+                        Modifier finalModifier =
+                            node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
+                        node.modifiers().add(finalModifier);
+                    }
+                }
+                return true;
+            }
+        };
+    }
 
-  @Override
-  public String getDescription() {
-    return Messages.FinalParametersQuickfix_description;
-  }
+    @Override
+    public String getDescription() {
+        return Messages.FinalParametersQuickfix_description;
+    }
 
-  @Override
-  public String getLabel() {
-    return Messages.FinalParametersQuickfix_label;
-  }
+    @Override
+    public String getLabel() {
+        return Messages.FinalParametersQuickfix_label;
+    }
 
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
-  }
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
+    }
 
 }

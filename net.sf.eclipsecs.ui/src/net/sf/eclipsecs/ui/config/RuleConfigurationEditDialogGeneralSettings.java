@@ -47,75 +47,79 @@ import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 
 public final class RuleConfigurationEditDialogGeneralSettings extends Composite {
 
-  /** The combo viewer for severity selection. */
-  private final ComboViewer mSeverityCombo;
-  /** The list of configuration property widgets. */
-  private final List<IConfigPropertyWidget> mConfigPropertyWidgets;
+    /** The combo viewer for severity selection. */
+    private final ComboViewer mSeverityCombo;
+    /** The list of configuration property widgets. */
+    private final List<IConfigPropertyWidget> mConfigPropertyWidgets;
 
-  public RuleConfigurationEditDialogGeneralSettings(Composite parent, int style, Module rule,
-          boolean readonly) {
-    super(parent, style);
-    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
+    public RuleConfigurationEditDialogGeneralSettings(Composite parent, int style, Module rule,
+        boolean readonly) {
+        super(parent, style);
+        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
 
-    // Build severity
-    Label lblSeverity = new Label(this, SWT.NULL);
-    lblSeverity.setText(Messages.RuleConfigurationEditDialog_lblSeverity);
-    GridDataFactory.swtDefaults().applyTo(lblSeverity);
+        // Build severity
+        Label lblSeverity = new Label(this, SWT.NULL);
+        lblSeverity.setText(Messages.RuleConfigurationEditDialog_lblSeverity);
+        GridDataFactory.swtDefaults().applyTo(lblSeverity);
 
-    mSeverityCombo = new ComboViewer(this);
-    mSeverityCombo.setContentProvider(ArrayContentProvider.getInstance());
-    mSeverityCombo.setLabelProvider(
+        mSeverityCombo = new ComboViewer(this);
+        mSeverityCombo.setContentProvider(ArrayContentProvider.getInstance());
+        mSeverityCombo.setLabelProvider(
             LabelProvider.createTextProvider(element -> ((Severity) element).toXmlValue()));
-    GridDataFactory.swtDefaults().applyTo(mSeverityCombo.getControl());
+        GridDataFactory.swtDefaults().applyTo(mSeverityCombo.getControl());
 
-    mSeverityCombo.setInput(Severity.values());
-    mSeverityCombo.getCombo().setEnabled(!readonly);
-    if (rule.getMetaData().hasSeverity()) {
-      mSeverityCombo.setSelection(new StructuredSelection(rule.getSeverity()));
-    } else {
-      mSeverityCombo.getCombo().setEnabled(false);
+        mSeverityCombo.setInput(Severity.values());
+        mSeverityCombo.getCombo().setEnabled(!readonly);
+        if (rule.getMetaData().hasSeverity()) {
+            mSeverityCombo.setSelection(new StructuredSelection(rule.getSeverity()));
+        }
+        else {
+            mSeverityCombo.getCombo().setEnabled(false);
+        }
+
+        if (rule.getProperties().size() > 0) {
+            Group properties = new Group(this, SWT.NULL);
+            GridLayoutFactory.swtDefaults().numColumns(3).applyTo(properties);
+            properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
+            GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).applyTo(properties);
+            mConfigPropertyWidgets = rule.getProperties().stream()
+                .map(prop -> ConfigPropertyWidgetFactory.createWidget(properties, prop, getShell()))
+                .peek(widget -> widget.setEnabled(!readonly)).toList();
+        }
+        else {
+            mConfigPropertyWidgets = Collections.emptyList();
+        }
     }
 
-    if (rule.getProperties().size() > 0) {
-      Group properties = new Group(this, SWT.NULL);
-      GridLayoutFactory.swtDefaults().numColumns(3).applyTo(properties);
-      properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
-      GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).applyTo(properties);
-      mConfigPropertyWidgets = rule.getProperties().stream()
-              .map(prop -> ConfigPropertyWidgetFactory.createWidget(properties, prop, getShell()))
-              .peek(widget -> widget.setEnabled(!readonly)).toList();
-    } else {
-      mConfigPropertyWidgets = Collections.emptyList();
+    public Severity getSeverity() {
+        return (Severity) mSeverityCombo.getStructuredSelection().getFirstElement();
     }
-  }
 
-  public Severity getSeverity() {
-    return (Severity) mSeverityCombo.getStructuredSelection().getFirstElement();
-  }
-
-  public void setSeverity(Severity severity) {
-    mSeverityCombo.setSelection(new StructuredSelection(severity));
-  }
-
-  public void restoreProperties() {
-    mConfigPropertyWidgets.forEach(IConfigPropertyWidget::restorePropertyDefault);
-  }
-
-  public Optional<String> validatePropertyWidgets() {
-    Optional<String> errorMessage = Optional.empty();
-    for (IConfigPropertyWidget widget : mConfigPropertyWidgets) {
-      ConfigProperty property = widget.getConfigProperty();
-      try {
-        widget.validate();
-      } catch (CheckstylePluginException ex) {
-        String message = NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
-                property.getMetaData().getName());
-        errorMessage = Optional.of(message);
-        break;
-      }
-      property.setValue(widget.getValue());
+    public void setSeverity(Severity severity) {
+        mSeverityCombo.setSelection(new StructuredSelection(severity));
     }
-    return errorMessage;
-  }
+
+    public void restoreProperties() {
+        mConfigPropertyWidgets.forEach(IConfigPropertyWidget::restorePropertyDefault);
+    }
+
+    public Optional<String> validatePropertyWidgets() {
+        Optional<String> errorMessage = Optional.empty();
+        for (IConfigPropertyWidget widget : mConfigPropertyWidgets) {
+            ConfigProperty property = widget.getConfigProperty();
+            try {
+                widget.validate();
+            }
+            catch (CheckstylePluginException ex) {
+                String message =
+                    NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
+                        property.getMetaData().getName());
+                errorMessage = Optional.of(message);
+                break;
+            }
+            property.setValue(widget.getValue());
+        }
+        return errorMessage;
+    }
 
 }

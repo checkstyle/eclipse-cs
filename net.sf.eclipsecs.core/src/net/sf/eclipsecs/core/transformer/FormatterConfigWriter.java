@@ -39,76 +39,76 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public class FormatterConfigWriter {
 
-  /** Constant for show generated code. */
-  private static final String CS_GENERATED = "CheckStyle-Generated ";
-  /** A eclipse-configuration. */
-  private final FormatterConfiguration mConfiguration;
+    /** Constant for show generated code. */
+    private static final String CS_GENERATED = "CheckStyle-Generated ";
+    /** A eclipse-configuration. */
+    private final FormatterConfiguration mConfiguration;
 
-  /** The project. */
-  private IProject mProject;
+    /** The project. */
+    private IProject mProject;
 
-  /**
-   * Constructor to create a new instance of class FormatterConfigWriter.
-   *
-   * @param project
-   *          the project whose formatter settings should be written
-   * @param settings
-   *          A eclipse-configuration.
-   */
-  public FormatterConfigWriter(IProject project, final FormatterConfiguration settings) {
-    mConfiguration = settings;
-    mProject = project;
-  }
-
-  /**
-   * Method for persisting all settings to files.
-   */
-  public void writeSettings() {
-    writeCleanupSettings(mConfiguration.getCleanupSettings());
-    writeFormatterSettings(mConfiguration.getFormatterSettings());
-  }
-
-  /**
-   * Method for writing all cleanup settings to disc.
-   *
-   * @param settings
-   *          All the settings.
-   */
-  private void writeCleanupSettings(final Map<String, String> settings) {
-    final IFile settingsFile = mProject.getFile(mProject.getName() + "-cs-cleanup.xml");
-    try {
-      final InputStream stream = XmlProfileWriter.writeCleanupProfileToStream(
-              CS_GENERATED + mProject.getName(), settings);
-      createOrUpdateFile(settingsFile, stream);
-    } catch (CoreException | TransformerException | ParserConfigurationException exc) {
-      CheckstyleLog.log(exc, "Error saving cleanup profile");
+    /**
+     * Constructor to create a new instance of class FormatterConfigWriter.
+     *
+     * @param project
+     *            the project whose formatter settings should be written
+     * @param settings
+     *            A eclipse-configuration.
+     */
+    public FormatterConfigWriter(IProject project, final FormatterConfiguration settings) {
+        mConfiguration = settings;
+        mProject = project;
     }
-  }
 
-  /**
-   * Method for writing all formatter settings to disc.
-   *
-   * @param settings
-   *          All the settings.
-   */
-  private void writeFormatterSettings(final Map<String, String> settings) {
-    final IFile settingsFile = mProject.getFile(mProject.getName() + "-cs-formatter.xml");
-    try {
-      final InputStream stream = XmlProfileWriter.writeFormatterProfileToStream(
-              CS_GENERATED + mProject.getName(), settings);
-      createOrUpdateFile(settingsFile, stream);
-    } catch (CoreException | TransformerException | ParserConfigurationException exc) {
-      CheckstyleLog.log(exc, "Error saving formatter profile");
+    /**
+     * Method for persisting all settings to files.
+     */
+    public void writeSettings() {
+        writeCleanupSettings(mConfiguration.getCleanupSettings());
+        writeFormatterSettings(mConfiguration.getFormatterSettings());
     }
-  }
 
-  private static void createOrUpdateFile(IFile settingsFile, InputStream stream)
-          throws CoreException {
-    if (settingsFile.exists()) {
-      settingsFile.setContents(stream, true, false, null);
-    } else {
-      settingsFile.create(stream, true, null);
+    /**
+     * Method for writing all cleanup settings to disc.
+     *
+     * @param settings
+     *            All the settings.
+     */
+    private void writeCleanupSettings(final Map<String, String> settings) {
+        final IFile settingsFile = mProject.getFile(mProject.getName() + "-cs-cleanup.xml");
+        try {
+            final InputStream stream = XmlProfileWriter
+                .writeCleanupProfileToStream(CS_GENERATED + mProject.getName(), settings);
+            createOrUpdateFile(settingsFile, stream);
+        } catch (CoreException | TransformerException | ParserConfigurationException exc) {
+            CheckstyleLog.log(exc, "Error saving cleanup profile");
+        }
     }
-  }
+
+    /**
+     * Method for writing all formatter settings to disc.
+     *
+     * @param settings
+     *            All the settings.
+     */
+    private void writeFormatterSettings(final Map<String, String> settings) {
+        final IFile settingsFile = mProject.getFile(mProject.getName() + "-cs-formatter.xml");
+        try {
+            final InputStream stream = XmlProfileWriter
+                .writeFormatterProfileToStream(CS_GENERATED + mProject.getName(), settings);
+            createOrUpdateFile(settingsFile, stream);
+        } catch (CoreException | TransformerException | ParserConfigurationException exc) {
+            CheckstyleLog.log(exc, "Error saving formatter profile");
+        }
+    }
+
+    private static void createOrUpdateFile(IFile settingsFile, InputStream stream)
+            throws CoreException {
+        if (settingsFile.exists()) {
+            settingsFile.setContents(stream, true, false, null);
+        } else {
+            settingsFile.create(stream, true, null);
+        }
+    }
 
 }

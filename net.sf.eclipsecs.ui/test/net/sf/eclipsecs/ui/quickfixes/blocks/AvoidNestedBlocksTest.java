@@ -26,8 +26,8 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class AvoidNestedBlocksTest extends AbstractQuickfixTestCase {
 
-  @Test
-  void avoidNestedBlocks() throws Exception {
-    testQuickfix("AvoidNestedBlocksInput.xml", new AvoidNestedBlocksQuickfix());
-  }
+    @Test
+    void avoidNestedBlocks() throws Exception {
+        testQuickfix("AvoidNestedBlocksInput.xml", new AvoidNestedBlocksQuickfix());
+    }
 }

@@ -45,90 +45,91 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class ResolvablePropertiesDialogView extends Composite {
 
-  /** The table viewer for resolvable properties. */
-  private final TableViewer mTableViewer;
+    /** The table viewer for resolvable properties. */
+    private final TableViewer mTableViewer;
 
-  public ResolvablePropertiesDialogView(Composite parent, int style,
-          Consumer<ResolvableProperty> openPropertyItemEditor,
-          Consumer<List<ResolvableProperty>> removePropertyItems) {
-    super(parent, style);
+    public ResolvablePropertiesDialogView(Composite parent, int style,
+        Consumer<ResolvableProperty> openPropertyItemEditor,
+        Consumer<List<ResolvableProperty>> removePropertyItems) {
+        super(parent, style);
 
-    GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
+        GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
 
-    Table table = createTable(this);
+        Table table = createTable(this);
 
-    mTableViewer = new TableViewer(table);
-    mTableViewer.setLabelProvider(PropertiesLabelProvider.INSTANCE);
-    mTableViewer.setContentProvider(ArrayContentProvider.getInstance());
-    mTableViewer.addDoubleClickListener(
+        mTableViewer = new TableViewer(table);
+        mTableViewer.setLabelProvider(PropertiesLabelProvider.INSTANCE);
+        mTableViewer.setContentProvider(ArrayContentProvider.getInstance());
+        mTableViewer.addDoubleClickListener(
             event -> openPropertyItemEditor.accept(getSelectedProperties().getFirst()));
-    mTableViewer.getTable().addKeyListener(KeyListener.keyReleasedAdapter(event -> {
-      if (event.character == SWT.DEL) {
-        removePropertyItems.accept(getSelectedProperties());
-      }
-      if (event.character == ' ' && !getSelectedProperties().isEmpty()) {
-        openPropertyItemEditor.accept(getSelectedProperties().getFirst());
-      }
-    }));
-    TableViewerEnhancer.enhance(mTableViewer, PropertiesLabelProvider.INSTANCE);
+        mTableViewer.getTable().addKeyListener(KeyListener.keyReleasedAdapter(event -> {
+            if (event.character == SWT.DEL) {
+                removePropertyItems.accept(getSelectedProperties());
+            }
+            if (event.character == ' ' && !getSelectedProperties().isEmpty()) {
+                openPropertyItemEditor.accept(getSelectedProperties().getFirst());
+            }
+        }));
+        TableViewerEnhancer.enhance(mTableViewer, PropertiesLabelProvider.INSTANCE);
 
-    Composite buttonBar = new Composite(this, SWT.NULL);
-    GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttonBar);
-    GridDataFactory.swtDefaults().align(GridData.BEGINNING, GridData.BEGINNING).applyTo(buttonBar);
+        Composite buttonBar = new Composite(this, SWT.NULL);
+        GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttonBar);
+        GridDataFactory.swtDefaults().align(GridData.BEGINNING, GridData.BEGINNING)
+            .applyTo(buttonBar);
 
-    Button btnAdd = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnAdd);
-    btnAdd.addSelectionListener(
+        Button btnAdd = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnAdd);
+        btnAdd.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> openPropertyItemEditor.accept(null)));
-    Button btnEdit = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnEdit);
-    btnEdit.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-      if (getSelectedProperties().size() > 0) {
-        openPropertyItemEditor.accept(getSelectedProperties().getFirst());
-      }
-    }));
-    Button btnRemove = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnRemove);
-    btnRemove.addSelectionListener(SelectionListener
+        Button btnEdit = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnEdit);
+        btnEdit.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            if (getSelectedProperties().size() > 0) {
+                openPropertyItemEditor.accept(getSelectedProperties().getFirst());
+            }
+        }));
+        Button btnRemove = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnRemove);
+        btnRemove.addSelectionListener(SelectionListener
             .widgetSelectedAdapter(event -> removePropertyItems.accept(getSelectedProperties())));
-  }
+    }
 
-  @SuppressWarnings("unchecked")
-  public List<ResolvableProperty> getSelectedProperties() {
-    return mTableViewer.getStructuredSelection().toList();
-  }
+    @SuppressWarnings("unchecked")
+    public List<ResolvableProperty> getSelectedProperties() {
+        return mTableViewer.getStructuredSelection().toList();
+    }
 
-  public void setResolvableProperties(List<ResolvableProperty> resolvableProperties) {
-    mTableViewer.setInput(resolvableProperties);
-  }
+    public void setResolvableProperties(List<ResolvableProperty> resolvableProperties) {
+        mTableViewer.setInput(resolvableProperties);
+    }
 
-  public void refresh() {
-    mTableViewer.refresh();
-  }
+    public void refresh() {
+        mTableViewer.refresh();
+    }
 
-  private static Table createTable(Composite parent) {
-    Table table = new Table(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-    GridDataFactory.create(GridData.FILL_BOTH).applyTo(table);
+    private static Table createTable(Composite parent) {
+        Table table = new Table(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(table);
 
-    table.setHeaderVisible(true);
-    table.setLinesVisible(true);
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
 
-    TableLayout tableLayout = new TableLayout();
-    table.setLayout(tableLayout);
+        TableLayout tableLayout = new TableLayout();
+        table.setLayout(tableLayout);
 
-    TableColumn column1 = new TableColumn(table, SWT.NULL);
-    column1.setText(Messages.ResolvablePropertiesDialog_colName);
-    tableLayout.addColumnData(new ColumnWeightData(50));
+        TableColumn column1 = new TableColumn(table, SWT.NULL);
+        column1.setText(Messages.ResolvablePropertiesDialog_colName);
+        tableLayout.addColumnData(new ColumnWeightData(50));
 
-    TableColumn column2 = new TableColumn(table, SWT.NULL);
-    column2.setText(Messages.ResolvablePropertiesDialog_colValue);
-    tableLayout.addColumnData(new ColumnWeightData(50));
+        TableColumn column2 = new TableColumn(table, SWT.NULL);
+        column2.setText(Messages.ResolvablePropertiesDialog_colValue);
+        tableLayout.addColumnData(new ColumnWeightData(50));
 
-    return table;
-  }
+        return table;
+    }
 
-  private static Button createButton(Composite parent, String text) {
-    Button button = new Button(parent, SWT.PUSH);
-    button.setText(text);
-    GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(button);
-    return button;
-  }
+    private static Button createButton(Composite parent, String text) {
+        Button button = new Button(parent, SWT.PUSH);
+        button.setText(text);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(button);
+        return button;
+    }
 
 }

@@ -41,123 +41,131 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
- * Quickfix implementation that replaces a string literal comparison using == or
- * != with a proper equals() comparison.
+ * Quickfix implementation that replaces a string literal comparison using == or != with a proper
+ * equals() comparison.
  *
  */
 public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
-  @Override
-  protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
-          final int markerStartPosition) {
+    @Override
+    protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
+        final int markerStartPosition) {
 
-    return new ASTVisitor() {
+        return new ASTVisitor() {
 
-      @Override
-      public boolean visit(InfixExpression node) {
-        if (containsPosition(lineInfo, node.getStartPosition())) {
-          computeReplacement(node).ifPresent(replacement -> replaceNode(node, replacement));
+            @Override
+            public boolean visit(InfixExpression node) {
+                if (containsPosition(lineInfo, node.getStartPosition())) {
+                    computeReplacement(node)
+                        .ifPresent(replacement -> replaceNode(node, replacement));
+                }
+                return true;
+            }
+
+        };
+    }
+
+    @SuppressWarnings("unchecked")
+    private static Optional<Expression> computeReplacement(InfixExpression node) {
+        Optional<Expression> replacement = Optional.empty();
+
+        StringLiteral literal = null;
+        Expression otherOperand = null;
+        if (node.getLeftOperand() instanceof StringLiteral) {
+            literal = (StringLiteral) node.getLeftOperand();
+            otherOperand = node.getRightOperand();
         }
-        return true;
-      }
-
-    };
-  }
-
-  @SuppressWarnings("unchecked")
-  private static Optional<Expression> computeReplacement(InfixExpression node) {
-    Optional<Expression> replacement = Optional.empty();
-
-    StringLiteral literal = null;
-    Expression otherOperand = null;
-    if (node.getLeftOperand() instanceof StringLiteral) {
-      literal = (StringLiteral) node.getLeftOperand();
-      otherOperand = node.getRightOperand();
-    } else if (node.getRightOperand() instanceof StringLiteral) {
-      literal = (StringLiteral) node.getRightOperand();
-      otherOperand = node.getLeftOperand();
-    }
-
-    if (literal != null) {
-      MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
-      equalsInvocation.setName(node.getAST().newSimpleName("equals")); //$NON-NLS-1$
-      equalsInvocation.setExpression((Expression) ASTNode.copySubtree(node.getAST(), literal));
-      equalsInvocation.arguments().add(ASTNode.copySubtree(node.getAST(), otherOperand));
-
-      // if the string was compared with != create a not
-      // expression
-      final Expression replacementNode;
-      if (node.getOperator().equals(InfixExpression.Operator.NOT_EQUALS)) {
-        PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
-        prefixExpression.setOperator(PrefixExpression.Operator.NOT);
-        prefixExpression.setOperand(equalsInvocation);
-        replacementNode = prefixExpression;
-      } else {
-        replacementNode = equalsInvocation;
-      }
-      replacement = Optional.of(replacementNode);
-    }
-    return replacement;
-  }
-
-  /**
-   * Replaces the given node with the replacement node (using reflection
-   * since I am not aware of a proper API to do this).
-   *
-   * @param node
-   *          the node to replace
-   * @param replacementNode
-   *          the replacement
-   */
-  private static void replaceNode(ASTNode node, ASTNode replacementNode) {
-
-    try {
-      if (node.getLocationInParent().isChildProperty()) {
-
-        String property = node.getLocationInParent().getId();
-
-        String capitalizedProperty = property.substring(0, 1).toUpperCase()
-                + property.substring(1);
-        String setterMethodName = "set" + capitalizedProperty;
-
-        Class<?> testClass = node.getClass();
-
-        while (testClass != null) {
-
-          try {
-            Method setterMethod = node.getParent().getClass().getMethod(setterMethodName,
-                    testClass);
-            setterMethod.invoke(node.getParent(), replacementNode);
-            break;
-          } catch (NoSuchMethodException ex) {
-            testClass = testClass.getSuperclass();
-          }
+        else if (node.getRightOperand() instanceof StringLiteral) {
+            literal = (StringLiteral) node.getRightOperand();
+            otherOperand = node.getLeftOperand();
         }
 
-      } else if (node.getLocationInParent().isChildListProperty()) {
-        Method listMethod = node.getParent().getClass()
-                .getMethod(node.getLocationInParent().getId(), (Class<?>[]) null);
-        @SuppressWarnings("unchecked")
-        List<ASTNode> list = (List<ASTNode>) listMethod.invoke(node.getParent(), (Object[]) null);
-        list.set(list.indexOf(node), replacementNode);
-      }
-    } catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException ex) {
-      CheckstyleLog.log(ex);
+        if (literal != null) {
+            MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
+            equalsInvocation.setName(node.getAST().newSimpleName("equals")); //$NON-NLS-1$
+            equalsInvocation
+                .setExpression((Expression) ASTNode.copySubtree(node.getAST(), literal));
+            equalsInvocation.arguments().add(ASTNode.copySubtree(node.getAST(), otherOperand));
+
+            // if the string was compared with != create a not
+            // expression
+            final Expression replacementNode;
+            if (node.getOperator().equals(InfixExpression.Operator.NOT_EQUALS)) {
+                PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
+                prefixExpression.setOperator(PrefixExpression.Operator.NOT);
+                prefixExpression.setOperand(equalsInvocation);
+                replacementNode = prefixExpression;
+            }
+            else {
+                replacementNode = equalsInvocation;
+            }
+            replacement = Optional.of(replacementNode);
+        }
+        return replacement;
     }
-  }
 
-  @Override
-  public String getDescription() {
-    return Messages.StringLiteralEqualityQuickfix_description;
-  }
+    /**
+     * Replaces the given node with the replacement node (using reflection since I am not aware of a
+     * proper API to do this).
+     *
+     * @param node
+     *            the node to replace
+     * @param replacementNode
+     *            the replacement
+     */
+    private static void replaceNode(ASTNode node, ASTNode replacementNode) {
 
-  @Override
-  public String getLabel() {
-    return Messages.StringLiteralEqualityQuickfix_label;
-  }
+        try {
+            if (node.getLocationInParent().isChildProperty()) {
 
-  @Override
-  public Image getImage() {
-    return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
-  }
+                String property = node.getLocationInParent().getId();
+
+                String capitalizedProperty =
+                    property.substring(0, 1).toUpperCase() + property.substring(1);
+                String setterMethodName = "set" + capitalizedProperty;
+
+                Class<?> testClass = node.getClass();
+
+                while (testClass != null) {
+
+                    try {
+                        Method setterMethod =
+                            node.getParent().getClass().getMethod(setterMethodName, testClass);
+                        setterMethod.invoke(node.getParent(), replacementNode);
+                        break;
+                    }
+                    catch (NoSuchMethodException ex) {
+                        testClass = testClass.getSuperclass();
+                    }
+                }
+
+            }
+            else if (node.getLocationInParent().isChildListProperty()) {
+                Method listMethod = node.getParent().getClass()
+                    .getMethod(node.getLocationInParent().getId(), (Class<?>[]) null);
+                @SuppressWarnings("unchecked")
+                List<ASTNode> list =
+                    (List<ASTNode>) listMethod.invoke(node.getParent(), (Object[]) null);
+                list.set(list.indexOf(node), replacementNode);
+            }
+        }
+        catch (InvocationTargetException | IllegalAccessException | NoSuchMethodException ex) {
+            CheckstyleLog.log(ex);
+        }
+    }
+
+    @Override
+    public String getDescription() {
+        return Messages.StringLiteralEqualityQuickfix_description;
+    }
+
+    @Override
+    public String getLabel() {
+        return Messages.StringLiteralEqualityQuickfix_label;
+    }
+
+    @Override
+    public Image getImage() {
+        return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
+    }
 }

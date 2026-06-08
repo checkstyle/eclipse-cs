@@ -32,34 +32,33 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
  */
 public final class ConfigPropertyWidgetStringArray extends ConfigPropertyWidgetString {
 
-  private ConfigPropertyWidgetStringArray(Composite parent, ConfigProperty prop) {
-    super(parent, prop);
-  }
+    private ConfigPropertyWidgetStringArray(Composite parent, ConfigProperty prop) {
+        super(parent, prop);
+    }
 
-  public static ConfigPropertyWidgetStringArray create(Composite parent, ConfigProperty prop) {
-    return new ConfigPropertyWidgetStringArray(parent, prop);
-  }
+    public static ConfigPropertyWidgetStringArray create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyWidgetStringArray(parent, prop);
+    }
 
-  @Override
-  protected String getInitValue() {
-    return normalizeSeparator(super.getInitValue());
-  }
+    @Override
+    protected String getInitValue() {
+        return normalizeSeparator(super.getInitValue());
+    }
 
-  @Override
-  public String getValue() {
-    return normalizeSeparator(super.getValue());
-  }
+    @Override
+    public String getValue() {
+        return normalizeSeparator(super.getValue());
+    }
 
-  /**
-   * Normalize array properties to be separated by a comma and a blank for better readability of the
-   * plain config file
-   *
-   * @param text the text to normalize
-   * @return text with normalized separators
-   */
-  private String normalizeSeparator(String text) {
-    return Arrays.stream(text.split(","))
-            .map(String::strip)
-            .collect(Collectors.joining(", "));
-  }
+    /**
+     * Normalize array properties to be separated by a comma and a blank for better readability of
+     * the plain config file
+     *
+     * @param text
+     *            the text to normalize
+     * @return text with normalized separators
+     */
+    private String normalizeSeparator(String text) {
+        return Arrays.stream(text.split(",")).map(String::strip).collect(Collectors.joining(", "));
+    }
 }

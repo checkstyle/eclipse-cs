@@ -44,79 +44,81 @@ import net.sf.eclipsecs.checkstyle.utils.XmlUtil;
 
 class ChecksTest {
 
-  @Test
-  void metadataFiles() throws Exception {
-    final Set<Class<?>> modules = new HashSet<>(CheckUtil.getCheckstyleModules());
+    @Test
+    void metadataFiles() throws Exception {
+        final Set<Class<?>> modules = new HashSet<>(CheckUtil.getCheckstyleModules());
 
-    // don't test root modules
-    modules.remove(Checker.class);
-    modules.remove(TreeWalker.class);
+        // don't test root modules
+        modules.remove(Checker.class);
+        modules.remove(TreeWalker.class);
 
-    final Set<String> packages = CheckUtil.getPackages(modules);
+        final Set<String> packages = CheckUtil.getPackages(modules);
 
-    assertThat(modules).as("modules").isNotEmpty();
+        assertThat(modules).as("modules").isNotEmpty();
 
-    for (String p : packages) {
-      assertThat(new File(getEclipseCsPath(p, ""))).exists();
+        for (String p : packages) {
+            assertThat(new File(getEclipseCsPath(p, ""))).exists();
 
-      final Set<Class<?>> packgeModules = CheckUtil.getModulesInPackage(modules, p);
-      assertThat(packgeModules).as("package modules").isNotEmpty();
+            final Set<Class<?>> packgeModules = CheckUtil.getModulesInPackage(modules, p);
+            assertThat(packgeModules).as("package modules").isNotEmpty();
 
-      validateEclipseCsMetaXmlFile(new File(getEclipseCsPath(p, "/checkstyle-metadata.xml")), p);
+            validateEclipseCsMetaXmlFile(new File(getEclipseCsPath(p, "/checkstyle-metadata.xml")),
+                p);
 
-      validateEclipseCsMetaPropFile(
-              new File(getEclipseCsPath(p, "/checkstyle-metadata.properties")), p);
+            validateEclipseCsMetaPropFile(
+                new File(getEclipseCsPath(p, "/checkstyle-metadata.properties")), p);
+        }
     }
-  }
 
-  private static void validateEclipseCsMetaXmlFile(File file, String packge) throws Exception {
-    assertThat(file)
+    private static void validateEclipseCsMetaXmlFile(File file, String packge) throws Exception {
+        assertThat(file)
             .withFailMessage(
-                    () -> "'checkstyle-metadata.xml' must exist in eclipsecs inside " + packge)
+                () -> "'checkstyle-metadata.xml' must exist in eclipsecs inside " + packge)
             .exists();
 
-    final String input = new String(Files.readAllBytes(file.toPath()), UTF_8);
-    final Document document = XmlUtil.getRawXml(file.getAbsolutePath(), input, input);
+        final String input = new String(Files.readAllBytes(file.toPath()), UTF_8);
+        final Document document = XmlUtil.getRawXml(file.getAbsolutePath(), input, input);
 
-    final NodeList ruleGroups = document.getElementsByTagName("rule-group-metadata");
+        final NodeList ruleGroups = document.getElementsByTagName("rule-group-metadata");
 
-    assertThat(ruleGroups.getLength())
+        assertThat(ruleGroups.getLength())
             .withFailMessage(
-                    () -> packge + " checkstyle-metadata.xml must contain only one rule group")
+                () -> packge + " checkstyle-metadata.xml must contain only one rule group")
             .isEqualTo(1);
 
-    for (int position = 0; position < ruleGroups.getLength(); position++) {
-      final Node ruleGroup = ruleGroups.item(position);
-      final Set<Node> children = XmlUtil.getChildrenElements(ruleGroup);
+        for (int position = 0; position < ruleGroups.getLength(); position++) {
+            final Node ruleGroup = ruleGroups.item(position);
+            final Set<Node> children = XmlUtil.getChildrenElements(ruleGroup);
 
-      assertThat(children)
-              .withFailMessage(() -> packge + " checkstyle-metadata.xml must contain no rules")
-              .isEmpty();
+            assertThat(children)
+                .withFailMessage(() -> packge + " checkstyle-metadata.xml must contain no rules")
+                .isEmpty();
+        }
     }
-  }
 
-  private static void validateEclipseCsMetaPropFile(File file, String packge) throws Exception {
-    assertThat(file).withFailMessage(
-            () -> "'checkstyle-metadata.properties' must exist in eclipsecs inside " + packge)
+    private static void validateEclipseCsMetaPropFile(File file, String packge) throws Exception {
+        assertThat(file)
+            .withFailMessage(
+                () -> "'checkstyle-metadata.properties' must exist in eclipsecs inside " + packge)
             .exists();
 
-    final Properties prop = new Properties();
-    prop.load(new FileInputStream(file));
+        final Properties prop = new Properties();
+        prop.load(new FileInputStream(file));
 
-    final Set<Object> properties = new HashSet<>(Collections.list(prop.keys()));
+        final Set<Object> properties = new HashSet<>(Collections.list(prop.keys()));
 
-    assertThat(properties).withFailMessage(
+        assertThat(properties).withFailMessage(
             () -> packge + " checkstyle-metadata.properties must contain only the rule group name")
             .hasSize(1);
 
-    assertThat(properties.iterator().next().toString()).withFailMessage(
+        assertThat(properties.iterator().next().toString()).withFailMessage(
             () -> packge + " checkstyle-metadata.properties must contain only the rule group name")
             .endsWith(".group");
-  }
+    }
 
-  private static String getEclipseCsPath(String packageName, String fileName) throws IOException {
-    return new File(
+    private static String getEclipseCsPath(String packageName, String fileName) throws IOException {
+        return new File(
             "../net.sf.eclipsecs.checkstyle/metadata/" + packageName.replace(".", "/") + fileName)
-                    .getCanonicalPath();
-  }
+                .getCanonicalPath();
+    }
 }
