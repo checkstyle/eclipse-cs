@@ -64,6 +64,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
   /** the working copy this editor edits. */
   private CheckConfigurationWorkingCopy mWorkingCopy;
 
+  /** The editor view. */
   private InternalConfigurationEditorView editorView;
 
   //

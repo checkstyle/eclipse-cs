@@ -45,8 +45,11 @@ import net.sf.eclipsecs.ui.util.InternalBrowser;
 
 public final class CheckConfigurationConfigureDialogView extends Composite {
 
+  /** The browser displaying module descriptions. */
   private final Browser mBrowserDescription;
+  /** The available modules viewer. */
   private final AvailableModulesViewer availableModulesViewer;
+  /** The configured modules panel. */
   private final ConfiguredModules configuredModules;
 
   public CheckConfigurationConfigureDialogView(Composite parent, int style,

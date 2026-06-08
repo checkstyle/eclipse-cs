@@ -42,9 +42,12 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class ConfiguredModules extends Composite {
 
+  /** The group containing the configured modules. */
   private final Group configuredModulesGroup;
+  /** The table of configured modules. */
   private final ConfiguredModulesTable table;
 
+  /** The currently selected rule group. */
   private RuleGroupMetadata currentGroup;
 
   public ConfiguredModules(Composite parent, int style, boolean configurable,
@@ -111,6 +114,7 @@ public final class ConfiguredModules extends Composite {
 
   private static final class TableCheckStateProvider implements ICheckStateProvider {
 
+    /** Whether the table is configurable. */
     private final boolean configurable;
 
     private TableCheckStateProvider(boolean configurable) {

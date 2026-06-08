@@ -70,6 +70,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
   /** The template configuration for a new config. */
   private ICheckConfiguration mTemplate;
 
+  /** The dialog view managing the UI components. */
   private CheckConfigurationPropertiesDialogView dialogView;
 
   //

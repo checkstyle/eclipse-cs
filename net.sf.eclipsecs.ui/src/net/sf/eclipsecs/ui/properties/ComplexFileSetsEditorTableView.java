@@ -43,6 +43,7 @@ import net.sf.eclipsecs.ui.properties.ComplexFileSetsEditor.FileSetViewerSorter;
 
 public final class ComplexFileSetsEditorTableView extends Composite {
 
+  /** The checkbox table viewer. */
   private final CheckboxTableViewer mViewer;
 
   public ComplexFileSetsEditorTableView(Composite parent, int style,

@@ -38,6 +38,7 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class ComplexFileSetsEditorView extends Composite {
 
+  /** The table viewer for file sets. */
   private final ComplexFileSetsEditorTableView mViewer;
 
   public ComplexFileSetsEditorView(Composite parent, int style,

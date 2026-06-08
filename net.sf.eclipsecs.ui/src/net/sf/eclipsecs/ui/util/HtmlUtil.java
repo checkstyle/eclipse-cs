@@ -29,6 +29,7 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public final class HtmlUtil {
 
+  /** Pattern to match inline code tags for HTML conversion. */
   private static final Pattern PATTERN_INLINE_CODE = Pattern
           .compile(Pattern.quote("{@code ") + "([^}]*?)" + Pattern.quote("}"));
 

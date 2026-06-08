@@ -55,8 +55,11 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class AvailableModulesViewer extends Composite {
 
+  /** The filtered tree viewer for available modules. */
   private final FilteredTree treeViewer;
+  /** The add button for adding modules. */
   private final Button addButton;
+  /** The callback for adding new modules. */
   private final Consumer<List<RuleMetadata>> newModule;
 
   public AvailableModulesViewer(Composite parent, int style,
@@ -175,6 +178,7 @@ public final class AvailableModulesViewer extends Composite {
    */
   private static final class MetaDataContentProvider implements ITreeContentProvider {
 
+    /** Singleton instance. */
     private static final MetaDataContentProvider INSTANCE = new MetaDataContentProvider();
 
     private MetaDataContentProvider() {
@@ -240,6 +244,7 @@ public final class AvailableModulesViewer extends Composite {
    */
   public static class AvailableModulesViewerLabelProvider extends LabelProvider {
 
+    /** The list of configured modules. */
     private final List<Module> modules;
 
     public AvailableModulesViewerLabelProvider(List<Module> modules) {
@@ -305,6 +310,7 @@ public final class AvailableModulesViewer extends Composite {
 
   private static final class AvailableModulesViewerFilter extends ViewerFilter {
 
+    /** Singleton instance. */
     private static final AvailableModulesViewerFilter INSTANCE = new AvailableModulesViewerFilter();
 
     private AvailableModulesViewerFilter() {

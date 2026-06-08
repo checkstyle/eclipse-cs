@@ -40,6 +40,7 @@ import org.osgi.framework.Bundle;
  */
 public class ExtensionClassLoader extends ClassLoader {
 
+  /** The bundles contributing to this classloader. */
   private List<Bundle> mBundles;
 
   /**

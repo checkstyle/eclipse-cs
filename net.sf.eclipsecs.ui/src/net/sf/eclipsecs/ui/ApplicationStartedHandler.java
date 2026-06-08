@@ -45,8 +45,10 @@ import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 @Component(property = EventConstants.EVENT_TOPIC + "=" + UIEvents.UILifeCycle.APP_STARTUP_COMPLETE)
 public final class ApplicationStartedHandler implements EventHandler {
 
+  /** Part listener for check-on-open support. */
   private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
 
+  /** Window listener for the workbench. */
   private final IWindowListener mWindowListener = new IWindowListener() {
     @Override
     public void windowOpened(IWorkbenchWindow window) {

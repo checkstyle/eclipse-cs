@@ -31,6 +31,7 @@ import org.eclipse.core.resources.IFile;
  */
 public class UnOpenedFilesFilter extends AbstractFilter {
 
+  /** The list of opened files. */
   private static List<IFile> sOpenedFiles = new ArrayList<>();
 
   /**

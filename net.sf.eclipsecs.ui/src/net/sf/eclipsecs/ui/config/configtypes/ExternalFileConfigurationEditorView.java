@@ -37,9 +37,13 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class ExternalFileConfigurationEditorView extends Composite {
 
+  /** The config name text field. */
   private final Text mConfigName;
+  /** The location text field. */
   private final Text location;
+  /** The description text field. */
   private final Text mDescription;
+  /** The protect config check box. */
   private final Button mChkProtectConfig;
 
   public ExternalFileConfigurationEditorView(Composite parent, int style) {

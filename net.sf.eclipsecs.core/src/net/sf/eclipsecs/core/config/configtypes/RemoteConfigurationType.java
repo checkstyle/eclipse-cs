@@ -77,6 +77,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
   /** Key to access the max redirect networking property. */
   public static final String KEY_MAX_REDIRECTS = "http.maxRedirects";
 
+  /** URLs that have failed with HTTP 401. */
   private static Set<String> sFailedWith401URLs = new HashSet<>();
 
   @Override

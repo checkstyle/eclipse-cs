@@ -51,8 +51,10 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   // attributes
   //
 
+  /** The dialog view. */
   private CheckstyleMarkerFilterDialogView dialogView;
 
+  /** The default button. */
   private Button mBtnDefault;
 
   /** The filter to be edited. */

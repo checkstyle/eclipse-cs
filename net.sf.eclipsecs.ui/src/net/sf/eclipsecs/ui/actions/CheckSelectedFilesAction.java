@@ -50,8 +50,10 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
  */
 public class CheckSelectedFilesAction extends AbstractHandler implements IObjectActionDelegate {
 
+  /** The workbench part. */
   private IWorkbenchPart mPart;
 
+  /** The structured selection. */
   private IStructuredSelection mSelection;
 
   @Override

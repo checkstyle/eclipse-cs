@@ -26,6 +26,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
 
 public final class MethodLimitCheck extends AbstractCheck {
 
+  /** The maximum number of methods. */
   private int max = 30;
 
   @Override

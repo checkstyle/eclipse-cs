@@ -56,8 +56,10 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public final class ProjectConfigurationFactory {
 
+  /** The project configuration file name. */
   static final String PROJECT_CONFIGURATION_FILE = ".checkstyle"; //$NON-NLS-1$
 
+  /** The current file format version. */
   static final String CURRENT_FILE_FORMAT_VERSION = "1.2.0"; //$NON-NLS-1$
 
   /** constant list of supported file versions. */

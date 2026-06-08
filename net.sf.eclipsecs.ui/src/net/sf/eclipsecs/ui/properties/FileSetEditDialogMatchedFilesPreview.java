@@ -43,11 +43,15 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class FileSetEditDialogMatchedFilesPreview extends Composite {
 
+  /** The table viewer for matched files. */
   private final TableViewer matchesViewer;
+  /** The group containing the match results. */
   private final Group matchGroup;
 
+  /** The project name. */
   private final String projectName;
 
+  /** The total number of project files. */
   private int totalFileCount;
 
   public FileSetEditDialogMatchedFilesPreview(Composite parent, int style,
@@ -102,6 +106,7 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
 
   public static class FileSetEditDialogMatchedFilesPreviewFilter extends ViewerFilter {
 
+    /** The file set to preview. */
     private final FileSet fileSet;
 
     public FileSetEditDialogMatchedFilesPreviewFilter(FileSet fileSet) {

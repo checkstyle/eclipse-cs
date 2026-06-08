@@ -164,6 +164,7 @@ public final class TableViewerEnhancer {
     private static final Collator COLLATOR = Collator
             .getInstance(CheckstyleUIPlugin.getPlatformLocale());
 
+    /** The comparable provider for table sorting. */
     private final ITableComparableProvider comparableProvider;
 
     private TableSorter(ITableComparableProvider comparableProvider) {

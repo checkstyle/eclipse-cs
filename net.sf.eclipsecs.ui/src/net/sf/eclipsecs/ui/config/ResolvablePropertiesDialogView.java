@@ -45,6 +45,7 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class ResolvablePropertiesDialogView extends Composite {
 
+  /** The table viewer for resolvable properties. */
   private final TableViewer mTableViewer;
 
   public ResolvablePropertiesDialogView(Composite parent, int style,

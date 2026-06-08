@@ -34,8 +34,11 @@ import net.sf.eclipsecs.ui.Messages;
 
 public final class InternalConfigurationEditorView extends Composite {
 
+  /** The config name text field. */
   private final Text mConfigName;
+  /** The location text field. */
   private final Text mLocation;
+  /** The description text field. */
   private final Text mDescription;
 
   public InternalConfigurationEditorView(Composite parent, int style, Runnable importConfig) {

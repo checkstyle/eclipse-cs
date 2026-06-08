@@ -42,6 +42,7 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
         implements ICheckstyleMarkerResolution {
 
+  /** The module name for this quickfix. */
   private String module;
 
   /**

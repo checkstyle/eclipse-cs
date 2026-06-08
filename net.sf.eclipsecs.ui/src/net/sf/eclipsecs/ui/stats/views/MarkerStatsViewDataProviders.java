@@ -45,7 +45,9 @@ import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders master,
         MarkerStatsViewDetailDataProviders detail) {
 
+  /** Section tag for master view settings. */
   private static final String TAG_SECTION_MASTER = "masterView";
+  /** Section tag for detail view settings. */
   private static final String TAG_SECTION_DETAIL = "detailView";
 
   public MarkerStatsViewDataProviders(IDialogSettings dialogSettings) {
@@ -75,6 +77,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
    * @author Lars Ködderitzsch
    */
   public static final class MasterContentProvider implements IStructuredContentProvider {
+    /** The current marker stats. */
     private Object[] mCurrentMarkerStats;
 
     private MasterContentProvider() {
@@ -110,7 +113,9 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
    */
   public static final class DetailContentProvider implements IStructuredContentProvider {
 
+    /** The current detail markers. */
     private Object[] mCurrentDetails;
+    /** The current detail category. */
     private String currentDetailCategory;
 
     private DetailContentProvider() {
@@ -169,6 +174,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
   public static final class MasterViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
+    /** The dialog settings. */
     private final IDialogSettings mainSettings;
 
     private MasterViewMultiProvider(IDialogSettings mainSettings) {
@@ -234,6 +240,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
   public static final class DetailViewMultiProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
+    /** The dialog settings. */
     private final IDialogSettings mainSettings;
 
     private DetailViewMultiProvider(IDialogSettings mainSettings) {

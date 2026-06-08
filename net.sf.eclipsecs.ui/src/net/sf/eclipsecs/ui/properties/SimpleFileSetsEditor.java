@@ -44,13 +44,18 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
  */
 public class SimpleFileSetsEditor implements IFileSetsEditor {
 
+  /** The property page context. */
   private final PropertyPageContext propertyPageContext;
+  /** The shell. */
   private final Shell shell;
 
+  /** The editor view. */
   private SimpleFileSetsEditorView editorView;
 
+  /** The list of file sets. */
   private List<FileSet> mFileSets;
 
+  /** The default file set. */
   private FileSet mDefaultFileSet;
 
   /**

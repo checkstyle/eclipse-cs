@@ -33,6 +33,7 @@ import net.sf.eclipsecs.core.Messages;
  */
 public final class CheckstyleLog {
 
+  /** The platform log. */
   private static ILog log;
 
   private CheckstyleLog() {

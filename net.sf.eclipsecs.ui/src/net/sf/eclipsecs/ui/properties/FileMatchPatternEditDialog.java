@@ -46,10 +46,13 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
  */
 public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
+  /** The include/exclude checkbox. */
   private Button mIncludeButton;
 
+  /** The text field for the match pattern. */
   private Text mFileMatchPatternText;
 
+  /** The file match pattern being edited. */
   private FileMatchPattern mPattern;
 
   /**

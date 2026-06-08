@@ -47,6 +47,7 @@ public class CheckstyleTransformer {
    */
   private final List<AbstractCTransformationClass> mTransformationClasses = new ArrayList<>();
 
+  /** The project. */
   private IProject mProject;
 
   /**

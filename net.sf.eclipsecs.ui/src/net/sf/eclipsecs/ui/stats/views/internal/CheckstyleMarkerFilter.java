@@ -69,44 +69,65 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
   //
   // constants
   //
+
+  /** Apply filter to all resources. */
   public static final int ON_ANY_RESOURCE = 0;
 
+  /** Apply filter to the selected resource only. */
   public static final int ON_SELECTED_RESOURCE_ONLY = 1;
 
+  /** Apply filter to the selected resource and its children. */
   public static final int ON_SELECTED_RESOURCE_AND_CHILDREN = 2;
 
+  /** Apply filter to any resource in the same project. */
   public static final int ON_ANY_RESOURCE_OF_SAME_PROJECT = 3;
 
+  /** Apply filter to a working set. */
   public static final int ON_WORKING_SET = 4;
 
+  /** Severity bit flag for error markers. */
   public static final int SEVERITY_ERROR = 1 << 2;
 
+  /** Severity bit flag for warning markers. */
   public static final int SEVERITY_WARNING = 1 << 1;
 
+  /** Severity bit flag for info markers. */
   public static final int SEVERITY_INFO = 1 << 0;
 
+  /** Dialog settings section name. */
   private static final String TAG_DIALOG_SECTION = "filter"; //$NON-NLS-1$
 
+  /** Dialog settings key for the enabled flag. */
   private static final String TAG_ENABLED = "enabled"; //$NON-NLS-1$
 
+  /** Dialog settings key for the resource scope. */
   private static final String TAG_ON_RESOURCE = "onResource"; //$NON-NLS-1$
 
+  /** Dialog settings key for the working set. */
   private static final String TAG_WORKING_SET = "workingSet"; //$NON-NLS-1$
 
+  /** Dialog settings key for the severity selection flag. */
   private static final String TAG_SELECT_BY_SEVERITY = "selectBySeverity"; //$NON-NLS-1$
 
+  /** Dialog settings key for the severity value. */
   private static final String TAG_SEVERITY = "severity"; //$NON-NLS-1$
 
+  /** Dialog settings key for the regex selection flag. */
   private static final String TAG_SELECT_BY_REGEX = "selectByRegex"; //$NON-NLS-1$
 
+  /** Dialog settings key for the regular expressions list. */
   private static final String TAG_REGULAR_EXPRESSIONS = "regularExpressions"; //$NON-NLS-1$
 
+  /** Default severity value. */
   private static final int DEFAULT_SEVERITY = 0;
 
+  /** Default resource scope. */
   private static final int DEFAULT_ON_RESOURCE = ON_ANY_RESOURCE;
 
+  /** Default value for the select-by-severity flag. */
   private static final boolean DEFAULT_SELECT_BY_SEVERITY = false;
 
+  /** Default activation status. */
   private static final boolean DEFAULT_ACTIVATION_STATUS = true;
 
   //

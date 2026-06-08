@@ -59,6 +59,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
  */
 public class CheckstylePropertyPage extends PropertyPage {
 
+  /** The main tab composite. */
   private CheckstylePropertyPageMainTab mainTab;
 
   //
@@ -68,6 +69,7 @@ public class CheckstylePropertyPage extends PropertyPage {
   /** the actual working data for this form. */
   private ProjectConfigurationWorkingCopy mProjectConfig;
 
+  /** Flag indicating whether checkstyle was initially activated for the project. */
   private boolean mCheckstyleInitiallyActivated;
 
   //

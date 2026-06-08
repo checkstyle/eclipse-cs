@@ -34,14 +34,19 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class CheckstyleConfigurationFile {
 
+  /** The checkstyle configuration file bytes. */
   private byte[] mCheckConfigFileBytes;
 
+  /** The additional property bundle bytes. */
   private byte[] mAdditionalPropertyBundleBytes;
 
+  /** The modification timestamp of the configuration file. */
   private long mModificationStamp;
 
+  /** The resolved configuration file URL. */
   private URL mResolvedConfigFileURL;
 
+  /** The property resolver. */
   private PropertyResolver mPropertyResolver;
 
   /**

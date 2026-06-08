@@ -69,6 +69,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
   /** Flags if the check configuration was changed. */
   private boolean mIsDirty;
 
+  /** The dialog view managing the UI components. */
   private CheckConfigurationConfigureDialogView dialogView;
 
   //

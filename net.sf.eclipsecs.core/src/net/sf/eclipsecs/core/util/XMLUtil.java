@@ -70,6 +70,7 @@ public final class XMLUtil {
    */
   public static class InternalDtdEntityResolver implements EntityResolver {
 
+    /** The public-to-internal DTD mapping. */
     private final Map<String, String> mPublic2InternalDtdMap;
 
     /**

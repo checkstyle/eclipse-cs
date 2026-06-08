@@ -61,12 +61,16 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
   private static final ResourceBundle TOKEN_BUNDLE = PropertyResourceBundle
           .getBundle("net.sf.eclipsecs.ui.config.token"); //$NON-NLS-1$
 
+  /** The checkbox table viewer. */
   private CheckboxTableViewer mTable;
 
+  /** Whether to translate tokens. */
   private boolean mTranslateTokens;
 
+  /** Whether to sort tokens. */
   private boolean mSortTokens = true;
 
+  /** The tokens list. */
   private List<String> mTokens;
 
   /**

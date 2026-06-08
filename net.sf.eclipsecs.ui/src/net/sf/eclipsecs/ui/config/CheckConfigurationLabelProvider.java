@@ -32,6 +32,7 @@ import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
  */
 public class CheckConfigurationLabelProvider extends LabelProvider {
 
+  /** Singleton instance. */
   public static final CheckConfigurationLabelProvider INSTANCE =
           new CheckConfigurationLabelProvider();
 

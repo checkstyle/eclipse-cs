@@ -53,11 +53,16 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 
 public final class FileSetEditDialog extends TitleAreaDialog {
 
+  /** The default file match pattern. */
   private static final String DEFAULT_PATTERN = ".java$"; //$NON-NLS-1$
 
+  /** The property page context. */
   private final PropertyPageContext propertyPageContext;
+  /** The file set being edited. */
   private FileSet mFileSet;
+  /** Flag indicating whether a new file set is being created. */
   private boolean mIsCreatingNewFileset;
+  /** The dialog view. */
   private FileSetEditDialogView dialogView;
 
   /**

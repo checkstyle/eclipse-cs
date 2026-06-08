@@ -116,6 +116,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
   }
 
   private static final class ModifierOrderQuickfixAstVisitor extends ASTVisitor {
+    /** The marker start offset. */
     private final int markerStartOffset;
 
     private ModifierOrderQuickfixAstVisitor(int markerStartOffset) {

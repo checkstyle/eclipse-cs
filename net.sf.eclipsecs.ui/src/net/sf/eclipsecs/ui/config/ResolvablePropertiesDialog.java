@@ -72,6 +72,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   /** The list of properties. */
   private List<ResolvableProperty> mResolvableProperties;
 
+  /** The dialog view managing the UI components. */
   private ResolvablePropertiesDialogView dialogView;
 
   //
@@ -288,6 +289,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   public static final class PropertiesLabelProvider extends LabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
+    /** Singleton instance. */
     public static final PropertiesLabelProvider INSTANCE = new PropertiesLabelProvider();
 
     private PropertiesLabelProvider() {

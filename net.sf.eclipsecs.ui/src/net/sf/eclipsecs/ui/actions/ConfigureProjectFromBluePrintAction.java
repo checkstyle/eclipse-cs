@@ -57,8 +57,10 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegate {
 
+  /** The workbench part. */
   private IWorkbenchPart mPart;
 
+  /** The selected projects to configure. */
   private Collection<IProject> mSelectedProjects;
 
   @Override
@@ -111,8 +113,10 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
    */
   private static class BulkConfigureJob extends WorkspaceJob {
 
+    /** The blueprint project to copy configuration from. */
     private final IProject mBlueprint;
 
+    /** The projects to configure from the blueprint. */
     private final Collection<IProject> mProjectsToConfigure;
 
     public BulkConfigureJob(IProject blueprint, Collection<IProject> projectsToConfigure) {

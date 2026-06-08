@@ -53,6 +53,7 @@ public class CheckstylePlugin extends Plugin {
   /** The shared instance. */
   private static CheckstylePlugin sPlugin;
 
+  /** The addon extension class loader. */
   private ClassLoader mAddonExtensionClassLoader;
 
   /**

@@ -50,10 +50,13 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  */
 public class ResolvablePropertyEditDialog extends TitleAreaDialog {
 
+  /** The text field for the property name. */
   private Text mTxtName;
 
+  /** The text field for the property value. */
   private Text mTxtValue;
 
+  /** The resolvable property being edited. */
   private ResolvableProperty mProperty;
 
   /**

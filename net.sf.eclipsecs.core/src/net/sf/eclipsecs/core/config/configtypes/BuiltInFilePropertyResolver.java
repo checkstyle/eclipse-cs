@@ -42,6 +42,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
   /** constant for the config_loc variable. */
   private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
 
+  /** The built-in config file location. */
   private final String mBuiltInConfigLocation;
 
   /**

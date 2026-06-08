@@ -40,6 +40,7 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class CheckConfigurationWorkingSetEditorConfigTable extends Composite {
 
+  /** The table viewer for check configurations. */
   private final TableViewer tableViewer;
 
   public CheckConfigurationWorkingSetEditorConfigTable(Composite parent, int style,

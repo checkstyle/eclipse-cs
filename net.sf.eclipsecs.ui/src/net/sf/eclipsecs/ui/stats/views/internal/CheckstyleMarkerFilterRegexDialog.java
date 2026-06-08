@@ -48,14 +48,19 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
  */
 public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
 
+  /** The list viewer. */
   private ListViewer mListViewer;
 
+  /** The add button. */
   private Button mAddButton;
 
+  /** The remove button. */
   private Button mRemoveButton;
 
+  /** The regex text input. */
   private Text mRegexText;
 
+  /** The file types list. */
   private List<String> mFileTypesList;
 
   /**

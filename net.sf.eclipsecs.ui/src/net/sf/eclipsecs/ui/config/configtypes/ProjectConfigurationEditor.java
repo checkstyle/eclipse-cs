@@ -71,6 +71,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
   /** the working copy this editor edits. */
   private CheckConfigurationWorkingCopy mWorkingCopy;
 
+  /** The shell. */
   private Shell shell;
 
   /** the parent dialog element. */

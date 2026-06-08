@@ -70,8 +70,10 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
   /** check box to set if the configuration should be cached. */
   private Button mChkCacheConfig;
 
+  /** The user name text field. */
   private Text mUserName;
 
+  /** The password text field. */
   private Text mPassword;
 
   //

@@ -56,7 +56,9 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
   // attributes
   //
 
+  /** The working set being edited. */
   private final ICheckConfigurationWorkingSet mWorkingSet;
+  /** The editor view. */
   private final CheckConfigurationWorkingSetEditorView editorView;
 
   //
@@ -251,6 +253,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
   public static final class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
           implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
+    /** The working set. */
     private final ICheckConfigurationWorkingSet mWorkingSet;
 
     private ConfigurationLabelProvider(ICheckConfigurationWorkingSet mWorkingSet) {

@@ -37,6 +37,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
  */
 public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigPropertyWidget {
 
+  /** The combo item. */
   private Combo mComboItem;
 
   /**

@@ -44,6 +44,7 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class ClearSelectedFilesAction implements IObjectActionDelegate {
 
+  /** The structured selection. */
   private IStructuredSelection mSelection;
 
   @Override
@@ -75,6 +76,7 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
    */
   private static class ClearMarkersJob extends WorkspaceJob {
 
+    /** The resources to clear markers from. */
     private Collection<IResource> mResourcesToClear;
 
     public ClearMarkersJob(Collection<IResource> resourcesToClear) {

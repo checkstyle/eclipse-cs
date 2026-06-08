@@ -55,6 +55,7 @@ public enum CheckstyleUIPluginImages {
   /** Image descriptor for the add correction icon. */
   CORRECTION_ADD(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/add_correction.png")),
+  /** Image descriptor for the add braces correction icon. */
   CORRECTION_ADD_BRACES(() -> AbstractUIPlugin
           .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, "icons/correction_cast.png")),
   /** Image descriptor for the change correction icon. */
@@ -75,6 +76,7 @@ public enum CheckstyleUIPluginImages {
   LIST_VIEW_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/listingView.gif")),
 
+  /** Image descriptor for the checked overlay icon. */
   CHECKED_OVERLAY(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
           "icons/ovr/checked.png")),
   /** Image descriptor for the ticked module group icon. */

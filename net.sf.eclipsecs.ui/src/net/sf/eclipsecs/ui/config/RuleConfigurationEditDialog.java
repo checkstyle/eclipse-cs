@@ -56,11 +56,16 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  */
 public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
+  /** The rule being edited. */
   private final Module mRule;
+  /** The dialog title. */
   private final String mTitle;
+  /** Whether the dialog is read-only. */
   private final boolean mReadonly;
 
+  /** The general settings tab. */
   private RuleConfigurationEditDialogGeneralSettings generalSettings;
+  /** The advanced settings tab. */
   private RuleConfigurationEditDialogAdvancedSettings advancedSettings;
 
   /**

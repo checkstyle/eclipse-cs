@@ -56,8 +56,10 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
   /** the working copy this editor edits. */
   private CheckConfigurationWorkingCopy mWorkingCopy;
 
+  /** The shell. */
   private Shell shell;
 
+  /** The editor view. */
   private ExternalFileConfigurationEditorView editorView;
 
   //

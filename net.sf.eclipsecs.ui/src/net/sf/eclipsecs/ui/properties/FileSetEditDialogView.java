@@ -39,8 +39,11 @@ import net.sf.eclipsecs.ui.properties.FileSetEditDialogMatchedFilesPreview.FileS
 
 public final class FileSetEditDialogView extends Composite {
 
+  /** The common area with name and config selection. */
   private final FileSetEditDialogCommonArea commonArea;
+  /** The file match pattern table. */
   private final FileMatchPatternControl fileMatchPatternTable;
+  /** The matched files preview area. */
   private final FileSetEditDialogMatchedFilesPreview matchArea;
 
   public FileSetEditDialogView(Composite parent, int style,
