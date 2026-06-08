@@ -85,11 +85,11 @@ public class PropertiesContentAssistProcessor implements ISubjectControlContentA
         IContentAssistSubjectControl contentAssistSubjectControl, int documentOffset) {
         List<CompletionProposal> proposals = new ArrayList<>();
 
-        String basedir = "${basedir}"; //$NON-NLS-1$
-        String projectLoc = "${project_loc}"; //$NON-NLS-1$
-        String workspaceLoc = "${workspace_loc}"; //$NON-NLS-1$
-        String configLoc = "${config_loc}"; //$NON-NLS-1$
-        String samedir = "${samedir}"; //$NON-NLS-1$
+        final String basedir = "${basedir}";
+        final String projectLoc = "${project_loc}";
+        final String workspaceLoc = "${workspace_loc}";
+        final String configLoc = "${config_loc}";
+        final String samedir = "${samedir}";
 
         proposals.add(new CompletionProposal(basedir, documentOffset, 0, basedir.length(), null,
             basedir, null, Messages.PropertiesContentAssistProcessor_basedir));

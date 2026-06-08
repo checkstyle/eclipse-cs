@@ -484,7 +484,7 @@ public final class Messages extends NLS {
 
     public static String MarkerPropertyPage_Id;
 
-    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "net.sf.eclipsecs.ui.messages";
 
     static {
         // initialize resource bundle

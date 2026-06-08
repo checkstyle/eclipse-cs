@@ -40,7 +40,7 @@ import net.sf.eclipsecs.core.util.ExtensionClassLoader;
 public class CheckstylePlugin extends Plugin {
 
     /** Identifier of the plug-in. */
-    public static final String PLUGIN_ID = "net.sf.eclipsecs.core"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "net.sf.eclipsecs.core";
 
     /** Extension point id for Checkstyle addon providers. */
     private static final String ADDON_PROVIDER_EXT_PT_ID = PLUGIN_ID + ".checkstyleAddonProvider";

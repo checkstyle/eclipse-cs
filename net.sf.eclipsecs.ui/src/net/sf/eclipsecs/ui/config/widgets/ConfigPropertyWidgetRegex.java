@@ -123,7 +123,7 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
     public String getValue() {
         String result = mTextWidget.getText();
         if (result == null) {
-            result = ""; //$NON-NLS-1$
+            result = "";
         }
         return result;
     }
@@ -133,7 +133,7 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
         ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
         String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
             : metadata.getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : ""); //$NON-NLS-1$
+        mTextWidget.setText(defaultValue != null ? defaultValue : "");
     }
 
     @Override

@@ -39,12 +39,12 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Preference name indicating if rule names are to be included in violation messages.
      */
-    public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names"; //$NON-NLS-1$
+    public static final String PREF_INCLUDE_RULE_NAMES = "include.rule.names";
 
     /**
      * Preference name indicating if module ids are to be included in violation messages.
      */
-    public static final String PREF_INCLUDE_MODULE_IDS = "include.module.ids"; //$NON-NLS-1$
+    public static final String PREF_INCLUDE_MODULE_IDS = "include.module.ids";
 
     /**
      * Preference name indicating if the number of checkstyle warning generated per file should be
@@ -55,12 +55,12 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Preference name for the preference that stores the limit of markers per resource.
      */
-    public static final String PREF_MARKER_AMOUNT_LIMIT = "marker.amount.limit"; //$NON-NLS-1$
+    public static final String PREF_MARKER_AMOUNT_LIMIT = "marker.amount.limit";
 
     /**
      * Preference name for the preference to execute Checkstyle on full builds in the background.
      */
-    public static final String PREF_BACKGROUND_FULL_BUILD = "background.full.build"; //$NON-NLS-1$
+    public static final String PREF_BACKGROUND_FULL_BUILD = "background.full.build";
 
     /** Default value for the marker limitation. */
     public static final int MARKER_LIMIT = 100;

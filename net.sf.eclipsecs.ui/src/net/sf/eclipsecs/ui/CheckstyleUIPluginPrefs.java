@@ -41,29 +41,29 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
      * Preference name indication if the user should be warned of possibly losing fileset
      * configurations if he switches from advanced to simple fileset configuration.
      */
-    public static final String PREF_FILESET_WARNING = "warn.before.losing.filesets"; //$NON-NLS-1$
+    public static final String PREF_FILESET_WARNING = "warn.before.losing.filesets";
 
     /**
      * Preference name indication if the user should be asked before rebuilding projects.
      */
-    public static final String PREF_ASK_BEFORE_REBUILD = "ask.before.rebuild"; //$NON-NLS-1$
+    public static final String PREF_ASK_BEFORE_REBUILD = "ask.before.rebuild";
 
     /**
      * Preference name indicating if the checkstyle tokens within the module editor should be
      * translated.
      */
-    public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens"; //$NON-NLS-1$
+    public static final String PREF_TRANSLATE_TOKENS = "translate.checkstyle.tokens";
 
     /**
      * Preference name indicating if the checkstyle tokens within the module editor should be
      * sorted.
      */
-    public static final String PREF_SORT_TOKENS = "translate.sort.tokens"; //$NON-NLS-1$
+    public static final String PREF_SORT_TOKENS = "translate.sort.tokens";
 
     /**
      * Preference name indicating if the module editor should be opened when adding a module.
      */
-    public static final String PREF_OPEN_MODULE_EDITOR = "open.module.editor.on.add"; //$NON-NLS-1$
+    public static final String PREF_OPEN_MODULE_EDITOR = "open.module.editor.on.add";
 
     /**
      * Preference name indicating the minimum amount of lines that is used for the checker analysis.
@@ -79,7 +79,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     /**
      * Preference name indicating if all categories should be shown in the statistics views.
      */
-    public static final String PREF_STATS_SHOW_ALL_CATEGORIES = "show_all_categories"; //$NON-NLS-1$
+    public static final String PREF_STATS_SHOW_ALL_CATEGORIES = "show_all_categories";
 
     @Override
     public void initializeDefaultPreferences() {

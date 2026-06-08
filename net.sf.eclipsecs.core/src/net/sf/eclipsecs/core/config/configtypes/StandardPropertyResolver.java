@@ -32,19 +32,19 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 public class StandardPropertyResolver implements PropertyResolver, IContextAware {
 
     /** Constant for the workspace_loc variable. */
-    private static final String WORKSPACE_LOC = "workspace_loc"; //$NON-NLS-1$
+    private static final String WORKSPACE_LOC = "workspace_loc";
 
     /** Constant for the project_loc variable. */
-    private static final String PROJECT_LOC = "project_loc"; //$NON-NLS-1$
+    private static final String PROJECT_LOC = "project_loc";
 
     /** Constant for the basedir variable. */
-    private static final String BASEDIR_LOC = "basedir"; //$NON-NLS-1$
+    private static final String BASEDIR_LOC = "basedir";
 
     /** Constant for the samedir variable. */
-    private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
+    private static final String SAMEDIR_LOC = "samedir";
 
     /** Constant for the config_loc variable. */
-    private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
+    private static final String CONFIG_LOC = "config_loc";
 
     /** The location of the configuration file. */
     private final String mConfigLocation;
@@ -82,7 +82,7 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
             && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
             String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
 
-            int lastSlash = configLocWOBackslashes.lastIndexOf("/"); //$NON-NLS-1$
+            final int lastSlash = configLocWOBackslashes.lastIndexOf("/");
             if (lastSlash > -1) {
                 value = configLocWOBackslashes.substring(0, lastSlash + 1);
             }

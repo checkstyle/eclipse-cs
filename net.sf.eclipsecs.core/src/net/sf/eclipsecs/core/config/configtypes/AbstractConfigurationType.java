@@ -173,7 +173,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
 
         // Strip file extension
         String propsLocation = null;
-        int lastPointIndex = location.lastIndexOf("."); //$NON-NLS-1$
+        final int lastPointIndex = location.lastIndexOf(".");
         if (lastPointIndex > -1) {
             propsLocation = location.substring(0, lastPointIndex);
         }
@@ -181,7 +181,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
             propsLocation = location;
         }
 
-        propsLocation = propsLocation + ".properties"; //$NON-NLS-1$
+        propsLocation = propsLocation + ".properties";
 
         Optional<byte[]> bytes = Optional.empty();
         try {

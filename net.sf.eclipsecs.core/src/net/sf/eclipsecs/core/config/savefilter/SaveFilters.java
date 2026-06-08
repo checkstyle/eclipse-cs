@@ -43,7 +43,7 @@ public final class SaveFilters {
         CheckstylePlugin.PLUGIN_ID + ".saveFilters";
 
     /** Constant for the class attribute. */
-    private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
+    private static final String ATTR_CLASS = "class";
 
     /** The filter prototypes configured to the extension point. */
     private static final ISaveFilter[] SAVE_FILTERS;

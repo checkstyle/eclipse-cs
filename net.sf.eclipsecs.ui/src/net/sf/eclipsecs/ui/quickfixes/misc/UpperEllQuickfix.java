@@ -46,7 +46,7 @@ public class UpperEllQuickfix extends AbstractASTResolution {
                 if (containsPosition(node, markerStartOffset)) {
 
                     String token = node.getToken();
-                    if (token.endsWith("l")) { //$NON-NLS-1$
+                    if (token.endsWith("l")) {
                         token = token.replace('l', 'L');
                         node.setToken(token);
                     }

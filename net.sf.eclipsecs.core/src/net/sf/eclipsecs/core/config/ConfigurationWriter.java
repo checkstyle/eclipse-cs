@@ -98,11 +98,11 @@ public final class ConfigurationWriter {
             doc.addComment(comment);
 
             // write out name and description as comment
-            String description = lineSeperator + "    Checkstyle-Configuration: " //$NON-NLS-1$
-                + checkConfig.getName() + lineSeperator + "    Description: " //$NON-NLS-1$
+            final String description = lineSeperator + "    Checkstyle-Configuration: "
+                + checkConfig.getName() + lineSeperator + "    Description: "
                 + (Strings.emptyToNull(checkConfig.getDescription()) != null
                     ? lineSeperator + checkConfig.getDescription() + lineSeperator
-                    : "none" + lineSeperator); //$NON-NLS-1$
+                    : "none" + lineSeperator);
             doc.addComment(description);
 
             // find the root module (Checker)

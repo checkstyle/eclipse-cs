@@ -59,10 +59,10 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public final class CheckConfigurationFactory {
 
     /** Name of the internal file storing the plugin check configurations. */
-    protected static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml"; //$NON-NLS-1$
+    protected static final String CHECKSTYLE_CONFIG_FILE = "checkstyle-config.xml";
 
     /** Name of the actual config file version. */
-    private static final String VERSION_5_0_0 = "5.0.0"; //$NON-NLS-1$
+    private static final String VERSION_5_0_0 = "5.0.0";
 
     // -@cs[CustomDeclarationOrder] until sevntu.checkstyle/issues/415
     /** The current file version. */
@@ -70,7 +70,7 @@ public final class CheckConfigurationFactory {
 
     /** Constant for the extension point id. */
     private static final String CONFIGS_EXTENSION_POINT =
-        CheckstylePlugin.PLUGIN_ID + ".configurations"; //$NON-NLS-1$
+        CheckstylePlugin.PLUGIN_ID + ".configurations";
 
     /**
      * List of known check configurations. Synchronized because of possible concurrend access.

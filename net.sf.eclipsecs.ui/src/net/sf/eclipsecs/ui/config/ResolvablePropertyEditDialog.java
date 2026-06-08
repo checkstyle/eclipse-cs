@@ -95,7 +95,7 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
         lblValue.setText(Messages.ResolvablePropertyEditDialog_lblValue);
         mTxtValue = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTxtValue);
-        mTxtValue.setText(mProperty.getValue() != null ? mProperty.getValue() : ""); //$NON-NLS-1$
+        mTxtValue.setText(mProperty.getValue() != null ? mProperty.getValue() : "");
 
         // integrate content assist
         ContentAssistHandler.createHandlerForText(mTxtValue, createContentAssistant());

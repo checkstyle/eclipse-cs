@@ -41,22 +41,22 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 public final class TableViewerEnhancer {
 
     /** Key for the column index in the TableColumn data. */
-    private static final String WIDGET_DATA_COLUMN_INDEX = "index"; //$NON-NLS-1$
+    private static final String WIDGET_DATA_COLUMN_INDEX = "index";
 
     /** Key for a per-column Comparator stored in TableColumn data. */
     private static final String WIDGET_DATA_COLUMN_COMPARATOR = "colComparator";
 
     /** Key for the column index in the persistence store. */
-    private static final String TAG_COLUMN_INDEX = "sortColumn"; //$NON-NLS-1$
+    private static final String TAG_COLUMN_INDEX = "sortColumn";
 
     /** Key for the sort direction in the persistence store. */
-    private static final String TAG_SORT_DIRECTION = "sortDirection"; //$NON-NLS-1$
+    private static final String TAG_SORT_DIRECTION = "sortDirection";
 
     /** Key for the widths in the persistence store. */
-    private static final String TAG_COLUMN_WIDTH = "colWidth"; //$NON-NLS-1$
+    private static final String TAG_COLUMN_WIDTH = "colWidth";
 
     /** Key for the selection index in the persistence store. */
-    private static final String TAG_CURRENT_SELECTION = "selectedRow"; //$NON-NLS-1$
+    private static final String TAG_CURRENT_SELECTION = "selectedRow";
 
     /** Integer constant for the forward sort direction value. */
     private static final int DIRECTION_FORWARD = 1;

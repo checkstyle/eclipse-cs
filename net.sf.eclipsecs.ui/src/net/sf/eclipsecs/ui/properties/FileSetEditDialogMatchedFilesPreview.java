@@ -73,7 +73,7 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
 
             @Override
             public String getText(Object element) {
-                String text = ""; //$NON-NLS-1$
+                String text = "";
                 if (element instanceof IFile) {
                     text = ((IFile) element).getProjectRelativePath().toString();
                 }

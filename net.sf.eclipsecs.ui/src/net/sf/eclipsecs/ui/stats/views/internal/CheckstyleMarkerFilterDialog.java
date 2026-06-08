@@ -199,7 +199,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
         int size = mRegularExpressions != null ? mRegularExpressions.size() : 0;
         for (int i = 0; i < size; i++) {
             if (i > 0) {
-                buf.append(", "); //$NON-NLS-1$
+                buf.append(", ");
             }
             buf.append(mRegularExpressions.get(i));
         }

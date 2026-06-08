@@ -199,22 +199,22 @@ public final class SWTUtil {
         //
 
         /** Constant for the x location key. */
-        private static final String X = "x"; //$NON-NLS-1$
+        private static final String X = "x";
 
         /** Constant for the y location key. */
-        private static final String Y = "y"; //$NON-NLS-1$
+        private static final String Y = "y";
 
         /** Constant for the width key. */
-        private static final String WIDTH = "width"; //$NON-NLS-1$
+        private static final String WIDTH = "width";
 
         /** Constant for the height key. */
-        private static final String HEIGHT = "height"; //$NON-NLS-1$
+        private static final String HEIGHT = "height";
 
         /** Constant for the maximized key. */
-        private static final String MAXIMIZED = "maximized"; //$NON-NLS-1$
+        private static final String MAXIMIZED = "maximized";
 
         /** Constant for the minimized key. */
-        private static final String MINIMIZED = "minimized"; //$NON-NLS-1$
+        private static final String MINIMIZED = "minimized";
 
         //
         // attributes

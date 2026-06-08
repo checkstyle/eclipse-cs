@@ -60,19 +60,19 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class RemoteConfigurationType extends AbstractConfigurationType {
 
     /** Key to access the information if the configuration should be cached. */
-    public static final String KEY_CACHE_CONFIG = "cache-file"; //$NON-NLS-1$
+    public static final String KEY_CACHE_CONFIG = "cache-file";
 
     /** Key to access the path of the cached configuration file. */
-    public static final String KEY_CACHE_FILE_LOCATION = "cache-file-location"; //$NON-NLS-1$
+    public static final String KEY_CACHE_FILE_LOCATION = "cache-file-location";
 
     /** Key to access the path of the cached property file. */
     public static final String KEY_CACHE_PROPS_FILE_LOCATION = "cache-props-file-location";
 
     /** Key to access the username. */
-    public static final String KEY_USERNAME = "username"; //$NON-NLS-1$
+    public static final String KEY_USERNAME = "username";
 
     /** Key to access the password. */
-    public static final String KEY_PASSWORD = "password"; //$NON-NLS-1$
+    public static final String KEY_PASSWORD = "password";
 
     /** Key to access the max redirect networking property. */
     public static final String KEY_MAX_REDIRECTS = "http.maxRedirects";

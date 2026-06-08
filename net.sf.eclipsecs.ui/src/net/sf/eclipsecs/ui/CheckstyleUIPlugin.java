@@ -41,7 +41,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 public class CheckstyleUIPlugin extends AbstractUIPlugin {
 
     /** Identifier of the plug-in. */
-    public static final String PLUGIN_ID = "net.sf.eclipsecs.ui"; //$NON-NLS-1$
+    public static final String PLUGIN_ID = "net.sf.eclipsecs.ui";
 
     /** The shared instance. */
     private static CheckstyleUIPlugin sPlugin;
@@ -86,11 +86,11 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
     public static Locale getPlatformLocale() {
 
         String locale = Platform.getNL();
-        String[] parts = locale.split("_"); //$NON-NLS-1$
+        final String[] parts = locale.split("_");
 
-        String language = parts.length > 0 ? parts[0] : ""; //$NON-NLS-1$
-        String country = parts.length > 1 ? parts[1] : ""; //$NON-NLS-1$
-        String variant = parts.length > 2 ? parts[2] : ""; //$NON-NLS-1$
+        final String language = parts.length > 0 ? parts[0] : "";
+        final String country = parts.length > 1 ? parts[1] : "";
+        final String variant = parts.length > 2 ? parts[2] : "";
 
         return new Locale(language, country, variant);
     }
@@ -110,7 +110,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
     public static void errorDialog(Shell shell, String message, Throwable throwable, boolean log) {
 
         Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
-            message != null ? message : "", throwable); //$NON-NLS-1$
+            message != null ? message : "", throwable);
 
         String msg = NLS.bind(Messages.errorDialogMainMessage, message);
         ErrorDialog.openError(shell, Messages.CheckstyleLog_titleInternalError, msg, status);

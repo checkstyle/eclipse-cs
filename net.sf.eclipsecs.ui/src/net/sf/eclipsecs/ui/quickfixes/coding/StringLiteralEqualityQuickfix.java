@@ -82,7 +82,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
         if (literal != null) {
             MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
-            equalsInvocation.setName(node.getAST().newSimpleName("equals")); //$NON-NLS-1$
+            equalsInvocation.setName(node.getAST().newSimpleName("equals"));
             equalsInvocation
                 .setExpression((Expression) ASTNode.copySubtree(node.getAST(), literal));
             equalsInvocation.arguments().add(ASTNode.copySubtree(node.getAST(), otherOperand));

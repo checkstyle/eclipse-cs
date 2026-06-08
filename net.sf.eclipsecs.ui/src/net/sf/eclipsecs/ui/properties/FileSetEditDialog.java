@@ -54,7 +54,7 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 public final class FileSetEditDialog extends TitleAreaDialog {
 
     /** The default file match pattern. */
-    private static final String DEFAULT_PATTERN = ".java$"; //$NON-NLS-1$
+    private static final String DEFAULT_PATTERN = ".java$";
 
     /** The property page context. */
     private final PropertyPageContext propertyPageContext;
@@ -141,11 +141,10 @@ public final class FileSetEditDialog extends TitleAreaDialog {
 
         dialogView.setFileSet(mFileSet);
 
+        // init the test area
         getShell().getDisplay().asyncExec(() -> {
-            List<IFile> mProjectFiles;
             try {
-                mProjectFiles = getFiles(propertyPageContext.project());
-                dialogView.setProjectFiles(mProjectFiles); // init the test area
+                dialogView.setProjectFiles(getFiles(propertyPageContext.project()));
             }
             catch (CoreException ex) {
                 CheckstyleLog.log(ex);

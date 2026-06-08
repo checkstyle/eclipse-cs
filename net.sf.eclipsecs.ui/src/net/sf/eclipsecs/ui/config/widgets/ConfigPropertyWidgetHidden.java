@@ -31,7 +31,7 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
 public final class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidget {
 
     /** The hidden value. */
-    private String mValue = ""; //$NON-NLS-1$
+    private String mValue = "";
 
     /**
      * Creates the widget.

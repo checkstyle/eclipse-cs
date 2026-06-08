@@ -759,6 +759,7 @@
         <module name="TodoComment">
             <property name="format" value="(TODO)|(FIXME)" />
         </module>
+        <module name="TrailingComment"/>
         <module name="UncommentedMain">
             <property name="excludedClasses" value="\.(Main|JavadocPropertiesGenerator)$"/>
         </module>
