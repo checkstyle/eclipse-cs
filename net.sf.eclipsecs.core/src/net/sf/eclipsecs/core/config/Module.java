@@ -39,31 +39,31 @@ public class Module implements Cloneable {
     // attributes
     //
 
-    /** the custom messages for this module. */
+    /** The custom messages for this module. */
     private final Map<String, String> mCustomMessages = new HashMap<>();
 
-    /** map containing unknown custom metadata of the module. */
+    /** Map containing unknown custom metadata of the module. */
     private final Map<String, String> mCustomMetaData = new HashMap<>();
 
-    /** the name of the module. */
+    /** The name of the module. */
     private String mName;
 
-    /** the meta data associated with the module. */
+    /** The meta data associated with the module. */
     private RuleMetadata mMetaData;
 
-    /** the properties of the modules. */
+    /** The properties of the modules. */
     private List<ConfigProperty> mProperties = new ArrayList<>();
 
-    /** the comment of the module. */
+    /** The comment of the module. */
     private String mComment;
 
-    /** the id of the module. */
+    /** The id of the module. */
     private String id;
 
-    /** the severity level. */
+    /** The severity level. */
     private Severity mSeverityLevel = Severity.INHERIT;
 
-    /** the last severity level before setting to ignored. */
+    /** The last severity level before setting to ignored. */
     private Severity mLastEnabledSeverity;
 
     //

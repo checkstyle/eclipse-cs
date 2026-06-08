@@ -59,13 +59,13 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     /** Button to add the additional properties dialog. */
     private Button mBtnProperties;
 
-    /** the working set. */
+    /** The working set. */
     private ICheckConfigurationWorkingSet mWorkingSet;
 
-    /** the check configuration. */
+    /** The check configuration. */
     private CheckConfigurationWorkingCopy mCheckConfig;
 
-    /** the editor for the configuration location. */
+    /** The editor for the configuration location. */
     private ICheckConfigurationEditor mConfigurationEditor;
 
     /** The template configuration for a new config. */

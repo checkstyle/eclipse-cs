@@ -66,7 +66,7 @@ public class CheckstylePropertyPage extends PropertyPage {
     // other members
     //
 
-    /** the actual working data for this form. */
+    /** The actual working data for this form. */
     private ProjectConfigurationWorkingCopy mProjectConfig;
 
     /** Flag indicating whether checkstyle was initially activated for the project. */

@@ -48,20 +48,20 @@ public final class ConfigurationTypesUI {
     // constants
     //
 
-    /** constant for the extension point id. */
+    /** Constant for the extension point id. */
     private static final String CONFIGTYPES_EXTENSION_POINT =
         CheckstyleUIPlugin.PLUGIN_ID + ".configtypesui"; //$NON-NLS-1$
 
-    /** constant for the name attribute. */
+    /** Constant for the name attribute. */
     private static final String ATTR_NAME = "configtypename"; //$NON-NLS-1$
 
-    /** constant for the class attribute. */
+    /** Constant for the class attribute. */
     private static final String ATTR_CLASS = "editorclass"; //$NON-NLS-1$
 
-    /** constant for the creatable attribute. */
+    /** Constant for the creatable attribute. */
     private static final String ATTR_ICON = "icon"; //$NON-NLS-1$
 
-    /** the configuration types configured to the extension point. */
+    /** The configuration types configured to the extension point. */
     private static final Map<String, Class<? extends ICheckConfigurationEditor>>
         CONFIGURATION_TYPE_EDITORS;
 

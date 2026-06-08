@@ -38,16 +38,16 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public final class PluginFilterEditors {
 
-    /** constant for the extension point id. */
+    /** Constant for the extension point id. */
     private static final String FILTER_EXTENSION_POINT = "net.sf.eclipsecs.ui.filtereditors";
 
-    /** constant for the name attribute. */
+    /** Constant for the name attribute. */
     private static final String ATTR_FILTER = "filter"; //$NON-NLS-1$
 
-    /** constant for the name attribute. */
+    /** Constant for the name attribute. */
     private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-    /** the filter prototypes configured to the extension point. */
+    /** The filter prototypes configured to the extension point. */
     private static Map<String, Class<? extends IFilterEditor>> sFilterEditorClasses;
 
     /**

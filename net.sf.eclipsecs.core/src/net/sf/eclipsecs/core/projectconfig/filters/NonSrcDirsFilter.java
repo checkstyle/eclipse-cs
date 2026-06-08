@@ -39,10 +39,10 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public class NonSrcDirsFilter extends AbstractFilter {
 
-    /** the current project. */
+    /** The current project. */
     private IProject mCurrentProject;
 
-    /** the list of source paths of the current project. */
+    /** The list of source paths of the current project. */
     private List<IPath> mCurrentSourcePaths;
 
     @Override

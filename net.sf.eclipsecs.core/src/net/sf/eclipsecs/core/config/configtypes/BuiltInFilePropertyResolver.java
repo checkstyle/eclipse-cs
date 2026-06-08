@@ -36,10 +36,10 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class BuiltInFilePropertyResolver implements PropertyResolver {
 
-    /** constant for the samedir variable. */
+    /** Constant for the samedir variable. */
     private static final String SAMEDIR_LOC = "samedir"; //$NON-NLS-1$
 
-    /** constant for the config_loc variable. */
+    /** Constant for the config_loc variable. */
     private static final String CONFIG_LOC = "config_loc"; //$NON-NLS-1$
 
     /** The built-in config file location. */

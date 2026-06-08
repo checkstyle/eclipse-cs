@@ -42,13 +42,13 @@ import net.sf.eclipsecs.core.Messages;
  */
 public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 
-    /** the project to be configured/deconfigured. */
+    /** The project to be configured/deconfigured. */
     private IProject mProject;
 
-    /** the nature to be configured/deconfigured. */
+    /** The nature to be configured/deconfigured. */
     private String mNatureId;
 
-    /** the monitor. */
+    /** The monitor. */
     private IProgressMonitor mMonitor;
 
     /**

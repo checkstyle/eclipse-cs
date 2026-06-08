@@ -47,16 +47,16 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
     /** The local check configurations. */
     private List<ICheckConfiguration> localCheckConfigs;
 
-    /** the file sets. */
+    /** The file sets. */
     private List<FileSet> fileSets;
 
-    /** the filters. */
+    /** The filters. */
     private List<IFilter> filters;
 
     /** Flags if the simple file set editor should be used. */
     private boolean useSimpleConfig = true;
 
-    /** if formatter synching is enabled. */
+    /** If formatter synching is enabled. */
     private boolean syncFormatter;
 
     /**

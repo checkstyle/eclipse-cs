@@ -55,19 +55,19 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     // attributes
     //
 
-    /** the working copy this editor edits. */
+    /** The working copy this editor edits. */
     private CheckConfigurationWorkingCopy mWorkingCopy;
 
-    /** the text field containing the config name. */
+    /** The text field containing the config name. */
     private Text mConfigName;
 
-    /** text field containing the location. */
+    /** Text field containing the location. */
     private Text mLocation;
 
-    /** the text containing the description. */
+    /** The text containing the description. */
     private Text mDescription;
 
-    /** check box to set if the configuration should be cached. */
+    /** Check box to set if the configuration should be cached. */
     private Button mChkCacheConfig;
 
     /** The user name text field. */

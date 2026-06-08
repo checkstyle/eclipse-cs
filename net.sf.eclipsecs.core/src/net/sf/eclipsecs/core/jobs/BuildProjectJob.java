@@ -37,10 +37,10 @@ import net.sf.eclipsecs.core.nature.CheckstyleNature;
  */
 public class BuildProjectJob extends Job {
 
-    /** the project to build. */
+    /** The project to build. */
     private IProject[] mProjects;
 
-    /** the build kind. */
+    /** The build kind. */
     private int mKind;
 
     /**

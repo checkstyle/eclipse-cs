@@ -60,7 +60,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     /** The filter to be edited. */
     private CheckstyleMarkerFilter mFilter;
 
-    /** the selected working set. */
+    /** The selected working set. */
     private IWorkingSet mSelectedWorkingSet;
 
     /** The regular expressions to filter by. */

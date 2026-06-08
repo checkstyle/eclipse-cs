@@ -62,7 +62,7 @@ public final class ProjectConfigurationFactory {
     /** The current file format version. */
     static final String CURRENT_FILE_FORMAT_VERSION = "1.2.0"; //$NON-NLS-1$
 
-    /** constant list of supported file versions. */
+    /** Constant list of supported file versions. */
     private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.0.0", //$NON-NLS-1$
         "1.1.0", CURRENT_FILE_FORMAT_VERSION);
 

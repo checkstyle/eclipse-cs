@@ -67,10 +67,10 @@ public class PackageFilterEditor implements IFilterEditor {
     /** The dialog for this editor. */
     private PackageCheckedTreeSelectionDialog mDialog;
 
-    /** the input for the editor. */
+    /** The input for the editor. */
     private IProject mInputProject;
 
-    /** the filter data. */
+    /** The filter data. */
     private List<String> mFilterData;
 
     @Override

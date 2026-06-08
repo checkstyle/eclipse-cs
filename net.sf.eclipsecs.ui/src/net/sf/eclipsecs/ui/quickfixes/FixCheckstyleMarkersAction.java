@@ -35,7 +35,7 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
-    /** the selection that occured in the workspace. */
+    /** The selection that occured in the workspace. */
     private ISelection mSelection;
 
     @Override

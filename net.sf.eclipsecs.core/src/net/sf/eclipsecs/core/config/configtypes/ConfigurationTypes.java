@@ -40,29 +40,29 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public final class ConfigurationTypes {
 
-    /** constant for the extension point id. */
+    /** Constant for the extension point id. */
     private static final String CONFIGTYPES_EXTENSION_POINT =
         CheckstylePlugin.PLUGIN_ID + ".configurationtypes"; //$NON-NLS-1$
 
-    /** constant for the name attribute. */
+    /** Constant for the name attribute. */
     private static final String ATTR_NAME = "name"; //$NON-NLS-1$
 
-    /** constant for the name attribute. */
+    /** Constant for the name attribute. */
     private static final String ATTR_INTERNAL_NAME = "internal-name"; //$NON-NLS-1$
 
-    /** constant for the class attribute. */
+    /** Constant for the class attribute. */
     private static final String ATTR_CLASS = "class"; //$NON-NLS-1$
 
-    /** constant for the creatable attribute. */
+    /** Constant for the creatable attribute. */
     private static final String ATTR_CREATABLE = "creatable"; //$NON-NLS-1$
 
-    /** constant for the creatable attribute. */
+    /** Constant for the creatable attribute. */
     private static final String ATTR_EDITABLE = "editable"; //$NON-NLS-1$
 
-    /** constant for the creatable attribute. */
+    /** Constant for the creatable attribute. */
     private static final String ATTR_CONFIGURABLE = "configurable"; //$NON-NLS-1$
 
-    /** the configuration types configured to the extension point. */
+    /** The configuration types configured to the extension point. */
     private static final Map<String, IConfigurationType> CONFIGURATION_TYPES;
 
     /**
