@@ -39,7 +39,7 @@ jobs:
       run: ./.ci/validation.sh git-diff
 
     - name: Publish Test Results
-      uses: EnricoMi/publish-unit-test-result-action@c950f6fb443cb5af20a377fd0dfaa78838901040 # v2.23.0
+      uses: EnricoMi/publish-unit-test-result-action@d0a4676d0e0b938bc201470d88276b7c74c712b3 # v2.24.0
       # we only want to attach test results one time, not for every matrix combination
       if: startsWith(matrix.platform, 'ubuntu') && (matrix.jdk == 21)
       with:
