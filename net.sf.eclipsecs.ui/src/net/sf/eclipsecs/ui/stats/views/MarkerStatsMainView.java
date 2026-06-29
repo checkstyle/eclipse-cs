@@ -22,6 +22,7 @@ package net.sf.eclipsecs.ui.stats.views;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
 
@@ -30,17 +31,21 @@ import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
+import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.StackLayout;
 import org.eclipse.swt.layout.FillLayout;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.ui.ISharedImages;
 import org.eclipse.ui.IWorkbenchActionConstants;
 import org.eclipse.ui.IWorkbenchPartSite;
+import org.eclipse.ui.PlatformUI;
 
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.data.MarkerStat;
@@ -147,43 +152,67 @@ public final class MarkerStatsMainView extends Composite {
             MarkerStatsViewMasterDataProviders providers, IWorkbenchPartSite site,
             Runnable updateActions, IAction drillDownAction) {
             super(parent, style, MarkerStat.class);
-            tableViewer = new TableViewer(this,
-                SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
-            GridData gridData = new GridData(GridData.FILL_BOTH);
-            tableViewer.getControl().setLayoutData(gridData);
 
-            // setup the table columns
+            final TableColumnLayout tableColumnLayout = new TableColumnLayout();
+            setLayout(tableColumnLayout);
+
+            this.tableViewer = new TableViewer(this,
+                SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
+
             Table table = tableViewer.getTable();
             table.setLinesVisible(true);
             table.setHeaderVisible(true);
 
-            TableColumn severityCol = new TableColumn(table, SWT.CENTER, 0);
-            severityCol.setWidth(20);
-            severityCol.setResizable(false);
+            createColumns(tableColumnLayout);
 
-            TableColumn idCol = new TableColumn(table, SWT.LEFT, 1);
-            idCol.setText(Messages.MarkerStatsView_kindOfErrorColumn);
-            idCol.setWidth(400);
-
-            TableColumn countCol = new TableColumn(table, SWT.RIGHT, 2);
-            countCol.setText(Messages.MarkerStatsView_numberOfErrorsColumn);
-            countCol.pack();
-
-            // set the providers
             tableViewer.setContentProvider(providers.contentProvider());
-            tableViewer.setLabelProvider(providers.multiProvider());
-            TableViewerEnhancer.enhance(tableViewer, providers.multiProvider());
+            TableViewerEnhancer.enhance(tableViewer, providers.getTableSettings(),
+                tableColumnLayout);
 
-            // add selection listener to maintain action state
             tableViewer.addSelectionChangedListener(event -> updateActions.run());
 
-            // hooks the action to double click
             tableViewer.addDoubleClickListener(event -> drillDownAction.run());
 
-            // and to the context menu too
-            ArrayList<Object> actionList = new ArrayList<>(3);
+            final ArrayList<Object> actionList = new ArrayList<>();
             actionList.add(drillDownAction);
             hookContextMenu(actionList, tableViewer, site);
+        }
+
+        private void createColumns(TableColumnLayout tableColumnLayout) {
+            final TableViewerColumn severityCol = new TableViewerColumn(tableViewer, SWT.CENTER);
+            severityCol.setLabelProvider(ColumnLabelProvider.createImageProvider(element -> {
+                final ISharedImages imgs = PlatformUI.getWorkbench().getSharedImages();
+                return switch (((MarkerStat) element).getMaxSeverity()) {
+                    case IMarker.SEVERITY_ERROR -> imgs.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+                    case IMarker.SEVERITY_WARNING -> imgs.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+                    case IMarker.SEVERITY_INFO -> imgs.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+                    default -> null;
+                };
+            }));
+            severityCol.getColumn().pack();
+            severityCol.getColumn().setResizable(false);
+            tableColumnLayout.setColumnData(severityCol.getColumn(),
+                new ColumnPixelData(severityCol.getColumn().getWidth()));
+            TableViewerEnhancer.setColumnComparator(severityCol.getColumn(),
+                Comparator.comparingInt(MarkerStat::getMaxSeverity).reversed());
+
+            final TableViewerColumn idCol = new TableViewerColumn(tableViewer, SWT.LEFT);
+            idCol.getColumn().setText(Messages.MarkerStatsView_kindOfErrorColumn);
+            idCol.setLabelProvider(ColumnLabelProvider.createTextProvider(
+                element -> ((MarkerStat) element).getIdentifiant()));
+            idCol.getColumn().pack();
+            tableColumnLayout.setColumnData(idCol.getColumn(),
+                new ColumnPixelData(idCol.getColumn().getWidth()));
+
+            final TableViewerColumn countCol = new TableViewerColumn(tableViewer, SWT.RIGHT);
+            countCol.getColumn().setText(Messages.MarkerStatsView_numberOfErrorsColumn);
+            countCol.setLabelProvider(ColumnLabelProvider.createTextProvider(
+                element -> Integer.toString(((MarkerStat) element).getCount())));
+            countCol.getColumn().pack();
+            tableColumnLayout.setColumnData(countCol.getColumn(),
+                new ColumnPixelData(countCol.getColumn().getWidth()));
+            TableViewerEnhancer.setColumnComparator(countCol.getColumn(),
+                Comparator.comparingInt(stat -> ((MarkerStat) stat).getCount()));
         }
 
         @Override
@@ -202,39 +231,23 @@ public final class MarkerStatsMainView extends Composite {
             MarkerStatsViewDetailDataProviders providers, IWorkbenchPartSite site,
             Runnable updateActions, IAction drillBackAction, IAction showErrorAction) {
             super(parent, style, IMarker.class);
+
+            final TableColumnLayout tableColumnLayout = new TableColumnLayout();
+            setLayout(tableColumnLayout);
+
             this.tableViewer = new TableViewer(this,
                 SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
-            GridData gridData = new GridData(GridData.FILL_BOTH);
-            tableViewer.getControl().setLayoutData(gridData);
 
             Table table = tableViewer.getTable();
             table.setLinesVisible(true);
             table.setHeaderVisible(true);
 
-            TableColumn severityCol = new TableColumn(table, SWT.CENTER, 0);
-            severityCol.setWidth(20);
-            severityCol.setResizable(false);
-
-            TableColumn idCol = new TableColumn(table, SWT.LEFT, 1);
-            idCol.setText(Messages.MarkerStatsView_fileColumn);
-            idCol.setWidth(150);
-
-            TableColumn folderCol = new TableColumn(table, SWT.LEFT, 2);
-            folderCol.setText(Messages.MarkerStatsView_folderColumn);
-            folderCol.setWidth(300);
-
-            TableColumn countCol = new TableColumn(table, SWT.RIGHT, 3);
-            countCol.setText(Messages.MarkerStatsView_lineColumn);
-            countCol.pack();
-
-            TableColumn messageCol = new TableColumn(table, SWT.LEFT, 4);
-            messageCol.setText(Messages.MarkerStatsView_messageColumn);
-            messageCol.setWidth(300);
+            createColumns(tableColumnLayout);
 
             // set the providers
             tableViewer.setContentProvider(providers.contentProvider());
-            tableViewer.setLabelProvider(providers.multiProvider());
-            TableViewerEnhancer.enhance(tableViewer, providers.multiProvider());
+            TableViewerEnhancer.enhance(tableViewer,
+                providers.getTableSettings(), tableColumnLayout);
 
             // add selection listener to maintain action state
             tableViewer.addSelectionChangedListener(event -> updateActions.run());
@@ -244,6 +257,60 @@ public final class MarkerStatsMainView extends Composite {
 
             // and to the context menu too
             hookContextMenu(List.of(drillBackAction, showErrorAction), tableViewer, site);
+        }
+
+        private void createColumns(TableColumnLayout tableColumnLayout) {
+            final TableViewerColumn severityCol = new TableViewerColumn(tableViewer, SWT.CENTER);
+            severityCol.setLabelProvider(ColumnLabelProvider.createImageProvider(element -> {
+                final ISharedImages imgs = PlatformUI.getWorkbench().getSharedImages();
+                return switch (((IMarker) element).getAttribute(IMarker.SEVERITY, 0)) {
+                    case IMarker.SEVERITY_ERROR -> imgs.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
+                    case IMarker.SEVERITY_WARNING -> imgs.getImage(ISharedImages.IMG_OBJS_WARN_TSK);
+                    case IMarker.SEVERITY_INFO -> imgs.getImage(ISharedImages.IMG_OBJS_INFO_TSK);
+                    default -> null;
+                };
+            }));
+            severityCol.getColumn().pack();
+            severityCol.getColumn().setResizable(false);
+            tableColumnLayout.setColumnData(severityCol.getColumn(),
+                new ColumnPixelData(severityCol.getColumn().getWidth()));
+            TableViewerEnhancer.setColumnComparator(severityCol.getColumn(),
+                Comparator.comparingInt(marker -> -((IMarker) marker).getAttribute(IMarker.SEVERITY,
+                    Integer.MAX_VALUE)));
+
+            final TableViewerColumn fileCol = new TableViewerColumn(tableViewer, SWT.LEFT);
+            fileCol.getColumn().setText(Messages.MarkerStatsView_fileColumn);
+            fileCol.setLabelProvider(ColumnLabelProvider
+                .createTextProvider(element -> ((IMarker) element).getResource().getName()));
+            fileCol.getColumn().pack();
+            tableColumnLayout.setColumnData(fileCol.getColumn(),
+                new ColumnPixelData(fileCol.getColumn().getWidth()));
+
+            final TableViewerColumn folderCol = new TableViewerColumn(tableViewer, SWT.LEFT);
+            folderCol.getColumn().setText(Messages.MarkerStatsView_folderColumn);
+            folderCol.setLabelProvider(ColumnLabelProvider.createTextProvider(
+                marker -> ((IMarker) marker).getResource().getParent().getFullPath().toString()));
+            folderCol.getColumn().pack();
+            tableColumnLayout.setColumnData(folderCol.getColumn(),
+                new ColumnPixelData(folderCol.getColumn().getWidth()));
+
+            final TableViewerColumn lineCol = new TableViewerColumn(tableViewer, SWT.RIGHT);
+            lineCol.getColumn().setText(Messages.MarkerStatsView_lineColumn);
+            lineCol.setLabelProvider(ColumnLabelProvider.createTextProvider(element -> String
+                .valueOf(((IMarker) element).getAttribute(IMarker.LINE_NUMBER, 0))));
+            lineCol.getColumn().pack();
+            tableColumnLayout.setColumnData(lineCol.getColumn(),
+                new ColumnPixelData(lineCol.getColumn().getWidth()));
+            TableViewerEnhancer.setColumnComparator(lineCol.getColumn(), Comparator.comparingInt(
+                marker -> ((IMarker) marker).getAttribute(IMarker.LINE_NUMBER, Integer.MAX_VALUE)));
+
+            final TableViewerColumn messageCol = new TableViewerColumn(tableViewer, SWT.LEFT);
+            messageCol.getColumn().setText(Messages.MarkerStatsView_messageColumn);
+            messageCol.setLabelProvider(ColumnLabelProvider.createTextProvider(
+                element -> ((IMarker) element).getAttribute(IMarker.MESSAGE, "")));
+            messageCol.getColumn().pack();
+            tableColumnLayout.setColumnData(messageCol.getColumn(),
+                new ColumnPixelData(messageCol.getColumn().getWidth()));
         }
 
         @Override

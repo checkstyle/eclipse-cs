@@ -21,6 +21,8 @@
 package net.sf.eclipsecs.core.config;
 
 import java.net.URL;
+import java.time.Instant;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -63,7 +65,7 @@ public class CheckConfiguration extends AbstractCheckConfiguration {
     private CheckstyleConfigurationFile mCheckstyleConfigurationFile;
 
     /** Time stamp when the cached configuration file data expires. */
-    private long mExpirationTime;
+    private Instant mExpirationTime;
 
     /**
      * Creates a check configuration instance.
@@ -156,12 +158,12 @@ public class CheckConfiguration extends AbstractCheckConfiguration {
     @Override
     public CheckstyleConfigurationFile getCheckstyleConfiguration()
             throws CheckstylePluginException {
-        final long currentTime = System.currentTimeMillis();
+        final Instant currentTime = Instant.now();
 
-        if (mCheckstyleConfigurationFile == null || currentTime > mExpirationTime) {
+        if (mCheckstyleConfigurationFile == null || currentTime.isAfter(mExpirationTime)) {
             mCheckstyleConfigurationFile = getType().getCheckstyleConfiguration(this);
             // 1 hour
-            mExpirationTime = currentTime + 1000 * 60 * 60;
+            mExpirationTime = currentTime.plus(1, ChronoUnit.HOURS);
         }
 
         return mCheckstyleConfigurationFile;

@@ -50,6 +50,12 @@ public final class CheckstyleMarker {
     /** Constant for the info marker type. */
     public static final String INFO_TYPE = CheckstylePlugin.PLUGIN_ID + ".info"; //$NON-NLS-1$
 
+    /**
+     * Marker category ID for Java Problem Type. It matches the value in
+     * net.sf.eclipsecs.ui/plugin.xml
+     */
+    public static final int CATEGORY_ID = 999;
+
     private CheckstyleMarker() {
         // utility class
     }

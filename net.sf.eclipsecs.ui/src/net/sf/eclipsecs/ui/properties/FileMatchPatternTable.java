@@ -26,13 +26,12 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
-import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.ControlListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
@@ -92,16 +91,15 @@ public final class FileMatchPatternTable extends Composite {
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        TableLayout tableLayout = new TableLayout();
-        table.setLayout(tableLayout);
-
         TableColumn column1 = new TableColumn(table, SWT.NONE);
         column1.setText(Messages.FileSetEditDialog_colInclude);
-        tableLayout.addColumnData(new ColumnWeightData(11));
+        column1.pack();
 
         TableColumn column2 = new TableColumn(table, SWT.NONE);
         column2.setText(Messages.FileSetEditDialog_colRegex);
-        tableLayout.addColumnData(new ColumnWeightData(89));
+        table.addControlListener(ControlListener.controlResizedAdapter(event -> {
+            column2.setWidth(Math.max(table.getClientArea().width - column1.getWidth(), 0));
+        }));
 
         return table;
     }

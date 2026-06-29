@@ -296,12 +296,6 @@ public final class Messages extends NLS {
 
     public static String FileSetEditDialog_titleTestResult;
 
-    public static String FileTypesFilterEditor_btnAdd;
-
-    public static String FileTypesFilterEditor_btnRemove;
-
-    public static String FileTypesFilterEditor_title;
-
     public static String FixCheckstyleMarkersJob_title;
 
     public static String PackageFilterEditor_msgFilterPackages;

@@ -26,12 +26,10 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -99,21 +97,13 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
      * @return the configuration area
      */
     private Composite createCheckConfigContents(Composite parent) {
-        //
-        // Create the composite for configuring check configurations.
-        //
         Group configComposite = new Group(parent, SWT.NULL);
         configComposite.setText(Messages.CheckstylePreferencePage_titleCheckConfigs);
-        configComposite.setLayout(new FormLayout());
+        GridLayoutFactory.fillDefaults().applyTo(configComposite);
 
-        FormData formData = new FormData();
-        formData.left = new FormAttachment(0, 3);
-        formData.top = new FormAttachment(0, 3);
-        formData.right = new FormAttachment(100, -3);
-        formData.bottom = new FormAttachment(100, -3);
-        CheckConfigurationWorkingSetEditor mWorkingSetEditor =
+        final Composite editor =
             new CheckConfigurationWorkingSetEditor(configComposite, SWT.NONE, mWorkingSet);
-        mWorkingSetEditor.setLayoutData(formData);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(editor);
 
         return configComposite;
     }

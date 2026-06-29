@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
@@ -33,6 +34,9 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  *
  */
 public interface ICheckConfigurationEditor {
+
+    /** Size of the checkstyle configuration description box. */
+    Point CONFIG_DESCRIPTION_SIZE = new Point(300, 100);
 
     /**
      * Initializes the configuration editor with its properties.

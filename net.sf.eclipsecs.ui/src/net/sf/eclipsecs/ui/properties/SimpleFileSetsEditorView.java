@@ -37,6 +37,7 @@ import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
 import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
+import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
 
 public final class SimpleFileSetsEditorView extends Composite {
 
@@ -54,7 +55,6 @@ public final class SimpleFileSetsEditorView extends Composite {
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(configArea);
 
         mComboViewer = new ComboViewer(configArea);
-        mComboViewer.getCombo().setVisibleItemCount(10);
         mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
         mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
         mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
@@ -73,7 +73,9 @@ public final class SimpleFileSetsEditorView extends Composite {
 
         Text mTxtConfigDescription = new Text(configArea,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.V_SCROLL);
-        GridDataFactory.fillDefaults().span(2, 1).hint(SWT.DEFAULT, 100).grab(true, true)
+        GridDataFactory.fillDefaults().span(2, 1)
+            .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
+            .grab(true, true)
             .applyTo(mTxtConfigDescription);
 
         mComboViewer.addSelectionChangedListener(event -> {

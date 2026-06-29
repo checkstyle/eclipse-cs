@@ -45,14 +45,13 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
  */
 public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidget {
 
+    /** The red color. */
+    private static final Color RED = new Color(255, 225, 225);
+    /** The green color. */
+    private static final Color GREEN = new Color(219, 235, 204);
+
     /** The default test message. */
     private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
-
-    /** The red color. */
-    private final Color mRedColor;
-
-    /** The green color. */
-    private final Color mGreenColor;
 
     /** The contents composite. */
     private Composite mContents;
@@ -76,9 +75,6 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
      */
     private ConfigPropertyWidgetRegex(Composite parent, ConfigProperty prop) {
         super(parent, prop);
-        mGreenColor = new Color(parent.getDisplay(), 219, 235, 204);
-        mRedColor = new Color(parent.getDisplay(), 255, 225, 225);
-
     }
 
     public static ConfigPropertyWidgetRegex create(Composite parent, ConfigProperty prop) {
@@ -157,14 +153,14 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
             Pattern pattern = Pattern.compile(mTextWidget.getText());
             Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
             if (matcher.find()) {
-                mRegexTestWidget.setBackground(mGreenColor);
+                mRegexTestWidget.setBackground(GREEN);
             } else {
-                mRegexTestWidget.setBackground(mRedColor);
+                mRegexTestWidget.setBackground(RED);
             }
 
             mTextWidget.setBackground(mTextBgColor);
         } catch (PatternSyntaxException ex) {
-            mTextWidget.setBackground(mRedColor);
+            mTextWidget.setBackground(RED);
         }
     }
 

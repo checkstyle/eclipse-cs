@@ -20,26 +20,24 @@
 
 package net.sf.eclipsecs.ui.config;
 
+import java.util.Comparator;
 import java.util.List;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
-import org.eclipse.jface.layout.GridDataFactory;
-import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
 import org.eclipse.jface.viewers.CheckboxTableViewer;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.ICheckStateProvider;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.jface.viewers.TableLayout;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.jface.viewers.ViewerFilter;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
@@ -48,8 +46,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.ConfiguredModules.ConfiguredModulesCallbacks;
 import net.sf.eclipsecs.ui.util.HtmlUtil;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class ConfiguredModulesTable extends Composite {
@@ -61,12 +57,20 @@ public final class ConfiguredModulesTable extends Composite {
         boolean configurable, ICheckStateProvider checkStateProvider,
         ConfiguredModulesCallbacks callbacks, List<Module> modules) {
         super(parent, style);
-        GridLayoutFactory.fillDefaults().applyTo(this);
 
-        this.tableViewer = new CheckboxTableViewer(createTable(this));
-        tableViewer.setLabelProvider(ModuleLabelProvider.INSTANCE);
+        final TableColumnLayout tableColumnLayout = new TableColumnLayout();
+        setLayout(tableColumnLayout);
+
+        final Table table =
+            new Table(this, SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
+        table.setHeaderVisible(true);
+        table.setLinesVisible(true);
+
+        this.tableViewer = new CheckboxTableViewer(table);
         tableViewer.setContentProvider(ArrayContentProvider.getInstance());
         tableViewer.addFilter(ruleGroupModuleFilter);
+
+        createColumns(tableColumnLayout, table);
 
         tableViewer.addDoubleClickListener(event -> callbacks.openModule()
             .accept((Module) ((IStructuredSelection) event.getSelection()).getFirstElement()));
@@ -101,7 +105,45 @@ public final class ConfiguredModulesTable extends Composite {
         tableViewer.setCheckStateProvider(checkStateProvider);
         tableViewer.setInput(modules);
 
-        TableViewerEnhancer.enhance(tableViewer, ModuleLabelProvider.INSTANCE);
+        TableViewerEnhancer.enhance(tableViewer, getTableSettings(), tableColumnLayout);
+    }
+
+    private void createColumns(TableColumnLayout layout, Table table) {
+        final TableViewerColumn col1 = new TableViewerColumn(tableViewer, SWT.NONE);
+        col1.getColumn().setAlignment(SWT.CENTER);
+        col1.getColumn().setText(Messages.CheckConfigurationConfigureDialog_colEnabled);
+        col1.setLabelProvider(ColumnLabelProvider.createTextProvider(element -> ""));
+        col1.getColumn().pack();
+        layout.setColumnData(col1.getColumn(),
+            new ColumnPixelData(col1.getColumn().getWidth()));
+        TableViewerEnhancer.setColumnComparator(col1.getColumn(), Comparator
+            .comparing((Module module) -> Severity.IGNORE.equals(module.getSeverity())).reversed());
+
+        final TableViewerColumn col2 = new TableViewerColumn(tableViewer, SWT.NONE);
+        col2.getColumn().setText(Messages.CheckConfigurationConfigureDialog_colModule);
+        col2.setLabelProvider(ColumnLabelProvider.createTextProvider(
+            element -> ((Module) element).getName() != null
+                ? ((Module) element).getName() : ""));
+        layout.setColumnData(col2.getColumn(), new ColumnWeightData(2));
+
+        final TableViewerColumn col3 = new TableViewerColumn(tableViewer, SWT.NONE);
+        col3.getColumn().setText(Messages.CheckConfigurationConfigureDialog_colSeverity);
+        col3.setLabelProvider(ColumnLabelProvider.createTextProvider(element -> {
+            final Severity severity = ((Module) element).getSeverity();
+            return severity != null ? severity.toXmlValue() : "";
+        }));
+        col3.getColumn().pack();
+        layout.setColumnData(col3.getColumn(),
+            new ColumnPixelData(col3.getColumn().getWidth()));
+
+        final TableViewerColumn col4 = new TableViewerColumn(tableViewer, SWT.NONE);
+        col4.getColumn().setText(Messages.CheckConfigurationConfigureDialog_colComment);
+        col4.setLabelProvider(ColumnLabelProvider.createTextProvider(
+            element -> ((Module) element).getComment() != null
+                ? ((Module) element).getComment() : ""));
+        layout.setColumnData(col4.getColumn(), new ColumnWeightData(1));
+
+        table.setSortColumn(col2.getColumn());
     }
 
     public void refresh() {
@@ -113,98 +155,18 @@ public final class ConfiguredModulesTable extends Composite {
         return tableViewer.getStructuredSelection().toList();
     }
 
-    private static Table createTable(Composite parent) {
-        Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-        GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
+    private static IDialogSettings getTableSettings() {
+        final String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
 
-        TableLayout tableLayout = new TableLayout();
-        table.setLayout(tableLayout);
+        final IDialogSettings workbenchSettings =
+            CheckstyleUIPlugin.getDefault().getDialogSettings();
+        IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
-        TableColumn column1 = new TableColumn(table, SWT.NONE);
-        column1.setAlignment(SWT.CENTER);
-        column1.setText(Messages.CheckConfigurationConfigureDialog_colEnabled);
-        tableLayout.addColumnData(new ColumnWeightData(15));
-
-        TableColumn column2 = new TableColumn(table, SWT.NONE);
-        column2.setText(Messages.CheckConfigurationConfigureDialog_colModule);
-        tableLayout.addColumnData(new ColumnWeightData(30));
-
-        TableColumn column3 = new TableColumn(table, SWT.NONE);
-        column3.setText(Messages.CheckConfigurationConfigureDialog_colSeverity);
-        tableLayout.addColumnData(new ColumnWeightData(20));
-
-        TableColumn column4 = new TableColumn(table, SWT.NONE);
-        column4.setText(Messages.CheckConfigurationConfigureDialog_colComment);
-        tableLayout.addColumnData(new ColumnWeightData(35));
-
-        // by default the table viewer sorts on column 0, but we want to sort by the module label
-        table.setSortColumn(column2);
-
-        return table;
-    }
-
-    /**
-     * Label provider for the table showing the configured modules.
-     *
-     */
-    private static final class ModuleLabelProvider extends LabelProvider
-        implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
-
-        /** Singleton instance. */
-        private static final ModuleLabelProvider INSTANCE = new ModuleLabelProvider();
-
-        private ModuleLabelProvider() {
-
+        if (settings == null) {
+            settings = workbenchSettings.addNewSection(concreteViewId);
         }
 
-        @Override
-        public Image getColumnImage(Object element, int columnIndex) {
-            return null;
-        }
-
-        @Override
-        public String getColumnText(Object element, int columnIndex) {
-            String columnText = null;
-            if (element instanceof Module module) {
-                columnText = switch (columnIndex) {
-                    case 0 -> "";
-                    case 1 -> module.getName() != null ? module.getName() : "";
-                    case 2 -> module.getSeverity() != null ? module.getSeverity().toXmlValue() : "";
-                    case 3 -> module.getComment() != null ? module.getComment() : "";
-                    default -> "";
-                };
-            }
-            return columnText;
-        }
-
-        @Override
-        public Comparable<?> getComparableValue(Object element, int col) {
-            Comparable<?> comp;
-            if (col == 0 && element instanceof Module) {
-                comp = Severity.IGNORE.equals(((Module) element).getSeverity()) ? Integer.valueOf(0)
-                    : Integer.valueOf(1);
-            }
-            else {
-                comp = getColumnText(element, col);
-            }
-            return comp;
-        }
-
-        @Override
-        public IDialogSettings getTableSettings() {
-            String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
-
-            IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
-            IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
-
-            if (settings == null) {
-                settings = workbenchSettings.addNewSection(concreteViewId);
-            }
-
-            return settings;
-        }
+        return settings;
     }
 
 }

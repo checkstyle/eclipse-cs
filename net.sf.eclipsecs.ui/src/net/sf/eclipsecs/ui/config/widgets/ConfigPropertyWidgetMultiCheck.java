@@ -57,6 +57,9 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigPropertyWidget
     implements IPreferenceChangeListener {
 
+    /** Height of the widget's table in pixels. */
+    private static final int WIDGET_HEIGHT = 150;
+
     /** Resource bundle containing the token translations. */
     private static final ResourceBundle TOKEN_BUNDLE =
         PropertyResourceBundle.getBundle("net.sf.eclipsecs.ui.config.token"); //$NON-NLS-1$
@@ -114,7 +117,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
             mTable.setCheckedElements(getInitialValues().toArray());
 
             GridData gridData = new GridData(GridData.FILL_BOTH);
-            gridData.heightHint = 150;
+            gridData.heightHint = WIDGET_HEIGHT;
             mTable.getControl().setLayoutData(gridData);
 
             // deregister the listener on widget dipose

@@ -21,7 +21,7 @@
 package net.sf.eclipsecs.ui.config;
 
 import java.util.ArrayList;
-import java.util.function.Predicate;
+import java.util.Optional;
 
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
@@ -38,7 +38,7 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor.ConfigurationLabelProvider;
+import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor.CheckConfigurationWorkingSetEditorModel;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditorButtonBar.ButtonBarActions;
 
 public final class CheckConfigurationWorkingSetEditorView extends Composite {
@@ -51,31 +51,32 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
     private final Text mConfigurationDescription;
     /** The table viewer for project usage. */
     private final TableViewer mUsageView;
-
-    /** Whether this is a global working set. */
-    private final boolean global;
+    /** The model for this view. */
+    private final CheckConfigurationWorkingSetEditorModel model;
 
     public CheckConfigurationWorkingSetEditorView(Composite parent, int style,
-        CheckConfigurationWorkingCopy[] configs, boolean global, ButtonBarActions buttonBarActions,
-        Predicate<CheckConfigurationWorkingCopy> isDefaultConfig,
-        ConfigurationLabelProvider configurationLabelProvider) {
+        CheckConfigurationWorkingSetEditorModel model, ButtonBarActions buttonBarActions) {
         super(parent, style);
-        GridLayoutFactory.fillDefaults().numColumns(3).applyTo(this);
+        GridLayoutFactory.fillDefaults().numColumns(2).applyTo(this);
 
-        this.global = global;
+        this.model = model;
 
-        this.configTable = new CheckConfigurationWorkingSetEditorConfigTable(this, SWT.NULL, global,
-            configs, configurationLabelProvider, buttonBarActions.configureCheckConfig(),
-            config -> handleSelectionChanged(config, isDefaultConfig));
-        GridDataFactory.fillDefaults().grab(true, true).span(2, 1).applyTo(configTable);
+        this.configTable = new CheckConfigurationWorkingSetEditorConfigTable(this, SWT.NULL, model,
+            buttonBarActions.configureCheckConfig(), this::handleSelectionChanged);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(configTable);
 
-        this.buttonBar = new CheckConfigurationWorkingSetEditorButtonBar(this, SWT.NULL, global,
-            buttonBarActions);
+        this.buttonBar = new CheckConfigurationWorkingSetEditorButtonBar(this, SWT.NULL,
+            model.global(), buttonBarActions);
         GridDataFactory.fillDefaults().span(1, 2).applyTo(buttonBar);
 
-        Composite descArea = new Composite(this, SWT.NULL);
+        final Composite descAndUsageArea = new Composite(this, SWT.NULL);
+        GridLayoutFactory.fillDefaults().numColumns(model.global() ? 2 : 1)
+            .applyTo(descAndUsageArea);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(descAndUsageArea);
+
+        final Composite descArea = new Composite(descAndUsageArea, SWT.NULL);
         GridLayoutFactory.fillDefaults().applyTo(descArea);
-        GridDataFactory.fillDefaults().grab(true, true).span(global ? 1 : 2, 1).applyTo(descArea);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(descArea);
 
         Label lblDescription = new Label(descArea, SWT.NULL);
         lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
@@ -85,25 +86,9 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(mConfigurationDescription);
 
-        if (global) {
-            Composite usageArea = new Composite(this, SWT.NULL);
-            GridLayoutFactory.fillDefaults().applyTo(usageArea);
-            GridDataFactory.fillDefaults().applyTo(usageArea);
+        mUsageView = makeUsageView(descAndUsageArea, model.global()).orElse(null);
 
-            Label lblUsage = new Label(usageArea, SWT.NULL);
-            lblUsage.setText(Messages.CheckstylePreferencePage_lblProjectUsage);
-            GridDataFactory.fillDefaults().applyTo(lblUsage);
-
-            mUsageView = new TableViewer(usageArea);
-            mUsageView.getControl().setBackground(usageArea.getBackground());
-            mUsageView.setContentProvider(ArrayContentProvider.getInstance());
-            mUsageView.setLabelProvider(new WorkbenchLabelProvider());
-            GridDataFactory.fillDefaults().grab(true, true).applyTo(mUsageView.getControl());
-        } else {
-            mUsageView = null;
-        }
-
-        handleSelectionChanged(null, isDefaultConfig);
+        handleSelectionChanged(null);
     }
 
     public CheckConfigurationWorkingCopy getSelectedConfig() {
@@ -122,14 +107,33 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
         configTable.refresh();
     }
 
-    private void handleSelectionChanged(CheckConfigurationWorkingCopy config,
-        Predicate<CheckConfigurationWorkingCopy> isDefaultConfig) {
+    private static Optional<TableViewer> makeUsageView(Composite parent, boolean global) {
+        TableViewer usageView = null;
+        if (global) {
+            final Composite usageArea = new Composite(parent, SWT.NULL);
+            GridLayoutFactory.fillDefaults().applyTo(usageArea);
+            GridDataFactory.fillDefaults().applyTo(usageArea);
+
+            final Label lblUsage = new Label(usageArea, SWT.NULL);
+            lblUsage.setText(Messages.CheckstylePreferencePage_lblProjectUsage);
+            GridDataFactory.fillDefaults().applyTo(lblUsage);
+
+            usageView = new TableViewer(usageArea);
+            usageView.getControl().setBackground(usageArea.getBackground());
+            usageView.setContentProvider(ArrayContentProvider.getInstance());
+            usageView.setLabelProvider(new WorkbenchLabelProvider());
+            GridDataFactory.fillDefaults().grab(true, true).applyTo(usageView.getControl());
+        }
+        return Optional.ofNullable(usageView);
+    }
+
+    private void handleSelectionChanged(CheckConfigurationWorkingCopy config) {
         boolean configSelected = config != null;
         if (configSelected) {
             mConfigurationDescription
                 .setText(config.getDescription() != null ? config.getDescription() : "");
 
-            if (global) {
+            if (model.global()) {
                 try {
                     mUsageView.setInput(ProjectConfigurationFactory
                         .getProjectsUsingConfig(config.getSourceCheckConfiguration()));
@@ -138,12 +142,12 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
                 }
             }
         } else {
-            mConfigurationDescription.setText(""); //$NON-NLS-1$
-            if (global) {
+            mConfigurationDescription.setText("");
+            if (model.global()) {
                 mUsageView.setInput(new ArrayList<>());
             }
         }
-        boolean configDefault = isDefaultConfig.test(config);
+        final boolean configDefault = model.isDefaultConfig().test(config);
         buttonBar.setSelectionState(configSelected, configSelected && config.isEditable(),
             configDefault);
     }

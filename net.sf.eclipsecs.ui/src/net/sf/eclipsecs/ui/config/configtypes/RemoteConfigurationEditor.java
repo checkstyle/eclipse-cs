@@ -114,7 +114,9 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
         mDescription =
             new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-        GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
+        GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
+            .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
+            .grab(true, true)
             .applyTo(mDescription);
 
         createCredentialsGroup(contents);
@@ -144,14 +146,14 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         lblUserName.setLayoutData(new GridData());
 
         mUserName = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER);
-        GridDataFactory.swtDefaults().hint(100, SWT.DEFAULT).applyTo(mUserName);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(mUserName);
 
         Label lblPassword = new Label(credentialsGroup, SWT.NULL);
         lblPassword.setText(Messages.RemoteConfigurationEditor_lblPassword);
         lblPassword.setLayoutData(new GridData());
 
         mPassword = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
-        GridDataFactory.swtDefaults().hint(100, SWT.DEFAULT).applyTo(mPassword);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(mPassword);
     }
 
     private void init(Shell shell) {

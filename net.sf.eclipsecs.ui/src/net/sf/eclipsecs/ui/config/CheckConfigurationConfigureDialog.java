@@ -25,6 +25,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.ProgressMonitorDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -121,7 +122,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             new CheckConfigurationConfigureDialogViewCallbacks(this::newModule, this::openModule,
                 this::removeModule, this::checkStateChanged),
             mModules, mConfiguration.isConfigurable());
-        GridDataFactory.fillDefaults().applyTo(dialogView);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(dialogView);
 
         // initialize the data
         initialize();
@@ -169,8 +170,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         Button mBtnOpenModuleOnAdd = new Button(composite, SWT.CHECK);
         mBtnOpenModuleOnAdd.setText(Messages.CheckConfigurationConfigureDialog_btnOpenModuleOnAdd);
-        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0)
-            .applyTo(mBtnOpenModuleOnAdd);
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER)
+                .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
+                .applyTo(mBtnOpenModuleOnAdd);
 
         // Init the translate tokens preference
         mBtnOpenModuleOnAdd.setSelection(

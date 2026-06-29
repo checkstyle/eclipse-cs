@@ -50,6 +50,9 @@ import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
 
 public class FilterSettings extends Composite {
 
+    /** Height in pixels of the filter list. */
+    private static final int FILTER_LIST_HEIGHT = 100;
+
     public FilterSettings(Composite parent, int style, IProject project, List<IFilter> filters,
         Runnable markDirty) {
         super(parent, style);
@@ -73,8 +76,8 @@ public class FilterSettings extends Composite {
 
         Text txtFilterDescription = new Text(group,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-        GridDataFactory.fillDefaults().span(2, 1).grab(true, true).hint(SWT.DEFAULT, 100)
-            .applyTo(txtFilterDescription);
+        GridDataFactory.fillDefaults().span(2, 1).grab(true, true)
+            .hint(SWT.DEFAULT, FILTER_LIST_HEIGHT).applyTo(txtFilterDescription);
 
         filterList.addSelectionChangedListener(event -> {
             if (event.getStructuredSelection().getFirstElement() instanceof IFilter filterDef) {

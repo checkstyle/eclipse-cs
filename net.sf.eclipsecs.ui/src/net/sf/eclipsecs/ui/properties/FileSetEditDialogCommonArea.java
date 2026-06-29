@@ -70,7 +70,6 @@ public final class FileSetEditDialogCommonArea extends Composite {
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(comboComposite);
 
         mComboViewer = new ComboViewer(comboComposite);
-        mComboViewer.getCombo().setVisibleItemCount(10);
         mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
         mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
         mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);

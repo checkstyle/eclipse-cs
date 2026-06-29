@@ -98,9 +98,9 @@ public final class ComplexFileSetsEditorTableView extends Composite {
         TableColumn column3 = new TableColumn(table, SWT.NONE);
         column3.setText(Messages.ComplexFileSetsEditor_colConfiguration);
 
-        tableLayout.addColumnData(new ColumnWeightData(20));
-        tableLayout.addColumnData(new ColumnWeightData(40));
-        tableLayout.addColumnData(new ColumnWeightData(40));
+        tableLayout.addColumnData(new ColumnWeightData(1));
+        tableLayout.addColumnData(new ColumnWeightData(2));
+        tableLayout.addColumnData(new ColumnWeightData(2));
 
         return table;
     }

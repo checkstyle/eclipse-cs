@@ -449,7 +449,8 @@ public final class MetadataFactory {
     private static ResourceBundle getMetadataI18nBundle(String metadataFile,
         ClassLoader classLoader) {
         ResourceBundle resourceBundle;
-        String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace('/', '.');
+        final String bundle =
+            metadataFile.substring(0, metadataFile.indexOf('.')).replace('/', '.');
         try {
             resourceBundle = ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(),
                 classLoader);

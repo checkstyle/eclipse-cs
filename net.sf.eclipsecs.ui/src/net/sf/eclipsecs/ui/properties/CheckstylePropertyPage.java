@@ -196,9 +196,7 @@ public class CheckstylePropertyPage extends PropertyPage {
 
             Label lblHint = new Label(noteAndEditor, SWT.WRAP);
             lblHint.setText(Messages.CheckstylePropertyPage_msgLocalConfigs);
-            GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-            gridData.widthHint = 200;
-            lblHint.setLayoutData(gridData);
+            GridDataFactory.fillDefaults().hint(1, SWT.DEFAULT).applyTo(lblHint);
 
             Control workingSetEditor =
                 new CheckConfigurationWorkingSetEditor(noteAndEditor, SWT.NONE, workingSet);
