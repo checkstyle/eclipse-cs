@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.config;
 
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
@@ -172,14 +173,14 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     @Override
     protected Control createButtonBar(Composite parent) {
-
         Composite composite = new Composite(parent, SWT.NONE);
-        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
+        GridLayoutFactory.fillDefaults().numColumns(2).applyTo(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
         mBtnProperties = new Button(composite, SWT.PUSH);
         mBtnProperties.setText(Messages.CheckConfigurationPropertiesDialog_btnAdditionalProps);
-        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0)
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
             .applyTo(mBtnProperties);
 
         mBtnProperties.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {

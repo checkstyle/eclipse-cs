@@ -26,6 +26,7 @@ import java.util.Locale;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.layout.RowLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.FillLayout;
@@ -48,7 +49,6 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
     /** The default language code. */
     private static final String DEFAULT_LANGUAGE = "default";
-
     /** The list of supported language codes. */
     private static final List<String> SUPPORTED_LANGUAGES =
         List.of(DEFAULT_LANGUAGE, "de", "en", "es", "fi", "fr", "ja", "pt", "tr", "zh");
@@ -63,6 +63,10 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         }
         return displayLang;
     }).toArray(String[]::new);
+    /** Maximum number of digits for the marker limit setting. */
+    private static final int MARKER_LIMIT_MAX_DIGITS = 5;
+    /** Number of columns of the rebuild section. */
+    private static final int REBUILD_SECTION_NUM_COLUMNS = 3;
 
     /** The language selection combo. */
     private final Combo languageIf;
@@ -119,19 +123,18 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         // Create the "limit markers" check box and text field combination
         //
         final Composite limitMarkersComposite = new Composite(group, SWT.NULL);
-        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(limitMarkersComposite);
+        RowLayoutFactory.fillDefaults().applyTo(limitMarkersComposite);
 
         mLimitCheckstyleMarkers = makeButton(limitMarkersComposite, SWT.CHECK,
             Messages.CheckstylePreferencePage_lblLimitMarker, CheckstylePluginPrefs
                 .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE));
 
         mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
-        mTxtMarkerLimit.setTextLimit(5);
+        mTxtMarkerLimit.setTextLimit(MARKER_LIMIT_MAX_DIGITS);
         SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
 
         mTxtMarkerLimit.setText(Integer.toString(
             CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT)));
-        GridDataFactory.swtDefaults().hint(30, SWT.DEFAULT).applyTo(mTxtMarkerLimit);
 
         addRebuildNoteLabel(limitMarkersComposite);
 
@@ -149,7 +152,8 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
     private static Combo createRebuildSection(Group group, Runnable setRebuildAll) {
         final Composite rebuildComposite = new Composite(group, SWT.NULL);
-        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(rebuildComposite);
+        GridLayoutFactory.swtDefaults().numColumns(REBUILD_SECTION_NUM_COLUMNS).margins(0, 0)
+            .applyTo(rebuildComposite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(rebuildComposite);
 
         Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
@@ -175,14 +179,14 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
             setRebuildAll.run();
         }));
         GridDataFactory.swtDefaults().align(GridData.END, GridData.CENTER).grab(true, false)
-            .hint(20, 20).applyTo(mPurgeCacheButton);
+            .applyTo(mPurgeCacheButton);
 
         return mRebuildIfNeeded;
     }
 
     private static Combo createLanguageSetting(Group group) {
         Composite langComposite = new Composite(group, SWT.NULL);
-        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(langComposite);
+        RowLayoutFactory.fillDefaults().applyTo(langComposite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(langComposite);
 
         final Label lblLanguage = new Label(langComposite, SWT.NULL);

@@ -106,8 +106,6 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
         mListViewer.setContentProvider(ArrayContentProvider.getInstance());
         mListViewer.setInput(mFileTypesList);
         gridData = new GridData(GridData.FILL_BOTH);
-        gridData.heightHint = 100;
-        gridData.widthHint = 150;
         gridData.grabExcessHorizontalSpace = true;
         mListViewer.getControl().setLayoutData(gridData);
 

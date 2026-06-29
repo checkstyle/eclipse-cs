@@ -22,20 +22,24 @@ package net.sf.eclipsecs.ui.config;
 
 import java.util.function.Consumer;
 
+import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
+import org.eclipse.jface.viewers.ColumnPixelData;
 import org.eclipse.jface.viewers.ColumnWeightData;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor.ConfigurationLabelProvider;
+import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor.CheckConfigurationWorkingSetEditorModel;
+import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class CheckConfigurationWorkingSetEditorConfigTable extends Composite {
@@ -44,48 +48,65 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
     private final TableViewer tableViewer;
 
     public CheckConfigurationWorkingSetEditorConfigTable(Composite parent, int style,
-        boolean useDefaultColumn, CheckConfigurationWorkingCopy[] configs,
-        ConfigurationLabelProvider multiProvider, Runnable configureCheckConfig,
+        CheckConfigurationWorkingSetEditorModel model,
+        Runnable configureCheckConfig,
         Consumer<CheckConfigurationWorkingCopy> handleSelectionChanged) {
         super(parent, style);
-        setLayout(new FillLayout());
+        final TableColumnLayout tableColumnLayout = new TableColumnLayout();
+        setLayout(tableColumnLayout);
         Table table = new Table(this, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
 
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        TableLayout tableLayout = new TableLayout();
-        table.setLayout(tableLayout);
+        tableViewer = new TableViewer(table);
 
-        TableColumn column1 = new TableColumn(table, SWT.NULL);
-        column1.setText(Messages.CheckstylePreferencePage_colCheckConfig);
-        tableLayout.addColumnData(new ColumnWeightData(40));
+        final TableViewerColumn col1 = new TableViewerColumn(tableViewer, SWT.NULL);
+        col1.getColumn().setText(Messages.CheckstylePreferencePage_colCheckConfig);
+        col1.setLabelProvider(ColumnLabelProvider.createTextImageProvider(
+            element -> ((CheckConfiguration) element).getName(),
+            element -> ConfigurationTypesUI.getConfigurationTypeImage(
+                ((CheckConfiguration) element).getType())));
+        tableColumnLayout.setColumnData(col1.getColumn(), new ColumnWeightData(1));
 
-        TableColumn column2 = new TableColumn(table, SWT.NULL);
-        column2.setText(Messages.CheckstylePreferencePage_colLocation);
-        tableLayout.addColumnData(new ColumnWeightData(30));
+        final TableViewerColumn col2 = new TableViewerColumn(tableViewer, SWT.NULL);
+        col2.getColumn().setText(Messages.CheckstylePreferencePage_colLocation);
+        col2.setLabelProvider(ColumnLabelProvider.createTextProvider(
+            element -> ((CheckConfiguration) element).getLocation()));
+        tableColumnLayout.setColumnData(col2.getColumn(), new ColumnWeightData(1));
 
-        TableColumn column3 = new TableColumn(table, SWT.NULL);
-        column3.setText(Messages.CheckstylePreferencePage_colType);
-        tableLayout.addColumnData(new ColumnWeightData(30));
+        final TableViewerColumn col3 = new TableViewerColumn(tableViewer, SWT.NULL);
+        col3.getColumn().setText(Messages.CheckstylePreferencePage_colType);
+        col3.setLabelProvider(ColumnLabelProvider.createTextProvider(
+            element -> ((CheckConfiguration) element).getType().getName()));
+        tableColumnLayout.setColumnData(col3.getColumn(), new ColumnWeightData(1));
 
-        if (useDefaultColumn) {
-            TableColumn column4 = new TableColumn(table, SWT.NULL);
-            column4.setText(Messages.CheckstylePreferencePage_colDefault);
-            tableLayout.addColumnData(new ColumnWeightData(12));
+        if (model.global()) {
+            final TableViewerColumn col4 = new TableViewerColumn(tableViewer, SWT.NULL);
+            col4.getColumn().setText(Messages.CheckstylePreferencePage_colDefault);
+            col4.setLabelProvider(
+                ColumnLabelProvider.createTextImageProvider(element -> "", element -> {
+                    final CheckConfigurationWorkingCopy cfg =
+                        (CheckConfigurationWorkingCopy) element;
+                    return model.isDefaultConfig().test(cfg)
+                        ? CheckstyleUIPluginImages.TICK_ICON.getImage()
+                        : null;
+                }));
+            col4.getColumn().pack();
+            tableColumnLayout.setColumnData(col4.getColumn(),
+                new ColumnPixelData(col4.getColumn().getWidth()));
         }
 
-        tableViewer = new TableViewer(table);
-        tableViewer.setLabelProvider(multiProvider);
         tableViewer.setContentProvider(ArrayContentProvider.getInstance());
-        tableViewer.setInput(configs);
+        tableViewer.setInput(model.configs());
         tableViewer.addDoubleClickListener(event -> configureCheckConfig.run());
         tableViewer.addSelectionChangedListener(event -> {
             CheckConfigurationWorkingCopy checkConfig = (CheckConfigurationWorkingCopy) tableViewer
                 .getStructuredSelection().getFirstElement();
             handleSelectionChanged.accept(checkConfig);
         });
-        TableViewerEnhancer.enhance(tableViewer, multiProvider);
+
+        TableViewerEnhancer.enhance(tableViewer, model.tableSettings(), tableColumnLayout);
     }
 
     public void refresh() {

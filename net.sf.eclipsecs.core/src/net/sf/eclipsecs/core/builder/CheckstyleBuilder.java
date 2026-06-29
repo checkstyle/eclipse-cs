@@ -174,7 +174,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
             // enables own category under Java Problem Type
             // setting for Problems view (RFE 1530366)
-            markerAttributes.put("categoryId", Integer.valueOf(999)); //$NON-NLS-1$
+            markerAttributes.put("categoryId", CheckstyleMarker.CATEGORY_ID);
 
             // create a marker for the actual resource
             IMarker marker = project.createMarker(CheckstyleMarker.MARKER_ID);

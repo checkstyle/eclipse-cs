@@ -174,7 +174,6 @@
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]IFileSetsEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]SimpleFileSetsEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]CheckFileOnOpenPartListener.java" />
-    <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]FileTypesFilterEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]IFilterEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]PackageFilterEditor.java" />
     <suppress id="regexpHeader" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]PluginFilterEditors.java" />

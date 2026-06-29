@@ -45,6 +45,9 @@ import net.sf.eclipsecs.ui.util.InternalBrowser;
 
 public final class CheckConfigurationConfigureDialogView extends Composite {
 
+    /** Max height of the available and configured module panels. */
+    private static final int MAX_HEIGHT = 400;
+
     /** The browser displaying module descriptions. */
     private final Browser mBrowserDescription;
     /** The available modules viewer. */
@@ -59,7 +62,7 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         GridLayoutFactory.swtDefaults().applyTo(this);
 
         SashForm sashForm = new SashForm(this, SWT.NONE);
-        GridDataFactory.fillDefaults().hint(700, 400).applyTo(sashForm);
+        GridDataFactory.fillDefaults().hint(SWT.DEFAULT, MAX_HEIGHT).applyTo(sashForm);
         GridLayoutFactory.swtDefaults().applyTo(sashForm);
 
         Label lblDescription = new Label(this, SWT.NULL);
@@ -67,8 +70,7 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(lblDescription);
 
         mBrowserDescription = new Browser(this, SWT.BORDER);
-        GridDataFactory.create(GridData.FILL_BOTH).hint(SWT.DEFAULT, 100)
-            .applyTo(mBrowserDescription);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(mBrowserDescription);
         mBrowserDescription.addLocationListener(LocationListener.changingAdapter(event -> {
             String url = event.location;
             if (url != null && url.startsWith("http")) {
@@ -80,7 +82,7 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         this.availableModulesViewer = new AvailableModulesViewer(sashForm, SWT.NULL,
             new AvailableModulesViewerLabelProvider(mModules), configurable, callbacks.newModule,
             this::changeAvailableModuleSelection);
-        GridDataFactory.create(GridData.FILL_BOTH).applyTo(availableModulesViewer);
+        GridDataFactory.fillDefaults().applyTo(availableModulesViewer);
 
         this.configuredModules = new ConfiguredModules(sashForm, SWT.NONE, configurable, mModules,
             new ConfiguredModulesCallbacks(callbacks.openModule, callbacks.removeModule,
@@ -88,7 +90,7 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         GridDataFactory.fillDefaults().applyTo(configuredModules);
 
         sashForm.setWeights(new int[] {
-            30, 70,
+            1, 2,
         });
     }
 

@@ -77,6 +77,9 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     /** Key to access the max redirect networking property. */
     public static final String KEY_MAX_REDIRECTS = "http.maxRedirects";
 
+    /** Connect and read timeout in milliseconds. */
+    private static final int TIMEOUT = 10000;
+
     /** URLs that have failed with HTTP 401. */
     private static Set<String> sFailedWith401URLs = new HashSet<>();
 
@@ -302,8 +305,8 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     @Override
     protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
         // set timeouts - bug 2941010
-        connection.setConnectTimeout(10000);
-        connection.setReadTimeout(10000);
+        connection.setConnectTimeout(TIMEOUT);
+        connection.setReadTimeout(TIMEOUT);
 
         if (connection instanceof HttpURLConnection) {
 

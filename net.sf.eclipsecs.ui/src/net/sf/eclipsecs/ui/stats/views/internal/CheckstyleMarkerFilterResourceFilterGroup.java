@@ -36,6 +36,11 @@ import net.sf.eclipsecs.ui.stats.Messages;
 
 public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
 
+    /** Number of columns of the radio button group. */
+    private static final int NUM_COLUMNS = 3;
+    /** Number of columns of the severity group. */
+    private static final int SEVERITY_GROUP_NUM_COLUMS = 4;
+
     /** The filter composite group. */
     private final Group mFilterComposite;
     /** The "on any resource" radio button. */
@@ -68,25 +73,26 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
 
         mFilterComposite = new Group(this, SWT.NULL);
         mFilterComposite.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
-        mFilterComposite.setLayout(new GridLayout(3, false));
+        mFilterComposite.setLayout(new GridLayout(NUM_COLUMNS, false));
         mFilterComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         mRadioOnAnyResource = createButton(mFilterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnAnyResource,
-            GridDataFactory.swtDefaults().span(3, 1));
+            GridDataFactory.swtDefaults().span(NUM_COLUMNS, 1));
 
         mRadioAnyResourceInSameProject = createButton(mFilterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnAnyResourceInSameProject,
-            GridDataFactory.swtDefaults().span(3, 1));
+            GridDataFactory.swtDefaults().span(NUM_COLUMNS, 1));
 
         mRadioSelectedResource = createButton(mFilterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResource,
-            GridDataFactory.swtDefaults().span(3, 1));
+            GridDataFactory.swtDefaults().span(NUM_COLUMNS, 1));
 
         mRadioSelectedResourceAndChildren = new Button(mFilterComposite, SWT.RADIO);
         mRadioSelectedResourceAndChildren
             .setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResourceAndChilds);
-        GridDataFactory.swtDefaults().span(3, 1).applyTo(mRadioSelectedResourceAndChildren);
+        GridDataFactory.swtDefaults().span(NUM_COLUMNS, 1)
+            .applyTo(mRadioSelectedResourceAndChildren);
 
         mRadioSelectedWorkingSet = createButton(mFilterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnWorkingSet, GridDataFactory.swtDefaults());
@@ -96,14 +102,15 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
             new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
 
         mBtnWorkingSet = createButton(mFilterComposite, SWT.PUSH,
-            Messages.CheckstyleMarkerFilterDialog_btnSelect,
-            GridDataFactory.swtDefaults().span(1, 2));
+            Messages.CheckstyleMarkerFilterDialog_btnSelect, GridDataFactory.swtDefaults());
         mBtnWorkingSet.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> selectWorkingSet.run()));
 
         Composite severityGroup = new Composite(mFilterComposite, SWT.NULL);
-        GridLayoutFactory.swtDefaults().numColumns(4).margins(0, 5).applyTo(severityGroup);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(3, 1).applyTo(severityGroup);
+        GridLayoutFactory.fillDefaults().numColumns(SEVERITY_GROUP_NUM_COLUMS)
+            .applyTo(severityGroup);
+        GridDataFactory.fillDefaults().span(NUM_COLUMNS, 1)
+            .applyTo(severityGroup);
 
         mChkSeverityEnabled = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnMarkerSeverity,

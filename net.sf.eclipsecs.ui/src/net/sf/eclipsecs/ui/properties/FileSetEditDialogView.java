@@ -59,7 +59,7 @@ public final class FileSetEditDialogView extends Composite {
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(commonArea);
 
         SashForm sashForm = new SashForm(this, SWT.VERTICAL);
-        GridDataFactory.create(GridData.FILL_BOTH).hint(500, 400).applyTo(sashForm);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(sashForm);
         GridLayoutFactory.swtDefaults().applyTo(sashForm);
 
         this.fileMatchPatternTable =
@@ -71,7 +71,7 @@ public final class FileSetEditDialogView extends Composite {
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(matchArea);
 
         sashForm.setWeights(new int[] {
-            50, 50,
+            1, 1,
         });
     }
 

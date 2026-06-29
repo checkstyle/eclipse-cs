@@ -47,6 +47,9 @@ import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 
 public final class RuleConfigurationEditDialogGeneralSettings extends Composite {
 
+    /** Number of columns for the list of property widgets: name, widget value, help. */
+    private static final int NUM_WIDGET_COLUMNS = 3;
+
     /** The combo viewer for severity selection. */
     private final ComboViewer mSeverityCombo;
     /** The list of configuration property widgets. */
@@ -79,7 +82,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
 
         if (rule.getProperties().size() > 0) {
             Group properties = new Group(this, SWT.NULL);
-            GridLayoutFactory.swtDefaults().numColumns(3).applyTo(properties);
+            GridLayoutFactory.swtDefaults().numColumns(NUM_WIDGET_COLUMNS).applyTo(properties);
             properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
             GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).applyTo(properties);
             mConfigPropertyWidgets = rule.getProperties().stream()

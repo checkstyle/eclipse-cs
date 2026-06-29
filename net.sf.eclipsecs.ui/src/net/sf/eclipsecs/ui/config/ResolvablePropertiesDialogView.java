@@ -23,24 +23,24 @@ package net.sf.eclipsecs.ui.config;
 import java.util.List;
 import java.util.function.Consumer;
 
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
+import org.eclipse.jface.layout.TableColumnLayout;
 import org.eclipse.jface.viewers.ArrayContentProvider;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnWeightData;
-import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
+import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Table;
-import org.eclipse.swt.widgets.TableColumn;
 
 import net.sf.eclipsecs.core.config.ResolvableProperty;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.ResolvablePropertiesDialog.PropertiesLabelProvider;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 public final class ResolvablePropertiesDialogView extends Composite {
@@ -49,16 +49,22 @@ public final class ResolvablePropertiesDialogView extends Composite {
     private final TableViewer mTableViewer;
 
     public ResolvablePropertiesDialogView(Composite parent, int style,
+        IDialogSettings tableSettings,
         Consumer<ResolvableProperty> openPropertyItemEditor,
         Consumer<List<ResolvableProperty>> removePropertyItems) {
         super(parent, style);
 
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
 
-        Table table = createTable(this);
+        final Composite tableComposite = new Composite(this, SWT.NONE);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(tableComposite);
+        final TableColumnLayout tableColumnLayout = new TableColumnLayout();
+        tableComposite.setLayout(tableColumnLayout);
 
-        mTableViewer = new TableViewer(table);
-        mTableViewer.setLabelProvider(PropertiesLabelProvider.INSTANCE);
+        mTableViewer = new TableViewer(tableComposite,
+            SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
+        mTableViewer.getTable().setHeaderVisible(true);
+        mTableViewer.getTable().setLinesVisible(true);
         mTableViewer.setContentProvider(ArrayContentProvider.getInstance());
         mTableViewer.addDoubleClickListener(
             event -> openPropertyItemEditor.accept(getSelectedProperties().getFirst()));
@@ -70,7 +76,20 @@ public final class ResolvablePropertiesDialogView extends Composite {
                 openPropertyItemEditor.accept(getSelectedProperties().getFirst());
             }
         }));
-        TableViewerEnhancer.enhance(mTableViewer, PropertiesLabelProvider.INSTANCE);
+
+        final TableViewerColumn nameCol = new TableViewerColumn(mTableViewer, SWT.NONE);
+        nameCol.getColumn().setText(Messages.ResolvablePropertiesDialog_colName);
+        nameCol.setLabelProvider(ColumnLabelProvider.createTextProvider(
+            element -> ((ResolvableProperty) element).getPropertyName()));
+        tableColumnLayout.setColumnData(nameCol.getColumn(), new ColumnWeightData(1));
+
+        final TableViewerColumn valueCol = new TableViewerColumn(mTableViewer, SWT.NONE);
+        valueCol.getColumn().setText(Messages.ResolvablePropertiesDialog_colValue);
+        valueCol.setLabelProvider(ColumnLabelProvider.createTextProvider(
+            element -> ((ResolvableProperty) element).getValue()));
+        tableColumnLayout.setColumnData(valueCol.getColumn(), new ColumnWeightData(1));
+
+        TableViewerEnhancer.enhance(mTableViewer, tableSettings, tableColumnLayout);
 
         Composite buttonBar = new Composite(this, SWT.NULL);
         GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttonBar);
@@ -102,27 +121,6 @@ public final class ResolvablePropertiesDialogView extends Composite {
 
     public void refresh() {
         mTableViewer.refresh();
-    }
-
-    private static Table createTable(Composite parent) {
-        Table table = new Table(parent, SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-        GridDataFactory.create(GridData.FILL_BOTH).applyTo(table);
-
-        table.setHeaderVisible(true);
-        table.setLinesVisible(true);
-
-        TableLayout tableLayout = new TableLayout();
-        table.setLayout(tableLayout);
-
-        TableColumn column1 = new TableColumn(table, SWT.NULL);
-        column1.setText(Messages.ResolvablePropertiesDialog_colName);
-        tableLayout.addColumnData(new ColumnWeightData(50));
-
-        TableColumn column2 = new TableColumn(table, SWT.NULL);
-        column2.setText(Messages.ResolvablePropertiesDialog_colValue);
-        tableLayout.addColumnData(new ColumnWeightData(50));
-
-        return table;
     }
 
     private static Button createButton(Composite parent, String text) {

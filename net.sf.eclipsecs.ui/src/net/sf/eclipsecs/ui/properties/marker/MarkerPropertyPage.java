@@ -23,11 +23,11 @@ package net.sf.eclipsecs.ui.properties.marker;
 import org.apache.commons.lang3.StringUtils;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.core.runtime.CoreException;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.graphics.Image;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
@@ -49,6 +49,11 @@ import net.sf.eclipsecs.ui.util.HtmlUtil;
  */
 public class MarkerPropertyPage extends PropertyPage {
 
+    /** Number of columns. */
+    private static final int NUM_COLUMNS = 3;
+    /** Message and description width in pixels. */
+    private static final int WIDTH = 300;
+
     private IMarker getIssue() {
         return (IMarker) getElement();
     }
@@ -58,13 +63,7 @@ public class MarkerPropertyPage extends PropertyPage {
         noDefaultAndApplyButton();
 
         final Composite composite = new Composite(parent, SWT.NULL);
-
-        composite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        final GridLayout layout = new GridLayout();
-        layout.numColumns = 3;
-        layout.marginHeight = 0;
-        layout.marginWidth = 0;
-        composite.setLayout(layout);
+        GridLayoutFactory.fillDefaults().numColumns(NUM_COLUMNS).applyTo(composite);
 
         try {
             createSeverityText(composite);
@@ -86,6 +85,7 @@ public class MarkerPropertyPage extends PropertyPage {
         String message = (String) getIssue().getAttribute(IMarker.MESSAGE);
         Text labelMessage = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
         labelMessage.setText(message);
+        GridDataFactory.fillDefaults().hint(WIDTH, SWT.DEFAULT).applyTo(labelMessage);
     }
 
     private RuleIdentity createGroupText(final Composite composite) throws CoreException {
@@ -123,17 +123,12 @@ public class MarkerPropertyPage extends PropertyPage {
     private void createDescriptionText(final Composite composite, RuleIdentity ruleIdentity) {
         Label descriptionLabel = new Label(composite, SWT.NONE);
         descriptionLabel.setText(Messages.MarkerPropertyPage_Description);
-        GridData gridData = new GridData();
-        gridData.horizontalSpan = 3;
-        gridData.verticalIndent = 20;
-        descriptionLabel.setLayoutData(gridData);
+        GridDataFactory.fillDefaults().span(NUM_COLUMNS, 1).applyTo(descriptionLabel);
 
-        gridData = new GridData(GridData.FILL_BOTH);
-        gridData.heightHint = 100;
-        gridData.horizontalSpan = 3;
         Browser browserDescription = new Browser(composite, SWT.BORDER);
-        browserDescription.setLayoutData(gridData);
         browserDescription.setText(HtmlUtil.getDescriptionHtml(ruleIdentity.description()));
+        GridDataFactory.fillDefaults().span(NUM_COLUMNS, 1).hint(WIDTH, SWT.DEFAULT)
+            .grab(true, true).applyTo(browserDescription);
     }
 
     /**

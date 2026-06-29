@@ -125,7 +125,9 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
         mDescription =
             new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-        GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).hint(300, 100).grab(true, true)
+        GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
+            .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
+            .grab(true, true)
             .applyTo(mDescription);
 
         Group advancedGroup = new Group(contents, SWT.NULL);

@@ -20,13 +20,10 @@
 
 package net.sf.eclipsecs.ui.config;
 
-import java.util.function.Consumer;
-
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 
@@ -55,62 +52,41 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
 
         this.useDefaultButton = useDefaultButton;
 
-        setLayout(new FormLayout());
+        GridLayoutFactory.fillDefaults().applyTo(this);
 
-        Button mAddButton =
+        final Button addButton =
             createButton(this, Messages.CheckstylePreferencePage_btnNew, actions.addCheckConfig);
-        mAddButton.setLayoutData(formData(formData -> {
-            formData.top = new FormAttachment(0);
-        }));
+        GridDataFactory.fillDefaults().applyTo(addButton);
 
         mEditButton = createButton(this, Messages.CheckstylePreferencePage_btnProperties,
             actions.editCheckConfig);
-        mEditButton.setLayoutData(formData(formData -> {
-            formData.top = new FormAttachment(mAddButton, 3, SWT.BOTTOM);
-        }));
+        GridDataFactory.fillDefaults().applyTo(mEditButton);
 
         mConfigureButton = createButton(this, Messages.CheckstylePreferencePage_btnConfigure,
             actions.configureCheckConfig);
-        mConfigureButton.setLayoutData(formData(formData -> {
-            formData.top = new FormAttachment(mEditButton, 3, SWT.BOTTOM);
-        }));
+        GridDataFactory.fillDefaults().applyTo(mConfigureButton);
 
         mCopyButton =
             createButton(this, Messages.CheckstylePreferencePage_btnCopy, actions.copyCheckConfig);
-        mCopyButton.setLayoutData(formData(formData -> {
-            formData.top = new FormAttachment(mConfigureButton, 3, SWT.BOTTOM);
-        }));
+        GridDataFactory.fillDefaults().applyTo(mCopyButton);
 
         mRemoveButton = createButton(this, Messages.CheckstylePreferencePage_btnRemove,
             actions.removeCheckConfig);
-        mRemoveButton.setLayoutData(formData(formData -> {
-            formData.top = new FormAttachment(mCopyButton, 3, SWT.BOTTOM);
-        }));
+        GridDataFactory.fillDefaults().applyTo(mRemoveButton);
 
         if (useDefaultButton) {
             mDefaultButton = createButton(this, Messages.CheckstylePreferencePage_btnDefault,
                 actions.setDefaultCheckConfig());
             mDefaultButton.setToolTipText(Messages.CheckstylePreferencePage_txtDefault);
-            mDefaultButton.setLayoutData(formData(formData -> {
-                formData.top = new FormAttachment(mRemoveButton, 3, SWT.BOTTOM);
-            }));
+            GridDataFactory.fillDefaults().applyTo(mDefaultButton);
         } else {
             mDefaultButton = null;
         }
 
         mExportButton = createButton(this, Messages.CheckstylePreferencePage_btnExport,
             actions.exportCheckstyleCheckConfig);
-        mExportButton.setLayoutData(formData(formData -> {
-            formData.bottom = new FormAttachment(100);
-        }));
-    }
-
-    private static FormData formData(Consumer<FormData> custom) {
-        FormData formData = new FormData();
-        formData.left = new FormAttachment(0);
-        formData.right = new FormAttachment(100);
-        custom.accept(formData);
-        return formData;
+        GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.END)
+            .applyTo(mExportButton);
     }
 
     private Button createButton(Composite parent, String text, Runnable action) {

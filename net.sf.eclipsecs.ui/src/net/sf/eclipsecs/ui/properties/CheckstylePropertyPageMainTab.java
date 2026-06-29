@@ -20,18 +20,16 @@
 
 package net.sf.eclipsecs.ui.properties;
 
-import java.util.function.Consumer;
-
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
+import org.eclipse.jface.layout.GridDataFactory;
+import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.FormAttachment;
-import org.eclipse.swt.layout.FormData;
-import org.eclipse.swt.layout.FormLayout;
+import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -59,29 +57,20 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         super(parent, style);
         this.propertyPageContext = propertyPageContext;
 
-        setLayout(new FormLayout());
+        GridLayoutFactory.fillDefaults().numColumns(2).applyTo(this);
+
+        // create the checkbox to enable/disable checkstyle
+        this.mChkEnable = new Button(this, SWT.CHECK);
+        this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
+        this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(mChkEnable);
 
         // create the checkbox to enable/disable the simple configuration
         this.mChkSimpleConfig = new Button(this, SWT.CHECK);
         this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
         this.mChkSimpleConfig.addSelectionListener(new ChkSimpleConfigController());
         this.mChkSimpleConfig.setSelection(propertyPageContext.configuration().isUseSimpleConfig());
-
-        this.mChkSimpleConfig.setLayoutData(formData(formData -> {
-            formData.top = new FormAttachment(0, 3);
-            formData.right = new FormAttachment(100, -3);
-        }));
-
-        // create the checkbox to enable/disable checkstyle
-        this.mChkEnable = new Button(this, SWT.CHECK);
-        this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
-        this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
-
-        this.mChkEnable.setLayoutData(formData(formData -> {
-            formData.left = new FormAttachment(0, 3);
-            formData.top = new FormAttachment(0, 3);
-            formData.right = new FormAttachment(this.mChkSimpleConfig, 3, SWT.LEFT);
-        }));
+        GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(mChkSimpleConfig);
 
         // create the checkbox for formatter syncing
         Button mChkSyncFormatter = new Button(this, SWT.CHECK);
@@ -90,39 +79,18 @@ public final class CheckstylePropertyPageMainTab extends Composite {
             propertyPageContext.configuration().setSyncFormatter(mChkSyncFormatter.getSelection());
         }));
         mChkSyncFormatter.setSelection(propertyPageContext.configuration().isSyncFormatter());
-
-        mChkSyncFormatter.setLayoutData(formData(formData -> {
-            formData.left = new FormAttachment(0, 3);
-            formData.top = new FormAttachment(this.mChkEnable, 3, SWT.BOTTOM);
-        }));
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(mChkSyncFormatter);
 
         // create the configuration area
         mFileSetsContainer = new Composite(this, SWT.NULL);
-        final Control configArea = createFileSetsArea(mFileSetsContainer);
-        configArea.setLayoutData(formData(formData -> {
-            formData.left = new FormAttachment(0, 3);
-            formData.top = new FormAttachment(mChkSyncFormatter, 6, SWT.BOTTOM);
-            formData.right = new FormAttachment(100, -3);
-            formData.bottom = new FormAttachment(45);
-        }));
+        GridDataFactory.fillDefaults().grab(true, true).span(2, 1).applyTo(mFileSetsContainer);
+        createFileSetsArea(mFileSetsContainer);
 
         // create the filter area
         final Control filterArea = new FilterSettings(this, SWT.NONE,
             propertyPageContext.configuration().getProject(),
             propertyPageContext.configuration().getFilters(), propertyPageContext.updateButtons());
-        filterArea.setLayoutData(formData(formData -> {
-            formData.left = new FormAttachment(0, 3);
-            formData.top = new FormAttachment(configArea, 3, SWT.BOTTOM);
-            formData.right = new FormAttachment(100, -3);
-            formData.bottom = new FormAttachment(100, -3);
-            formData.width = 500;
-        }));
-    }
-
-    private static FormData formData(Consumer<FormData> custom) {
-        FormData formData = new FormData();
-        custom.accept(formData);
-        return formData;
+        GridDataFactory.fillDefaults().grab(true, true).span(2, 1).applyTo(filterArea);
     }
 
     public boolean isCheckstyleEnabled() {
@@ -150,15 +118,9 @@ public final class CheckstylePropertyPageMainTab extends Composite {
             propertyPageContext.configuration().isUseSimpleConfig());
         mFileSetsEditor.setFileSets(propertyPageContext.configuration().getFileSets());
 
-        final Control editor = mFileSetsEditor.createContents(mFileSetsContainer);
+        mFileSetsEditor.createContents(mFileSetsContainer);
 
-        fileSetsContainer.setLayout(new FormLayout());
-        FormData formData = new FormData();
-        formData.left = new FormAttachment(0);
-        formData.top = new FormAttachment(0);
-        formData.right = new FormAttachment(100);
-        formData.bottom = new FormAttachment(100);
-        editor.setLayoutData(formData);
+        fileSetsContainer.setLayout(new FillLayout());
 
         return fileSetsContainer;
     }

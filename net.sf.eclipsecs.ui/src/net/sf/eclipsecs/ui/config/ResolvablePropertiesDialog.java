@@ -25,18 +25,16 @@ import java.util.Iterator;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
@@ -52,8 +50,6 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.SWTUtil;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check configuration. Also
@@ -61,6 +57,9 @@ import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
  *
  */
 public class ResolvablePropertiesDialog extends TitleAreaDialog {
+
+    /** Initial dialog size. */
+    private static final Point INITIAL_SIZE = new Point(650, 500);
 
     //
     // attributes
@@ -132,7 +131,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         Composite composite = (Composite) super.createDialogArea(parent);
 
         this.dialogView = new ResolvablePropertiesDialogView(composite, SWT.NULL,
-            this::openPropertyItemEditor, this::removePropertyItems);
+            getTableSettings(), this::openPropertyItemEditor, this::removePropertyItems);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
 
         return composite;
@@ -141,12 +140,13 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     @Override
     protected Control createButtonBar(Composite parent) {
         Composite composite = new Composite(parent, SWT.NONE);
-        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
+        GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
         Button mBtnFind = new Button(composite, SWT.PUSH);
         mBtnFind.setText(Messages.ResolvablePropertiesDialog_btnFind);
-        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER).indent(5, 0)
+        GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER)
+            .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
             .applyTo(mBtnFind);
         mBtnFind.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> findPropertyItems()));
@@ -159,15 +159,15 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     }
 
     @Override
+    protected Point getInitialSize() {
+        return INITIAL_SIZE;
+    }
+
+    @Override
     protected void configureShell(Shell newShell) {
 
         super.configureShell(newShell);
         newShell.setText(Messages.ResolvablePropertiesDialog_titleDialog);
-    }
-
-    @Override
-    protected Point getInitialSize() {
-        return new Point(650, 500);
     }
 
     @Override
@@ -289,58 +289,18 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         }
     }
 
-    /**
-     * Label provider for the check configuration table. Implements also support for table sorting
-     * and storing of the table settings.
-     *
-     */
-    public static final class PropertiesLabelProvider extends LabelProvider
-        implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+    private static IDialogSettings getTableSettings() {
+        final String concreteViewId = ResolvablePropertiesDialog.class.getName();
 
-        /** Singleton instance. */
-        public static final PropertiesLabelProvider INSTANCE = new PropertiesLabelProvider();
+        final IDialogSettings workbenchSettings =
+            CheckstyleUIPlugin.getDefault().getDialogSettings();
+        IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
-        private PropertiesLabelProvider() {
-
+        if (settings == null) {
+            settings = workbenchSettings.addNewSection(concreteViewId);
         }
 
-        @Override
-        public String getColumnText(Object element, int columnIndex) {
-            String result = element.toString();
-            if (element instanceof ResolvableProperty) {
-                ResolvableProperty prop = (ResolvableProperty) element;
-                if (columnIndex == 0) {
-                    result = prop.getPropertyName();
-                }
-                if (columnIndex == 1) {
-                    result = prop.getValue();
-                }
-            }
-            return result;
-        }
-
-        @Override
-        public Image getColumnImage(Object element, int columnIndex) {
-            return columnIndex == 0 ? getImage(element) : null;
-        }
-
-        @Override
-        public Comparable<String> getComparableValue(Object element, int col) {
-            return getColumnText(element, col);
-        }
-
-        @Override
-        public IDialogSettings getTableSettings() {
-            String concreteViewId = ResolvablePropertiesDialog.class.getName();
-
-            IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
-            IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
-
-            if (settings == null) {
-                settings = workbenchSettings.addNewSection(concreteViewId);
-            }
-
-            return settings;
-        }
+        return settings;
     }
+
 }

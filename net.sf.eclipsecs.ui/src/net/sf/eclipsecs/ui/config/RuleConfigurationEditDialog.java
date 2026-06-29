@@ -56,6 +56,9 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
  */
 public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
+    /** Number of columns of the button bar. */
+    private static final int BUTTON_BAR_NUM_COLUMNS = 3;
+
     /** The rule being edited. */
     private final Module mRule;
     /** The dialog title. */
@@ -118,14 +121,16 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     @Override
     protected Control createButtonBar(Composite parent) {
-
         Composite composite = new Composite(parent, SWT.NONE);
-        GridLayoutFactory.swtDefaults().numColumns(3).margins(0, 0).applyTo(composite);
+        GridLayoutFactory.swtDefaults().numColumns(BUTTON_BAR_NUM_COLUMNS).margins(0, 0)
+            .applyTo(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
         Button mBtnTranslate = new Button(composite, SWT.CHECK);
         mBtnTranslate.setText(Messages.RuleConfigurationEditDialog_btnTranslateTokens);
-        GridDataFactory.swtDefaults().indent(5, 0).applyTo(mBtnTranslate);
+        GridDataFactory.swtDefaults()
+            .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
+            .applyTo(mBtnTranslate);
 
         // Init the translate tokens preference
         mBtnTranslate.setSelection(
@@ -143,7 +148,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         Button mBtnSort = new Button(composite, SWT.CHECK);
         mBtnSort.setText(Messages.RuleConfigurationEditDialog_btnSortTokens);
-        GridDataFactory.swtDefaults().indent(5, 0).applyTo(mBtnSort);
+        GridDataFactory.swtDefaults()
+            .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
+            .applyTo(mBtnSort);
 
         // Init the sort tokens preference
         mBtnSort.setSelection(

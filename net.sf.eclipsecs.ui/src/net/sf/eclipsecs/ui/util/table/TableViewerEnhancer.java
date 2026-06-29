@@ -21,10 +21,12 @@
 package net.sf.eclipsecs.ui.util.table;
 
 import java.text.Collator;
+import java.util.Comparator;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.jface.layout.TableColumnLayout;
+import org.eclipse.jface.viewers.ColumnLabelProvider;
 import org.eclipse.jface.viewers.ColumnPixelData;
-import org.eclipse.jface.viewers.TableLayout;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.jface.viewers.ViewerComparator;
@@ -40,6 +42,9 @@ public final class TableViewerEnhancer {
 
     /** Key for the column index in the TableColumn data. */
     private static final String WIDGET_DATA_COLUMN_INDEX = "index"; //$NON-NLS-1$
+
+    /** Key for a per-column Comparator stored in TableColumn data. */
+    private static final String WIDGET_DATA_COLUMN_COMPARATOR = "colComparator";
 
     /** Key for the column index in the persistence store. */
     private static final String TAG_COLUMN_INDEX = "sortColumn"; //$NON-NLS-1$
@@ -63,9 +68,23 @@ public final class TableViewerEnhancer {
 
     }
 
-    public static <T extends ITableSettingsProvider & ITableComparableProvider> void
-        enhance(TableViewer tableViewer, T config) {
-        IDialogSettings tableSettings = config.getTableSettings();
+    /**
+     * Sets a per-column comparator on a table column. When the column is used for sorting,
+     * {@link TableViewerTextLabelComparator} will use this comparator instead of comparing
+     * the column label provider's text.
+     *
+     * @param column
+     *            the table column
+     * @param comparator
+     *            the comparator to use for this column
+     */
+    public static void setColumnComparator(TableColumn column,
+        Comparator<?> comparator) {
+        column.setData(WIDGET_DATA_COLUMN_COMPARATOR, comparator);
+    }
+
+    public static void enhance(TableViewer tableViewer, IDialogSettings tableSettings,
+        TableColumnLayout tableColumnLayout) {
         Table table = tableViewer.getTable();
         TableColumn[] columns = table.getColumns();
         int defaultSortColumnIndex = 0;
@@ -97,16 +116,14 @@ public final class TableViewerEnhancer {
             table.setSortColumn(table.getColumn(sortColumnIndex));
         }
 
-        tableViewer.setComparator(new TableSorter(config));
+        tableViewer.setComparator(new TableViewerTextLabelComparator());
 
         // restore the column widths
         try {
-            TableLayout layout = new TableLayout();
             for (int i = 0, size = columns.length; i < size; i++) {
                 int width = tableSettings.getInt(TAG_COLUMN_WIDTH + i);
-                layout.addColumnData(new ColumnPixelData(width));
+                tableColumnLayout.setColumnData(columns[i], new ColumnPixelData(width));
             }
-            table.setLayout(layout);
         } catch (NumberFormatException ex) {
             // fall back to the default layout
         }
@@ -162,42 +179,29 @@ public final class TableViewerEnhancer {
         table.setSortDirection(sortDirection == DIRECTION_FORWARD ? SWT.UP : SWT.DOWN);
     }
 
-    private static final class TableSorter extends ViewerComparator {
+    private static final class TableViewerTextLabelComparator extends ViewerComparator {
 
-        /** Collator to support natural sorting of strings. */
-        private static final Collator COLLATOR =
-            Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
-
-        /** The comparable provider for table sorting. */
-        private final ITableComparableProvider comparableProvider;
-
-        private TableSorter(ITableComparableProvider comparableProvider) {
-            this.comparableProvider = comparableProvider;
-        }
-
-        @SuppressWarnings({
-            "rawtypes", "unchecked"
-        })
         @Override
-        public int compare(Viewer viewer, Object left, Object right) {
+        public int compare(Viewer viewer, Object e1, Object e2) {
             Table table = ((TableViewer) viewer).getTable();
-            int sortedColumnIndex = (int) table.getSortColumn().getData(WIDGET_DATA_COLUMN_INDEX);
-            Comparable compLeft = comparableProvider.getComparableValue(left, sortedColumnIndex);
-            Comparable compRight = comparableProvider.getComparableValue(right, sortedColumnIndex);
+            final int colIndex = (int) table.getSortColumn().getData(WIDGET_DATA_COLUMN_INDEX);
 
-            int compareResult = 0;
+            @SuppressWarnings("unchecked")
+            final Comparator<Object> columnComparator = (Comparator<Object>)
+                table.getSortColumn().getData(WIDGET_DATA_COLUMN_COMPARATOR);
+            int result = columnComparator != null
+                ? columnComparator.compare(e1, e2)
+                : Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale()).compare(
+                    ((ColumnLabelProvider) ((TableViewer) viewer)
+                        .getLabelProvider(colIndex)).getText(e1),
+                    ((ColumnLabelProvider) ((TableViewer) viewer)
+                        .getLabelProvider(colIndex)).getText(e2));
 
-            // support for string collation
-            if (compLeft instanceof String && compRight instanceof String) {
-                compareResult = COLLATOR.compare(compLeft, compRight);
-            } else {
-                compareResult = compLeft.compareTo(compRight);
+            if (table.getSortDirection() == SWT.DOWN) {
+                result = -result;
             }
-
-            // take sort direction into account
-            return compareResult * getSortDirection(table);
+            return result;
         }
-
     }
 
 }

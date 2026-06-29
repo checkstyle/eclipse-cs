@@ -24,7 +24,6 @@ import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
@@ -33,6 +32,9 @@ import org.eclipse.swt.widgets.Label;
 import net.sf.eclipsecs.ui.stats.Messages;
 
 public final class CheckstyleMarkerFilterDialogView extends Composite {
+
+    /** Number of columns for the regex group. */
+    private static final int REGEX_GROUP_NUM_COLUMNS = 3;
 
     /** The filter enabled checkbox. */
     private final Button mChkFilterEnabled;
@@ -60,18 +62,18 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
 
         resourceFilterGroup = new CheckstyleMarkerFilterResourceFilterGroup(this, SWT.NONE,
             this::updateControlState, selectWorkingSet);
-        GridDataFactory.fillDefaults().applyTo(resourceFilterGroup);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(resourceFilterGroup);
 
         mGrpRegex = new Group(this, SWT.NULL);
         mGrpRegex.setText(Messages.CheckstyleMarkerFilterDialog_lblExcludeMarkers);
-        GridLayoutFactory.swtDefaults().numColumns(3).applyTo(mGrpRegex);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mGrpRegex);
+        GridLayoutFactory.swtDefaults().numColumns(REGEX_GROUP_NUM_COLUMNS).applyTo(mGrpRegex);
+        GridDataFactory.fillDefaults().applyTo(mGrpRegex);
 
         mChkSelectByRegex = createButton(mGrpRegex, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_lblRegex, GridDataFactory.swtDefaults());
 
-        mLblRegexFilter = new Label(mGrpRegex, SWT.NULL);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).hint(100, SWT.DEFAULT)
+        mLblRegexFilter = new Label(mGrpRegex, SWT.NONE);
+        GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false)
             .applyTo(mLblRegexFilter);
 
         mBtnEditRegex = createButton(mGrpRegex, SWT.PUSH,

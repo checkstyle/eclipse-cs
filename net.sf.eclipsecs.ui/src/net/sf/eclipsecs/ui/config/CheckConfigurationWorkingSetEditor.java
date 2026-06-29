@@ -21,16 +21,15 @@
 package net.sf.eclipsecs.ui.config;
 
 import java.io.File;
+import java.util.function.Predicate;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.layout.GridDataFactory;
 import org.eclipse.jface.layout.GridLayoutFactory;
-import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.window.Window;
 import org.eclipse.osgi.util.NLS;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 
@@ -40,11 +39,8 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditorButtonBar.ButtonBarActions;
-import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
  * This class provides the editor GUI for a check configuration working set.
@@ -85,12 +81,14 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
 
         boolean global = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
 
-        editorView = new CheckConfigurationWorkingSetEditorView(this, SWT.NONE,
-            mWorkingSet.getWorkingCopies(), global,
+        final CheckConfigurationWorkingSetEditorModel model =
+            new CheckConfigurationWorkingSetEditorModel(mWorkingSet.getWorkingCopies(), global,
+                this::isDefaultConfig, getTableSettings());
+
+        editorView = new CheckConfigurationWorkingSetEditorView(this, SWT.NONE, model,
             new ButtonBarActions(this::addCheckConfig, this::editCheckConfig,
                 this::configureCheckConfig, this::copyCheckConfig, this::removeCheckConfig,
-                this::setDefaultCheckConfig, this::exportCheckstyleCheckConfig),
-            this::isDefaultConfig, new ConfigurationLabelProvider(workingSet));
+                this::setDefaultCheckConfig, this::exportCheckstyleCheckConfig));
         GridDataFactory.fillDefaults().grab(true, true).applyTo(editorView);
     }
 
@@ -254,74 +252,24 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         }
     }
 
-    /**
-     * Label provider for the check configuration table. Implements also support for table sorting
-     * and storing of the table settings.
-     *
-     */
-    public static final class ConfigurationLabelProvider extends CheckConfigurationLabelProvider
-        implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
+    private IDialogSettings getTableSettings() {
+        final String concreteViewId = mWorkingSet.getClass().getName();
 
-        /** The working set. */
-        private final ICheckConfigurationWorkingSet mWorkingSet;
+        final IDialogSettings workbenchSettings =
+            CheckstyleUIPlugin.getDefault().getDialogSettings();
+        IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
-        private ConfigurationLabelProvider(ICheckConfigurationWorkingSet mWorkingSet) {
-            this.mWorkingSet = mWorkingSet;
+        if (settings == null) {
+            settings = workbenchSettings.addNewSection(concreteViewId);
         }
 
-        @Override
-        public String getColumnText(Object element, int columnIndex) {
-            String result = element.toString();
-            if (element instanceof ICheckConfiguration cfg) {
-                if (columnIndex == 0) {
-                    result = cfg.getName();
-                }
-                if (columnIndex == 1) {
-                    result = cfg.getLocation();
-                }
-                if (columnIndex == 2) {
-                    result = cfg.getType().getName();
-                }
-                if (columnIndex == 3) {
-                    result = "";
-                }
-            }
-            return result;
-        }
+        return settings;
+    }
 
-        @Override
-        public Image getColumnImage(Object element, int columnIndex) {
-            return switch (columnIndex) {
-                case 0 -> getImage(element);
-                case 3 -> {
-                    ICheckConfiguration cfg = (ICheckConfiguration) element;
-                    if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet
-                        && globalWorkingSet.getDefaultCheckConfig() == cfg) {
-                        yield CheckstyleUIPluginImages.TICK_ICON.getImage();
-                    }
-                    yield null;
-                }
-                default -> null;
-            };
-        }
-
-        @Override
-        public Comparable<String> getComparableValue(Object element, int col) {
-            return getColumnText(element, col);
-        }
-
-        @Override
-        public IDialogSettings getTableSettings() {
-            String concreteViewId = mWorkingSet.getClass().getName();
-
-            IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
-            IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
-
-            if (settings == null) {
-                settings = workbenchSettings.addNewSection(concreteViewId);
-            }
-
-            return settings;
-        }
+    public record CheckConfigurationWorkingSetEditorModel(
+        CheckConfigurationWorkingCopy[] configs,
+        boolean global,
+        Predicate<CheckConfigurationWorkingCopy> isDefaultConfig,
+        IDialogSettings tableSettings) {
     }
 }

@@ -24,9 +24,6 @@
     <extension
         point="net.sf.eclipsecs.ui.filtereditors">
         <filtereditor
-            class="net.sf.eclipsecs.ui.properties.filter.FileTypesFilterEditor"
-            filter="FileTypesFilter"/>
-        <filtereditor
             class="net.sf.eclipsecs.ui.properties.filter.PackageFilterEditor"
             filter="FilesFromPackage"/>
     </extension>

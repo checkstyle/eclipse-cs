@@ -53,8 +53,7 @@ public final class XMLUtil {
      *             Exception while serializing the document
      */
     public static byte[] toByteArray(Document document) throws IOException {
-
-        ByteArrayOutputStream byteOut = new ByteArrayOutputStream(512);
+        final ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 
         // Pretty print the document to System.out
         OutputFormat format = OutputFormat.createPrettyPrint();

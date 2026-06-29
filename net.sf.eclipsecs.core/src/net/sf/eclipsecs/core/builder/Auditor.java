@@ -353,7 +353,7 @@ public final class Auditor {
 
                         // enables own category under Java Problem Type
                         // setting for Problems view (RFE 1530366)
-                        mMarkerAttributes.put("categoryId", Integer.valueOf(999)); //$NON-NLS-1$
+                        mMarkerAttributes.put("categoryId", CheckstyleMarker.CATEGORY_ID);
 
                         // create a marker for the actual resource
                         IMarker marker = mResource.createMarker(CheckstyleMarker.MARKER_ID);
