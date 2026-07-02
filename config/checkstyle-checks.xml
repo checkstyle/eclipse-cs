@@ -369,6 +369,7 @@
         <module name="InterfaceIsType"/>
         <module name="MutableException"/>
         <module name="OneTopLevelClass"/>
+        <module name="SealedShouldHavePermitsList"/>
         <module name="ThrowsCount">
             <property name="max" value="2"/>
         </module>
@@ -381,10 +382,12 @@
         <module name="ArrayTrailingComma"/>
         <module name="AvoidDoubleBraceInitialization"/>
         <module name="AvoidNoArgumentSuperConstructorCall"/>
+        <module name="ConstructorsDeclarationGrouping"/>
         <module name="CovariantEquals"/>
         <module name="DeclarationOrder"/>
         <module name="DefaultComesLast"/>
         <module name="EmptyStatement"/>
+        <module name="EqualsAvoidNull"/>
         <module name="EqualsHashCode"/>
         <module name="ExplicitInitialization"/>
         <module name="FallThrough"/>
@@ -407,6 +410,12 @@
             <property name="tokens" value="LITERAL_NATIVE"/>
             <property name="tokens" value="LITERAL_VOLATILE"/>
             <property name="tokens" value="LITERAL_ASSERT"/>
+        </module>
+        <module name="IllegalSymbol">
+            <property name="symbolCodes"
+                value="0x2190-0x27BF, 0x1F600-0x1F64F, 0x1F680-0x1F6FF, 0x1F700-0x10FFFF"/>
+            <property name="tokens"
+                value="COMMENT_CONTENT,TEXT_BLOCK_CONTENT,IDENT,STRING_LITERAL,CHAR_LITERAL"/>
         </module>
         <module name="IllegalTokenText">
             <property name="tokens" value="STRING_LITERAL"/>
@@ -663,8 +672,18 @@
         </module>
         <module name="RedundantImport"/>
         <module name="UnusedImports"/>
+        <module name="CustomImportOrder">
+            <property name="customImportOrderRules"
+                value="STATIC###STANDARD_JAVA_PACKAGE###SPECIAL_IMPORTS###THIRD_PARTY_PACKAGE"/>
+            <property name="standardPackageRegExp" value="^java\."/>
+            <property name="specialImportsRegExp" value="^javax\."/>
+            <property name="thirdPartyPackageRegExp" value="^org\."/>
+            <property name="sortImportsInGroupAlphabetically" value="true"/>
+            <property name="separateLineBetweenGroups" value="true"/>
+        </module>
 
         <!-- Javadoc Comments -->
+        <module name="AtclauseOrder"/>
         <module name="JavadocBlockTagLocation">
             <!-- default tags -->
             <property name="tags" value="author, deprecated, exception, hidden, param, provides"/>
@@ -679,6 +698,7 @@
         </module>
         <module name="JavadocMissingLeadingAsterisk"/>
         <module name="JavadocMissingWhitespaceAfterAsterisk"/>
+        <module name="JavadocLeadingAsteriskAlign"/>
         <module name="JavadocStyle">
             <property name="scope" value="public"/>
         </module>
@@ -689,6 +709,8 @@
         </module>
         <module name="JavadocVariable"/>
         <module name="SingleLineJavadoc"/>
+        <module name="WriteTag"/>
+        <module name="RequireEmptyLineBeforeBlockTagGroup"/>
 
         <!-- Metrics -->
         <module name="BooleanExpressionComplexity">
@@ -787,6 +809,9 @@
         <module name="RecordTypeParameterName"/>
         <module name="RecordComponentName"/>
         <module name="ConstantName"/>
+        <module name="GoogleNonConstantFieldName">
+            <property name="severity" value="ignore"/>
+        </module>
         <module name="InterfaceTypeParameterName"/>
         <module name="LocalFinalVariableName"/>
         <module name="MemberName">
