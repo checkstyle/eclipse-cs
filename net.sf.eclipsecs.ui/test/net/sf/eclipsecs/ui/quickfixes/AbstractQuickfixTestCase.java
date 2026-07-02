@@ -112,7 +112,8 @@ public abstract class AbstractQuickfixTestCase {
             final int position;
             if (StringUtils.isNotBlank(input.getAttribute("position"))) {
                 position = Integer.parseInt(input.getAttribute("position"));
-            } else {
+            }
+            else {
                 position = 0;
             }
 

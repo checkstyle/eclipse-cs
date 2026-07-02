@@ -64,7 +64,8 @@ public class CheckstylePluginException extends Exception {
             throws CheckstylePluginException {
         if (throwable instanceof CheckstylePluginException) {
             throw (CheckstylePluginException) throwable;
-        } else {
+        }
+        else {
             throw new CheckstylePluginException(message, throwable);
         }
     }

@@ -134,7 +134,8 @@ public class MarkerStatsView extends AbstractStatsView {
             mMainSection.setStats(getStats());
             if (mIsDrilledDown && detailContentProvider.getMarkerCount() == 0) {
                 drillBack();
-            } else {
+            }
+            else {
                 // update the actions and the label
                 updateActions();
                 updateLabel();
@@ -187,7 +188,8 @@ public class MarkerStatsView extends AbstractStatsView {
                 mMainSection.getSelectedMarker().ifPresent(marker -> {
                     try {
                         IDE.openEditor(getSite().getPage(), marker);
-                    } catch (PartInitException ex) {
+                    }
+                    catch (PartInitException ex) {
                         CheckstyleLog.log(ex, Messages.MarkerStatsView_unableToShowMarker);
                     }
                 });
@@ -237,10 +239,12 @@ public class MarkerStatsView extends AbstractStatsView {
                         Integer.valueOf(stats.getMarkerCountAll()),
                     });
                 mDescLabel.setText(text);
-            } else {
+            }
+            else {
                 mDescLabel.setText("");
             }
-        } else {
+        }
+        else {
 
             final String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
                 detailContentProvider.getCurrentDetailCategory(),

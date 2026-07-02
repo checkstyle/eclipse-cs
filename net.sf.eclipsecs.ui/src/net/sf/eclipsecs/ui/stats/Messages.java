@@ -54,8 +54,6 @@ public final class Messages extends NLS {
 
     public static String StatsViewUtils_projectElement;
 
-    public static String MarkerStatsView_unknownProblem;
-
     public static String MarkerStatsView_kindOfErrorColumn;
 
     public static String MarkerStatsView_numberOfErrorsColumn;

@@ -29,6 +29,7 @@ import java.util.Optional;
 import org.eclipse.core.resources.IMarker;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IContributionItem;
+import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.jface.layout.TableColumnLayout;
@@ -129,18 +130,21 @@ public final class MarkerStatsMainView extends Composite {
         IWorkbenchPartSite site) {
         final MenuManager menuMgr = new MenuManager();
         menuMgr.setRemoveAllWhenShown(true);
-        menuMgr.addMenuListener(manager -> {
-            for (Object item : actions) {
-                if (item instanceof IContributionItem) {
-                    manager.add((IContributionItem) item);
-                } else if (item instanceof IAction) {
-                    manager.add((IAction) item);
-                }
-            }
-            manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
-        });
+        menuMgr.addMenuListener(manager -> fillContextMenu(manager, actions));
         viewer.getControl().setMenu(menuMgr.createContextMenu(viewer.getControl()));
         site.registerContextMenu(menuMgr, viewer);
+    }
+
+    private static void fillContextMenu(IMenuManager manager, Collection<Object> actions) {
+        for (Object item : actions) {
+            if (item instanceof IContributionItem contrib) {
+                manager.add(contrib);
+            }
+            else if (item instanceof IAction action) {
+                manager.add(action);
+            }
+        }
+        manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
     }
 
     private static final class MainTableViewer extends AbstractStatTableViewer<MarkerStat> {

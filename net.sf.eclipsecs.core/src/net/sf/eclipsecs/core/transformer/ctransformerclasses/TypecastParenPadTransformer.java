@@ -38,7 +38,8 @@ public class TypecastParenPadTransformer extends AbstractCTransformationClass {
         }
         if ("space".equals(option)) {
             option = "insert";
-        } else {
+        }
+        else {
             option = "do not insert";
         }
         userFormatterSetting("insert_space_before_closing_paren_in_cast", option);

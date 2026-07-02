@@ -119,7 +119,8 @@ public final class FileMatchPatternTable extends Composite {
                     case 1 -> pattern.getMatchPattern();
                     default -> element.toString();
                 };
-            } else {
+            }
+            else {
                 columnText = element.toString();
             }
             return columnText;

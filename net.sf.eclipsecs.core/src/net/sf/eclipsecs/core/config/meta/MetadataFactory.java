@@ -134,7 +134,8 @@ public final class MetadataFactory {
 
             if (moduleInstance instanceof AbstractFileSetCheck) {
                 parent = XMLTags.CHECKER_MODULE;
-            } else {
+            }
+            else {
                 parent = XMLTags.TREEWALKER_MODULE;
             }
         }
@@ -195,11 +196,9 @@ public final class MetadataFactory {
      */
     private static void loadThirdPartyModuleExtensionMetadata() {
         final var rootPackages = sPackageNameSet.stream().map(pack -> {
-            final String root;
+            String root = pack;
             final int secondDot = StringUtils.ordinalIndexOf(pack, ".", 2);
-            if (secondDot < 0) {
-                root = pack;
-            } else {
+            if (secondDot >= 0) {
                 root = pack.substring(0, secondDot);
             }
             return root;
@@ -214,7 +213,8 @@ public final class MetadataFactory {
                             eclipseMetaDataFiles.add(
                                 new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
                         });
-            } catch (IOException ex) {
+            }
+            catch (IOException ex) {
                 CheckstyleLog.log(ex, "Cannot read metadata YML");
             }
         }
@@ -331,7 +331,8 @@ public final class MetadataFactory {
 
                     message = resourceBundle.getString(messageKey);
                     break;
-                } catch (MissingResourceException ex) {
+                }
+                catch (MissingResourceException ex) {
                     // let's continue to check the other alternative names
                 }
             }
@@ -351,7 +352,8 @@ public final class MetadataFactory {
         sPackageNameSet = new HashSet<>();
         try {
             doInitialization();
-        } catch (CheckstylePluginException ex) {
+        }
+        catch (CheckstylePluginException ex) {
             CheckstyleLog.log(ex);
         }
     }
@@ -379,7 +381,8 @@ public final class MetadataFactory {
                         classLoader);
                     parseMetadata(metadataStream, metadataBundle, groupId(metadataFile));
                 }
-            } catch (DocumentException | IOException ex) {
+            }
+            catch (DocumentException | IOException ex) {
                 CheckstyleLog.log(ex, "Could not read metadata " + metadataFile);
             }
         }
@@ -423,7 +426,8 @@ public final class MetadataFactory {
         Set<String> packages = null;
         try {
             packages = PackageNamesLoader.getPackageNames(classLoader);
-        } catch (CheckstyleException ex) {
+        }
+        catch (CheckstyleException ex) {
             CheckstylePluginException.rethrow(ex);
         }
         sPackageNameSet.addAll(packages);
@@ -457,9 +461,10 @@ public final class MetadataFactory {
         final String bundle =
             metadataFile.substring(0, metadataFile.indexOf('.')).replace('/', '.');
         try {
-            resourceBundle = ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(),
-                classLoader);
-        } catch (MissingResourceException ex) {
+            resourceBundle =
+                ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(), classLoader);
+        }
+        catch (MissingResourceException ex) {
             resourceBundle = null;
         }
         return resourceBundle;
@@ -505,7 +510,8 @@ public final class MetadataFactory {
                         stream = connection.getInputStream();
                     }
                 }
-            } else {
+            }
+            else {
                 stream = aLoader.getResourceAsStream(resourceName);
             }
             if (stream != null) {
@@ -515,7 +521,8 @@ public final class MetadataFactory {
                     // Only this line is changed to make it to read properties files as
                     // UTF-8.
                     bundle = new PropertyResourceBundle(streamReader);
-                } finally {
+                }
+                finally {
                     streamReader.close();
                     stream.close();
                 }

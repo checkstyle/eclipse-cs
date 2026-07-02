@@ -163,7 +163,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             mCheckConfig = mWorkingSet.newWorkingCopy(type);
             try {
                 mCheckConfig.setName(oldName);
-            } catch (CheckstylePluginException ex) {
+            }
+            catch (CheckstylePluginException ex) {
                 // NOOP
             }
             mCheckConfig.setDescription(oldDescr);
@@ -186,10 +187,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
         mBtnProperties.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             try {
                 mConfigurationEditor.getEditedWorkingCopy();
-                final ResolvablePropertiesDialog dialog =
-                    new ResolvablePropertiesDialog(getShell(), mCheckConfig);
-                dialog.open();
-            } catch (CheckstylePluginException ex) {
+                new ResolvablePropertiesDialog(getShell(), mCheckConfig).open();
+            }
+            catch (CheckstylePluginException ex) {
                 setErrorMessage(ex.getLocalizedMessage());
             }
         }));
@@ -235,13 +235,16 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                     final ResolvablePropertiesDialog propsDialog =
                         new ResolvablePropertiesDialog(getShell(), mCheckConfig);
                     propsDialog.open();
-                } else if (result == 1) {
+                }
+                else if (result == 1) {
                     super.okPressed();
                 }
-            } else {
+            }
+            else {
                 super.okPressed();
             }
-        } catch (CheckstylePluginException ex) {
+        }
+        catch (CheckstylePluginException ex) {
             CheckstyleLog.log(ex);
             this.setErrorMessage(ex.getLocalizedMessage());
         }
@@ -295,12 +298,14 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                 setUniqueName(mCheckConfig, nameProposal);
                 mCheckConfig.setDescription(mTemplate.getDescription());
                 mCheckConfig.getResolvableProperties().addAll(mTemplate.getResolvableProperties());
-            } else {
+            }
+            else {
                 this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
                 this.setMessage(
                     Messages.CheckConfigurationPropertiesDialog_msgCreateNewCheckConfig);
             }
-        } else {
+        }
+        else {
             this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
             this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgEditCheckConfig);
             dialogView.disable();
@@ -329,7 +334,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             try {
                 config.setName(uniqueName);
                 break;
-            } catch (CheckstylePluginException ex) {
+            }
+            catch (CheckstylePluginException ex) {
                 uniqueName = checkConfigName + " (" + counter + ")";
                 counter++;
             }

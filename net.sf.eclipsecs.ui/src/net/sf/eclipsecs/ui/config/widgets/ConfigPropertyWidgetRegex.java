@@ -144,7 +144,8 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
             // Compile the text to a regex pattern
             //
             Pattern.compile(mTextWidget.getText());
-        } catch (PatternSyntaxException ex) {
+        }
+        catch (PatternSyntaxException ex) {
             CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
         }
     }
@@ -155,12 +156,14 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
             final Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
             if (matcher.find()) {
                 mRegexTestWidget.setBackground(GREEN);
-            } else {
+            }
+            else {
                 mRegexTestWidget.setBackground(RED);
             }
 
             mTextWidget.setBackground(mTextBgColor);
-        } catch (PatternSyntaxException ex) {
+        }
+        catch (PatternSyntaxException ex) {
             mTextWidget.setBackground(RED);
         }
     }

@@ -119,7 +119,8 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         if (selection instanceof RuleGroupMetadata group) {
             description = group.getDescription();
             configuredModules.setCurrentGroup(group);
-        } else if (selection instanceof RuleMetadata rule) {
+        }
+        else if (selection instanceof RuleMetadata rule) {
             description = rule.identity().description();
             configuredModules.setCurrentGroup(rule.identity().group());
         }

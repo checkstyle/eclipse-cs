@@ -108,7 +108,8 @@ public class NonSrcDirsFilter extends AbstractFilter {
                     }
                 }
             }
-        } catch (CoreException ex) {
+        }
+        catch (CoreException ex) {
             CheckstyleLog.log(ex);
         }
 

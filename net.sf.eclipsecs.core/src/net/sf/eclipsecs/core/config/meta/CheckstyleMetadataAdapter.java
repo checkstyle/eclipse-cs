@@ -153,20 +153,25 @@ public class CheckstyleMetadataAdapter {
             if (validationType != null) {
                 if (TYPE_ID_PATTERN.equals(validationType)) {
                     dataType = ConfigPropertyType.REGEX;
-                } else if ("tokenSet".equals(validationType)
+                }
+                else if ("tokenSet".equals(validationType)
                     || "tokenTypesSet".equals(validationType)) {
                     dataType = ConfigPropertyType.MULTI_CHECK;
                 }
-            } else {
+            }
+            else {
                 dataType = propertyTypes.get(propertyType);
             }
-        } else {
+        }
+        else {
             if (propertyType.endsWith("Option")) {
                 dataType = ConfigPropertyType.SINGLE_SELECT;
-            } else {
+            }
+            else {
                 if (propertyType.endsWith("[]")) {
                     dataType = ConfigPropertyType.STRING_ARRAY;
-                } else {
+                }
+                else {
                     dataType = ConfigPropertyType.STRING;
                 }
             }
@@ -179,7 +184,8 @@ public class CheckstyleMetadataAdapter {
         if (dataType == ConfigPropertyType.SINGLE_SELECT) {
             final List<String> resultList = getEnumValues(propertyType);
             resultList.forEach(modifiedConfigPropertyMetadata.getPropertyEnumeration()::add);
-        } else if (dataType == ConfigPropertyType.MULTI_CHECK) {
+        }
+        else if (dataType == ConfigPropertyType.MULTI_CHECK) {
             final String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
             Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(),
                 result.split(","));
@@ -208,7 +214,8 @@ public class CheckstyleMetadataAdapter {
             for (Enum<?> value : values) {
                 resultList.add(value.name().toLowerCase());
             }
-        } catch (ClassNotFoundException exc) {
+        }
+        catch (ClassNotFoundException exc) {
             CheckstyleLog.log(exc, "Class " + className + " not found.");
         }
 

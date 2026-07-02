@@ -84,7 +84,8 @@ public class ExtensionClassLoader extends ClassLoader {
                 if (clazz != null) {
                     break;
                 }
-            } catch (ClassNotFoundException ex) {
+            }
+            catch (ClassNotFoundException ex) {
                 // try next
             }
         }

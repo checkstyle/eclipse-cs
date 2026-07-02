@@ -80,7 +80,8 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
                     statements.remove(node);
                     statements.addAll(index,
                         ASTNode.copySubtrees(node.getAST(), node.statements()));
-                } else if (node.getParent() instanceof SwitchStatement) {
+                }
+                else if (node.getParent() instanceof SwitchStatement) {
                     final List<?> statements = ((SwitchStatement) node.getParent()).statements();
                     final int index = statements.indexOf(node);
                     statements.remove(node);
