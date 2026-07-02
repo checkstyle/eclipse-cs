@@ -78,7 +78,7 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
         GridLayoutFactory.fillDefaults().applyTo(descArea);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(descArea);
 
-        Label lblDescription = new Label(descArea, SWT.NULL);
+        final Label lblDescription = new Label(descArea, SWT.NULL);
         lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
         GridDataFactory.fillDefaults().applyTo(lblDescription);
 
@@ -128,7 +128,7 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
     }
 
     private void handleSelectionChanged(CheckConfigurationWorkingCopy config) {
-        boolean configSelected = config != null;
+        final boolean configSelected = config != null;
         if (configSelected) {
             mConfigurationDescription
                 .setText(config.getDescription() != null ? config.getDescription() : "");

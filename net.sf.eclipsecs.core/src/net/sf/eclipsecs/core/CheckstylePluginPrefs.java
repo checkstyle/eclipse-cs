@@ -73,7 +73,7 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
 
-        IEclipsePreferences prefs = DefaultScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
+        final IEclipsePreferences prefs = DefaultScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
         prefs.putBoolean(PREF_INCLUDE_RULE_NAMES, false);
         prefs.putBoolean(PREF_INCLUDE_MODULE_IDS, false);
         prefs.putBoolean(PREF_LIMIT_MARKERS_PER_RESOURCE, false);
@@ -108,7 +108,7 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
      */
     public static boolean getBoolean(String prefId) {
 
-        IPreferencesService prefs = Platform.getPreferencesService();
+        final IPreferencesService prefs = Platform.getPreferencesService();
         return prefs.getBoolean(CheckstylePlugin.PLUGIN_ID, prefId, false, null);
     }
 
@@ -121,7 +121,7 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
      */
     public static int getInt(String prefId) {
 
-        IPreferencesService prefs = Platform.getPreferencesService();
+        final IPreferencesService prefs = Platform.getPreferencesService();
         return prefs.getInt(CheckstylePlugin.PLUGIN_ID, prefId, 0, null);
     }
 
@@ -156,8 +156,8 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
      *             inability to communicate with it.
      */
     public static void setBoolean(String prefId, boolean value) throws BackingStoreException {
-
-        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
+        final IEclipsePreferences prefs =
+            InstanceScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
         prefs.putBoolean(prefId, value);
         prefs.flush();
     }
@@ -174,8 +174,8 @@ public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {
      *             inability to communicate with it.
      */
     public static void setInt(String prefId, int value) throws BackingStoreException {
-
-        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
+        final IEclipsePreferences prefs =
+            InstanceScope.INSTANCE.getNode(CheckstylePlugin.PLUGIN_ID);
         prefs.putInt(prefId, value);
         prefs.flush();
     }

@@ -51,9 +51,9 @@ public class NonSrcDirsFilter extends AbstractFilter {
         boolean goesThrough = false;
 
         if (element instanceof IResource) {
-            IResource resource = (IResource) element;
+            final IResource resource = (IResource) element;
 
-            IProject project = resource.getProject();
+            final IProject project = resource.getProject();
             if (mCurrentProject != project) {
                 mCurrentSourcePaths = getSourceDirPaths(project);
                 mCurrentProject = project;
@@ -78,12 +78,12 @@ public class NonSrcDirsFilter extends AbstractFilter {
      */
     private List<IPath> getSourceDirPaths(IProject project) {
 
-        List<IPath> sourceDirs = new ArrayList<>();
+        final List<IPath> sourceDirs = new ArrayList<>();
 
         try {
             if (project.hasNature(JavaCore.NATURE_ID)) {
-                IJavaProject javaProject = JavaCore.create(project);
-                IClasspathEntry[] entry = javaProject.getResolvedClasspath(true);
+                final IJavaProject javaProject = JavaCore.create(project);
+                final IClasspathEntry[] entry = javaProject.getResolvedClasspath(true);
                 for (int i = 0; i < entry.length; i++) {
                     if (entry[i].getEntryKind() == IClasspathEntry.CPE_SOURCE) {
                         sourceDirs.add(entry[i].getPath());

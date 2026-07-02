@@ -36,7 +36,7 @@ public class WriteProtectedFilter extends AbstractFilter {
 
         if (element instanceof IResource) {
 
-            ResourceAttributes attrs = ((IResource) element).getResourceAttributes();
+            final ResourceAttributes attrs = ((IResource) element).getResourceAttributes();
             goesThrough = attrs != null && !attrs.isReadOnly();
         }
         return goesThrough;

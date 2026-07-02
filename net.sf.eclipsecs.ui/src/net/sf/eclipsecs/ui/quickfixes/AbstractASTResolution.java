@@ -64,12 +64,12 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
         boolean canFix = false;
         try {
             if (CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
-                String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, "");
+                final String markerModule = marker.getAttribute(CheckstyleMarker.MODULE_NAME, "");
                 if (module.equals(markerModule)) {
                     canFix = true;
                 }
                 else {
-                    var shortName = StringUtils.substringAfterLast(markerModule, '.');
+                    final var shortName = StringUtils.substringAfterLast(markerModule, '.');
                     canFix = module.equals(shortName);
                 }
             }

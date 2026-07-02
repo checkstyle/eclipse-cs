@@ -61,7 +61,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
 
         // Build severity
-        Label lblSeverity = new Label(this, SWT.NULL);
+        final Label lblSeverity = new Label(this, SWT.NULL);
         lblSeverity.setText(Messages.RuleConfigurationEditDialog_lblSeverity);
         GridDataFactory.swtDefaults().applyTo(lblSeverity);
 
@@ -81,7 +81,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
         }
 
         if (rule.getProperties().size() > 0) {
-            Group properties = new Group(this, SWT.NULL);
+            final Group properties = new Group(this, SWT.NULL);
             GridLayoutFactory.swtDefaults().numColumns(NUM_WIDGET_COLUMNS).applyTo(properties);
             properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
             GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).applyTo(properties);
@@ -109,12 +109,12 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
     public Optional<String> validatePropertyWidgets() {
         Optional<String> errorMessage = Optional.empty();
         for (IConfigPropertyWidget widget : mConfigPropertyWidgets) {
-            ConfigProperty property = widget.getConfigProperty();
+            final ConfigProperty property = widget.getConfigProperty();
             try {
                 widget.validate();
             }
             catch (CheckstylePluginException ex) {
-                String message =
+                final String message =
                     NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
                         property.getMetaData().getName());
                 errorMessage = Optional.of(message);

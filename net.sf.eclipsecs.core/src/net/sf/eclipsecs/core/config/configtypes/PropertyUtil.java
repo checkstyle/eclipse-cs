@@ -52,7 +52,7 @@ public final class PropertyUtil {
      */
     public static boolean hasUnresolvedProperties(String value) throws CheckstyleException {
         if (value != null) {
-            List<String> props = new ArrayList<>();
+            final List<String> props = new ArrayList<>();
             parsePropertyString(value, new ArrayList<>(), props);
             return !props.isEmpty();
         } else {

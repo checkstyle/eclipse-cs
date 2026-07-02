@@ -57,14 +57,14 @@ public class ExtensionClassLoader extends ClassLoader {
 
         mBundles.add(sourceBundle);
 
-        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
-        IExtensionPoint extPt = pluginRegistry.getExtensionPoint(extensionPointId);
+        final IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+        final IExtensionPoint extPt = pluginRegistry.getExtensionPoint(extensionPointId);
 
-        IExtension[] extensions = extPt.getExtensions();
+        final IExtension[] extensions = extPt.getExtensions();
 
         for (IExtension ext : extensions) {
-            String contributorId = ext.getContributor().getName();
-            Bundle extensionBundle = Platform.getBundle(contributorId);
+            final String contributorId = ext.getContributor().getName();
+            final Bundle extensionBundle = Platform.getBundle(contributorId);
 
             if (extensionBundle != null) {
                 mBundles.add(extensionBundle);
@@ -113,10 +113,10 @@ public class ExtensionClassLoader extends ClassLoader {
     @Override
     public Enumeration<URL> getResources(String name) throws IOException {
 
-        List<URL> resources = new ArrayList<>();
+        final List<URL> resources = new ArrayList<>();
 
         for (Bundle bundle : mBundles) {
-            Enumeration<URL> bundleResources = bundle.getResources(name);
+            final Enumeration<URL> bundleResources = bundle.getResources(name);
             if (bundleResources != null) {
                 resources.addAll(Collections.list(bundleResources));
             }

@@ -70,10 +70,10 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
      */
     public static List<ASTNode> reOrderModifiers(List<ASTNode> modifiers) {
 
-        List<ASTNode> copies = new ArrayList<>();
-        Iterator<ASTNode> iter = modifiers.iterator();
+        final List<ASTNode> copies = new ArrayList<>();
+        final Iterator<ASTNode> iter = modifiers.iterator();
         while (iter.hasNext()) {
-            ASTNode mod = iter.next();
+            final ASTNode mod = iter.next();
             copies.add(ASTNode.copySubtree(mod.getAST(), mod));
         }
 
@@ -83,8 +83,8 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
             public int compare(ASTNode arg0, ASTNode arg1) {
                 int comp = 0;
                 if (arg0 instanceof Modifier modifier1 && arg1 instanceof Modifier modifier2) {
-                    int modifierIndex1 = MODIFIER_ORDER.indexOf(modifier1.getKeyword());
-                    int modifierIndex2 = MODIFIER_ORDER.indexOf(modifier2.getKeyword());
+                    final int modifierIndex1 = MODIFIER_ORDER.indexOf(modifier1.getKeyword());
+                    final int modifierIndex2 = MODIFIER_ORDER.indexOf(modifier2.getKeyword());
                     comp =
                         Integer.valueOf(modifierIndex1).compareTo(Integer.valueOf(modifierIndex2));
                 }
@@ -146,18 +146,18 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
 
         @SuppressWarnings("unchecked")
         private boolean visitBodyDecl(BodyDeclaration node) {
-            List<Modifier> modifiers =
+            final List<Modifier> modifiers =
                 (List<Modifier>) node.modifiers().stream().filter(Modifier.class::isInstance)
                     .map(Modifier.class::cast).collect(Collectors.toList());
             if (modifiers != null && !modifiers.isEmpty()) {
                 // find the range from first to last modifier. marker must be in between
-                int minPos =
+                final int minPos =
                     modifiers.stream().mapToInt(Modifier::getStartPosition).min().getAsInt();
-                int maxPos =
+                final int maxPos =
                     modifiers.stream().mapToInt(Modifier::getStartPosition).max().getAsInt();
 
                 if (minPos <= markerStartOffset && markerStartOffset <= maxPos) {
-                    List<?> reorderedModifiers = reOrderModifiers(node.modifiers());
+                    final List<?> reorderedModifiers = reOrderModifiers(node.modifiers());
                     node.modifiers().clear();
                     node.modifiers().addAll(reorderedModifiers);
                 }

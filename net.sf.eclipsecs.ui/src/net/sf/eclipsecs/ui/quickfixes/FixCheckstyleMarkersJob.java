@@ -56,14 +56,15 @@ public class FixCheckstyleMarkersJob extends UIJob {
     @Override
     public IStatus runInUIThread(IProgressMonitor monitor) {
         IStatus status;
-        CheckstyleMarkerResolutionGenerator generator = new CheckstyleMarkerResolutionGenerator();
+        final CheckstyleMarkerResolutionGenerator generator =
+            new CheckstyleMarkerResolutionGenerator();
         try {
-            IMarker[] markers =
+            final IMarker[] markers =
                 mFile.findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
 
             for (int i = 0; i < markers.length; i++) {
 
-                var resolutions = generator.getResolutions(markers[i]);
+                final var resolutions = generator.getResolutions(markers[i]);
 
                 if (resolutions.length > 0) {
                     // only run the first fix for this marker

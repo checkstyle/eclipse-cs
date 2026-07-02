@@ -91,15 +91,15 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
             GridDataFactory.swtDefaults().applyTo(mBtnBrowse);
 
             mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-                FileDialog fileDialog = new FileDialog(mTextWidget.getShell());
+                final FileDialog fileDialog = new FileDialog(mTextWidget.getShell());
                 fileDialog.setFileName(mTextWidget.getText());
-                String file = fileDialog.open();
+                final String file = fileDialog.open();
                 if (file != null) {
                     mTextWidget.setText(file);
                 }
             }));
 
-            String initValue = getInitValue();
+            final String initValue = getInitValue();
             if (initValue != null) {
                 mTextWidget.setText(initValue);
             }
@@ -125,9 +125,10 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
 
     @Override
     public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-            : metadata.getDefaultValue();
+        final ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        final String defaultValue =
+            metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         mTextWidget.setText(defaultValue != null ? defaultValue : "");
     }
 
@@ -144,7 +145,7 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
         contentAssistant
             .setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
 
-        IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
+        final IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
         contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
         contentAssistant
             .setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);

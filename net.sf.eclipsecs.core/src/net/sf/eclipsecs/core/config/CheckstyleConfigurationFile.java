@@ -67,7 +67,7 @@ public class CheckstyleConfigurationFile {
      */
     public InputSource getCheckConfigFileInputSource() {
 
-        InputSource input = new InputSource(getCheckConfigFileStream());
+        final InputSource input = new InputSource(getCheckConfigFileStream());
         input.setSystemId(getResolvedConfigFileURL().toString());
 
         return input;

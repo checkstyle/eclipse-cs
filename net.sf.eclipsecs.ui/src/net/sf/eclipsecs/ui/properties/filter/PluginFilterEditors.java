@@ -57,18 +57,18 @@ public final class PluginFilterEditors {
 
         sFilterEditorClasses = new HashMap<>();
 
-        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+        final IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-        IConfigurationElement[] elements =
+        final IConfigurationElement[] elements =
             pluginRegistry.getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
         for (int i = 0; i < elements.length; i++) {
 
             try {
 
-                String filter = elements[i].getAttribute(ATTR_FILTER);
+                final String filter = elements[i].getAttribute(ATTR_FILTER);
 
-                IFilterEditor editor =
+                final IFilterEditor editor =
                     (IFilterEditor) elements[i].createExecutableExtension(ATTR_CLASS);
                 sFilterEditorClasses.put(filter, editor.getClass());
             }
@@ -105,7 +105,7 @@ public final class PluginFilterEditors {
      */
     public static IFilterEditor getNewEditor(IFilter filter) throws CheckstylePluginException {
         IFilterEditor editor = null;
-        Class<? extends IFilterEditor> editorClass =
+        final Class<? extends IFilterEditor> editorClass =
             sFilterEditorClasses.get(filter.getInternalName());
 
         if (editorClass != null) {

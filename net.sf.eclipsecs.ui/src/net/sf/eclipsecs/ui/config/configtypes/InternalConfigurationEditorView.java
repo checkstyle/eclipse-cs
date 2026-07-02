@@ -45,7 +45,7 @@ public final class InternalConfigurationEditorView extends Composite {
         super(parent, style);
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(this);
 
-        Label lblConfigName = new Label(this, SWT.NULL);
+        final Label lblConfigName = new Label(this, SWT.NULL);
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         GridDataFactory.swtDefaults().applyTo(lblConfigName);
 
@@ -53,7 +53,7 @@ public final class InternalConfigurationEditorView extends Composite {
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mConfigName);
         mConfigName.setFocus();
 
-        Label lblConfigLocation = new Label(this, SWT.NULL);
+        final Label lblConfigLocation = new Label(this, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
             .applyTo(lblConfigLocation);
@@ -62,7 +62,7 @@ public final class InternalConfigurationEditorView extends Composite {
         mLocation.setEditable(false);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mLocation);
 
-        Label lblDescription = new Label(this, SWT.NULL);
+        final Label lblDescription = new Label(this, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
@@ -72,7 +72,7 @@ public final class InternalConfigurationEditorView extends Composite {
             .grab(true, true)
             .applyTo(mDescription);
 
-        Button mBtnImport = new Button(this, SWT.PUSH);
+        final Button mBtnImport = new Button(this, SWT.PUSH);
         mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
         GridDataFactory.swtDefaults().span(2, 1).align(GridData.END, GridData.CENTER)
             .applyTo(mBtnImport);

@@ -115,7 +115,7 @@ public abstract class AbstractStatsView extends ViewPart {
         mFocusListener = AbstractStatsView.this::focusSelectionChanged;
 
         getSite().getPage().addSelectionListener(mFocusListener);
-        ISelection selection = getSite().getPage().getSelection();
+        final ISelection selection = getSite().getPage().getSelection();
         if (selection == null || selection instanceof TextSelection) {
             focusSelectionChanged(getSite().getPage().getActiveEditor(), null);
         }
@@ -125,7 +125,8 @@ public abstract class AbstractStatsView extends ViewPart {
 
         // create and register the listener for resource changes
         mResourceListener = event -> {
-            int numMarkerDeltas = event.findMarkerDeltas(CheckstyleMarker.MARKER_ID, true).length;
+            final int numMarkerDeltas =
+                event.findMarkerDeltas(CheckstyleMarker.MARKER_ID, true).length;
             if (numMarkerDeltas > 0) {
                 refresh();
             }
@@ -155,7 +156,7 @@ public abstract class AbstractStatsView extends ViewPart {
      * Opens the filters dialog for the specific stats view.
      */
     public final void openFiltersDialog() {
-        CheckstyleMarkerFilterDialog dialog =
+        final CheckstyleMarkerFilterDialog dialog =
             new CheckstyleMarkerFilterDialog(getSite().getShell(), filter);
 
         if (dialog.open() == Window.OK) {
@@ -194,7 +195,7 @@ public abstract class AbstractStatsView extends ViewPart {
         final IWorkbenchSiteProgressService service =
             getSite().getAdapter(IWorkbenchSiteProgressService.class);
 
-        WorkbenchJob uiJob = new WorkbenchJob(Messages.AbstractStatsView_msgRefreshStats) {
+        final WorkbenchJob uiJob = new WorkbenchJob(Messages.AbstractStatsView_msgRefreshStats) {
             {
                 setPriority(Job.DECORATE);
                 setSystem(true);
@@ -208,7 +209,7 @@ public abstract class AbstractStatsView extends ViewPart {
         };
 
         // rebuild statistics data
-        CreateStatsJob job = new CreateStatsJob(filter, getViewId());
+        final CreateStatsJob job = new CreateStatsJob(filter, getViewId());
         job.setPriority(Job.DECORATE);
         job.setRule(ResourcesPlugin.getWorkspace().getRoot());
         job.addJobChangeListener(IJobChangeListener.onDone(event -> {
@@ -225,9 +226,10 @@ public abstract class AbstractStatsView extends ViewPart {
      */
     protected final IDialogSettings getDialogSettings() {
 
-        String concreteViewId = getViewId();
+        final String concreteViewId = getViewId();
 
-        IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
+        final IDialogSettings workbenchSettings =
+            CheckstyleUIPlugin.getDefault().getDialogSettings();
         IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
         if (settings == null) {
@@ -246,13 +248,13 @@ public abstract class AbstractStatsView extends ViewPart {
      *            the selection
      */
     private void focusSelectionChanged(IWorkbenchPart part, ISelection selection) {
-        List<IResource> resources = SelectionTool.resolveSelection(part, selection);
+        final List<IResource> resources = SelectionTool.resolveSelection(part, selection);
 
-        IResource[] focusedResources = new IResource[resources.size()];
+        final IResource[] focusedResources = new IResource[resources.size()];
         resources.toArray(focusedResources);
 
         // check if update necessary -> if so then update
-        boolean updateNeeded = updateNeeded(mFocusedResources, focusedResources);
+        final boolean updateNeeded = updateNeeded(mFocusedResources, focusedResources);
         if (updateNeeded) {
             mFocusedResources = focusedResources;
             filter = filter.withFocusResources(focusedResources);

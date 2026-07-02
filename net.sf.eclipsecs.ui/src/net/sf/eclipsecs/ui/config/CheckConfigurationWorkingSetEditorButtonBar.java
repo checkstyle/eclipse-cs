@@ -90,7 +90,7 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
     }
 
     private Button createButton(Composite parent, String text, Runnable action) {
-        Button button = new Button(parent, SWT.PUSH);
+        final Button button = new Button(parent, SWT.PUSH);
         button.setText(text);
         button.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> action.run()));
         return button;

@@ -86,26 +86,27 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
 
         try {
 
-            Map<IProject, List<IFile>> projectFilesMap = getFilesSortedToProject(mFilesToCheck);
+            final Map<IProject, List<IFile>> projectFilesMap =
+                getFilesSortedToProject(mFilesToCheck);
 
             for (Map.Entry<IProject, List<IFile>> entry : projectFilesMap.entrySet()) {
 
-                IProject project = entry.getKey();
-                List<IFile> files = entry.getValue();
+                final IProject project = entry.getKey();
+                final List<IFile> files = entry.getValue();
 
-                IProjectConfiguration checkConfig =
+                final IProjectConfiguration checkConfig =
                     ProjectConfigurationFactory.getConfiguration(project);
 
                 filter(files, checkConfig);
 
-                CheckstyleBuilder builder = new CheckstyleBuilder();
+                final CheckstyleBuilder builder = new CheckstyleBuilder();
                 builder.handleBuildSelection(files, checkConfig, monitor, project,
                     IncrementalProjectBuilder.INCREMENTAL_BUILD);
             }
         }
         catch (CheckstylePluginException ex) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-                ex.getLocalizedMessage(), ex);
+            final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                IStatus.ERROR, ex.getLocalizedMessage(), ex);
             throw new CoreException(status);
         }
         return Status.OK_STATUS;
@@ -114,12 +115,12 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
     private static Map<IProject, List<IFile>>
         getFilesSortedToProject(final List<IFile> filesToCheck) {
 
-        Map<IProject, List<IFile>> projectFilesMap = new HashMap<>();
+        final Map<IProject, List<IFile>> projectFilesMap = new HashMap<>();
 
         for (int i = 0, size = filesToCheck.size(); i < size; i++) {
 
-            IFile file = filesToCheck.get(i);
-            IProject project = file.getProject();
+            final IFile file = filesToCheck.get(i);
+            final IProject project = file.getProject();
 
             List<IFile> projectFiles = projectFilesMap.get(project);
             if (projectFiles == null) {
@@ -135,13 +136,13 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
 
     private static void filter(final List<IFile> files, final IProjectConfiguration projectConfig) {
 
-        List<IFilter> filters = projectConfig.getFilters();
+        final List<IFilter> filters = projectConfig.getFilters();
         for (IFilter filter : filters) {
 
-            Iterator<IFile> filesIt = files.iterator();
+            final Iterator<IFile> filesIt = files.iterator();
             while (filesIt.hasNext()) {
 
-                IFile file = filesIt.next();
+                final IFile file = filesIt.next();
 
                 if (filter.isEnabled() && !filter.accept(file)) {
                     filesIt.remove();

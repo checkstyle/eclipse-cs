@@ -105,7 +105,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
 
         try {
             new ProgressMonitorDialog(getShell()).run(true, false, monitor -> {
@@ -164,11 +164,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     @Override
     protected Control createButtonBar(Composite parent) {
 
-        Composite composite = new Composite(parent, SWT.NONE);
+        final Composite composite = new Composite(parent, SWT.NONE);
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
-        Button mBtnOpenModuleOnAdd = new Button(composite, SWT.CHECK);
+        final Button mBtnOpenModuleOnAdd = new Button(composite, SWT.CHECK);
         mBtnOpenModuleOnAdd.setText(Messages.CheckConfigurationConfigureDialog_btnOpenModuleOnAdd);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER)
                 .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
@@ -188,7 +188,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             }
         }));
 
-        Control buttonBar = super.createButtonBar(composite);
+        final Control buttonBar = super.createButtonBar(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER)
             .applyTo(buttonBar);
 
@@ -233,17 +233,17 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     private void newModule(List<RuleMetadata> rules) {
         if (mConfiguration.isConfigurable()) {
-            boolean openOnAdd =
+            final boolean openOnAdd =
                 CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
 
             for (RuleMetadata rule : rules) {
                 if (!rule.isSingleton() || !isAlreadyConfigured(rule)) {
-                    Module workingCopy = new Module(rule, false);
+                    final Module workingCopy = new Module(rule, false);
                     if (openOnAdd) {
-                        RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
+                        final RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
                             getShell(), workingCopy, !mConfiguration.isConfigurable(),
                             Messages.CheckConfigurationConfigureDialog_titleNewModule);
-                        int dialogResult = dialog.open();
+                        final int dialogResult = dialog.open();
                         if (Window.OK == dialogResult) {
                             mModules.add(workingCopy);
                             mIsDirty = true;
@@ -275,11 +275,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      * @return whether the module is already configured
      */
     private boolean isAlreadyConfigured(RuleMetadata metadata) {
-        String internalName = metadata.identity().internalName();
+        final String internalName = metadata.identity().internalName();
         boolean containsModule = false;
         for (int i = 0, size = mModules.size(); i < size; i++) {
 
-            Module module = mModules.get(i);
+            final Module module = mModules.get(i);
 
             if (internalName.equals(module.getMetaData().identity().internalName())) {
                 containsModule = true;
@@ -298,8 +298,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     private void openModule(Module module) {
         if (module != null) {
-            Module workingCopy = module.clone();
-            RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
+            final Module workingCopy = module.clone();
+            final RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
                 workingCopy, !mConfiguration.isConfigurable(),
                 Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
             if (Window.OK == dialog.open() && mConfiguration.isConfigurable()) {
@@ -336,7 +336,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     private void checkStateChanged(Module module, boolean checked) {
         if (checked) {
             // restore last severity before setting to ignore
-            Severity lastEnabled = module.getLastEnabledSeverity();
+            final Severity lastEnabled = module.getLastEnabledSeverity();
             if (lastEnabled != null) {
                 module.setSeverity(lastEnabled);
             }

@@ -80,13 +80,13 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
 
-        Composite dialog = new Composite(composite, SWT.NONE);
+        final Composite dialog = new Composite(composite, SWT.NONE);
         dialog.setLayoutData(new GridData(GridData.FILL_BOTH));
         dialog.setLayout(new GridLayout(1, false));
 
-        Label nameLabel = new Label(dialog, SWT.NULL);
+        final Label nameLabel = new Label(dialog, SWT.NULL);
         nameLabel.setText(Messages.FileMatchPatternEditDialog_lblRegex);
 
         mFileMatchPatternText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
@@ -117,7 +117,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
     @Override
     protected void okPressed() {
-        String pattern = mFileMatchPatternText.getText();
+        final String pattern = mFileMatchPatternText.getText();
 
         try {
             //

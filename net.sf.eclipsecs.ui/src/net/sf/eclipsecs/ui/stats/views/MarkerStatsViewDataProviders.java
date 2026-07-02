@@ -92,7 +92,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
         public Object[] getElements(Object inputElement) {
             if (mCurrentMarkerStats == null) {
                 // find the marker statistics for the current category
-                Stats currentStats = (Stats) inputElement;
+                final Stats currentStats = (Stats) inputElement;
                 mCurrentMarkerStats = currentStats.getMarkerStats().toArray();
             }
 
@@ -130,11 +130,11 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
         public Object[] getElements(Object inputElement) {
             if (mCurrentDetails == null) {
                 // find the marker statistics for the current category
-                Stats currentStats = (Stats) inputElement;
-                Collection<MarkerStat> markerStats = currentStats.getMarkerStats();
-                Iterator<MarkerStat> iter = markerStats.iterator();
+                final Stats currentStats = (Stats) inputElement;
+                final Collection<MarkerStat> markerStats = currentStats.getMarkerStats();
+                final Iterator<MarkerStat> iter = markerStats.iterator();
                 while (iter.hasNext()) {
-                    MarkerStat markerStat = iter.next();
+                    final MarkerStat markerStat = iter.next();
                     if (markerStat.getIdentifiant().equals(currentDetailCategory)) {
                         mCurrentDetails = markerStat.getMarkers().toArray();
                         break;

@@ -68,7 +68,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
     public void addMarker(IMarker marker) {
         mMarkers.add(marker);
 
-        int severity = MarkerUtilities.getSeverity(marker);
+        final int severity = MarkerUtilities.getSeverity(marker);
         if (severity > mMaxSeverity) {
             mMaxSeverity = severity;
         }

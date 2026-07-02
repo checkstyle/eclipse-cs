@@ -100,7 +100,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
 
         this.dialogView = new CheckstyleMarkerFilterDialogView(composite, SWT.NONE,
             this::selectWorkingSet, this::editRegularExpressions);
@@ -117,8 +117,8 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     }
 
     private void editRegularExpressions() {
-        List<String> regex = new ArrayList<>(mRegularExpressions);
-        CheckstyleMarkerFilterRegexDialog regexDialog =
+        final List<String> regex = new ArrayList<>(mRegularExpressions);
+        final CheckstyleMarkerFilterRegexDialog regexDialog =
             new CheckstyleMarkerFilterRegexDialog(getShell(), regex);
         if (Window.OK == regexDialog.open()) {
             mRegularExpressions = regex;
@@ -194,9 +194,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
      */
     private void initRegexLabel() {
 
-        StringBuilder buf = new StringBuilder();
+        final StringBuilder buf = new StringBuilder();
 
-        int size = mRegularExpressions != null ? mRegularExpressions.size() : 0;
+        final int size = mRegularExpressions != null ? mRegularExpressions.size() : 0;
         for (int i = 0; i < size; i++) {
             if (i > 0) {
                 buf.append(", ");
@@ -212,7 +212,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     }
 
     private void selectWorkingSet() {
-        IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
+        final IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
             .createWorkingSetSelectionDialog(getShell(), false);
 
         if (mSelectedWorkingSet != null) {
@@ -221,7 +221,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
             });
         }
         if (dialog.open() == Window.OK) {
-            IWorkingSet[] result = dialog.getSelection();
+            final IWorkingSet[] result = dialog.getSelection();
             if (result != null && result.length > 0) {
                 mSelectedWorkingSet = result[0];
             }

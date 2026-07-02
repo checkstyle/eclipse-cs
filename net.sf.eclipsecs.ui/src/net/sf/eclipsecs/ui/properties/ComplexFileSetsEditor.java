@@ -93,9 +93,10 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
     private void addFileSet() {
         try {
-            FileSetEditDialog dialog = new FileSetEditDialog(shell, null, propertyPageContext);
+            final FileSetEditDialog dialog =
+                new FileSetEditDialog(shell, null, propertyPageContext);
             if (Window.OK == dialog.open()) {
-                FileSet fileSet = dialog.getFileSet();
+                final FileSet fileSet = dialog.getFileSet();
                 mFileSets.add(fileSet);
                 editorView.refresh();
                 editorView.setChecked(fileSet, fileSet.isEnabled());
@@ -112,10 +113,10 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     private void editFileSet(FileSet fileSet) {
         if (fileSet != null) {
             try {
-                FileSetEditDialog dialog =
+                final FileSetEditDialog dialog =
                     new FileSetEditDialog(shell, fileSet.clone(), propertyPageContext);
                 if (Window.OK == dialog.open()) {
-                    FileSet newFileSet = dialog.getFileSet();
+                    final FileSet newFileSet = dialog.getFileSet();
                     mFileSets.remove(fileSet);
                     mFileSets.add(newFileSet);
                     editorView.refresh();
@@ -141,7 +142,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
     private void changeEnabledState(CheckStateChangedEvent event) {
         if (event.getElement() instanceof FileSet) {
-            FileSet fileSet = (FileSet) event.getElement();
+            final FileSet fileSet = (FileSet) event.getElement();
             fileSet.setEnabled(event.getChecked());
             editorView.refresh();
         }
@@ -162,7 +163,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
         @Override
         public String getColumnText(Object element, int columnIndex) {
-            String columnText;
+            final String columnText;
             if (element instanceof FileSet fileSet) {
                 columnText = switch (columnIndex) {
                     case 0 -> new String();
@@ -202,11 +203,11 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
             int result = 0;
 
             if (e1 instanceof FileSet && e2 instanceof FileSet) {
-                FileSet fileSet1 = (FileSet) e1;
-                FileSet fileSet2 = (FileSet) e2;
+                final FileSet fileSet1 = (FileSet) e1;
+                final FileSet fileSet2 = (FileSet) e2;
 
-                String name1 = fileSet1.getName();
-                String name2 = fileSet2.getName();
+                final String name1 = fileSet1.getName();
+                final String name2 = fileSet2.getName();
 
                 result = name1.compareTo(name2);
             }

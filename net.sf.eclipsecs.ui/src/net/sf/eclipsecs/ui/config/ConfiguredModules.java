@@ -65,14 +65,15 @@ public final class ConfiguredModules extends Composite {
             callbacks, modules);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
-        Runnable removeModule = () -> callbacks.removeModule.accept(table.getSelectedModules());
-        Runnable openModule = () -> {
+        final Runnable removeModule =
+            () -> callbacks.removeModule.accept(table.getSelectedModules());
+        final Runnable openModule = () -> {
             if (!table.getSelectedModules().isEmpty()) {
                 callbacks.openModule.accept(table.getSelectedModules().getFirst());
             }
         };
 
-        Composite buttons = new ConfiguredModulesButtons(configuredModulesGroup, SWT.NONE,
+        final Composite buttons = new ConfiguredModulesButtons(configuredModulesGroup, SWT.NONE,
             configurable, removeModule, openModule);
         GridDataFactory.swtDefaults().applyTo(buttons);
     }
@@ -103,7 +104,7 @@ public final class ConfiguredModules extends Composite {
 
         @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
-            RuleMetadata rule = ((Module) element).getMetaData();
+            final RuleMetadata rule = ((Module) element).getMetaData();
             return rule == null || currentGroup != null && !rule.hidden()
                 && currentGroup.getGroupName().equals(rule.identity().group().getGroupName());
 
@@ -126,7 +127,7 @@ public final class ConfiguredModules extends Composite {
 
         @Override
         public boolean isChecked(Object element) {
-            Module module = (Module) element;
+            final Module module = (Module) element;
             return !Severity.IGNORE.equals(module.getSeverity())
                 || !module.getMetaData().hasSeverity();
         }

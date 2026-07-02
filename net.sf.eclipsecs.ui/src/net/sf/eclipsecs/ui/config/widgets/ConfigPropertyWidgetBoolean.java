@@ -64,7 +64,7 @@ public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWid
             mCheckbox = new Button(parent, SWT.CHECK);
             mCheckbox.setLayoutData(new GridData());
 
-            String initValue = getInitValue();
+            final String initValue = getInitValue();
             mCheckbox.setSelection(Boolean.parseBoolean(initValue));
 
         }
@@ -78,9 +78,10 @@ public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWid
 
     @Override
     public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-            : metadata.getDefaultValue();
+        final ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        final String defaultValue =
+            metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         mCheckbox.setSelection(Boolean.parseBoolean(defaultValue));
     }
 }

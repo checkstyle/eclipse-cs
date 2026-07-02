@@ -50,7 +50,7 @@ public class ResolvablePropertyResolver implements PropertyResolver {
 
         String value = null;
 
-        List<ResolvableProperty> resolvableProperties =
+        final List<ResolvableProperty> resolvableProperties =
             mCheckConfiguration.getResolvableProperties();
         for (ResolvableProperty prop : resolvableProperties) {
 

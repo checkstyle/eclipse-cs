@@ -53,16 +53,16 @@ public final class FileSetEditDialogCommonArea extends Composite {
         super(parent, style);
         setLayout(new FillLayout());
 
-        Composite composite = new Composite(this, SWT.NONE);
+        final Composite composite = new Composite(this, SWT.NONE);
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
 
-        Label nameLabel = new Label(composite, SWT.NULL);
+        final Label nameLabel = new Label(composite, SWT.NULL);
         nameLabel.setText(Messages.FileSetEditDialog_lblName);
 
         mFileSetNameText = new Text(composite, SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mFileSetNameText);
 
-        Label lblConfiguration = new Label(composite, SWT.NULL);
+        final Label lblConfiguration = new Label(composite, SWT.NULL);
         lblConfiguration.setText(Messages.FileSetEditDialog_lblCheckConfig);
 
         final Composite comboComposite = new Composite(composite, SWT.NONE);
@@ -77,7 +77,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
         mComboViewer.addSelectionChangedListener(event -> selectionChanged
             .accept((ICheckConfiguration) event.getStructuredSelection().getFirstElement()));
 
-        Button mConfigureButton = new Button(comboComposite, SWT.PUSH);
+        final Button mConfigureButton = new Button(comboComposite, SWT.PUSH);
         mConfigureButton.setText(Messages.FileSetEditDialog_btnConfigure);
         mConfigureButton.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> configureFileSetConfig.run()));

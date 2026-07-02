@@ -124,7 +124,7 @@ public final class Auditor {
 
         try {
 
-            List<File> filesToAudit = getFilesList();
+            final List<File> filesToAudit = getFilesList();
 
             // begin task
             monitor.beginTask(
@@ -175,13 +175,13 @@ public final class Auditor {
             // remove pre-existing project level marker
             project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
 
-            Map<String, Object> attrs = new HashMap<>();
+            final Map<String, Object> attrs = new HashMap<>();
             attrs.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_NORMAL));
             attrs.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
             attrs.put(IMarker.MESSAGE,
                 NLS.bind(Messages.Auditor_msgMsgCheckstyleInternalError, null));
 
-            IMarker projectMarker = project.createMarker(CheckstyleMarker.MARKER_ID);
+            final IMarker projectMarker = project.createMarker(CheckstyleMarker.MARKER_ID);
             projectMarker.setAttributes(attrs);
         }
         catch (CoreException nested) {
@@ -220,7 +220,7 @@ public final class Auditor {
      * @return the list of files
      */
     private List<File> getFilesList() {
-        List<File> files = new ArrayList<>();
+        final List<File> files = new ArrayList<>();
         for (IFile file : mFiles.values()) {
             files.add(file.getLocation().toFile());
         }
@@ -297,10 +297,10 @@ public final class Auditor {
             }
             else {
 
-                IPath filePath = new Path(event.getFileName());
-                IPath dirPath = filePath.removeFileExtension().removeLastSegments(1);
+                final IPath filePath = new Path(event.getFileName());
+                final IPath dirPath = filePath.removeFileExtension().removeLastSegments(1);
 
-                IPath projectPath = mProject.getLocation();
+                final IPath projectPath = mProject.getLocation();
                 if (projectPath.isPrefixOf(dirPath)) {
                     // find the resource with a project relative path
                     mResource = mProject
@@ -319,7 +319,7 @@ public final class Auditor {
             try {
                 if (!mLimitMarkers || mMarkerCount < mMarkerLimit) {
 
-                    SeverityLevel severity = error.getSeverityLevel();
+                    final SeverityLevel severity = error.getSeverityLevel();
 
                     if (mResource != null && !severity.equals(SeverityLevel.IGNORE)) {
 
@@ -328,7 +328,7 @@ public final class Auditor {
 
                         // create generic metadata if none can be found
                         if (metaData == null) {
-                            Module module = new Module(error.getSourceName());
+                            final Module module = new Module(error.getSourceName());
                             metaData = MetadataFactory.createGenericMetadata(module);
                         }
 
@@ -336,7 +336,7 @@ public final class Auditor {
                             metaData.identity().internalName());
                         mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY,
                             error.getViolation().getKey());
-                        String moduleId = error.getModuleId();
+                        final String moduleId = error.getModuleId();
                         if (StringUtils.isNotBlank(moduleId)) {
                             mMarkerAttributes.put(CheckstyleMarker.MODULE_ID, moduleId);
                         }
@@ -356,7 +356,7 @@ public final class Auditor {
                         mMarkerAttributes.put("categoryId", CheckstyleMarker.CATEGORY_ID);
 
                         // create a marker for the actual resource
-                        IMarker marker = mResource.createMarker(CheckstyleMarker.MARKER_ID);
+                        final IMarker marker = mResource.createMarker(CheckstyleMarker.MARKER_ID);
                         marker.setAttributes(mMarkerAttributes);
 
                         mMarkerCount++;
@@ -428,12 +428,12 @@ public final class Auditor {
             if (mDocument != null) {
                 try {
 
-                    int line = error.getLine();
+                    final int line = error.getLine();
 
-                    IRegion lineInformation =
+                    final IRegion lineInformation =
                         mDocument.getLineInformation(line == 0 ? 0 : line - 1);
-                    int lineOffset = lineInformation.getOffset();
-                    int lineLength = lineInformation.getLength();
+                    final int lineOffset = lineInformation.getOffset();
+                    final int lineLength = lineInformation.getLength();
 
                     // annotate from the error column until the end of
                     // the line
@@ -455,7 +455,7 @@ public final class Auditor {
             IDocument document = null;
             if (resource instanceof IFile) {
                 try {
-                    IPath path = resource.getFullPath();
+                    final IPath path = resource.getFullPath();
                     mFileBufferManager.connect(path, new NullProgressMonitor());
 
                     mConnectedFileBufferPaths.add(path);
@@ -470,7 +470,7 @@ public final class Auditor {
 
         private void disconnectFileBuffer(IResource resource) {
             if (resource instanceof IFile) {
-                IPath path = resource.getFullPath();
+                final IPath path = resource.getFullPath();
                 disconnectFileBuffer(path);
             }
         }
@@ -510,7 +510,8 @@ public final class Auditor {
             String moduleId = error.getModuleId();
 
             if (moduleId == null) {
-                RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
+                final RuleMetadata metaData =
+                    MetadataFactory.getRuleMetadata(error.getSourceName());
                 if (metaData != null) {
                     moduleId = metaData.identity().internalName();
                 }
@@ -518,7 +519,7 @@ public final class Auditor {
 
             final String message = error.getMessage();
 
-            StringBuilder prefix = new StringBuilder();
+            final StringBuilder prefix = new StringBuilder();
             if (mAddRuleName) {
                 prefix.append(getRuleName(error));
             }
@@ -529,7 +530,7 @@ public final class Auditor {
                 prefix.append(error.getModuleId());
             }
 
-            StringBuilder buf = new StringBuilder();
+            final StringBuilder buf = new StringBuilder();
             if (prefix.length() > 0) {
                 buf.append(prefix).append(": ");
             }
@@ -539,8 +540,8 @@ public final class Auditor {
         }
 
         private String getRuleName(AuditEvent error) {
-            String ruleName;
-            RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
+            final String ruleName;
+            final RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());
             if (metaData == null) {
                 ruleName = Messages.Auditor_txtUnknownModule;
             }

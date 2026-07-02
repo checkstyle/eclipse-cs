@@ -87,10 +87,10 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     public CheckstyleConfigurationFile getCheckstyleConfiguration(
         ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
-        boolean useCacheFile =
+        final boolean useCacheFile =
             Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
 
-        CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
+        final CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
 
         final String currentRedirects = System.getProperty(KEY_MAX_REDIRECTS);
 
@@ -132,7 +132,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
             data.setCheckConfigFileBytes(configurationFileData);
 
-            Optional<byte[]> additionalPropertiesBytes =
+            final Optional<byte[]> additionalPropertiesBytes =
                 getPropertiesBundle(originalFileSuccess, useCacheFile, data, checkConfiguration);
             additionalPropertiesBytes.ifPresent(data::setAdditionalPropertyBundleBytes);
 
@@ -195,17 +195,17 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         RemoteConfigAuthenticator
             .removeCachedAuthInfo(checkConfiguration.getResolvedConfigurationFileURL());
 
-        boolean useCacheFile =
+        final boolean useCacheFile =
             Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
 
         if (useCacheFile) {
             // remove the cached configuration file from the workspace metadata
-            String cacheFileLocation =
+            final String cacheFileLocation =
                 checkConfiguration.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
 
             IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
             cacheFilePath = cacheFilePath.append(cacheFileLocation);
-            File cacheFile = cacheFilePath.toFile();
+            final File cacheFile = cacheFilePath.toFile();
             cacheFile.delete();
         }
     }
@@ -220,14 +220,15 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
      *             error getting the stream (file does not exist)
      */
     private byte[] getBytesFromCacheFile(ICheckConfiguration checkConfig) throws IOException {
-        String cacheFileLocation = checkConfig.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
+        final String cacheFileLocation =
+            checkConfig.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
 
         IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
         cacheFilePath = cacheFilePath.append(cacheFileLocation);
-        File cacheFile = cacheFilePath.toFile();
+        final File cacheFile = cacheFilePath.toFile();
 
-        URL configURL = cacheFile.toURI().toURL();
-        URLConnection connection = configURL.openConnection();
+        final URL configURL = cacheFile.toURI().toURL();
+        final URLConnection connection = configURL.openConnection();
 
         return getBytesFromURLConnection(connection);
     }
@@ -243,7 +244,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
      */
     private Optional<byte[]> getBytesFromCacheBundleFile(ICheckConfiguration checkConfig) {
         Optional<byte[]> bytes = Optional.empty();
-        String cacheFileLocation =
+        final String cacheFileLocation =
             checkConfig.getAdditionalData().get(KEY_CACHE_PROPS_FILE_LOCATION);
 
         // bug 1748626
@@ -251,10 +252,10 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
             try {
                 IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
                 cacheFilePath = cacheFilePath.append(cacheFileLocation);
-                File cacheFile = cacheFilePath.toFile();
+                final File cacheFile = cacheFilePath.toFile();
 
-                URL configURL = cacheFile.toURI().toURL();
-                URLConnection connection = configURL.openConnection();
+                final URL configURL = cacheFile.toURI().toURL();
+                final URLConnection connection = configURL.openConnection();
 
                 bytes = Optional.of(getBytesFromURLConnection(connection));
             }
@@ -270,11 +271,12 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,
         byte[] bundleBytes) {
 
-        String cacheFileLocation = checkConfig.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
+        final String cacheFileLocation =
+            checkConfig.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
 
         IPath cacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
         cacheFilePath = cacheFilePath.append(cacheFileLocation);
-        File cacheFile = cacheFilePath.toFile();
+        final File cacheFile = cacheFilePath.toFile();
 
         try {
             Files.write(cacheFile.toPath(), configFileBytes);
@@ -286,12 +288,12 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
         if (bundleBytes != null) {
 
-            String propsCacheFileLocation =
+            final String propsCacheFileLocation =
                 checkConfig.getAdditionalData().get(KEY_CACHE_PROPS_FILE_LOCATION);
 
             IPath propsCacheFilePath = CheckstylePlugin.getDefault().getStateLocation();
             propsCacheFilePath = propsCacheFilePath.append(propsCacheFileLocation);
-            File propsCacheFile = propsCacheFilePath.toFile();
+            final File propsCacheFile = propsCacheFilePath.toFile();
 
             try {
                 Files.write(propsCacheFile.toPath(), bundleBytes);
@@ -312,7 +314,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
             if (!sFailedWith401URLs.contains(connection.getURL().toString())) {
 
-                HttpURLConnection httpConn = (HttpURLConnection) connection;
+                final HttpURLConnection httpConn = (HttpURLConnection) connection;
                 httpConn.setInstanceFollowRedirects(true);
                 httpConn.connect();
                 if (httpConn.getResponseCode() == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -421,7 +423,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
             try {
 
                 // store authorization info to the internal key ring
-                ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
+                final ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
                     .node(getSecureStoragePath(resolvedCheckConfigurationURL));
 
                 prefs.put(KEY_USERNAME, userName, false);
@@ -446,11 +448,11 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
                 throws CheckstylePluginException {
             sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
 
-            String storagePath = getSecureStoragePath(resolvedCheckConfigurationURL);
+            final String storagePath = getSecureStoragePath(resolvedCheckConfigurationURL);
 
             if (SecurePreferencesFactory.getDefault().nodeExists(storagePath)) {
 
-                ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
+                final ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
                     .node(getSecureStoragePath(resolvedCheckConfigurationURL));
                 prefs.removeNode();
             }
@@ -466,8 +468,8 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
             try {
 
-                MessageDigest digest = MessageDigest.getInstance("MD5");
-                byte[] hash =
+                final MessageDigest digest = MessageDigest.getInstance("MD5");
+                final byte[] hash =
                     digest.digest(resolvedCheckConfigurationURL.toExternalForm().getBytes("UTF-8"));
                 urlHash = EncodingUtils.encodeBase64(hash);
 

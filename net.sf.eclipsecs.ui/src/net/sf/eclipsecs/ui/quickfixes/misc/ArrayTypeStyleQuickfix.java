@@ -82,9 +82,9 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
                     int dimensions = 0;
 
-                    List<?> fragments = node.fragments();
+                    final List<?> fragments = node.fragments();
                     for (int i = 0, size = fragments.size(); i < size; i++) {
-                        VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                        final VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
                         if (decl.getExtraDimensions() > dimensions) {
                             dimensions = decl.getExtraDimensions();
 
@@ -93,21 +93,21 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
                     }
 
                     // wrap current type into ArrayType
-                    ArrayType arrayType = createArrayType(node.getType(), dimensions);
+                    final ArrayType arrayType = createArrayType(node.getType(), dimensions);
                     node.setType(arrayType);
 
                 }
                 else if (isJavaStyle(node.getType())) {
 
-                    int dimensions = ((ArrayType) node.getType()).getDimensions();
+                    final int dimensions = ((ArrayType) node.getType()).getDimensions();
 
-                    List<?> fragments = node.fragments();
+                    final List<?> fragments = node.fragments();
                     for (int i = 0, size = fragments.size(); i < size; i++) {
-                        VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                        final VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
                         decl.setExtraDimensions(dimensions);
                     }
 
-                    Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
+                    final Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
                         ((ArrayType) node.getType()).getElementType());
                     node.setType(elementType);
                 }
@@ -126,8 +126,8 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
                 }
                 else if (isJavaStyle(node.getType())) {
 
-                    ArrayType arrayType = (ArrayType) node.getType();
-                    Type elementType =
+                    final ArrayType arrayType = (ArrayType) node.getType();
+                    final Type elementType =
                         (Type) ASTNode.copySubtree(node.getAST(), arrayType.getElementType());
 
                     node.setType(elementType);
@@ -147,9 +147,9 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
                     int dimensions = 0;
 
-                    List<?> fragments = node.fragments();
+                    final List<?> fragments = node.fragments();
                     for (int i = 0, size = fragments.size(); i < size; i++) {
-                        VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                        final VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
                         if (decl.getExtraDimensions() > dimensions) {
                             dimensions = decl.getExtraDimensions();
 
@@ -158,20 +158,20 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
                     }
 
                     // wrap current type into ArrayType
-                    ArrayType arrayType = createArrayType(node.getType(), dimensions);
+                    final ArrayType arrayType = createArrayType(node.getType(), dimensions);
                     node.setType(arrayType);
                 }
                 else if (isJavaStyle(node.getType())) {
 
-                    int dimensions = ((ArrayType) node.getType()).getDimensions();
+                    final int dimensions = ((ArrayType) node.getType()).getDimensions();
 
-                    List<?> fragments = node.fragments();
+                    final List<?> fragments = node.fragments();
                     for (int i = 0, size = fragments.size(); i < size; i++) {
-                        VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                        final VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
                         decl.setExtraDimensions(dimensions);
                     }
 
-                    Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
+                    final Type elementType = (Type) ASTNode.copySubtree(node.getAST(),
                         ((ArrayType) node.getType()).getElementType());
                     node.setType(elementType);
                 }
@@ -189,9 +189,9 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
 
         private boolean isCStyle(List<?> fragments) {
             boolean isCStyle = false;
-            Iterator<?> iter = fragments.iterator();
+            final Iterator<?> iter = fragments.iterator();
             while (iter.hasNext()) {
-                VariableDeclaration decl = (VariableDeclaration) iter.next();
+                final VariableDeclaration decl = (VariableDeclaration) iter.next();
                 if (isCStyle(decl)) {
                     isCStyle = true;
                     break;
@@ -201,7 +201,7 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
         }
 
         private ArrayType createArrayType(Type componentType, int dimensions) {
-            Type type = (Type) ASTNode.copySubtree(componentType.getAST(), componentType);
+            final Type type = (Type) ASTNode.copySubtree(componentType.getAST(), componentType);
             return componentType.getAST().newArrayType(type, dimensions);
         }
     }

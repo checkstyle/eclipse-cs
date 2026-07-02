@@ -42,7 +42,7 @@ public final class WorkspaceFileSelector {
     }
 
     public static Optional<String> select(Shell shell) {
-        ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
+        final ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
             new WorkbenchLabelProvider(), new WorkbenchContentProvider());
         dialog.setHelpAvailable(false);
         dialog.setTitle(Messages.ProjectConfigurationLocationEditor_titleSelectConfigFile);
@@ -51,7 +51,7 @@ public final class WorkspaceFileSelector {
         dialog.setAllowMultiple(false);
         dialog.setInput(ResourcesPlugin.getWorkspace().getRoot());
         dialog.setValidator(selection -> {
-            int status;
+            final int status;
             if (selection.length == 1 && selection[0] instanceof IFile) {
                 status = IStatus.OK;
             } else {
@@ -61,8 +61,8 @@ public final class WorkspaceFileSelector {
         });
         Optional<String> path = Optional.empty();
         if (Window.OK == dialog.open()) {
-            Object[] result = dialog.getResult();
-            IFile checkFile = (IFile) result[0];
+            final Object[] result = dialog.getResult();
+            final IFile checkFile = (IFile) result[0];
             path = Optional.of(checkFile.getFullPath().toString());
         }
         return path;

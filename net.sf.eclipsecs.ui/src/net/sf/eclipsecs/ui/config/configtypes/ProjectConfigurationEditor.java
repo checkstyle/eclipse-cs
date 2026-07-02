@@ -105,11 +105,11 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     @Override
     public Control createEditorControl(Composite parent, final Shell parentShell) {
         this.shell = parentShell;
-        Composite contents = new Composite(parent, SWT.NULL);
+        final Composite contents = new Composite(parent, SWT.NULL);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(contents);
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
 
-        Label lblConfigName = new Label(contents, SWT.NULL);
+        final Label lblConfigName = new Label(contents, SWT.NULL);
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         GridDataFactory.swtDefaults().applyTo(lblConfigName);
 
@@ -119,7 +119,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
         mLocation = createLocationSection(contents, parentShell);
 
-        Label lblDescription = new Label(contents, SWT.NULL);
+        final Label lblDescription = new Label(contents, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
@@ -130,7 +130,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
             .grab(true, true)
             .applyTo(mDescription);
 
-        Group advancedGroup = new Group(contents, SWT.NULL);
+        final Group advancedGroup = new Group(contents, SWT.NULL);
         advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(advancedGroup);
@@ -156,18 +156,18 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     }
 
     private static Text createLocationSection(Composite parent, Shell shell) {
-        Label lblConfigLocation = new Label(parent, SWT.NULL);
+        final Label lblConfigLocation = new Label(parent, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         GridDataFactory.swtDefaults().applyTo(lblConfigLocation);
 
-        Composite locationComposite = new Composite(parent, SWT.NULL);
+        final Composite locationComposite = new Composite(parent, SWT.NULL);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(locationComposite);
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(locationComposite);
 
-        Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        final Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(location);
 
-        Button mBtnBrowse = new Button(locationComposite, SWT.PUSH);
+        final Button mBtnBrowse = new Button(locationComposite, SWT.PUSH);
         mBtnBrowse.setText(Messages.ProjectConfigurationLocationEditor_btnBrowse);
         GridDataFactory.swtDefaults().applyTo(mBtnBrowse);
 
@@ -195,10 +195,10 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                 throw ex;
             }
 
-            ICheckConfigurationWorkingSet workingSet =
+            final ICheckConfigurationWorkingSet workingSet =
                 mCheckConfigDialog.getCheckConfigurationWorkingSet();
-            IPath tmp = IPath.fromOSString(location);
-            boolean isFirstPartProject =
+            final IPath tmp = IPath.fromOSString(location);
+            final boolean isFirstPartProject =
                 ResourcesPlugin.getWorkspace().getRoot().getProject(tmp.segment(0)).exists();
 
             if (!isFirstPartProject && workingSet instanceof LocalCheckConfigurationWorkingSet) {
@@ -244,13 +244,13 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
             CheckstylePluginException.rethrow(ex);
         }
 
-        boolean exists;
+        final boolean exists;
         if (!file.exists() && file.getLocation() != null) {
-            boolean confirm = MessageDialog.openQuestion(shell,
+            final boolean confirm = MessageDialog.openQuestion(shell,
                 Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
                 Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
             if (confirm) {
-                Path trueFile = file.getLocation().toPath();
+                final Path trueFile = file.getLocation().toPath();
                 try {
                     if (trueFile.getParent() != null) {
                         Files.createDirectories(trueFile.getParent());

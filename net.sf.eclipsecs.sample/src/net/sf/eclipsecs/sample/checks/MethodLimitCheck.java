@@ -58,10 +58,10 @@ public final class MethodLimitCheck extends AbstractCheck {
     @Override
     public void visitToken(DetailAST ast) {
         // find the OBJBLOCK node below the CLASS_DEF/INTERFACE_DEF
-        DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
+        final DetailAST objBlock = ast.findFirstToken(TokenTypes.OBJBLOCK);
         // count the number of direct children of the OBJBLOCK
         // that are METHOD_DEFS
-        int methodDefs = objBlock.getChildCount(TokenTypes.METHOD_DEF);
+        final int methodDefs = objBlock.getChildCount(TokenTypes.METHOD_DEF);
         // report error if limit is reached
         if (methodDefs > max) {
             log(ast.getLineNo(), "methodlimit", max);

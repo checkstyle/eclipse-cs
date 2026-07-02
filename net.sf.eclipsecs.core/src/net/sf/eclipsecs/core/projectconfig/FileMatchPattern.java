@@ -95,7 +95,7 @@ public class FileMatchPattern implements Cloneable {
     public boolean isMatch(String fileName) {
         boolean result = false;
 
-        Matcher matcher = regexPattern.matcher(fileName);
+        final Matcher matcher = regexPattern.matcher(fileName);
         result = matcher.find();
 
         return result;
@@ -144,7 +144,7 @@ public class FileMatchPattern implements Cloneable {
             return true;
         }
 
-        FileMatchPattern rhs = (FileMatchPattern) obj;
+        final FileMatchPattern rhs = (FileMatchPattern) obj;
         return Objects.equals(isIncludePattern, rhs.isIncludePattern)
             && Objects.equals(patternString, rhs.patternString);
     }

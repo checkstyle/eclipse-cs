@@ -35,7 +35,7 @@ public class MethodParamPadTransformer extends AbstractCTransformationClass {
         if (option == null) {
             option = "nospace";
         }
-        String space = switch (option) {
+        final String space = switch (option) {
             case "space" -> "insert";
             default -> "do not insert";
         };

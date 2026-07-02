@@ -99,8 +99,8 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
     private void importConfig(Shell shell) {
         promptImportConfigFile(shell).ifPresent(configFileString -> {
-            ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy", configFileString,
-                null, new ExternalFileConfigurationType(), true, null, null);
+            final ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
+                configFileString, null, new ExternalFileConfigurationType(), true, null, null);
             try {
                 tmpSourceConfig.copyConfiguration(getEditedWorkingCopy());
             }
@@ -111,13 +111,13 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     }
 
     private static Optional<String> promptImportConfigFile(Shell shell) {
-        FileDialog fileDialog = new FileDialog(shell);
+        final FileDialog fileDialog = new FileDialog(shell);
         fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);
         fileDialog.setFilterExtensions(new String[] {
             "*.xml", "*.*",
         });
         Optional<String> configFile = Optional.empty();
-        String configFileString = fileDialog.open();
+        final String configFileString = fileDialog.open();
         if (configFileString != null && new File(configFileString).exists()) {
             configFile = Optional.of(configFileString);
         }
@@ -130,7 +130,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
         if (mWorkingCopy.getLocation() == null) {
 
-            String location = "internal_config_" + System.currentTimeMillis() + ".xml";
+            final String location = "internal_config_" + System.currentTimeMillis() + ".xml";
             try {
                 mWorkingCopy.setLocation(location);
             }
@@ -159,7 +159,8 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
      *             error when trying to ensure the location file existance
      */
     private boolean ensureFileExists(String location) throws CheckstylePluginException {
-        Path resolvedLocation = InternalConfigurationType.resolveLocationInWorkspace(location);
+        final Path resolvedLocation =
+            InternalConfigurationType.resolveLocationInWorkspace(location);
 
         if (!Files.exists(resolvedLocation)) {
             if (resolvedLocation.getParent() != null) {

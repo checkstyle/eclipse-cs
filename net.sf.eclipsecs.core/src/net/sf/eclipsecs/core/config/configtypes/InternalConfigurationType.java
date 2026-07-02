@@ -64,11 +64,11 @@ public class InternalConfigurationType extends AbstractConfigurationType {
         super.notifyCheckConfigRemoved(checkConfiguration);
 
         // remove the configuration file from the workspace metadata
-        URL configFileURL = checkConfiguration.getResolvedConfigurationFileURL();
+        final URL configFileURL = checkConfiguration.getResolvedConfigurationFileURL();
         if (configFileURL != null) {
 
             try {
-                File configFile = URIUtil.toFile(configFileURL.toURI());
+                final File configFile = URIUtil.toFile(configFileURL.toURI());
 
                 if (configFile != null) {
                     configFile.delete();

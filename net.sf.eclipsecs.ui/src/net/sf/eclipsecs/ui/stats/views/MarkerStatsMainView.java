@@ -127,7 +127,7 @@ public final class MarkerStatsMainView extends Composite {
      */
     private static void hookContextMenu(final Collection<Object> actions, TableViewer viewer,
         IWorkbenchPartSite site) {
-        MenuManager menuMgr = new MenuManager();
+        final MenuManager menuMgr = new MenuManager();
         menuMgr.setRemoveAllWhenShown(true);
         menuMgr.addMenuListener(manager -> {
             for (Object item : actions) {
@@ -159,7 +159,7 @@ public final class MarkerStatsMainView extends Composite {
             this.tableViewer = new TableViewer(this,
                 SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
 
-            Table table = tableViewer.getTable();
+            final Table table = tableViewer.getTable();
             table.setLinesVisible(true);
             table.setHeaderVisible(true);
 
@@ -238,7 +238,7 @@ public final class MarkerStatsMainView extends Composite {
             this.tableViewer = new TableViewer(this,
                 SWT.H_SCROLL | SWT.V_SCROLL | SWT.SINGLE | SWT.FULL_SELECTION);
 
-            Table table = tableViewer.getTable();
+            final Table table = tableViewer.getTable();
             table.setLinesVisible(true);
             table.setHeaderVisible(true);
 

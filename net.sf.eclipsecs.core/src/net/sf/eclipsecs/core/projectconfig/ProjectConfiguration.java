@@ -86,17 +86,17 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
             : Collections.unmodifiableList(new ArrayList<FileSet>());
 
         // build list of filters
-        List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
+        final List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
         this.filters = new ArrayList<>(standardFilters);
 
         if (filters != null) {
             // merge with filters configured for the project
             for (int i = 0, size = this.filters.size(); i < size; i++) {
 
-                IFilter standardFilter = this.filters.get(i);
+                final IFilter standardFilter = this.filters.get(i);
 
                 for (int j = 0, size2 = filters.size(); j < size2; j++) {
-                    IFilter configuredFilter = filters.get(j);
+                    final IFilter configuredFilter = filters.get(j);
 
                     if (standardFilter.getInternalName()
                         .equals(configuredFilter.getInternalName())) {
@@ -156,7 +156,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
         boolean result = false;
 
         for (FileSet fileSet : getFileSets()) {
-            ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+            final ICheckConfiguration checkConfig = fileSet.getCheckConfig();
             if (configuration.equals(checkConfig)
                 || checkConfig instanceof CheckConfigurationWorkingCopy && configuration.equals(
                     ((CheckConfigurationWorkingCopy) checkConfig).getSourceCheckConfiguration())) {
@@ -177,14 +177,14 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
             clone.syncFormatter = syncFormatter;
 
             // clone file sets
-            List<FileSet> clonedFileSets = new ArrayList<>();
+            final List<FileSet> clonedFileSets = new ArrayList<>();
             for (FileSet fileSet : fileSets) {
                 clonedFileSets.add(fileSet.clone());
             }
             clone.fileSets = clonedFileSets;
 
             // clone filters
-            List<IFilter> clonedFilters = new ArrayList<>();
+            final List<IFilter> clonedFilters = new ArrayList<>();
             for (IFilter filter : filters) {
                 clonedFilters.add(filter.clone());
             }
@@ -207,7 +207,7 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
         if (this == obj) {
             return true;
         }
-        ProjectConfiguration rhs = (ProjectConfiguration) obj;
+        final ProjectConfiguration rhs = (ProjectConfiguration) obj;
 
         return Objects.equals(project, rhs.project)
             && Objects.equals(localCheckConfigs, rhs.localCheckConfigs)

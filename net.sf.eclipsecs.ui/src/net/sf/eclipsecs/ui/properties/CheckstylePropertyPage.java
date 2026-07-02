@@ -85,13 +85,13 @@ public class CheckstylePropertyPage extends PropertyPage {
         //
         IProject project = null;
 
-        IResource resource = (IResource) element;
+        final IResource resource = (IResource) element;
         if (resource.getType() == IResource.PROJECT) {
             project = (IProject) resource;
         }
 
         try {
-            IProjectConfiguration projectConfig =
+            final IProjectConfiguration projectConfig =
                 ProjectConfigurationFactory.getConfiguration(project);
             mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
 
@@ -107,7 +107,7 @@ public class CheckstylePropertyPage extends PropertyPage {
         CheckstyleLog.log(error, Messages.errorOpeningPropertiesPage);
         CheckstyleUIPlugin.warningDialog(null, Messages.errorOpeningPropertiesPage, error);
 
-        IProjectConfiguration projectConfig =
+        final IProjectConfiguration projectConfig =
             ProjectConfigurationFactory.createDefaultProjectConfiguration(project);
         mProjectConfig = new ProjectConfigurationWorkingCopy(projectConfig);
         try {
@@ -123,7 +123,7 @@ public class CheckstylePropertyPage extends PropertyPage {
         // suppress default- & apply-buttons
         noDefaultAndApplyButton();
 
-        TabFolder tabFolder = new TabFolder(parent, SWT.TOP);
+        final TabFolder tabFolder = new TabFolder(parent, SWT.TOP);
         tabFolder.setLayoutData(new GridData(GridData.FILL_BOTH));
         tabFolder.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             mainTab.refreshFileSetEditor();
@@ -136,14 +136,14 @@ public class CheckstylePropertyPage extends PropertyPage {
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(mainTab);
 
         // create the local configurations area
-        Control localConfigArea =
+        final Control localConfigArea =
             new LocalConfig(tabFolder, SWT.NONE, mProjectConfig.getLocalCheckConfigWorkingSet());
 
-        TabItem mainItem = new TabItem(tabFolder, SWT.NULL);
+        final TabItem mainItem = new TabItem(tabFolder, SWT.NULL);
         mainItem.setControl(mainTab);
         mainItem.setText(Messages.CheckstylePropertyPage_tabMain);
 
-        TabItem localItem = new TabItem(tabFolder, SWT.NULL);
+        final TabItem localItem = new TabItem(tabFolder, SWT.NULL);
         localItem.setControl(localConfigArea);
         localItem.setText(Messages.CheckstylePropertyPage_tabCheckConfigs);
 
@@ -155,9 +155,9 @@ public class CheckstylePropertyPage extends PropertyPage {
         boolean isValid = true;
         if (mProjectConfig != null) {
             // check if all check configurations resolve
-            List<FileSet> fileSets = mProjectConfig.getFileSets();
+            final List<FileSet> fileSets = mProjectConfig.getFileSets();
             for (FileSet fileset : fileSets) {
-                ICheckConfiguration checkConfig = fileset.getCheckConfig();
+                final ICheckConfiguration checkConfig = fileset.getCheckConfig();
                 if (checkConfig != null) {
                     try {
                         checkConfig.getCheckstyleConfiguration();
@@ -190,15 +190,15 @@ public class CheckstylePropertyPage extends PropertyPage {
             super(parent, style);
             setLayout(new FillLayout());
 
-            Composite noteAndEditor = new Composite(this, SWT.NULL);
+            final Composite noteAndEditor = new Composite(this, SWT.NULL);
             noteAndEditor.setLayout(new GridLayout(1, false));
             noteAndEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-            Label lblHint = new Label(noteAndEditor, SWT.WRAP);
+            final Label lblHint = new Label(noteAndEditor, SWT.WRAP);
             lblHint.setText(Messages.CheckstylePropertyPage_msgLocalConfigs);
             GridDataFactory.fillDefaults().hint(1, SWT.DEFAULT).applyTo(lblHint);
 
-            Control workingSetEditor =
+            final Control workingSetEditor =
                 new CheckConfigurationWorkingSetEditor(noteAndEditor, SWT.NONE, workingSet);
             workingSetEditor.setLayoutData(new GridData(GridData.FILL_BOTH));
         }

@@ -76,7 +76,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     @Override
     public Control createContents(Composite ancestor) {
-        Control header = new CheckstylePreferencePageHeader(ancestor, SWT.NONE);
+        final Control header = new CheckstylePreferencePageHeader(ancestor, SWT.NONE);
         GridDataFactory.fillDefaults().applyTo(header);
 
         this.generalSettings = new CheckstylePreferencePageGeneralSettings(ancestor, SWT.NONE,
@@ -97,7 +97,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
      * @return the configuration area
      */
     private Composite createCheckConfigContents(Composite parent) {
-        Group configComposite = new Group(parent, SWT.NULL);
+        final Group configComposite = new Group(parent, SWT.NULL);
         configComposite.setText(Messages.CheckstylePreferencePage_titleCheckConfigs);
         GridLayoutFactory.fillDefaults().applyTo(configComposite);
 
@@ -132,21 +132,21 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             //
             // fileset warning preference
             //
-            boolean warnFileSetsNow = generalSettings.getWarnBeforeLosingFilesets();
+            final boolean warnFileSetsNow = generalSettings.getWarnBeforeLosingFilesets();
             CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING,
                 warnFileSetsNow);
 
             //
             // Include rule names preference.
             //
-            boolean includeRuleNamesHasChanged =
+            final boolean includeRuleNamesHasChanged =
                 updateBooleanPreference(generalSettings.getIncludeRuleNames(),
                     CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
 
             //
             // Include module id preference.
             //
-            boolean includeModuleIdHasChanged =
+            final boolean includeModuleIdHasChanged =
                 updateBooleanPreference(generalSettings.getIncludeModuleIdButton(),
                     CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
 
@@ -154,33 +154,34 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             // Limit markers preference
             //
 
-            boolean limitMarkersHasChanged =
+            final boolean limitMarkersHasChanged =
                 updateBooleanPreference(generalSettings.getLimitCheckstyleMarkers(),
                     CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
 
-            int markerLimitNow = Integer.parseInt(generalSettings.getTxtMarkerLimit());
-            int markerLimitOriginal =
+            final int markerLimitNow = Integer.parseInt(generalSettings.getTxtMarkerLimit());
+            final int markerLimitOriginal =
                 CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
             CheckstylePluginPrefs.setInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT,
                 markerLimitNow);
-            boolean markerLimitHasChanged = markerLimitNow != markerLimitOriginal;
+            final boolean markerLimitHasChanged = markerLimitNow != markerLimitOriginal;
 
             //
             // Include background build preference.
             //
-            boolean runInBackgroundNow = generalSettings.getBackgroundFullBuild();
+            final boolean runInBackgroundNow = generalSettings.getBackgroundFullBuild();
             CheckstylePluginPrefs.setBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD,
                 runInBackgroundNow);
 
             // See if all projects need rebuild
-            boolean needRebuildAllProjects = needRebuildAllProjects(includeRuleNamesHasChanged,
-                includeModuleIdHasChanged, limitMarkersHasChanged, markerLimitHasChanged);
+            final boolean needRebuildAllProjects =
+                needRebuildAllProjects(includeRuleNamesHasChanged, includeModuleIdHasChanged,
+                    limitMarkersHasChanged, markerLimitHasChanged);
 
             // Get projects that need rebuild considering the changes
-            Collection<IProject> projectsToBuild = mWorkingSet.getAffectedProjects();
+            final Collection<IProject> projectsToBuild = mWorkingSet.getAffectedProjects();
 
             if (needRebuildAllProjects || !projectsToBuild.isEmpty()) {
-                String promptRebuildPref = CheckstyleUIPluginPrefs
+                final String promptRebuildPref = CheckstyleUIPluginPrefs
                     .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
                 boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
@@ -190,12 +191,13 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                 //
                 if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
 
-                    MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
-                        getShell(), Messages.CheckstylePreferencePage_titleRebuild,
-                        Messages.CheckstylePreferencePage_msgRebuild,
-                        Messages.CheckstylePreferencePage_nagRebuild, false,
-                        CheckstyleUIPlugin.getDefault().getPreferenceStore(),
-                        CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+                    final MessageDialogWithToggle dialog =
+                        MessageDialogWithToggle.openYesNoQuestion(getShell(),
+                            Messages.CheckstylePreferencePage_titleRebuild,
+                            Messages.CheckstylePreferencePage_msgRebuild,
+                            Messages.CheckstylePreferencePage_nagRebuild, false,
+                            CheckstyleUIPlugin.getDefault().getPreferenceStore(),
+                            CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
                     rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
                 }
@@ -227,7 +229,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
     private static final boolean updateBooleanPreference(boolean selection, String preference)
             throws BackingStoreException {
-        boolean original = CheckstylePluginPrefs.getBoolean(preference);
+        final boolean original = CheckstylePluginPrefs.getBoolean(preference);
         CheckstylePluginPrefs.setBoolean(preference, selection);
         return selection != original;
     }

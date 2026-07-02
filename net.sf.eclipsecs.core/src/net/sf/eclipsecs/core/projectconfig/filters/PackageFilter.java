@@ -52,21 +52,21 @@ public class PackageFilter extends AbstractFilter {
     public boolean accept(Object object) {
         boolean accept = true;
         if (object instanceof IResource resource) {
-            IContainer folder;
+            final IContainer folder;
             if (resource instanceof IContainer) {
                 folder = (IContainer) resource;
             } else {
                 folder = resource.getParent();
             }
 
-            IPath projRelativPath = folder.getProjectRelativePath();
+            final IPath projRelativPath = folder.getProjectRelativePath();
 
-            int size = mData != null ? mData.size() : 0;
+            final int size = mData != null ? mData.size() : 0;
             for (int i = 0; i < size; i++) {
-                String element = mData.get(i);
+                final String element = mData.get(i);
 
                 if (!RECURSE_OFF_MARKER.equals(element)) {
-                    IPath filteredPath = new Path(element);
+                    final IPath filteredPath = new Path(element);
                     if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)
                         || !mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
                         accept = false;
@@ -95,9 +95,9 @@ public class PackageFilter extends AbstractFilter {
     @Override
     public String getPresentableFilterData() {
 
-        StringBuilder buf = new StringBuilder();
+        final StringBuilder buf = new StringBuilder();
 
-        int size = mData != null ? mData.size() : 0;
+        final int size = mData != null ? mData.size() : 0;
         for (int i = 0; i < size; i++) {
             if (i > 0) {
                 buf.append(", ");
@@ -119,7 +119,7 @@ public class PackageFilter extends AbstractFilter {
             return true;
         }
 
-        PackageFilter rhs = (PackageFilter) o;
+        final PackageFilter rhs = (PackageFilter) o;
         return super.equals(o) && Objects.equals(mData, rhs.mData);
     }
 

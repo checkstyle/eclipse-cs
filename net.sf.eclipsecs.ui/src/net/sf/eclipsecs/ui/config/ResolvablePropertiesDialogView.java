@@ -91,21 +91,22 @@ public final class ResolvablePropertiesDialogView extends Composite {
 
         TableViewerEnhancer.enhance(mTableViewer, tableSettings, tableColumnLayout);
 
-        Composite buttonBar = new Composite(this, SWT.NULL);
+        final Composite buttonBar = new Composite(this, SWT.NULL);
         GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttonBar);
         GridDataFactory.swtDefaults().align(GridData.BEGINNING, GridData.BEGINNING)
             .applyTo(buttonBar);
 
-        Button btnAdd = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnAdd);
+        final Button btnAdd = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnAdd);
         btnAdd.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> openPropertyItemEditor.accept(null)));
-        Button btnEdit = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnEdit);
+        final Button btnEdit = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnEdit);
         btnEdit.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             if (getSelectedProperties().size() > 0) {
                 openPropertyItemEditor.accept(getSelectedProperties().getFirst());
             }
         }));
-        Button btnRemove = createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnRemove);
+        final Button btnRemove =
+            createButton(buttonBar, Messages.ResolvablePropertiesDialog_btnRemove);
         btnRemove.addSelectionListener(SelectionListener
             .widgetSelectedAdapter(event -> removePropertyItems.accept(getSelectedProperties())));
     }
@@ -124,7 +125,7 @@ public final class ResolvablePropertiesDialogView extends Composite {
     }
 
     private static Button createButton(Composite parent, String text) {
-        Button button = new Button(parent, SWT.PUSH);
+        final Button button = new Button(parent, SWT.PUSH);
         button.setText(text);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(button);
         return button;

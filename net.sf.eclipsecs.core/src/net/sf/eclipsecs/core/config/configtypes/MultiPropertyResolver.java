@@ -55,7 +55,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
         // propagate context to the childs
         for (int i = 0, size = mChildResolver.size(); i < size; i++) {
-            PropertyResolver aChildResolver = mChildResolver.get(i);
+            final PropertyResolver aChildResolver = mChildResolver.get(i);
             if (aChildResolver instanceof IContextAware) {
                 ((IContextAware) aChildResolver).setProjectContext(project);
             }
@@ -69,7 +69,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
         for (int i = 0, size = mChildResolver.size(); i < size; i++) {
 
-            PropertyResolver aChildResolver = mChildResolver.get(i);
+            final PropertyResolver aChildResolver = mChildResolver.get(i);
             value = aChildResolver.resolve(property);
 
             if (value != null) {

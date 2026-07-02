@@ -104,7 +104,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         try {
             mWorkingCopy.setLocation(editorView.getConfigLocation());
         } catch (CheckstylePluginException ex) {
-            String locationText = editorView.getConfigLocation();
+            final String locationText = editorView.getConfigLocation();
 
             if (StringUtils.isNotBlank(locationText) && ensureFileExists(locationText)) {
                 mWorkingCopy.setLocation(locationText);
@@ -128,13 +128,13 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
      */
     private boolean ensureFileExists(String locationText) throws CheckstylePluginException {
         // support dynamic location strings
-        String resolvedLocation =
+        final String resolvedLocation =
             ExternalFileConfigurationType.resolveDynamicLocation(locationText);
 
-        boolean exists;
-        File file = new File(resolvedLocation);
+        final boolean exists;
+        final File file = new File(resolvedLocation);
         if (!file.exists()) {
-            boolean confirm = MessageDialog.openQuestion(shell,
+            final boolean confirm = MessageDialog.openQuestion(shell,
                 Messages.ExternalFileConfigurationEditor_titleFileDoesNotExist,
                 Messages.ExternalFileConfigurationEditor_msgFileDoesNotExist);
             if (confirm) {

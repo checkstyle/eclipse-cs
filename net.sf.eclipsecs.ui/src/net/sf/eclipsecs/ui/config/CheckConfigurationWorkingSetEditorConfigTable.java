@@ -54,7 +54,7 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
         super(parent, style);
         final TableColumnLayout tableColumnLayout = new TableColumnLayout();
         setLayout(tableColumnLayout);
-        Table table = new Table(this, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
+        final Table table = new Table(this, SWT.BORDER | SWT.SINGLE | SWT.FULL_SELECTION);
 
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
@@ -101,8 +101,9 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
         tableViewer.setInput(model.configs());
         tableViewer.addDoubleClickListener(event -> configureCheckConfig.run());
         tableViewer.addSelectionChangedListener(event -> {
-            CheckConfigurationWorkingCopy checkConfig = (CheckConfigurationWorkingCopy) tableViewer
-                .getStructuredSelection().getFirstElement();
+            final CheckConfigurationWorkingCopy checkConfig =
+                (CheckConfigurationWorkingCopy) tableViewer.getStructuredSelection()
+                    .getFirstElement();
             handleSelectionChanged.accept(checkConfig);
         });
 

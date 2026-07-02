@@ -78,9 +78,9 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
 
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
 
-        Composite main = new Composite(composite, SWT.NONE);
+        final Composite main = new Composite(composite, SWT.NONE);
         GridLayout layout = new GridLayout(2, false);
         main.setLayout(layout);
         GridData gridData = new GridData(GridData.FILL_BOTH);
@@ -120,7 +120,7 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
 
     private Composite createButtons(Composite parent) {
         final Composite buttons = new Composite(parent, SWT.NONE);
-        GridLayout layout = new GridLayout(1, false);
+        final GridLayout layout = new GridLayout(1, false);
         layout.marginHeight = 0;
         layout.marginWidth = 0;
         buttons.setLayout(layout);
@@ -132,7 +132,7 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
         gridData.verticalAlignment = SWT.TOP;
         mAddButton.setLayoutData(gridData);
         mAddButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-            String text = mRegexText.getText();
+            final String text = mRegexText.getText();
             if (text.trim().length() > 0 && checkPatternValidity(text)) {
                 mFileTypesList.add(text);
                 mListViewer.refresh();

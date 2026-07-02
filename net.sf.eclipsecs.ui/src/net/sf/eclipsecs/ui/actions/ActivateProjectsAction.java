@@ -56,14 +56,14 @@ public class ActivateProjectsAction implements IObjectActionDelegate {
     public void selectionChanged(IAction action, ISelection selection) {
 
         if (selection instanceof IStructuredSelection) {
-            IStructuredSelection sel = (IStructuredSelection) selection;
+            final IStructuredSelection sel = (IStructuredSelection) selection;
             mSelectedProjects = sel.toList();
         }
     }
 
     @Override
     public void run(IAction action) {
-        BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
+        final BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
         job.schedule();
     }
 
@@ -89,7 +89,7 @@ public class ActivateProjectsAction implements IObjectActionDelegate {
                 if (configurationTarget.isOpen()
                     && !configurationTarget.hasNature(CheckstyleNature.NATURE_ID)) {
 
-                    ConfigureDeconfigureNatureJob job = new ConfigureDeconfigureNatureJob(
+                    final ConfigureDeconfigureNatureJob job = new ConfigureDeconfigureNatureJob(
                         configurationTarget, CheckstyleNature.NATURE_ID);
                     job.schedule();
                 }

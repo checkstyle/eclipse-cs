@@ -81,7 +81,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
         }
 
         if (literal != null) {
-            MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
+            final MethodInvocation equalsInvocation = node.getAST().newMethodInvocation();
             equalsInvocation.setName(node.getAST().newSimpleName("equals"));
             equalsInvocation
                 .setExpression((Expression) ASTNode.copySubtree(node.getAST(), literal));
@@ -91,7 +91,7 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
             // expression
             final Expression replacementNode;
             if (node.getOperator().equals(InfixExpression.Operator.NOT_EQUALS)) {
-                PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
+                final PrefixExpression prefixExpression = node.getAST().newPrefixExpression();
                 prefixExpression.setOperator(PrefixExpression.Operator.NOT);
                 prefixExpression.setOperand(equalsInvocation);
                 replacementNode = prefixExpression;
@@ -118,18 +118,18 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
         try {
             if (node.getLocationInParent().isChildProperty()) {
 
-                String property = node.getLocationInParent().getId();
+                final String property = node.getLocationInParent().getId();
 
-                String capitalizedProperty =
+                final String capitalizedProperty =
                     property.substring(0, 1).toUpperCase() + property.substring(1);
-                String setterMethodName = "set" + capitalizedProperty;
+                final String setterMethodName = "set" + capitalizedProperty;
 
                 Class<?> testClass = node.getClass();
 
                 while (testClass != null) {
 
                     try {
-                        Method setterMethod =
+                        final Method setterMethod =
                             node.getParent().getClass().getMethod(setterMethodName, testClass);
                         setterMethod.invoke(node.getParent(), replacementNode);
                         break;
@@ -141,10 +141,10 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
             }
             else if (node.getLocationInParent().isChildListProperty()) {
-                Method listMethod = node.getParent().getClass()
+                final Method listMethod = node.getParent().getClass()
                     .getMethod(node.getLocationInParent().getId(), (Class<?>[]) null);
                 @SuppressWarnings("unchecked")
-                List<ASTNode> list =
+                final List<ASTNode> list =
                     (List<ASTNode>) listMethod.invoke(node.getParent(), (Object[]) null);
                 list.set(list.indexOf(node), replacementNode);
             }

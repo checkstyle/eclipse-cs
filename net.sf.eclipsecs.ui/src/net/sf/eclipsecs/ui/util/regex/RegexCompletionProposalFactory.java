@@ -43,10 +43,10 @@ public final class RegexCompletionProposalFactory {
      *            text widget to complete
      */
     public static void createForText(Text widget) {
-        TextContentAdapter contentAdapter = new TextContentAdapter();
-        FindReplaceDocumentAdapterContentProposalProvider proposer =
+        final TextContentAdapter contentAdapter = new TextContentAdapter();
+        final FindReplaceDocumentAdapterContentProposalProvider proposer =
             new FindReplaceDocumentAdapterContentProposalProvider(true);
-        ContentAssistCommandAdapter contentAssist =
+        final ContentAssistCommandAdapter contentAssist =
             new ContentAssistCommandAdapter(widget, contentAdapter, proposer,
                 ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS, new char[0], true);
         contentAssist.setEnabled(true);

@@ -80,7 +80,7 @@ public class MarkerStatsView extends AbstractStatsView {
     public void createPartControl(Composite parent) {
         super.createPartControl(parent);
 
-        MarkerStatsViewDataProviders providers =
+        final MarkerStatsViewDataProviders providers =
             new MarkerStatsViewDataProviders(getDialogSettings());
         this.detailContentProvider = providers.detail().contentProvider();
 
@@ -145,7 +145,7 @@ public class MarkerStatsView extends AbstractStatsView {
     @Override
     protected void makeActions() {
         // action used to display the detail of a specific error type
-        Action mDrillDownAction = new Action() {
+        final Action mDrillDownAction = new Action() {
             @Override
             public void run() {
                 mMainSection.getSelectedMarkerCategory().ifPresent(markerStat -> {
@@ -166,7 +166,7 @@ public class MarkerStatsView extends AbstractStatsView {
             .getImageDescriptor(ISharedImages.IMG_TOOL_FORWARD_DISABLED));
 
         // action used to go back to the master view
-        Action mDrillBackAction = new Action() {
+        final Action mDrillBackAction = new Action() {
             @Override
             public void run() {
                 drillBack();
@@ -181,7 +181,7 @@ public class MarkerStatsView extends AbstractStatsView {
             .getImageDescriptor(ISharedImages.IMG_TOOL_BACK_DISABLED));
 
         // action used to show a specific error in the editor
-        Action mShowErrorAction = new Action() {
+        final Action mShowErrorAction = new Action() {
             @Override
             public void run() {
                 mMainSection.getSelectedMarker().ifPresent(marker -> {
@@ -228,20 +228,21 @@ public class MarkerStatsView extends AbstractStatsView {
     private void updateLabel() {
         if (!mIsDrilledDown) {
 
-            Stats stats = getStats();
+            final Stats stats = getStats();
             if (stats != null) {
-                String text = NLS.bind(Messages.MarkerStatsView_lblOverviewMessage, new Object[] {
-                    Integer.valueOf(stats.getMarkerCount()),
-                    Integer.valueOf(stats.getMarkerStats().size()),
-                    Integer.valueOf(stats.getMarkerCountAll()),
-                });
+                final String text =
+                    NLS.bind(Messages.MarkerStatsView_lblOverviewMessage, new Object[] {
+                        Integer.valueOf(stats.getMarkerCount()),
+                        Integer.valueOf(stats.getMarkerStats().size()),
+                        Integer.valueOf(stats.getMarkerCountAll()),
+                    });
                 mDescLabel.setText(text);
             } else {
                 mDescLabel.setText("");
             }
         } else {
 
-            String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
+            final String text = NLS.bind(Messages.MarkerStatsView_lblDetailMessage, new Object[] {
                 detailContentProvider.getCurrentDetailCategory(),
                 Integer.valueOf(detailContentProvider.getMarkerCount()),
             });

@@ -84,7 +84,7 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
 
     private static Button createButton(Composite parent, int style, String text,
         GridDataFactory gridDataFactory) {
-        Button button = new Button(parent, style);
+        final Button button = new Button(parent, style);
         button.setText(text);
         gridDataFactory.applyTo(button);
         return button;

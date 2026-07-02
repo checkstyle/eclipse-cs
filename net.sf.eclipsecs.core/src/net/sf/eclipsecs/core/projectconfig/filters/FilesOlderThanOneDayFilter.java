@@ -32,7 +32,7 @@ public class FilesOlderThanOneDayFilter extends AbstractFilter {
         boolean goesThrough = true;
 
         if (o instanceof IFile) {
-            IFile file = (IFile) o;
+            final IFile file = (IFile) o;
             if ((System.currentTimeMillis() - file.getLocalTimeStamp()) < MILLIS_IN_24_HOURS) {
                 goesThrough = true;
             } else {

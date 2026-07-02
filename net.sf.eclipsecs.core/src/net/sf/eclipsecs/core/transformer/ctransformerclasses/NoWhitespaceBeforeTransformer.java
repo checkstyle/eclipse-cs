@@ -38,7 +38,7 @@ public class NoWhitespaceBeforeTransformer extends AbstractCTransformationClass 
         }
 
         for (String token : val.split("\\s*,\\s*")) {
-            List<String> settings = switch (token) {
+            final List<String> settings = switch (token) {
                 case "POST_INC", "POST_DEC" -> List.of("insert_space_before_postfix_operator");
                 case "COMMA" -> List.of("insert_space_before_comma_in_allocation_expression",
                     "insert_space_before_comma_in_annotation",

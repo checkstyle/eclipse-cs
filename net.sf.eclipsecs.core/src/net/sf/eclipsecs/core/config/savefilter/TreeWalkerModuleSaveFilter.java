@@ -43,7 +43,7 @@ public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 
         for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
-            Module module = configuredModules.get(i);
+            final Module module = configuredModules.get(i);
 
             if (XMLTags.TREEWALKER_MODULE.equals(module.getMetaData().identity().internalName())) {
                 containsTreeWalkerModule = true;
@@ -60,7 +60,7 @@ public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 
         // add the TreeWalker if needed
         if (!containsTreeWalkerModule && containsTreeWalkerDependantModule) {
-            Module treeWalker =
+            final Module treeWalker =
                 new Module(MetadataFactory.getRuleMetadata(XMLTags.TREEWALKER_MODULE), false);
             configuredModules.add(0, treeWalker);
         }

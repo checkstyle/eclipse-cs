@@ -87,7 +87,7 @@ public class ResolvableProperty implements Cloneable {
         if (this == obj) {
             return true;
         }
-        ResolvableProperty rhs = (ResolvableProperty) obj;
+        final ResolvableProperty rhs = (ResolvableProperty) obj;
         return Objects.equals(propertyName, rhs.propertyName) && Objects.equals(value, rhs.value);
     }
 

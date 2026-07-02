@@ -79,15 +79,15 @@ public class DesignForExtensionQuickfix extends AbstractASTResolution {
         public boolean visit(MethodDeclaration node) {
             // recalculate start position because optional javadoc is mixed
             // into the original start position
-            int pos = node.getStartPosition() + (node.getJavadoc() != null
+            final int pos = node.getStartPosition() + (node.getJavadoc() != null
                 ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
                 : 0);
             if (containsPosition(lineInfo, pos) && !Modifier.isFinal(node.getModifiers())) {
-                Modifier finalModifier =
+                final Modifier finalModifier =
                     node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
                 node.modifiers().add(finalModifier);
                 // reorder modifiers into their correct order
-                List<ASTNode> reorderedModifiers =
+                final List<ASTNode> reorderedModifiers =
                     ModifierOrderQuickfix.reOrderModifiers(node.modifiers());
                 node.modifiers().clear();
                 node.modifiers().addAll(reorderedModifiers);

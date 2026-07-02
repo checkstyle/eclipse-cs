@@ -49,7 +49,7 @@ public final class SimpleFileSetsEditorView extends Composite {
         super(parent, style);
         GridLayoutFactory.fillDefaults().applyTo(this);
 
-        Group configArea = new Group(this, SWT.NULL);
+        final Group configArea = new Group(this, SWT.NULL);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(configArea);
         configArea.setText(Messages.SimpleFileSetsEditor_titleSimpleConfig);
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(configArea);
@@ -60,18 +60,18 @@ public final class SimpleFileSetsEditorView extends Composite {
         mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
         GridDataFactory.fillDefaults().grab(true, false).applyTo(mComboViewer.getControl());
 
-        Button mBtnManageConfigs = new Button(configArea, SWT.PUSH);
+        final Button mBtnManageConfigs = new Button(configArea, SWT.PUSH);
         mBtnManageConfigs.setText(Messages.SimpleFileSetsEditor_btnManageConfigs);
         mBtnManageConfigs.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> manageConfig.run()));
         GridDataFactory.fillDefaults().applyTo(mBtnManageConfigs);
 
         // Description
-        Label lblConfigDesc = new Label(configArea, SWT.LEFT);
+        final Label lblConfigDesc = new Label(configArea, SWT.LEFT);
         lblConfigDesc.setText(Messages.SimpleFileSetsEditor_lblDescription);
         GridDataFactory.fillDefaults().span(2, 1).applyTo(lblConfigDesc);
 
-        Text mTxtConfigDescription = new Text(configArea,
+        final Text mTxtConfigDescription = new Text(configArea,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.V_SCROLL);
         GridDataFactory.fillDefaults().span(2, 1)
             .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
@@ -79,7 +79,7 @@ public final class SimpleFileSetsEditorView extends Composite {
             .applyTo(mTxtConfigDescription);
 
         mComboViewer.addSelectionChangedListener(event -> {
-            ICheckConfiguration config =
+            final ICheckConfiguration config =
                 (ICheckConfiguration) event.getStructuredSelection().getFirstElement();
             mDefaultFileSet.setCheckConfig(config);
             mTxtConfigDescription

@@ -69,7 +69,7 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
             mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
             mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-            String initValue = getInitValue();
+            final String initValue = getInitValue();
             if (initValue != null) {
                 mTextWidget.setText(unescape(initValue));
             }
@@ -106,9 +106,10 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
 
     @Override
     public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-            : metadata.getDefaultValue();
+        final ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        final String defaultValue =
+            metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         mTextWidget.setText(defaultValue != null ? defaultValue : "");
     }
 }

@@ -44,7 +44,7 @@ public final class FileMatchPatternControl extends Composite {
         super(parent, style);
         GridLayoutFactory.fillDefaults().applyTo(this);
 
-        Group group = new Group(this, SWT.NONE);
+        final Group group = new Group(this, SWT.NONE);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(group);
         group.setText(Messages.FileSetEditDialog_titlePatternsTable);
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(group);
@@ -94,7 +94,7 @@ public final class FileMatchPatternControl extends Composite {
      */
     private static Button createPushButton(Composite parent, String label,
         Runnable selectionListener) {
-        Button button = new Button(parent, SWT.PUSH);
+        final Button button = new Button(parent, SWT.PUSH);
         button.setText(label);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).applyTo(button);
         button.addSelectionListener(

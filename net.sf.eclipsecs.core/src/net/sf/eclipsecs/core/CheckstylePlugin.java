@@ -71,7 +71,7 @@ public class CheckstylePlugin extends Plugin {
             new ExtensionClassLoader(context.getBundle(), ADDON_PROVIDER_EXT_PT_ID);
 
         try {
-            Logger checkstyleErrorLog =
+            final Logger checkstyleErrorLog =
                 Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog");
 
             checkstyleErrorLog.addHandler(new EclipseLogHandler(this));

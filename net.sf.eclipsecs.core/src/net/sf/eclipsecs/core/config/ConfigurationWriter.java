@@ -86,14 +86,14 @@ public final class ConfigurationWriter {
             // pass the configured modules through the save filters
             SaveFilters.process(modules);
 
-            Document doc = DocumentHelper.createDocument();
+            final Document doc = DocumentHelper.createDocument();
             doc.addDocType(XMLTags.MODULE_TAG,
                 "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN",
                 "https://checkstyle.org/dtds/configuration_1_3.dtd");
 
-            String lineSeperator = System.lineSeparator();
+            final String lineSeperator = System.lineSeparator();
 
-            String comment = lineSeperator + "    This configuration file was written by "
+            final String comment = lineSeperator + "    This configuration file was written by "
                 + "the eclipse-cs plugin configuration editor" + lineSeperator;
             doc.addComment(comment);
 
@@ -107,7 +107,7 @@ public final class ConfigurationWriter {
 
             // find the root module (Checker)
             // the root module is the only module that has no parent
-            List<Module> rootModules = getChildModules(null, modules);
+            final List<Module> rootModules = getChildModules(null, modules);
             if (rootModules.isEmpty()) {
                 throw new CheckstylePluginException(Messages.errorNoRootModule);
             }
@@ -127,7 +127,7 @@ public final class ConfigurationWriter {
 
     private static void writeModules(Module module, Branch parent, Severity parentSeverity,
         List<Module> remainingModules) {
-        Element moduleEl = writeModule(module, parent);
+        final Element moduleEl = writeModule(module, parent);
 
         Severity severity = parentSeverity;
         if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
@@ -157,13 +157,13 @@ public final class ConfigurationWriter {
      */
     private static Element writeModule(Module module, Branch parent) {
         // Start the module
-        Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
+        final Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
         moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().identity().internalName());
 
         // Write comment
         if (Strings.emptyToNull(module.getComment()) != null) {
 
-            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            final Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
             metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.COMMENT_ID);
             metaEl.addAttribute(XMLTags.VALUE_TAG, module.getComment());
         }
@@ -171,7 +171,7 @@ public final class ConfigurationWriter {
         // Write severity only if it differs from the parents severity
         if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
 
-            Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+            final Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
             propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
             propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().toXmlValue());
         }
@@ -179,7 +179,7 @@ public final class ConfigurationWriter {
         // write module id
         if (Strings.emptyToNull(module.getId()) != null) {
 
-            Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+            final Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
             propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.ID_TAG);
             propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getId());
         }
@@ -189,7 +189,7 @@ public final class ConfigurationWriter {
             .filter(property -> !property.getValue().isEmpty()).filter(property -> !Objects
                 .equals(property.getValue(), property.getMetaData().getDefaultValue()))
             .forEach(property -> {
-                Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
+                final Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
                 propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
                 propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
             });
@@ -197,7 +197,7 @@ public final class ConfigurationWriter {
         // write custom messages
         for (Map.Entry<String, String> entry : module.getCustomMessages().entrySet()) {
 
-            Element metaEl = moduleEl.addElement(XMLTags.MESSAGE_TAG);
+            final Element metaEl = moduleEl.addElement(XMLTags.MESSAGE_TAG);
             metaEl.addAttribute(XMLTags.KEY_TAG, entry.getKey());
             metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
         }
@@ -205,7 +205,7 @@ public final class ConfigurationWriter {
         // write custom metadata
         for (Map.Entry<String, String> entry : module.getCustomMetaData().entrySet()) {
 
-            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            final Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
             metaEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
             metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
         }
@@ -213,7 +213,7 @@ public final class ConfigurationWriter {
         // Write last enabled severity level
         if (module.getLastEnabledSeverity() != null) {
 
-            Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
+            final Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
             metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
             metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().toXmlValue());
         }
@@ -231,12 +231,12 @@ public final class ConfigurationWriter {
      * @return the list of child modules
      */
     private static List<Module> getChildModules(Module module, List<Module> remainingModules) {
-        List<Module> childModules = new ArrayList<>();
+        final List<Module> childModules = new ArrayList<>();
 
         for (Module tmp : remainingModules) {
-            String parentInternalName =
+            final String parentInternalName =
                 module != null ? module.getMetaData().identity().internalName() : null;
-            String childParent = tmp.getMetaData().identity().parent();
+            final String childParent = tmp.getMetaData().identity().parent();
 
             // only the checker module has no parent
             if (parentInternalName == null && "Root".equals(childParent)) {

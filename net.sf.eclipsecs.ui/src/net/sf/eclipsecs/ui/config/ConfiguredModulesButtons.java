@@ -36,7 +36,7 @@ public class ConfiguredModulesButtons extends Composite {
         super(parent, style);
         GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(true).margins(0, 0).applyTo(this);
 
-        Button mRemoveButton = new Button(this, SWT.PUSH);
+        final Button mRemoveButton = new Button(this, SWT.PUSH);
         mRemoveButton.setText(Messages.CheckConfigurationConfigureDialog_btnRemove);
         GridDataFactory.swtDefaults().applyTo(mRemoveButton);
         if (configurable) {
@@ -45,7 +45,7 @@ public class ConfiguredModulesButtons extends Composite {
         }
         mRemoveButton.setEnabled(configurable);
 
-        Button mEditButton = new Button(this, SWT.PUSH);
+        final Button mEditButton = new Button(this, SWT.PUSH);
         mEditButton.setText(Messages.CheckConfigurationConfigureDialog_btnOpen);
         GridDataFactory.swtDefaults().applyTo(mEditButton);
         mEditButton.addSelectionListener(

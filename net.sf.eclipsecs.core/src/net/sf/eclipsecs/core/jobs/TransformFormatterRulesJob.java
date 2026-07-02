@@ -63,20 +63,21 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
     @Override
     public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
         IStatus status = Status.CANCEL_STATUS;
-        SubMonitor subMonitor = SubMonitor.convert(monitor);
+        final SubMonitor subMonitor = SubMonitor.convert(monitor);
         subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
 
-        IJavaProject javaProject = JavaCore.create(mProject);
+        final IJavaProject javaProject = JavaCore.create(mProject);
         if (javaProject != null) {
             final String projectPath = mProject.getLocation().toString();
 
-            Map<String, String> formatterSettings = javaProject.getOptions(true).entrySet().stream()
-                .filter(entry -> entry.getKey().startsWith("org.eclipse.jdt.core.formatter."))
-                .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
+            final Map<String, String> formatterSettings =
+                javaProject.getOptions(true).entrySet().stream()
+                    .filter(entry -> entry.getKey().startsWith("org.eclipse.jdt.core.formatter."))
+                    .collect(Collectors.toMap(Map.Entry::getKey, Map.Entry::getValue));
 
             if (!formatterSettings.isEmpty()) {
                 try {
-                    FormatterTransformer transformer = new FormatterTransformer();
+                    final FormatterTransformer transformer = new FormatterTransformer();
                     transformer.transformRules(projectPath + "/test-checkstyle.xml",
                         formatterSettings);
                 } catch (CheckstylePluginException ex) {

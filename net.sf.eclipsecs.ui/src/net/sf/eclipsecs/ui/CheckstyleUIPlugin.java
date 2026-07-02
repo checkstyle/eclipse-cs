@@ -85,7 +85,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      */
     public static Locale getPlatformLocale() {
 
-        String locale = Platform.getNL();
+        final String locale = Platform.getNL();
         final String[] parts = locale.split("_");
 
         final String language = parts.length > 0 ? parts[0] : "";
@@ -109,10 +109,10 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      */
     public static void errorDialog(Shell shell, String message, Throwable throwable, boolean log) {
 
-        Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+        final Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
             message != null ? message : "", throwable);
 
-        String msg = NLS.bind(Messages.errorDialogMainMessage, message);
+        final String msg = NLS.bind(Messages.errorDialogMainMessage, message);
         ErrorDialog.openError(shell, Messages.CheckstyleLog_titleInternalError, msg, status);
 
         if (log) {
@@ -145,7 +145,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      *            the exception
      */
     public static void warningDialog(Shell shell, String message, Throwable throwable) {
-        Status status = new Status(IStatus.WARNING, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+        final Status status = new Status(IStatus.WARNING, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
             throwable.getLocalizedMessage(), throwable);
 
         ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);

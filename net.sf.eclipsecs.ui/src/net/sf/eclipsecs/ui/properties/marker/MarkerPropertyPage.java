@@ -67,7 +67,7 @@ public class MarkerPropertyPage extends PropertyPage {
 
         try {
             createSeverityText(composite);
-            RuleIdentity ruleIdentity = createGroupText(composite);
+            final RuleIdentity ruleIdentity = createGroupText(composite);
             createRuleText(composite, ruleIdentity);
             createIdText(composite);
             createDescriptionText(composite, ruleIdentity);
@@ -82,8 +82,8 @@ public class MarkerPropertyPage extends PropertyPage {
         new Label(composite, SWT.NONE)
             .setImage(getSeverityImage(getIssue().getAttribute(IMarker.SEVERITY, -1)));
         new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Issue);
-        String message = (String) getIssue().getAttribute(IMarker.MESSAGE);
-        Text labelMessage = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+        final String message = (String) getIssue().getAttribute(IMarker.MESSAGE);
+        final Text labelMessage = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
         labelMessage.setText(message);
         GridDataFactory.fillDefaults().hint(WIDTH, SWT.DEFAULT).applyTo(labelMessage);
     }
@@ -93,9 +93,9 @@ public class MarkerPropertyPage extends PropertyPage {
             .setImage(CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
         new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Group);
 
-        String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
-        RuleIdentity ruleIdentity = MetadataFactory.getRuleMetadata(moduleName).identity();
-        Text labelGroupName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+        final String moduleName = (String) getIssue().getAttribute(CheckstyleMarker.MODULE_NAME);
+        final RuleIdentity ruleIdentity = MetadataFactory.getRuleMetadata(moduleName).identity();
+        final Text labelGroupName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
         labelGroupName.setText(ruleIdentity.group().getGroupName());
         return ruleIdentity;
     }
@@ -104,28 +104,28 @@ public class MarkerPropertyPage extends PropertyPage {
         new Label(composite, SWT.NONE).setImage(CheckstyleUIPluginImages.MODULE_ICON.getImage());
         new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
 
-        Text labelRuleName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+        final Text labelRuleName = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
         labelRuleName.setText(ruleIdentity.ruleName());
     }
 
     private void createIdText(final Composite composite) {
-        var id = getIssue().getAttribute(CheckstyleMarker.MODULE_ID, null);
+        final var id = getIssue().getAttribute(CheckstyleMarker.MODULE_ID, null);
         if (!StringUtils.isEmpty(id)) {
             new Label(composite, SWT.NONE).setImage(PlatformUI.getWorkbench().getSharedImages()
                 .getImage(ISharedImages.IMG_OBJS_INFO_TSK));
             new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Id);
 
-            Text labelId = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
+            final Text labelId = new Text(composite, SWT.WRAP | SWT.READ_ONLY);
             labelId.setText(id);
         }
     }
 
     private void createDescriptionText(final Composite composite, RuleIdentity ruleIdentity) {
-        Label descriptionLabel = new Label(composite, SWT.NONE);
+        final Label descriptionLabel = new Label(composite, SWT.NONE);
         descriptionLabel.setText(Messages.MarkerPropertyPage_Description);
         GridDataFactory.fillDefaults().span(NUM_COLUMNS, 1).applyTo(descriptionLabel);
 
-        Browser browserDescription = new Browser(composite, SWT.BORDER);
+        final Browser browserDescription = new Browser(composite, SWT.BORDER);
         browserDescription.setText(HtmlUtil.getDescriptionHtml(ruleIdentity.description()));
         GridDataFactory.fillDefaults().span(NUM_COLUMNS, 1).hint(WIDTH, SWT.DEFAULT)
             .grab(true, true).applyTo(browserDescription);
@@ -139,7 +139,7 @@ public class MarkerPropertyPage extends PropertyPage {
      * @return Image or <code>null</code>
      */
     public static Image getSeverityImage(int severity) {
-        ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
+        final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();
         return switch (severity) {
             case IMarker.SEVERITY_ERROR -> sharedImages.getImage(ISharedImages.IMG_OBJS_ERROR_TSK);
             case IMarker.SEVERITY_WARNING -> sharedImages.getImage(ISharedImages.IMG_OBJS_WARN_TSK);

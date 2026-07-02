@@ -61,7 +61,7 @@ public class FormatterTransformer {
     // CheckstyleFileWriter acts on its own parameters
     public void transformRules(final String path, Map<String, String> formatterSettings)
             throws CheckstylePluginException {
-        CheckstyleSetting checkstyleSetting = new CheckstyleSetting();
+        final CheckstyleSetting checkstyleSetting = new CheckstyleSetting();
         loadTransformationClasses(formatterSettings).stream()
             .map(AbstractFTransformationClass::transformRule)
             .forEach(checkstyleSetting::addSetting);
@@ -81,12 +81,12 @@ public class FormatterTransformer {
      */
     private List<AbstractFTransformationClass> loadTransformationClasses(
         Map<String, String> formatterSettings) throws CheckstylePluginException {
-        List<AbstractFTransformationClass> targetTransformers = new ArrayList<>();
+        final List<AbstractFTransformationClass> targetTransformers = new ArrayList<>();
         for (Map.Entry<String, String> entry : formatterSettings.entrySet()) {
-            String rule = entry.getKey();
-            String value = entry.getValue();
+            final String rule = entry.getKey();
+            final String value = entry.getValue();
 
-            Class<? extends AbstractFTransformationClass> transformationClass =
+            final Class<? extends AbstractFTransformationClass> transformationClass =
                 allTransformers.get(rule);
 
             if (transformationClass != null) {
@@ -110,8 +110,8 @@ public class FormatterTransformer {
     @SuppressWarnings("unchecked")
     private static Map<String, Class<? extends AbstractFTransformationClass>>
         discoverTransformers() {
-        String formatterKeyAnnotation = FormatterKey.class.getName();
-        ClassLoader loader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
+        final String formatterKeyAnnotation = FormatterKey.class.getName();
+        final ClassLoader loader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
         try (ScanResult scanResult =
             new ClassGraph().addClassLoader(loader).enableAnnotationInfo().scan()) {
             return scanResult.getClassesWithAnnotation(formatterKeyAnnotation).stream()

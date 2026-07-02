@@ -72,20 +72,20 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
     public void selectionChanged(IAction action, ISelection selection) {
 
         if (selection instanceof IStructuredSelection) {
-            IStructuredSelection sel = (IStructuredSelection) selection;
+            final IStructuredSelection sel = (IStructuredSelection) selection;
             mSelectedProjects = sel.toList();
         }
     }
 
     @Override
     public void run(IAction action) {
-        List<IProject> filteredProjects =
+        final List<IProject> filteredProjects =
             Arrays.stream(ResourcesPlugin.getWorkspace().getRoot().getProjects())
                 .filter(IProject::isAccessible).collect(Collectors.toList());
 
         filteredProjects.removeAll(mSelectedProjects);
 
-        ElementListSelectionDialog dialog = new ElementListSelectionDialog(
+        final ElementListSelectionDialog dialog = new ElementListSelectionDialog(
             mPart.getSite().getShell(), new WorkbenchLabelProvider());
         dialog.setElements(filteredProjects.toArray(new IProject[0]));
         dialog.setHelpAvailable(false);
@@ -93,11 +93,11 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
         dialog.setTitle(Messages.ConfigureProjectFromBluePrintAction_titleSelectBlueprintProject);
         if (Window.OK == dialog.open()) {
 
-            Object[] result = dialog.getResult();
+            final Object[] result = dialog.getResult();
 
             if (result.length > 0) {
 
-                BulkConfigureJob job =
+                final BulkConfigureJob job =
                     new BulkConfigureJob((IProject) result[0], mSelectedProjects);
                 job.schedule();
             }
@@ -127,16 +127,16 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
         public IStatus runInWorkspace(IProgressMonitor monitor) {
             IStatus status;
             try {
-                IProjectConfiguration bluePrintConfig =
+                final IProjectConfiguration bluePrintConfig =
                     ProjectConfigurationFactory.getConfiguration(mBlueprint);
 
-                List<ICheckConfiguration> bluePrintLocalConfigs =
+                final List<ICheckConfiguration> bluePrintLocalConfigs =
                     bluePrintConfig.getLocalCheckConfigurations();
 
                 for (IProject configurationTarget : mProjectsToConfigure) {
-                    IProjectConfiguration config =
+                    final IProjectConfiguration config =
                         ProjectConfigurationFactory.getConfiguration(configurationTarget);
-                    ProjectConfigurationWorkingCopy workingCopy =
+                    final ProjectConfigurationWorkingCopy workingCopy =
                         new ProjectConfigurationWorkingCopy(config);
 
                     // clear filesets and filters
@@ -144,7 +144,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
                     workingCopy.getFilters().clear();
 
                     // clear local configurations
-                    ICheckConfigurationWorkingSet checkConfigsWorkingSet =
+                    final ICheckConfigurationWorkingSet checkConfigsWorkingSet =
                         workingCopy.getLocalCheckConfigWorkingSet();
 
                     for (ICheckConfiguration localConfig : workingCopy
@@ -158,7 +158,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
                     // add local configurations from blueprint
                     for (ICheckConfiguration localConfig : bluePrintLocalConfigs) {
-                        CheckConfigurationWorkingCopy newCopy =
+                        final CheckConfigurationWorkingCopy newCopy =
                             checkConfigsWorkingSet.newWorkingCopy(localConfig);
                         checkConfigsWorkingSet.addCheckConfiguration(newCopy);
                     }

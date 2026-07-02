@@ -79,7 +79,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
 
         GridLayoutFactory.fillDefaults().applyTo(this);
 
-        boolean global = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
+        final boolean global = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
 
         final CheckConfigurationWorkingSetEditorModel model =
             new CheckConfigurationWorkingSetEditorModel(mWorkingSet.getWorkingCopies(), global,
@@ -95,7 +95,8 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
     private boolean isDefaultConfig(CheckConfigurationWorkingCopy config) {
         boolean configDefault = false;
         if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet) {
-            CheckConfigurationWorkingCopy defaultConfig = globalWorkingSet.getDefaultCheckConfig();
+            final CheckConfigurationWorkingCopy defaultConfig =
+                globalWorkingSet.getDefaultCheckConfig();
             configDefault = defaultConfig != null && defaultConfig.equals(config);
         }
         return configDefault;
@@ -105,12 +106,12 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      * Create a new Check configuration.
      */
     private void addCheckConfig() {
-        CheckConfigurationPropertiesDialog dialog =
+        final CheckConfigurationPropertiesDialog dialog =
             new CheckConfigurationPropertiesDialog(getShell(), null, mWorkingSet);
         dialog.setBlockOnOpen(true);
         if (Window.OK == dialog.open()) {
 
-            CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
+            final CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
             mWorkingSet.addCheckConfiguration(newConfig);
 
             editorView.setConfigs(mWorkingSet.getWorkingCopies());
@@ -122,9 +123,9 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      * Edit the properties of a check configuration.
      */
     private void editCheckConfig() {
-        CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
+        final CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
         if (config != null) {
-            CheckConfigurationPropertiesDialog dialog =
+            final CheckConfigurationPropertiesDialog dialog =
                 new CheckConfigurationPropertiesDialog(getShell(), config, mWorkingSet);
             dialog.setBlockOnOpen(true);
             if (Window.OK == dialog.open()) {
@@ -134,7 +135,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
     }
 
     private void configureCheckConfig() {
-        CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
+        final CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
 
         if (config != null) {
 
@@ -142,7 +143,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                 // test if file exists
                 config.getCheckstyleConfiguration();
 
-                CheckConfigurationConfigureDialog dialog =
+                final CheckConfigurationConfigureDialog dialog =
                     new CheckConfigurationConfigureDialog(getShell(), config);
                 dialog.setBlockOnOpen(true);
                 dialog.open();
@@ -160,19 +161,19 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      * Copy an existing config.
      */
     private void copyCheckConfig() {
-        ICheckConfiguration sourceConfig = editorView.getSelectedConfig();
+        final ICheckConfiguration sourceConfig = editorView.getSelectedConfig();
         if (sourceConfig != null) {
             try {
 
                 // Open the properties dialog to change default name and description
-                CheckConfigurationPropertiesDialog dialog =
+                final CheckConfigurationPropertiesDialog dialog =
                     new CheckConfigurationPropertiesDialog(getShell(), null, mWorkingSet);
                 dialog.setTemplateConfiguration(sourceConfig);
 
                 dialog.setBlockOnOpen(true);
                 if (Window.OK == dialog.open()) {
 
-                    CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
+                    final CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
 
                     // Copy the source configuration into the new internal config
                     sourceConfig.copyConfiguration(newConfig);
@@ -192,9 +193,9 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      * Remove a config.
      */
     private void removeCheckConfig() {
-        CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
+        final CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
         if (checkConfig != null && checkConfig.isEditable()) {
-            boolean confirm = MessageDialog.openQuestion(getShell(),
+            final boolean confirm = MessageDialog.openQuestion(getShell(),
                 Messages.CheckstylePreferencePage_titleDelete,
                 NLS.bind(Messages.CheckstylePreferencePage_msgDelete, checkConfig.getName()));
             if (confirm) {
@@ -218,7 +219,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
     }
 
     private void setDefaultCheckConfig() {
-        CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
+        final CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
         if (checkConfig != null) {
             if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
                 ((GlobalCheckConfigurationWorkingSet) mWorkingSet)
@@ -233,13 +234,13 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      * Export a configuration.
      */
     private void exportCheckstyleCheckConfig() {
-        ICheckConfiguration config = editorView.getSelectedConfig();
+        final ICheckConfiguration config = editorView.getSelectedConfig();
         if (config != null) {
-            FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
+            final FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
             dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
-            String path = dialog.open();
+            final String path = dialog.open();
             if (path != null) {
-                File file = new File(path);
+                final File file = new File(path);
 
                 try {
                     config.exportConfiguration(file);
