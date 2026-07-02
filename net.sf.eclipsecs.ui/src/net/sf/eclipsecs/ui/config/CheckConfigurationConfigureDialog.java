@@ -298,7 +298,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     private void openModule(Module module) {
         if (module != null) {
-            final Module workingCopy = module.clone();
+            final Module workingCopy = new Module(module);
             final RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
                 workingCopy, !mConfiguration.isConfigurable(),
                 Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);

@@ -33,7 +33,7 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
  * Object representing a module from a checkstyle configuration. Can be augmented with meta data.
  *
  */
-public class Module implements Cloneable {
+public class Module {
 
     //
     // attributes
@@ -65,6 +65,27 @@ public class Module implements Cloneable {
 
     /** The last severity level before setting to ignored. */
     private Severity mLastEnabledSeverity;
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the module to copy
+     */
+    public Module(Module other) {
+        mName = other.mName;
+        mMetaData = other.mMetaData;
+        mProperties = new ArrayList<>();
+        for (ConfigProperty prop : other.mProperties) {
+            mProperties.add(new ConfigProperty(prop));
+        }
+        mComment = other.mComment;
+        id = other.id;
+        mSeverityLevel = other.mSeverityLevel;
+        mLastEnabledSeverity = other.mLastEnabledSeverity;
+        mCustomMessages.putAll(other.mCustomMessages);
+        mCustomMetaData.putAll(other.mCustomMetaData);
+    }
 
     //
     // constructors
@@ -293,22 +314,5 @@ public class Module implements Cloneable {
      */
     public Map<String, String> getCustomMetaData() {
         return mCustomMetaData;
-    }
-
-    @Override
-    public Module clone() {
-        try {
-            final Module clone = (Module) super.clone();
-            clone.mProperties = new ArrayList<>();
-
-            for (ConfigProperty prop : mProperties) {
-                clone.getProperties().add(prop.clone());
-            }
-
-            return clone;
-        } catch (CloneNotSupportedException ex) {
-            // should not happen
-            throw new InternalError(ex);
-        }
     }
 }

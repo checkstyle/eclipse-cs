@@ -28,13 +28,24 @@ import com.google.common.base.MoreObjects;
  * Represents a configuration property who's value must be resolved.
  *
  */
-public class ResolvableProperty implements Cloneable {
+public class ResolvableProperty {
 
     /** The name of the property. */
     private String propertyName;
 
     /** The property value. */
     private String value;
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the property to copy
+     */
+    public ResolvableProperty(ResolvableProperty other) {
+        this.propertyName = other.propertyName;
+        this.value = other.value;
+    }
 
     /**
      * Creates a resolvable property.
@@ -94,16 +105,6 @@ public class ResolvableProperty implements Cloneable {
     @Override
     public int hashCode() {
         return Objects.hash(propertyName, value);
-    }
-
-    @Override
-    public ResolvableProperty clone() {
-        try {
-            return (ResolvableProperty) super.clone();
-        } catch (CloneNotSupportedException ex) {
-            // should never happen
-            throw new InternalError(ex);
-        }
     }
 
     @Override

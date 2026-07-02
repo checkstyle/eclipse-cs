@@ -28,6 +28,24 @@ import org.eclipse.core.resources.IResource;
  */
 public class DerivedFilesFilter extends AbstractFilter {
 
+    public DerivedFilesFilter() {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    public DerivedFilesFilter(DerivedFilesFilter other) {
+        super(other);
+    }
+
+    @Override
+    public IFilter copy() {
+        return new DerivedFilesFilter(this);
+    }
+
     @Override
     public boolean accept(Object element) {
 

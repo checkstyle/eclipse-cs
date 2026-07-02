@@ -23,7 +23,6 @@ package net.sf.eclipsecs.core.projectconfig;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 
@@ -39,7 +38,7 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
  * plus the additional filters.
  *
  */
-public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
+public class ProjectConfiguration implements IProjectConfiguration {
 
     /** The project. */
     private IProject project;
@@ -165,37 +164,6 @@ public class ProjectConfiguration implements Cloneable, IProjectConfiguration {
             }
         }
         return result;
-    }
-
-    @Override
-    public ProjectConfiguration clone() {
-        ProjectConfiguration clone = null;
-        try {
-            clone = (ProjectConfiguration) super.clone();
-            clone.fileSets = new LinkedList<>();
-            clone.useSimpleConfig = useSimpleConfig;
-            clone.syncFormatter = syncFormatter;
-
-            // clone file sets
-            final List<FileSet> clonedFileSets = new ArrayList<>();
-            for (FileSet fileSet : fileSets) {
-                clonedFileSets.add(fileSet.clone());
-            }
-            clone.fileSets = clonedFileSets;
-
-            // clone filters
-            final List<IFilter> clonedFilters = new ArrayList<>();
-            for (IFilter filter : filters) {
-                clonedFilters.add(filter.clone());
-            }
-            clone.filters = clonedFilters;
-        }
-        catch (CloneNotSupportedException ex) {
-            // should never happen
-            throw new InternalError(ex);
-        }
-
-        return clone;
     }
 
     @Override
