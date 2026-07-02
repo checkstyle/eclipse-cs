@@ -184,6 +184,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
      * @param dialogSettings
      *            the dialog settings
      * @param focusResource
+     *            the resource to focus on
      */
     public static CheckstyleMarkerFilter restoreState(IDialogSettings dialogSettings,
         IResource[] focusResource) {
@@ -270,6 +271,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
      * Restores the default state of the filter.
      *
      * @param focusResources
+     *            the resources to focus on
      */
     public static CheckstyleMarkerFilter resetState(IResource[] focusResources) {
         return new CheckstyleMarkerFilter(DEFAULT_ACTIVATION_STATUS, DEFAULT_ON_RESOURCE, null,

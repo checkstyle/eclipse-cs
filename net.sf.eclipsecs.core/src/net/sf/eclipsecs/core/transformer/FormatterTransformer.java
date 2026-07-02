@@ -56,7 +56,9 @@ public class FormatterTransformer {
      * @param path
      *            The path where the checkstyle-xml file gets generated.
      * @param formatterSettings
+     *            The formatter settings to transform.
      * @throws CheckstylePluginException
+     *             if an error occurs during transformation
      */
     // CheckstyleFileWriter acts on its own parameters
     public void transformRules(final String path, Map<String, String> formatterSettings)
