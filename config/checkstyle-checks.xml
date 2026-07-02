@@ -708,6 +708,7 @@
             <property name="allowUnknownTags" value="true"/>
         </module>
         <module name="JavadocVariable"/>
+        <module name="NonEmptyAtclauseDescription"/>
         <module name="SingleLineJavadoc"/>
         <module name="WriteTag"/>
         <module name="RequireEmptyLineBeforeBlockTagGroup"/>
