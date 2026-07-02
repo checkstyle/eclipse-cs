@@ -158,6 +158,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
     /**
      * Retrieves the bytes of an additional properties bundle associated with the Checkstyle
      * configuration.
+     *
      * <p>
      * This method attempts to find a <code>.properties</code> file with the same base name as the
      * provided configuration URL.

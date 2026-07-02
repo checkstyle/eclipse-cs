@@ -62,9 +62,7 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  *     return false;
  * }
  * </pre>
- *
  * into a return statement like
- *
  * <pre>
  * return condition;
  * </pre>

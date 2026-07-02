@@ -133,10 +133,12 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
      * Returns a deep copy of the subtree of AST nodes rooted at the given node. The resulting nodes
      * are owned by the same AST as the given node. Even if the given node has a parent, the result
      * node will be unparented.
+     *
      * <p>
      * Source range information on the original nodes is automatically copied to the new nodes.
      * Client properties ( <code>properties</code>) are not carried over.
      * </p>
+     *
      * <p>
      * The node's <code>AST</code> and the target <code>AST</code> must support the same API level.
      * </p>
