@@ -75,8 +75,8 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
         @Override
         public boolean visit(IfStatement node) {
 
-            int nodePos = node.getStartPosition();
-            int nodeEnd = nodePos + node.getLength();
+            final int nodePos = node.getStartPosition();
+            final int nodeEnd = nodePos + node.getLength();
             if (nodePos >= lineInfo.getOffset()
                 && nodePos <= (lineInfo.getOffset() + lineInfo.getLength())
                 || nodePos <= lineInfo.getOffset()
@@ -90,7 +90,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
         @Override
         public boolean visit(ForStatement node) {
             if (containsPosition(lineInfo, node.getStartPosition())) {
-                Block block = createBracifiedCopy(node.getAST(), node.getBody());
+                final Block block = createBracifiedCopy(node.getAST(), node.getBody());
                 node.setBody(block);
             }
 
@@ -100,7 +100,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
         @Override
         public boolean visit(DoStatement node) {
             if (containsPosition(lineInfo, node.getStartPosition())) {
-                Block block = createBracifiedCopy(node.getAST(), node.getBody());
+                final Block block = createBracifiedCopy(node.getAST(), node.getBody());
                 node.setBody(block);
             }
 
@@ -110,7 +110,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
         @Override
         public boolean visit(WhileStatement node) {
             if (containsPosition(lineInfo, node.getStartPosition())) {
-                Block block = createBracifiedCopy(node.getAST(), node.getBody());
+                final Block block = createBracifiedCopy(node.getAST(), node.getBody());
                 node.setBody(block);
             }
 
@@ -130,13 +130,13 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
                 if (ifStatement.getThenStatement() instanceof IfStatement) {
                     bracifyIfStatement((IfStatement) ifStatement.getThenStatement());
                 }
-                Block block =
+                final Block block =
                     createBracifiedCopy(ifStatement.getAST(), ifStatement.getThenStatement());
                 ifStatement.setThenStatement(block);
             }
 
             // check the else statement if it is a block
-            Statement elseStatement = ifStatement.getElseStatement();
+            final Statement elseStatement = ifStatement.getElseStatement();
             if (elseStatement != null && !(elseStatement instanceof Block)) {
 
                 // in case the else statement is an further if statement
@@ -150,7 +150,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
                     // Block block = ifStatement.getAST().newBlock();
                     // block.statements().add(ASTNode.copySubtree(block.getAST(),
                     // elseStatement));
-                    Block block =
+                    final Block block =
                         createBracifiedCopy(ifStatement.getAST(), ifStatement.getElseStatement());
                     ifStatement.setElseStatement(block);
                 }
@@ -159,7 +159,7 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
 
         @SuppressWarnings("unchecked")
         private Block createBracifiedCopy(AST ast, Statement body) {
-            Block block = ast.newBlock();
+            final Block block = ast.newBlock();
             block.statements().add(ASTNode.copySubtree(block.getAST(), body));
             return block;
         }

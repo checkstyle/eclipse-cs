@@ -51,7 +51,7 @@ public final class FileMatchPatternTable extends Composite {
         super(parent, style);
         GridLayoutFactory.fillDefaults().applyTo(this);
 
-        Table table = createTable(this);
+        final Table table = createTable(this);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
         this.mPatternViewer = new CheckboxTableViewer(table);
@@ -59,7 +59,7 @@ public final class FileMatchPatternTable extends Composite {
         mPatternViewer.setLabelProvider(new FileMatchPatternLabelProvider());
         mPatternViewer.setContentProvider(ArrayContentProvider.getInstance());
         mPatternViewer.addDoubleClickListener(event -> {
-            FileMatchPattern pattern =
+            final FileMatchPattern pattern =
                 (FileMatchPattern) ((IStructuredSelection) event.getSelection()).getFirstElement();
             callbacks.editFileMatchPattern().accept(pattern);
             callbacks.updateMatchView().run();
@@ -87,15 +87,15 @@ public final class FileMatchPatternTable extends Composite {
     }
 
     private static Table createTable(Composite parent) {
-        Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
+        final Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        TableColumn column1 = new TableColumn(table, SWT.NONE);
+        final TableColumn column1 = new TableColumn(table, SWT.NONE);
         column1.setText(Messages.FileSetEditDialog_colInclude);
         column1.pack();
 
-        TableColumn column2 = new TableColumn(table, SWT.NONE);
+        final TableColumn column2 = new TableColumn(table, SWT.NONE);
         column2.setText(Messages.FileSetEditDialog_colRegex);
         table.addControlListener(ControlListener.controlResizedAdapter(event -> {
             column2.setWidth(Math.max(table.getClientArea().width - column1.getWidth(), 0));
@@ -112,7 +112,7 @@ public final class FileMatchPatternTable extends Composite {
 
         @Override
         public String getColumnText(Object element, int columnIndex) {
-            String columnText;
+            final String columnText;
             if (element instanceof FileMatchPattern pattern) {
                 columnText = switch (columnIndex) {
                     case 0 -> new String();

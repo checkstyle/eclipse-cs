@@ -94,7 +94,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
 
         mAdditionalData.putAll(checkConfigToEdit.getAdditionalData());
 
-        List<ResolvableProperty> props = checkConfigToEdit.getResolvableProperties();
+        final List<ResolvableProperty> props = checkConfigToEdit.getResolvableProperties();
         for (ResolvableProperty prop : props) {
             mProperties.add(prop.clone());
         }
@@ -142,7 +142,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
             throw new CheckstylePluginException(Messages.errorConfigNameEmpty);
         }
 
-        String oldName = getName();
+        final String oldName = getName();
         if (!name.equals(oldName)) {
 
             mEditedName = name;
@@ -169,7 +169,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
             throw new CheckstylePluginException(Messages.errorLocationEmpty);
         }
 
-        String oldLocation = getLocation();
+        final String oldLocation = getLocation();
         if (!location.equals(oldLocation)) {
 
             try {
@@ -193,7 +193,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
      *            the new description
      */
     public void setDescription(String description) {
-        String oldDescription = getDescription();
+        final String oldDescription = getDescription();
         if (description == null || !description.equals(oldDescription)) {
             mEditedDescription = description;
         }
@@ -266,14 +266,15 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
             ConfigurationWriter.write(byteOut, modules, this);
 
             // all went ok, write to the file
-            File configFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
+            final File configFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
             Files.write(configFile.toPath(), byteOut.toByteArray());
 
             // refresh the files if within the workspace
             // Bug 1251194 - Resource out of sync after performing changes to
             // config
-            IPath path = new Path(configFile.toString());
-            IFile[] files = CheckstylePlugin.getWorkspace().getRoot().findFilesForLocation(path);
+            final IPath path = new Path(configFile.toString());
+            final IFile[] files =
+                CheckstylePlugin.getWorkspace().getRoot().findFilesForLocation(path);
             for (int i = 0; i < files.length; i++) {
                 try {
                     files[i].refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
@@ -359,7 +360,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
         if (this == obj) {
             return true;
         }
-        ICheckConfiguration rhs = (ICheckConfiguration) obj;
+        final ICheckConfiguration rhs = (ICheckConfiguration) obj;
         return Objects.equals(getName(), rhs.getName())
             && Objects.equals(getLocation(), rhs.getLocation())
             && Objects.equals(getDescription(), rhs.getDescription())

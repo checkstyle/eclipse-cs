@@ -61,18 +61,18 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         super(parent, style);
         GridLayoutFactory.swtDefaults().applyTo(this);
 
-        SashForm sashForm = new SashForm(this, SWT.NONE);
+        final SashForm sashForm = new SashForm(this, SWT.NONE);
         GridDataFactory.fillDefaults().hint(SWT.DEFAULT, MAX_HEIGHT).applyTo(sashForm);
         GridLayoutFactory.swtDefaults().applyTo(sashForm);
 
-        Label lblDescription = new Label(this, SWT.NULL);
+        final Label lblDescription = new Label(this, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationConfigureDialog_lblDescription);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(lblDescription);
 
         mBrowserDescription = new Browser(this, SWT.BORDER);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(mBrowserDescription);
         mBrowserDescription.addLocationListener(LocationListener.changingAdapter(event -> {
-            String url = event.location;
+            final String url = event.location;
             if (url != null && url.startsWith("http")) {
                 InternalBrowser.openLinkInExternalBrowser(url);
                 event.doit = false;

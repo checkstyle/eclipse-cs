@@ -79,23 +79,23 @@ public final class ComplexFileSetsEditorTableView extends Composite {
     }
 
     private static Table createTable(Composite parent) {
-        Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
+        final Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(table);
 
         table.setHeaderVisible(true);
         table.setLinesVisible(true);
 
-        TableLayout tableLayout = new TableLayout();
+        final TableLayout tableLayout = new TableLayout();
         table.setLayout(tableLayout);
 
-        TableColumn column1 = new TableColumn(table, SWT.NONE);
+        final TableColumn column1 = new TableColumn(table, SWT.NONE);
         column1.setText(Messages.ComplexFileSetsEditor_colEnabled);
         column1.setResizable(false);
 
-        TableColumn column2 = new TableColumn(table, SWT.NONE);
+        final TableColumn column2 = new TableColumn(table, SWT.NONE);
         column2.setText(Messages.ComplexFileSetsEditor_colFilesetName);
 
-        TableColumn column3 = new TableColumn(table, SWT.NONE);
+        final TableColumn column3 = new TableColumn(table, SWT.NONE);
         column3.setText(Messages.ComplexFileSetsEditor_colConfiguration);
 
         tableLayout.addColumnData(new ColumnWeightData(1));

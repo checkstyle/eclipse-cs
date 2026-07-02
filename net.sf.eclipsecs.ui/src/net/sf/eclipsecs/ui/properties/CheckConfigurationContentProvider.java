@@ -48,14 +48,16 @@ public final class CheckConfigurationContentProvider implements IStructuredConte
     @Override
     public Object[] getElements(Object inputElement) {
 
-        List<ICheckConfiguration> configurations = new ArrayList<>();
+        final List<ICheckConfiguration> configurations = new ArrayList<>();
 
         if (inputElement instanceof ProjectConfigurationWorkingCopy) {
-            ICheckConfiguration[] localConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
-                .getLocalCheckConfigWorkingSet().getWorkingCopies();
+            final ICheckConfiguration[] localConfigs =
+                ((ProjectConfigurationWorkingCopy) inputElement).getLocalCheckConfigWorkingSet()
+                    .getWorkingCopies();
 
-            ICheckConfiguration[] globalConfigs = ((ProjectConfigurationWorkingCopy) inputElement)
-                .getGlobalCheckConfigWorkingSet().getWorkingCopies();
+            final ICheckConfiguration[] globalConfigs =
+                ((ProjectConfigurationWorkingCopy) inputElement).getGlobalCheckConfigWorkingSet()
+                    .getWorkingCopies();
 
             configurations.addAll(Arrays.asList(localConfigs));
             configurations.addAll(Arrays.asList(globalConfigs));

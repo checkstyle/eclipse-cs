@@ -87,7 +87,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
         for (ICheckConfiguration cfg : checkConfigs) {
 
-            CheckConfigurationWorkingCopy workingCopy =
+            final CheckConfigurationWorkingCopy workingCopy =
                 new CheckConfigurationWorkingCopy(cfg, this);
             mWorkingCopies.add(workingCopy);
 
@@ -188,9 +188,9 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     @Override
     public Collection<IProject> getAffectedProjects() throws CheckstylePluginException {
 
-        Set<IProject> projects = new HashSet<>();
+        final Set<IProject> projects = new HashSet<>();
 
-        CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
+        final CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
         for (int i = 0; i < workingCopies.length; i++) {
 
             // skip non dirty configurations
@@ -198,7 +198,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 continue;
             }
 
-            List<IProject> usingProjects =
+            final List<IProject> usingProjects =
                 ProjectConfigurationFactory.getProjectsUsingConfig(workingCopies[i]);
 
             projects.addAll(usingProjects);
@@ -230,23 +230,23 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
         for (CheckConfigurationWorkingCopy checkConfig : mWorkingCopies) {
 
-            ICheckConfiguration original = checkConfig.getSourceCheckConfiguration();
+            final ICheckConfiguration original = checkConfig.getSourceCheckConfiguration();
 
             // only if the name of the check config differs from the original
             if (original != null && original.getName() != null
                 && !checkConfig.getName().equals(original.getName())) {
 
-                List<IProject> projects =
+                final List<IProject> projects =
                     ProjectConfigurationFactory.getProjectsUsingConfig(checkConfig);
                 for (IProject project : projects) {
 
-                    IProjectConfiguration projectConfig =
+                    final IProjectConfiguration projectConfig =
                         ProjectConfigurationFactory.getConfiguration(project);
 
-                    ProjectConfigurationWorkingCopy workingCopy =
+                    final ProjectConfigurationWorkingCopy workingCopy =
                         new ProjectConfigurationWorkingCopy(projectConfig);
 
-                    List<FileSet> fileSets = workingCopy.getFileSets();
+                    final List<FileSet> fileSets = workingCopy.getFileSets();
                     for (FileSet fileSet : fileSets) {
 
                         // Check if the fileset uses the check config
@@ -277,7 +277,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
             IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
             configPath = configPath.append(CheckConfigurationFactory.CHECKSTYLE_CONFIG_FILE);
-            File configFile = configPath.toFile();
+            final File configFile = configPath.toFile();
 
             ICheckConfiguration defaultConfig = mDefaultCheckConfig;
 
@@ -287,11 +287,11 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 defaultConfig = null;
             }
 
-            Document doc = createCheckConfigurationsDocument(mWorkingCopies, defaultConfig);
+            final Document doc = createCheckConfigurationsDocument(mWorkingCopies, defaultConfig);
 
             // write to the file after the document creation was successful
             // prevents corrupted files in case of error
-            byte[] data = XMLUtil.toByteArray(doc);
+            final byte[] data = XMLUtil.toByteArray(doc);
             Files.write(configFile.toPath(), data);
         }
         catch (IOException ex) {
@@ -324,8 +324,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     private static Document createCheckConfigurationsDocument(
         List<CheckConfigurationWorkingCopy> configurations, ICheckConfiguration defaultConfig) {
 
-        Document doc = DocumentHelper.createDocument();
-        Element root = doc.addElement(XMLTags.CHECKSTYLE_ROOT_TAG);
+        final Document doc = DocumentHelper.createDocument();
+        final Element root = doc.addElement(XMLTags.CHECKSTYLE_ROOT_TAG);
         root.addAttribute(XMLTags.VERSION_TAG,
             CheckConfigurationFactory.CURRENT_CONFIG_FILE_FORMAT_VERSION);
 

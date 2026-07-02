@@ -73,8 +73,8 @@ public class AuditorJob extends AbstractCheckJob {
 
             mAuditor.runAudit(mProject, monitor);
         } catch (CheckstylePluginException ex) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-                ex.getLocalizedMessage(), ex);
+            final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                IStatus.ERROR, ex.getLocalizedMessage(), ex);
             throw new CoreException(status);
         }
         return Status.OK_STATUS;

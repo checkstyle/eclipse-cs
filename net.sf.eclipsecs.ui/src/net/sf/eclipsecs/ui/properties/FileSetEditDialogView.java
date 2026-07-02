@@ -58,7 +58,7 @@ public final class FileSetEditDialogView extends Composite {
             checkConfigSelectionChanged, configureFileSetConfig);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(commonArea);
 
-        SashForm sashForm = new SashForm(this, SWT.VERTICAL);
+        final SashForm sashForm = new SashForm(this, SWT.VERTICAL);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(sashForm);
         GridLayoutFactory.swtDefaults().applyTo(sashForm);
 

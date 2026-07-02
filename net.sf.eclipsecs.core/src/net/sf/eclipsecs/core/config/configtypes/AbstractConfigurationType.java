@@ -122,21 +122,21 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
     public CheckstyleConfigurationFile getCheckstyleConfiguration(
         ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
-        CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
+        final CheckstyleConfigurationFile data = new CheckstyleConfigurationFile();
 
         try {
 
             // resolve the true configuration file URL
             data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
 
-            URLConnection connection = data.getResolvedConfigFileURL().openConnection();
+            final URLConnection connection = data.getResolvedConfigFileURL().openConnection();
             connection.connect();
 
             // get last modification timestamp
             data.setModificationStamp(connection.getLastModified());
 
             // get the configuration file data
-            byte[] configurationFileData = getBytesFromURLConnection(connection);
+            final byte[] configurationFileData = getBytesFromURLConnection(connection);
             data.setCheckConfigFileBytes(configurationFileData);
 
             // get the properties bundle
@@ -144,7 +144,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
                 .ifPresent(data::setAdditionalPropertyBundleBytes);
 
             // get the property resolver
-            PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
+            final PropertyResolver resolver = getPropertyResolver(checkConfiguration, data);
             data.setPropertyResolver(resolver);
 
         }
@@ -169,7 +169,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
      *         loaded
      */
     protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
-        String location = checkConfigURL.toString();
+        final String location = checkConfigURL.toString();
 
         // Strip file extension
         String propsLocation = null;
@@ -185,8 +185,8 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
 
         Optional<byte[]> bytes = Optional.empty();
         try {
-            URL propertyFileURL = URI.create(propsLocation).toURL();
-            URLConnection connection = propertyFileURL.openConnection();
+            final URL propertyFileURL = URI.create(propsLocation).toURL();
+            final URLConnection connection = propertyFileURL.openConnection();
 
             bytes = Optional.of(getBytesFromURLConnection(connection));
         }
@@ -247,7 +247,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
         if (this == obj) {
             return true;
         }
-        AbstractConfigurationType rhs = (AbstractConfigurationType) obj;
+        final AbstractConfigurationType rhs = (AbstractConfigurationType) obj;
         return mIsCreatable == rhs.mIsCreatable && mIsEditable == rhs.mIsEditable
             && mIsConfigurable == rhs.mIsConfigurable && Objects.equals(mName, rhs.mName)
             && Objects.equals(mInternalName, rhs.mInternalName);

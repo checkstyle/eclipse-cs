@@ -72,34 +72,35 @@ public final class PluginFilters {
      */
     static {
 
-        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+        final IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-        IConfigurationElement[] elements =
+        final IConfigurationElement[] elements =
             pluginRegistry.getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-        List<IFilter> filters = new ArrayList<>();
+        final List<IFilter> filters = new ArrayList<>();
 
         for (int i = 0; i < elements.length; i++) {
 
             try {
 
-                String name = elements[i].getAttribute(ATTR_NAME);
-                String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
-                String desc = elements[i].getAttribute(ATTR_DESCRIPTION);
-                boolean readOnly = Boolean.parseBoolean(elements[i].getAttribute(ATTR_READONLY));
+                final String name = elements[i].getAttribute(ATTR_NAME);
+                final String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
+                final String desc = elements[i].getAttribute(ATTR_DESCRIPTION);
+                final boolean readOnly =
+                    Boolean.parseBoolean(elements[i].getAttribute(ATTR_READONLY));
 
-                IFilter filter = (IFilter) elements[i].createExecutableExtension(ATTR_CLASS);
+                final IFilter filter = (IFilter) elements[i].createExecutableExtension(ATTR_CLASS);
                 filter.initialize(name, internalName, desc, readOnly);
 
-                boolean defaultState =
+                final boolean defaultState =
                     Boolean.parseBoolean(elements[i].getAttribute(ATTR_SELECTED));
 
                 filter.setEnabled(defaultState);
 
                 // Load initial filter data
-                List<String> data = new ArrayList<>();
-                IConfigurationElement[] dataTags = elements[i].getChildren(TAG_DATA);
-                int size = dataTags != null ? dataTags.length : 0;
+                final List<String> data = new ArrayList<>();
+                final IConfigurationElement[] dataTags = elements[i].getChildren(TAG_DATA);
+                final int size = dataTags != null ? dataTags.length : 0;
                 for (int j = 0; j < size; j++) {
                     data.add(dataTags[j].getAttribute(ATTR_VALUE));
                 }
@@ -128,7 +129,7 @@ public final class PluginFilters {
     public static IFilter[] getConfiguredFilters() {
 
         // Copy the prototypes for the client
-        IFilter[] mFilter = new IFilter[FILTER_PROTOTYPES.length];
+        final IFilter[] mFilter = new IFilter[FILTER_PROTOTYPES.length];
 
         // Clone and set the state of the filter
         for (int i = 0; i < mFilter.length; i++) {

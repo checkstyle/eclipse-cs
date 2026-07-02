@@ -53,7 +53,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     @Override
     public String getHelpContextForMarker(IMarker marker) {
         String helpContext = null;
-        String module = getModule(marker);
+        final String module = getModule(marker);
         if (module.endsWith(CHECK_SUFFIX)) {
             helpContext = PLUGIN_PREFIX
                 + StringUtils.removeEnd(StringUtils.substringAfterLast(module, '.'), CHECK_SUFFIX);
@@ -74,7 +74,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
 
     @Override
     public IContext getContext(String id, String locale) {
-        var moduleName = StringUtils.substringAfter(id, PLUGIN_PREFIX);
+        final var moduleName = StringUtils.substringAfter(id, PLUGIN_PREFIX);
         return new CheckstyleHelpContext(moduleName);
     }
 
@@ -92,14 +92,14 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
      */
     public static String getOnlineHelp(String moduleName) {
         String url = null;
-        var metadata = MetadataFactory.getRuleMetadata(moduleName);
+        final var metadata = MetadataFactory.getRuleMetadata(moduleName);
         if (metadata != null) {
             var group = metadata.identity().group().getGroupId().toLowerCase();
             // some web pages are different to the packages in Checkstyle
             if ("indentation".equals(group) || StringUtils.isEmpty(group)) {
                 group = "misc";
             }
-            var file = moduleName.toLowerCase();
+            final var file = moduleName.toLowerCase();
             url = "https://checkstyle.org/checks/" + group + "/" + file + ".html#" + moduleName;
         }
         return url;
@@ -144,7 +144,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
 
         @Override
         public IHelpResource[] getRelatedTopics() {
-            IHelpResource helpResource = new CheckstyleHelpTopic(moduleName);
+            final IHelpResource helpResource = new CheckstyleHelpTopic(moduleName);
             return new IHelpResource[] {
                 helpResource,
             };

@@ -73,7 +73,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(mChkSimpleConfig);
 
         // create the checkbox for formatter syncing
-        Button mChkSyncFormatter = new Button(this, SWT.CHECK);
+        final Button mChkSyncFormatter = new Button(this, SWT.CHECK);
         mChkSyncFormatter.setText(Messages.CheckstylePropertyPage_btnSyncFormatter);
         mChkSyncFormatter.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             propertyPageContext.configuration().setSyncFormatter(mChkSyncFormatter.getSelection());
@@ -109,7 +109,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
      * @return the created control
      */
     private Control createFileSetsArea(Composite fileSetsContainer) {
-        Control[] controls = fileSetsContainer.getChildren();
+        final Control[] controls = fileSetsContainer.getChildren();
         for (int i = 0; i < controls.length; i++) {
             controls[i].dispose();
         }
@@ -131,10 +131,10 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         public void widgetSelected(SelectionEvent e) {
             propertyPageContext.configuration().setUseSimpleConfig(mChkSimpleConfig.getSelection());
 
-            boolean showWarning =
+            final boolean showWarning =
                 CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
             if (showWarning && propertyPageContext.configuration().isUseSimpleConfig()) {
-                MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
+                final MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
                     Messages.CheckstylePropertyPage_titleWarnFilesets, null,
                     Messages.CheckstylePropertyPage_msgWarnFilesets, MessageDialog.WARNING,
                     new String[] {

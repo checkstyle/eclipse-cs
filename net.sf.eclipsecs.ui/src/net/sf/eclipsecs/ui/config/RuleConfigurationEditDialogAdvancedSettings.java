@@ -59,7 +59,7 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
         mCommentText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblComment);
         mIdText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblId);
 
-        Group messagesGroup = new Group(this, SWT.NULL);
+        final Group messagesGroup = new Group(this, SWT.NULL);
         messagesGroup.setText(Messages.RuleConfigurationEditDialog_titleCustMsg);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(messagesGroup);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(messagesGroup);
@@ -68,7 +68,7 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
 
         // take keys from metadata as well as predefined from the
         // configuration. This way we don't lose keys not defined in metadata.
-        Set<String> msgKeys = new TreeSet<>();
+        final Set<String> msgKeys = new TreeSet<>();
         msgKeys.addAll(rule.getMetaData().messageKeys());
         msgKeys.addAll(rule.getCustomMessages().keySet());
 
@@ -82,7 +82,7 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
                 msgText.setMessage(standardMessage);
             }
 
-            String message = rule.getCustomMessages().get(msgKey);
+            final String message = rule.getCustomMessages().get(msgKey);
             if (StringUtils.isNotBlank(message)) {
                 msgText.setText(message);
             }
@@ -91,12 +91,12 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
             mCustomMessages.put(msgKey, msgText);
         }
 
-        String comment = rule.getComment();
+        final String comment = rule.getComment();
         if (comment != null) {
             mCommentText.setText(comment);
         }
 
-        String id = rule.getId();
+        final String id = rule.getId();
         if (id != null) {
             mIdText.setText(id);
         }
@@ -124,10 +124,10 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
     }
 
     private static Text createLabeledText(Composite parent, String label) {
-        Label commentLabel = new Label(parent, SWT.NULL);
+        final Label commentLabel = new Label(parent, SWT.NULL);
         commentLabel.setText(label);
         GridDataFactory.swtDefaults().applyTo(commentLabel);
-        Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
+        final Text text = new Text(parent, SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(text);
         return text;
     }

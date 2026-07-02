@@ -61,17 +61,18 @@ public final class CheckConfigurationTester {
     public static List<ResolvableProperty> getUnresolvedProperties(
         ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
-        CheckstyleConfigurationFile configFile = checkConfiguration.getCheckstyleConfiguration();
+        final CheckstyleConfigurationFile configFile =
+            checkConfiguration.getCheckstyleConfiguration();
 
         PropertyResolver resolver = configFile.getPropertyResolver();
 
-        MissingPropertyCollector collector = new MissingPropertyCollector();
+        final MissingPropertyCollector collector = new MissingPropertyCollector();
 
         if (resolver instanceof MultiPropertyResolver) {
             ((MultiPropertyResolver) resolver).addPropertyResolver(collector);
         }
         else {
-            MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+            final MultiPropertyResolver multiResolver = new MultiPropertyResolver();
             multiResolver.addPropertyResolver(resolver);
             multiResolver.addPropertyResolver(collector);
             resolver = multiResolver;
@@ -114,7 +115,7 @@ public final class CheckConfigurationTester {
         public String resolve(String aName) {
 
             if (!IGNORE_PROPS.contains(aName)) {
-                ResolvableProperty prop = new ResolvableProperty(aName, null);
+                final ResolvableProperty prop = new ResolvableProperty(aName, null);
 
                 // rule out duplicates
                 if (!mUnresolvedProperties.contains(prop)) {

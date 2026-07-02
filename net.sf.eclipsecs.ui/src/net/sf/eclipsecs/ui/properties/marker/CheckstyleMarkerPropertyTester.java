@@ -36,12 +36,12 @@ public class CheckstyleMarkerPropertyTester extends PropertyTester {
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         boolean result = false;
         if (receiver instanceof IMarker) {
-            IMarker marker = (IMarker) receiver;
+            final IMarker marker = (IMarker) receiver;
             try {
                 if (CheckstyleMarker.MARKER_ID.equals(marker.getType())) {
                     // avoid property page for markers that show runtime errors instead of
                     // violations
-                    Object module = marker.getAttribute(CheckstyleMarker.MODULE_NAME);
+                    final Object module = marker.getAttribute(CheckstyleMarker.MODULE_NAME);
                     result = module instanceof String && !((String) module).isBlank();
                 }
             } catch (CoreException ex) {

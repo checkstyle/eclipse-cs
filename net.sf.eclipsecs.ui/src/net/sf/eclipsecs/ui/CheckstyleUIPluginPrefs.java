@@ -84,7 +84,8 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
     @Override
     public void initializeDefaultPreferences() {
 
-        IEclipsePreferences prefs = DefaultScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
+        final IEclipsePreferences prefs =
+            DefaultScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
 
         prefs.putBoolean(PREF_FILESET_WARNING, true);
         prefs.put(PREF_ASK_BEFORE_REBUILD, MessageDialogWithToggle.PROMPT);
@@ -111,7 +112,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
      */
     public static String getString(String prefId) {
 
-        IPreferencesService prefs = Platform.getPreferencesService();
+        final IPreferencesService prefs = Platform.getPreferencesService();
         return prefs.getString(CheckstyleUIPlugin.PLUGIN_ID, prefId, null, null);
     }
 
@@ -124,7 +125,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
      */
     public static boolean getBoolean(String prefId) {
 
-        IPreferencesService prefs = Platform.getPreferencesService();
+        final IPreferencesService prefs = Platform.getPreferencesService();
         return prefs.getBoolean(CheckstyleUIPlugin.PLUGIN_ID, prefId, false, null);
     }
 
@@ -137,7 +138,7 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
      */
     public static int getInt(String prefId) {
 
-        IPreferencesService prefs = Platform.getPreferencesService();
+        final IPreferencesService prefs = Platform.getPreferencesService();
         return prefs.getInt(CheckstyleUIPlugin.PLUGIN_ID, prefId, 0, null);
     }
 
@@ -154,7 +155,8 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
      */
     public static void setString(String prefId, String value) throws BackingStoreException {
 
-        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
+        final IEclipsePreferences prefs =
+            InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
         prefs.put(prefId, value);
         prefs.flush();
     }
@@ -172,7 +174,8 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
      */
     public static void setBoolean(String prefId, boolean value) throws BackingStoreException {
 
-        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
+        final IEclipsePreferences prefs =
+            InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
         prefs.putBoolean(prefId, value);
         prefs.flush();
     }
@@ -190,7 +193,8 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
      */
     public static void setInt(String prefId, int value) throws BackingStoreException {
 
-        IEclipsePreferences prefs = InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
+        final IEclipsePreferences prefs =
+            InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
         prefs.putInt(prefId, value);
         prefs.flush();
     }

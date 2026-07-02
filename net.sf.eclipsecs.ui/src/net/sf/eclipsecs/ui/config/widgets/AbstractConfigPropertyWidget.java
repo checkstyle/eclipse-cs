@@ -71,7 +71,7 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
         //
         // Add the property's name.
         //
-        Label label = new Label(mParent, SWT.NULL);
+        final Label label = new Label(mParent, SWT.NULL);
         label.setText(mProp.getName() + ":");
         GridData gridData = new GridData();
         gridData.verticalAlignment = SWT.BEGINNING;
@@ -82,7 +82,7 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
         mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
 
         // provide a label that shows a tooltip with the property description
-        Label lblPropertyInfo = new Label(mParent, SWT.NULL);
+        final Label lblPropertyInfo = new Label(mParent, SWT.NULL);
         gridData = new GridData();
         gridData.verticalAlignment = SWT.BEGINNING;
         lblPropertyInfo.setLayoutData(gridData);

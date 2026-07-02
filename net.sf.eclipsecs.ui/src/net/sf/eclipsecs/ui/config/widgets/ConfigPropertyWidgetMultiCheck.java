@@ -103,7 +103,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
             mSortTokens =
                 CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS);
 
-            IEclipsePreferences instanceScope =
+            final IEclipsePreferences instanceScope =
                 InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
             instanceScope.addPreferenceChangeListener(this);
 
@@ -116,7 +116,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
             mTable.setInput(mTokens);
             mTable.setCheckedElements(getInitialValues().toArray());
 
-            GridData gridData = new GridData(GridData.FILL_BOTH);
+            final GridData gridData = new GridData(GridData.FILL_BOTH);
             gridData.heightHint = WIDGET_HEIGHT;
             mTable.getControl().setLayoutData(gridData);
 
@@ -125,7 +125,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
 
                 @Override
                 public void widgetDisposed(DisposeEvent e) {
-                    IEclipsePreferences prefStore =
+                    final IEclipsePreferences prefStore =
                         InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
                     prefStore.removePreferenceChangeListener(ConfigPropertyWidgetMultiCheck.this);
                 }
@@ -142,7 +142,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
     }
 
     private List<String> getInitialValues() {
-        List<String> result = new LinkedList<>();
+        final List<String> result = new LinkedList<>();
         final StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ",");
         while (tokenizer.hasMoreTokens()) {
             result.add(tokenizer.nextToken().trim());
@@ -153,7 +153,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
 
     private void installSorter(boolean sort) {
         if (sort) {
-            Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
+            final Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
             mTable.setComparator(new ViewerComparator(collator));
         }
         else {
@@ -164,10 +164,11 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
 
     @Override
     public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-            : metadata.getDefaultValue();
-        List<String> result = new LinkedList<>();
+        final ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        final String defaultValue =
+            metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
+        final List<String> result = new LinkedList<>();
 
         if (defaultValue != null) {
             final StringTokenizer tokenizer = new StringTokenizer(defaultValue, ",");

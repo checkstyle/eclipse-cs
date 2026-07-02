@@ -128,7 +128,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         this.setTitle(Messages.ResolvablePropertiesDialog_titleMessageArea);
         this.setMessage(Messages.ResolvablePropertiesDialog_msgAdditionalProperties);
 
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
 
         this.dialogView = new ResolvablePropertiesDialogView(composite, SWT.NULL,
             getTableSettings(), this::openPropertyItemEditor, this::removePropertyItems);
@@ -139,11 +139,11 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
     @Override
     protected Control createButtonBar(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
+        final Composite composite = new Composite(parent, SWT.NONE);
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
-        Button mBtnFind = new Button(composite, SWT.PUSH);
+        final Button mBtnFind = new Button(composite, SWT.PUSH);
         mBtnFind.setText(Messages.ResolvablePropertiesDialog_btnFind);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER)
             .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
@@ -151,7 +151,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         mBtnFind.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> findPropertyItems()));
 
-        Control buttonBar = super.createButtonBar(composite);
+        final Control buttonBar = super.createButtonBar(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER)
             .applyTo(buttonBar);
 
@@ -208,9 +208,9 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     private void openPropertyItemEditor(ResolvableProperty prop) {
 
         if (prop == null) {
-            ResolvableProperty newProp = new ResolvableProperty(null, null);
+            final ResolvableProperty newProp = new ResolvableProperty(null, null);
 
-            ResolvablePropertyEditDialog dialog =
+            final ResolvablePropertyEditDialog dialog =
                 new ResolvablePropertyEditDialog(getShell(), newProp);
             if (Window.OK == dialog.open()) {
                 mResolvableProperties.add(newProp);
@@ -218,7 +218,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
             }
         }
         else {
-            ResolvablePropertyEditDialog dialog =
+            final ResolvablePropertyEditDialog dialog =
                 new ResolvablePropertyEditDialog(getShell(), prop);
             if (Window.OK == dialog.open()) {
                 dialogView.refresh();
@@ -227,7 +227,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     }
 
     private void removePropertyItems(List<ResolvableProperty> resolvableProperties) {
-        boolean confirm = MessageDialog.openQuestion(getShell(),
+        final boolean confirm = MessageDialog.openQuestion(getShell(),
             Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
             Messages.ResolvablePropertiesDialog_msgRemoveConfirmation);
         if (confirm) {
@@ -237,21 +237,21 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     }
 
     private void findPropertyItems() {
-        CheckConfigurationWorkingCopy clone = mCheckConfig.clone();
+        final CheckConfigurationWorkingCopy clone = mCheckConfig.clone();
         clone.getResolvableProperties().clear();
         clone.getResolvableProperties().addAll(mResolvableProperties);
 
         try {
-            List<ResolvableProperty> unresolvedProps =
+            final List<ResolvableProperty> unresolvedProps =
                 CheckConfigurationTester.getUnresolvedProperties(clone);
 
             // filter props already in the dialogs list
             Iterator<ResolvableProperty> iter = unresolvedProps.iterator();
             while (iter.hasNext()) {
 
-                ResolvableProperty prop = iter.next();
+                final ResolvableProperty prop = iter.next();
 
-                Iterator<ResolvableProperty> it2 = mResolvableProperties.iterator();
+                final Iterator<ResolvableProperty> it2 = mResolvableProperties.iterator();
                 while (it2.hasNext()) {
 
                     if (prop.getPropertyName().equals(it2.next().getPropertyName())) {
@@ -264,13 +264,13 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
             if (!unresolvedProps.isEmpty()) {
 
-                StringBuilder buf = new StringBuilder();
+                final StringBuilder buf = new StringBuilder();
                 iter = unresolvedProps.iterator();
                 while (iter.hasNext()) {
                     buf.append("\t${").append(iter.next().getPropertyName()).append("}\n");
                 }
 
-                boolean confirm = MessageDialog.openQuestion(getShell(),
+                final boolean confirm = MessageDialog.openQuestion(getShell(),
                     Messages.ResolvablePropertiesDialog_titleFoundProperties,
                     NLS.bind(Messages.ResolvablePropertiesDialog_msgFoundProperties, buf));
                 if (confirm) {

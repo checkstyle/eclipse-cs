@@ -84,7 +84,7 @@ public class PackageFilterEditor implements IFilterEditor {
         initCheckedTreeSelectionDialog();
 
         // open the dialog
-        int retCode = this.mDialog.open();
+        final int retCode = this.mDialog.open();
 
         // actualize the filter data
         if (Window.OK == retCode) {
@@ -127,15 +127,15 @@ public class PackageFilterEditor implements IFilterEditor {
         // display the filter data
         if (this.mInputProject != null && this.mFilterData != null) {
 
-            List<IResource> selectedElements = new ArrayList<>();
-            List<IResource> expandedElements = new ArrayList<>();
+            final List<IResource> selectedElements = new ArrayList<>();
+            final List<IResource> expandedElements = new ArrayList<>();
 
             boolean recurse = true;
 
-            int size = mFilterData != null ? mFilterData.size() : 0;
+            final int size = mFilterData != null ? mFilterData.size() : 0;
             for (int i = 0; i < size; i++) {
 
-                String element = mFilterData.get(i);
+                final String element = mFilterData.get(i);
 
                 if (PackageFilter.RECURSE_OFF_MARKER.equals(element)) {
                     recurse = false;
@@ -144,7 +144,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
                 IPath path = new Path(element);
 
-                IResource selElement = this.mInputProject.findMember(path);
+                final IResource selElement = this.mInputProject.findMember(path);
                 if (selElement != null) {
                     selectedElements.add(selElement);
                 }
@@ -153,7 +153,7 @@ public class PackageFilterEditor implements IFilterEditor {
                 while (path.segmentCount() > 0) {
                     path = path.removeLastSegments(1);
 
-                    IResource expElement = this.mInputProject.findMember(path);
+                    final IResource expElement = this.mInputProject.findMember(path);
                     if (expElement != null) {
                         expandedElements.add(expElement);
                     }
@@ -173,9 +173,9 @@ public class PackageFilterEditor implements IFilterEditor {
      */
     private List<String> getFilterDataFromDialog() {
 
-        Object[] checked = this.mDialog.getResult();
+        final Object[] checked = this.mDialog.getResult();
 
-        List<String> result = new ArrayList<>();
+        final List<String> result = new ArrayList<>();
         for (int i = 0; i < checked.length; i++) {
 
             if (checked[i] instanceof IResource) {
@@ -197,12 +197,12 @@ public class PackageFilterEditor implements IFilterEditor {
 
             if (parentElement instanceof IProject) {
 
-                IProject project = (IProject) parentElement;
+                final IProject project = (IProject) parentElement;
                 children = handleProject(project);
             }
             else if (parentElement instanceof IContainer) {
 
-                IContainer container = (IContainer) parentElement;
+                final IContainer container = (IContainer) parentElement;
                 children = handleContainer(container);
             }
             else {
@@ -213,12 +213,12 @@ public class PackageFilterEditor implements IFilterEditor {
         }
 
         private List<IResource> handleProject(IProject project) {
-            List<IResource> children = new ArrayList<>();
+            final List<IResource> children = new ArrayList<>();
             if (project.isAccessible()) {
-                IJavaProject javaProject = JavaCore.create(project);
+                final IJavaProject javaProject = JavaCore.create(project);
                 if (javaProject.exists()) {
                     try {
-                        IPackageFragmentRoot[] packageRoots =
+                        final IPackageFragmentRoot[] packageRoots =
                             javaProject.getAllPackageFragmentRoots();
                         for (IPackageFragmentRoot packageRoot : packageRoots) {
                             // special case - project itself is package root
@@ -247,10 +247,10 @@ public class PackageFilterEditor implements IFilterEditor {
         }
 
         private List<IResource> handleContainer(IContainer container) {
-            List<IResource> children = new ArrayList<>();
+            final List<IResource> children = new ArrayList<>();
             if (container.isAccessible()) {
                 try {
-                    IResource[] members = container.members();
+                    final IResource[] members = container.members();
                     for (int i = 0; i < members.length; i++) {
                         if (members[i].getType() != IResource.FILE) {
                             children.add(members[i]);
@@ -369,12 +369,12 @@ public class PackageFilterEditor implements IFilterEditor {
         @Override
         protected void computeResult() {
 
-            List<Object> checked = Arrays.asList(mViewer.getCheckedElements());
+            final List<Object> checked = Arrays.asList(mViewer.getCheckedElements());
 
             if (mRecursivelyExcludeSubPackages) {
-                List<Object> grayed = Arrays.asList(mViewer.getGrayedElements());
+                final List<Object> grayed = Arrays.asList(mViewer.getGrayedElements());
 
-                List<Object> pureChecked = new ArrayList<>(checked);
+                final List<Object> pureChecked = new ArrayList<>(checked);
                 pureChecked.removeAll(grayed);
 
                 setResult(pureChecked);
@@ -387,7 +387,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
         @Override
         protected Control createButtonBar(Composite parent) {
-            Composite composite = new Composite(parent, SWT.NONE);
+            final Composite composite = new Composite(parent, SWT.NONE);
             GridLayoutFactory.fillDefaults().numColumns(2).applyTo(composite);
             GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 
@@ -426,13 +426,13 @@ public class PackageFilterEditor implements IFilterEditor {
 
             if (isRecursivelyExcludeSubTree()) {
 
-                Object[] checked = mViewer.getCheckedElements();
+                final Object[] checked = mViewer.getCheckedElements();
                 for (Object element : checked) {
                     setSubElementsGrayedChecked((IContainer) element, true);
                 }
             }
             else {
-                Object[] grayed = mViewer.getGrayedElements();
+                final Object[] grayed = mViewer.getGrayedElements();
                 for (Object element : grayed) {
                     mViewer.setGrayChecked(element, false);
                 }
@@ -441,7 +441,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
         private boolean isGrayed(Object element) {
 
-            Object[] grayed = mViewer.getGrayedElements();
+            final Object[] grayed = mViewer.getGrayedElements();
             return Arrays.asList(grayed).contains(element);
         }
 

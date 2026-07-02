@@ -48,8 +48,9 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration 
     public void copyConfiguration(ICheckConfiguration target) throws CheckstylePluginException {
         try {
             // use the export function ;-)
-            File targetFile = URIUtil.toFile(target.getResolvedConfigurationFileURL().toURI());
-            File sourceFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
+            final File targetFile =
+                URIUtil.toFile(target.getResolvedConfigurationFileURL().toURI());
+            final File sourceFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
 
             // copying from a file to the same file will destroy it.
             if (!Objects.equals(targetFile, sourceFile)) {

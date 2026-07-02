@@ -41,11 +41,11 @@ public class FilesInSyncFilter extends AbstractFilter {
     public boolean accept(Object element) {
         boolean accept = true;
         if (element instanceof IFile file) {
-            IProject project = file.getProject();
+            final IProject project = file.getProject();
             if (RepositoryProvider.isShared(project)) {
-                RepositoryProvider provider = RepositoryProvider.getProvider(project);
+                final RepositoryProvider provider = RepositoryProvider.getProvider(project);
                 if (provider != null) {
-                    Subscriber subscriber = provider.getSubscriber();
+                    final Subscriber subscriber = provider.getSubscriber();
                     if (subscriber != null) {
                         accept = hasChanges(file, subscriber);
                     }
@@ -61,11 +61,11 @@ public class FilesInSyncFilter extends AbstractFilter {
             subscriber.refresh(new IResource[] {
                 file,
             }, IResource.DEPTH_ZERO, new NullProgressMonitor());
-            SyncInfo synchInfo = subscriber.getSyncInfo(file);
+            final SyncInfo synchInfo = subscriber.getSyncInfo(file);
 
             if (synchInfo != null) {
-                int kind = synchInfo.getKind();
-                int flags = SyncInfo.getDirection(kind) & SyncInfo.OUTGOING;
+                final int kind = synchInfo.getKind();
+                final int flags = SyncInfo.getDirection(kind) & SyncInfo.OUTGOING;
                 hasChanges = flags == SyncInfo.OUTGOING;
             }
         } catch (TeamException ex) {

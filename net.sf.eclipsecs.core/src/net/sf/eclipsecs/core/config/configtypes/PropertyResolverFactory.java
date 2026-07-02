@@ -40,10 +40,10 @@ public final class PropertyResolverFactory {
 
     public static PropertyResolver getPropertyResolver(ICheckConfiguration config,
         CheckstyleConfigurationFile configFile) throws IOException, URISyntaxException {
-        MultiPropertyResolver multiResolver = new MultiPropertyResolver();
+        final MultiPropertyResolver multiResolver = new MultiPropertyResolver();
         multiResolver.addPropertyResolver(new ResolvablePropertyResolver(config));
 
-        File file = URIUtil.toFile(configFile.getResolvedConfigFileURL().toURI());
+        final File file = URIUtil.toFile(configFile.getResolvedConfigFileURL().toURI());
         if (file != null) {
             multiResolver.addPropertyResolver(new StandardPropertyResolver(file.toString()));
         }
@@ -56,7 +56,7 @@ public final class PropertyResolverFactory {
         multiResolver.addPropertyResolver(new SystemPropertyResolver());
 
         if (configFile.getAdditionalPropertiesBundleStream() != null) {
-            ResourceBundle bundle =
+            final ResourceBundle bundle =
                 new PropertyResourceBundle(configFile.getAdditionalPropertiesBundleStream());
             multiResolver.addPropertyResolver(new ResourceBundlePropertyResolver(bundle));
         }

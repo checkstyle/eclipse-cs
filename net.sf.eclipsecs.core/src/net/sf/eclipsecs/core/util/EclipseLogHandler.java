@@ -63,7 +63,7 @@ public class EclipseLogHandler extends Handler {
 
         // translate log levels into severity
         int severity = 0;
-        Level level = record.getLevel();
+        final Level level = record.getLevel();
         if (Level.CONFIG.equals(level) || Level.INFO.equals(level) || Level.FINE.equals(level)
             || Level.FINER.equals(level) || Level.FINEST.equals(level)) {
             severity = IStatus.INFO;
@@ -76,12 +76,12 @@ public class EclipseLogHandler extends Handler {
         }
 
         // get message
-        String message = record.getMessage();
+        final String message = record.getMessage();
 
         // get throwable
-        Throwable thrown = record.getThrown();
+        final Throwable thrown = record.getThrown();
 
-        Status status = new Status(severity, mPluginID, IStatus.OK,
+        final Status status = new Status(severity, mPluginID, IStatus.OK,
             NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), thrown);
         mPluginLog.log(status);
     }

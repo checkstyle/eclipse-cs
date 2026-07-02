@@ -40,7 +40,7 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
                 + "LITERAL_TRY, LITERAL_WHILE";
         }
 
-        String option = switch (getAttribute("option")) {
+        final String option = switch (getAttribute("option")) {
             case null -> "end_of_line";
             case "eol" -> "end_of_line";
             case "nl", "nlow" -> "next_line";
@@ -48,7 +48,7 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
         };
 
         for (String token : tokens.split("\\s*,\\s*")) {
-            List<String> settings = switch (token) {
+            final List<String> settings = switch (token) {
                 case "CLASS_DEF" -> List.of("brace_position_for_anonymous_type_declaration",
                     "brace_position_for_enum_constant", "brace_position_for_enum_declaration",
                     "brace_position_for_type_declaration",

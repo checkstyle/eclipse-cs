@@ -88,7 +88,7 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
 
             mContents = new Composite(parent, SWT.NULL);
             mContents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            GridLayout layout = new GridLayout(2, true);
+            final GridLayout layout = new GridLayout(2, true);
             layout.marginWidth = 0;
             layout.marginHeight = 0;
             mContents.setLayout(layout);
@@ -104,7 +104,7 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
             // content assist
             RegexCompletionProposalFactory.createForText(mTextWidget);
 
-            String initValue = getInitValue();
+            final String initValue = getInitValue();
             if (initValue != null) {
                 mTextWidget.setText(initValue);
             }
@@ -130,9 +130,10 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
 
     @Override
     public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-            : metadata.getDefaultValue();
+        final ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        final String defaultValue =
+            metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         mTextWidget.setText(defaultValue != null ? defaultValue : "");
     }
 
@@ -150,8 +151,8 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
 
     private void testRegex() {
         try {
-            Pattern pattern = Pattern.compile(mTextWidget.getText());
-            Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
+            final Pattern pattern = Pattern.compile(mTextWidget.getText());
+            final Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
             if (matcher.find()) {
                 mRegexTestWidget.setBackground(GREEN);
             } else {

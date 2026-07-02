@@ -70,11 +70,11 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
 
     @Override
     public Control createEditorControl(Composite parent, final Shell shell) {
-        Composite contents = new Composite(parent, SWT.NULL);
+        final Composite contents = new Composite(parent, SWT.NULL);
         contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
 
-        Label lblConfigName = new Label(contents, SWT.NULL);
+        final Label lblConfigName = new Label(contents, SWT.NULL);
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         lblConfigName.setLayoutData(new GridData());
 
@@ -83,7 +83,7 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
         mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mConfigName.setFocus();
 
-        Label lblConfigLocation = new Label(contents, SWT.NULL);
+        final Label lblConfigLocation = new Label(contents, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
             .applyTo(lblConfigLocation);
@@ -92,7 +92,7 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
         mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mLocation.setEditable(false);
 
-        Label lblDescription = new Label(contents, SWT.NULL);
+        final Label lblDescription = new Label(contents, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 

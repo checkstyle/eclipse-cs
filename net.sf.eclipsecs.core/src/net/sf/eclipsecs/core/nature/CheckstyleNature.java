@@ -55,8 +55,8 @@ public class CheckstyleNature implements IProjectNature {
         //
         // Add the builder to the project.
         //
-        IProjectDescription description = mProject.getDescription();
-        ICommand[] commands = description.getBuildSpec();
+        final IProjectDescription description = mProject.getDescription();
+        final ICommand[] commands = description.getBuildSpec();
         boolean found = false;
         for (int i = 0; i < commands.length; ++i) {
             if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
@@ -67,9 +67,9 @@ public class CheckstyleNature implements IProjectNature {
 
         if (!found) {
             // add builder to project
-            ICommand command = description.newCommand();
+            final ICommand command = description.newCommand();
             command.setBuilderName(CheckstyleBuilder.BUILDER_ID);
-            ICommand[] newCommands = new ICommand[commands.length + 1];
+            final ICommand[] newCommands = new ICommand[commands.length + 1];
 
             // Add it after the other builders.
             System.arraycopy(commands, 0, newCommands, 0, commands.length);
@@ -83,9 +83,9 @@ public class CheckstyleNature implements IProjectNature {
     }
 
     private void ensureProjectFileWritable() throws CoreException {
-        IFile projectFile = mProject.getFile(".project");
+        final IFile projectFile = mProject.getFile(".project");
         if (projectFile.isReadOnly()) {
-            ResourceAttributes attrs =
+            final ResourceAttributes attrs =
                 ResourceAttributes.fromFile(projectFile.getFullPath().toFile());
             attrs.setReadOnly(true);
             projectFile.setResourceAttributes(attrs);
@@ -98,9 +98,9 @@ public class CheckstyleNature implements IProjectNature {
         //
         // Remove the builder from the project.
         //
-        IProjectDescription description = mProject.getDescription();
-        ICommand[] commands = description.getBuildSpec();
-        List<ICommand> newCommandsVec = new ArrayList<>();
+        final IProjectDescription description = mProject.getDescription();
+        final ICommand[] commands = description.getBuildSpec();
+        final List<ICommand> newCommandsVec = new ArrayList<>();
         for (int i = 0; i < commands.length; ++i) {
             if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
                 continue;
@@ -109,7 +109,7 @@ public class CheckstyleNature implements IProjectNature {
             }
         }
 
-        ICommand[] newCommands = newCommandsVec.toArray(new ICommand[newCommandsVec.size()]);
+        final ICommand[] newCommands = newCommandsVec.toArray(new ICommand[newCommandsVec.size()]);
         description.setBuildSpec(newCommands);
 
         ensureProjectFileWritable();
@@ -143,8 +143,8 @@ public class CheckstyleNature implements IProjectNature {
      *             error getting project description
      */
     public static boolean hasCorrectBuilderOrder(IProject project) throws CoreException {
-        IProjectDescription description = project.getDescription();
-        ICommand[] commands = description.getBuildSpec();
+        final IProjectDescription description = project.getDescription();
+        final ICommand[] commands = description.getBuildSpec();
 
         int javaBuilderIndex = -1;
         int checkstyleBuilderIndex = -1;

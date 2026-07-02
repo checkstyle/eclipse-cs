@@ -48,7 +48,7 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
                     node.setJavadoc(doc);
                 }
 
-                TagElement newTag = node.getAST().newTagElement();
+                final TagElement newTag = node.getAST().newTagElement();
                 newTag.setTagName("TODO Added by MethodLimit Sample quickfix");
 
                 doc.tags().add(0, newTag);

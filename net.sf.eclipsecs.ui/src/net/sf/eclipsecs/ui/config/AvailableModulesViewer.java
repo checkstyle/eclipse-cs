@@ -70,7 +70,7 @@ public final class AvailableModulesViewer extends Composite {
 
         setLayout(new FillLayout());
 
-        Group knownModules = new Group(this, SWT.NULL);
+        final Group knownModules = new Group(this, SWT.NULL);
         GridLayoutFactory.swtDefaults().applyTo(knownModules);
         knownModules.setText(Messages.CheckConfigurationConfigureDialog_lblAvailableModules);
 
@@ -85,8 +85,8 @@ public final class AvailableModulesViewer extends Composite {
             selectionChanged.accept(event.getStructuredSelection().getFirstElement());
         });
         treeViewer.getViewer().addDoubleClickListener(event -> {
-            IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-            Object element = selection.getFirstElement();
+            final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
+            final Object element = selection.getFirstElement();
             if (element instanceof RuleGroupMetadata) {
                 treeViewer.getViewer().setExpandedState(element,
                     !treeViewer.getViewer().getExpandedState(element));
@@ -120,7 +120,7 @@ public final class AvailableModulesViewer extends Composite {
     }
 
     private void newModule(IStructuredSelection selection) {
-        List<RuleMetadata> rules = new ArrayList<>();
+        final List<RuleMetadata> rules = new ArrayList<>();
         for (Object element : selection) {
             if (element instanceof RuleGroupMetadata group) {
                 // if group is selected add all modules from this group
@@ -146,7 +146,7 @@ public final class AvailableModulesViewer extends Composite {
     }
 
     public void selectFirstGroup() {
-        List<RuleGroupMetadata> groups = MetadataFactory.getRuleGroupMetadata();
+        final List<RuleGroupMetadata> groups = MetadataFactory.getRuleGroupMetadata();
         if (!groups.isEmpty()) {
             treeViewer.getViewer().setSelection(new StructuredSelection(groups.get(0)), true);
         }

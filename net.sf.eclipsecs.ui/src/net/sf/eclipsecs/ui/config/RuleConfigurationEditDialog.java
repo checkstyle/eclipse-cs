@@ -94,9 +94,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     @Override
     protected Control createDialogArea(Composite parent) {
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
 
-        TabFolder mMainTab = new TabFolder(composite, SWT.NULL);
+        final TabFolder mMainTab = new TabFolder(composite, SWT.NULL);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(mMainTab);
 
         generalSettings =
@@ -107,11 +107,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             new RuleConfigurationEditDialogAdvancedSettings(mMainTab, SWT.NULL, mRule, mReadonly);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(advancedSettings);
 
-        TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
+        final TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
         mainItem.setControl(generalSettings);
         mainItem.setText(Messages.RuleConfigurationEditDialog_tabGeneral);
 
-        TabItem advancedItem = new TabItem(mMainTab, SWT.NULL);
+        final TabItem advancedItem = new TabItem(mMainTab, SWT.NULL);
         advancedItem.setControl(advancedSettings);
         advancedItem.setText(Messages.RuleConfigurationEditDialog_tabAdvanced);
 
@@ -121,12 +121,12 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
     @Override
     protected Control createButtonBar(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
+        final Composite composite = new Composite(parent, SWT.NONE);
         GridLayoutFactory.swtDefaults().numColumns(BUTTON_BAR_NUM_COLUMNS).margins(0, 0)
             .applyTo(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
-        Button mBtnTranslate = new Button(composite, SWT.CHECK);
+        final Button mBtnTranslate = new Button(composite, SWT.CHECK);
         mBtnTranslate.setText(Messages.RuleConfigurationEditDialog_btnTranslateTokens);
         GridDataFactory.swtDefaults()
             .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
@@ -146,7 +146,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             }
         }));
 
-        Button mBtnSort = new Button(composite, SWT.CHECK);
+        final Button mBtnSort = new Button(composite, SWT.CHECK);
         mBtnSort.setText(Messages.RuleConfigurationEditDialog_btnSortTokens);
         GridDataFactory.swtDefaults()
             .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
@@ -166,7 +166,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             }
         }));
 
-        Control buttonBar = super.createButtonBar(composite);
+        final Control buttonBar = super.createButtonBar(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER)
             .applyTo(buttonBar);
 
@@ -176,7 +176,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
 
-        Button defautlt = createButton(parent, IDialogConstants.BACK_ID,
+        final Button defautlt = createButton(parent, IDialogConstants.BACK_ID,
             Messages.RuleConfigurationEditDialog_btnDefaul, false);
         defautlt.setEnabled(!mReadonly);
 
@@ -247,7 +247,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         // Get the custom message
         for (Map.Entry<String, String> entry : advancedSettings.getCustomMessages().entrySet()) {
 
-            String msgKey = entry.getKey();
+            final String msgKey = entry.getKey();
 
             String standardMessage = MetadataFactory.getStandardMessage(msgKey,
                 mRule.getMetaData().identity().internalName());
@@ -255,7 +255,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 standardMessage = "";
             }
 
-            String message = StringUtils.trimToNull(entry.getValue());
+            final String message = StringUtils.trimToNull(entry.getValue());
             if (message != null && !message.equals(standardMessage)) {
                 mRule.getCustomMessages().put(msgKey, message);
             }
@@ -270,7 +270,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         // Note: if the rule does not have any configuration properties then
         // skip over the populating of the config property hash map.
         //
-        Optional<String> widgetValiationError = generalSettings.validatePropertyWidgets();
+        final Optional<String> widgetValiationError = generalSettings.validatePropertyWidgets();
         if (widgetValiationError.isPresent()) {
             setErrorMessage(widgetValiationError.get());
         }

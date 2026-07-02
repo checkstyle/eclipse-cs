@@ -150,7 +150,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
      */
     public IMarker[] findMarkers(IProgressMonitor mon) throws CoreException {
 
-        List<IMarker> unfiltered;
+        final List<IMarker> unfiltered;
 
         if (enabled) {
             unfiltered = switch (onResource) {
@@ -187,27 +187,27 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
      */
     public static CheckstyleMarkerFilter restoreState(IDialogSettings dialogSettings,
         IResource[] focusResource) {
-        IDialogSettings settings = dialogSettings.getSection(TAG_DIALOG_SECTION);
+        final IDialogSettings settings = dialogSettings.getSection(TAG_DIALOG_SECTION);
 
-        boolean enabled = findSetting(settings, TAG_ENABLED).map(Boolean::parseBoolean)
+        final boolean enabled = findSetting(settings, TAG_ENABLED).map(Boolean::parseBoolean)
             .orElse(DEFAULT_ACTIVATION_STATUS);
-        boolean selectBySeverity = findSetting(settings, TAG_SELECT_BY_SEVERITY)
+        final boolean selectBySeverity = findSetting(settings, TAG_SELECT_BY_SEVERITY)
             .map(Boolean::parseBoolean).orElse(DEFAULT_SELECT_BY_SEVERITY);
-        boolean filterByRegex =
+        final boolean filterByRegex =
             findSetting(settings, TAG_SELECT_BY_REGEX).map(Boolean::parseBoolean).orElse(false);
 
-        int mOnResource = findSetting(settings, TAG_ON_RESOURCE)
+        final int mOnResource = findSetting(settings, TAG_ON_RESOURCE)
             .flatMap(CheckstyleMarkerFilter::tryParseInt).orElse(DEFAULT_ON_RESOURCE);
 
-        IWorkingSet mWorkingSet = findSetting(settings, TAG_WORKING_SET)
+        final IWorkingSet mWorkingSet = findSetting(settings, TAG_WORKING_SET)
             .map(PlatformUI.getWorkbench().getWorkingSetManager()::getWorkingSet).orElse(null);
 
-        int mSeverity = findSetting(settings, TAG_SEVERITY)
+        final int mSeverity = findSetting(settings, TAG_SEVERITY)
             .flatMap(CheckstyleMarkerFilter::tryParseInt).orElse(DEFAULT_SEVERITY);
 
         List<String> mFilterRegex = new ArrayList<>();
         if (settings != null) {
-            String[] regex = settings.getArray(TAG_REGULAR_EXPRESSIONS);
+            final String[] regex = settings.getArray(TAG_REGULAR_EXPRESSIONS);
             if (regex != null) {
                 mFilterRegex = Arrays.asList(regex);
             }
@@ -290,7 +290,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
      */
     private List<IMarker> findCheckstyleMarkers(IResource[] resources, int depth,
         IProgressMonitor mon) throws CoreException {
-        List<IMarker> markers = new ArrayList<>();
+        final List<IMarker> markers = new ArrayList<>();
         for (IResource resource : resources) {
             if (resource.isAccessible()) {
                 markers.addAll(
@@ -319,17 +319,17 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
     private boolean doSelectBySeverity(IMarker item) {
         boolean select = true;
         if (selectBySeverity) {
-            int markerSeverity = item.getAttribute(IMarker.SEVERITY, -1);
+            final int markerSeverity = item.getAttribute(IMarker.SEVERITY, -1);
             if (markerSeverity == IMarker.SEVERITY_ERROR) {
-                int flag = severity & SEVERITY_ERROR;
+                final int flag = severity & SEVERITY_ERROR;
                 select = flag > 0;
             }
             else if (markerSeverity == IMarker.SEVERITY_WARNING) {
-                int flag = severity & SEVERITY_WARNING;
+                final int flag = severity & SEVERITY_WARNING;
                 select = flag > 0;
             }
             else if (markerSeverity == IMarker.SEVERITY_INFO) {
-                int flag = severity & SEVERITY_INFO;
+                final int flag = severity & SEVERITY_INFO;
                 select = flag > 0;
             }
         }
@@ -347,12 +347,12 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
     private boolean selectByRegex(IMarker item) {
         boolean select = true;
         if (filterByRegex) {
-            int size = filterRegex != null ? filterRegex.size() : 0;
+            final int size = filterRegex != null ? filterRegex.size() : 0;
             for (int i = 0; i < size; i++) {
 
-                String regex = filterRegex.get(i);
+                final String regex = filterRegex.get(i);
 
-                String message = item.getAttribute(IMarker.MESSAGE, null);
+                final String message = item.getAttribute(IMarker.MESSAGE, null);
 
                 if (message != null && message.matches(regex)) {
                     select = false;
@@ -382,16 +382,16 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
      * @return the array of resources from the given working set
      */
     private static IResource[] getResourcesInWorkingSet(IWorkingSet workingSet) {
-        IResource[] resources;
+        final IResource[] resources;
         if (workingSet == null) {
             resources = new IResource[0];
         }
         else {
-            IAdaptable[] elements = workingSet.getElements();
-            List<IResource> result = new ArrayList<>(elements.length);
+            final IAdaptable[] elements = workingSet.getElements();
+            final List<IResource> result = new ArrayList<>(elements.length);
 
             for (int idx = 0; idx < elements.length; idx++) {
-                IResource next = elements[idx].getAdapter(IResource.class);
+                final IResource next = elements[idx].getAdapter(IResource.class);
 
                 if (next != null) {
                     result.add(next);

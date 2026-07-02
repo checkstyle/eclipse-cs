@@ -79,7 +79,7 @@ public class CreateStatsJob extends Job {
     @Override
     public boolean shouldSchedule() {
 
-        Job[] similarJobs = getJobManager().find(mFamily);
+        final Job[] similarJobs = getJobManager().find(mFamily);
         return similarJobs.length == 0;
     }
 
@@ -92,12 +92,12 @@ public class CreateStatsJob extends Job {
     protected IStatus run(IProgressMonitor monitor) {
         IStatus status;
         try {
-            int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot()
+            final int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot()
                 .findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE).length;
 
-            IMarker[] markers = mFilter.findMarkers(monitor);
+            final IMarker[] markers = mFilter.findMarkers(monitor);
 
-            Map<String, MarkerStat> markerStats = new HashMap<>();
+            final Map<String, MarkerStat> markerStats = new HashMap<>();
 
             for (int i = 0, size = markers.length; i < size; i++) {
 
@@ -118,10 +118,10 @@ public class CreateStatsJob extends Job {
                 }
 
                 // puis on recherche
-                MarkerStat stat = markerStats.get(message);
+                final MarkerStat stat = markerStats.get(message);
                 if (stat == null) {
                     // 1ere fois qu'on rencontre un marqueur de ce type
-                    MarkerStat newMarkerStat = new MarkerStat(message);
+                    final MarkerStat newMarkerStat = new MarkerStat(message);
                     newMarkerStat.addMarker(markers[i]);
                     markerStats.put(newMarkerStat.getIdentifiant(), newMarkerStat);
                 }
@@ -161,8 +161,9 @@ public class CreateStatsJob extends Job {
      *             error accessing marker attributes
      */
     public static String getUnlocalizedMessage(IMarker marker) throws CoreException {
-        String key = (String) marker.getAttribute(CheckstyleMarker.MESSAGE_KEY);
-        String moduleInternalName = (String) marker.getAttribute(CheckstyleMarker.MODULE_NAME);
+        final String key = (String) marker.getAttribute(CheckstyleMarker.MESSAGE_KEY);
+        final String moduleInternalName =
+            (String) marker.getAttribute(CheckstyleMarker.MODULE_NAME);
 
         String standardMessage = MetadataFactory.getStandardMessage(key, moduleInternalName);
 

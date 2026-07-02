@@ -147,7 +147,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
         // set the logo
         this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
 
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
 
         dialogView = new CheckConfigurationPropertiesDialogView(composite, SWT.NULL,
             this::changeSelectedConfigurationType);
@@ -158,8 +158,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     private void changeSelectedConfigurationType(IConfigurationType type, boolean isComboEnabled) {
         if (isComboEnabled) {
-            String oldName = mCheckConfig.getName();
-            String oldDescr = mCheckConfig.getDescription();
+            final String oldName = mCheckConfig.getName();
+            final String oldDescr = mCheckConfig.getDescription();
             mCheckConfig = mWorkingSet.newWorkingCopy(type);
             try {
                 mCheckConfig.setName(oldName);
@@ -173,7 +173,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     @Override
     protected Control createButtonBar(Composite parent) {
-        Composite composite = new Composite(parent, SWT.NONE);
+        final Composite composite = new Composite(parent, SWT.NONE);
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
@@ -186,7 +186,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
         mBtnProperties.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             try {
                 mConfigurationEditor.getEditedWorkingCopy();
-                ResolvablePropertiesDialog dialog =
+                final ResolvablePropertiesDialog dialog =
                     new ResolvablePropertiesDialog(getShell(), mCheckConfig);
                 dialog.open();
             } catch (CheckstylePluginException ex) {
@@ -194,7 +194,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             }
         }));
 
-        Control buttonBar = super.createButtonBar(composite);
+        final Control buttonBar = super.createButtonBar(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).align(SWT.END, SWT.CENTER)
             .applyTo(buttonBar);
 
@@ -214,12 +214,12 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             // Check if the configuration is valid
             mCheckConfig = mConfigurationEditor.getEditedWorkingCopy();
 
-            int numUnresolvedProps =
+            final int numUnresolvedProps =
                 CheckConfigurationTester.getUnresolvedProperties(mCheckConfig).size();
 
             if (numUnresolvedProps > 0) {
 
-                MessageDialog dialog =
+                final MessageDialog dialog =
                     new MessageDialog(getShell(),
                         Messages.CheckConfigurationPropertiesDialog_titleUnresolvedProps, null,
                         NLS.bind(Messages.CheckConfigurationPropertiesDialog_msgUnresolvedProps,
@@ -229,10 +229,10 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                             Messages.CheckConfigurationPropertiesDialog_btnContinue,
                             Messages.CheckConfigurationPropertiesDialog_btnCancel,
                         }, 0);
-                int result = dialog.open();
+                final int result = dialog.open();
 
                 if (result == 0) {
-                    ResolvablePropertiesDialog propsDialog =
+                    final ResolvablePropertiesDialog propsDialog =
                         new ResolvablePropertiesDialog(getShell(), mCheckConfig);
                     propsDialog.open();
                 } else if (result == 1) {
@@ -261,7 +261,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
             dialogView.bindEditor(mConfigurationEditor);
 
-            Point initialSize = this.getInitialSize();
+            final Point initialSize = this.getInitialSize();
             getShell().setSize(initialSize);
 
             mBtnProperties.setEnabled(mCheckConfig.getType().isEditable());
@@ -274,7 +274,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
      * Initialize the dialogs controls with the data.
      */
     private void initialize() {
-        IConfigurationType[] types;
+        final IConfigurationType[] types;
         if (mCheckConfig == null) {
             types = mTemplate != null ? ConfigurationTypes.getConfigurableConfigTypes()
                 : ConfigurationTypes.getCreatableConfigTypes();
@@ -288,7 +288,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                         mTemplate.getName()));
                 this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgCopyConfiguration);
 
-                String nameProposal =
+                final String nameProposal =
                     NLS.bind(Messages.CheckConfigurationPropertiesDialog_CopyOfAddition,
                         mTemplate.getName());
                 setUniqueName(mCheckConfig, nameProposal);

@@ -48,7 +48,7 @@ public class FinalParametersQuickfix extends AbstractASTResolution {
                 if (containsPosition(node, markerStartOffset)
                     && !Modifier.isFinal(node.getModifiers())) {
                     if (!Modifier.isFinal(node.getModifiers())) {
-                        Modifier finalModifier =
+                        final Modifier finalModifier =
                             node.getAST().newModifier(ModifierKeyword.FINAL_KEYWORD);
                         node.modifiers().add(finalModifier);
                     }

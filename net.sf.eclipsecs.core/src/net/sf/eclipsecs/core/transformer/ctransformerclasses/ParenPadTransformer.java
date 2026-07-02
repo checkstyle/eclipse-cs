@@ -41,13 +41,13 @@ public class ParenPadTransformer extends AbstractCTransformationClass {
         if (option == null) {
             option = "nospace";
         }
-        String value = switch (option) {
+        final String value = switch (option) {
             case "nospace" -> "do not insert";
             default -> "insert";
         };
 
         for (String token : tokens.split("\\s*,\\s*")) {
-            List<String> settings = switch (token) {
+            final List<String> settings = switch (token) {
                 case "LPAREN" -> List.of(
                     "insert_space_after_opening_paren_in_parenthesized_expression",
                     "insert_space_after_opening_paren_in_while",

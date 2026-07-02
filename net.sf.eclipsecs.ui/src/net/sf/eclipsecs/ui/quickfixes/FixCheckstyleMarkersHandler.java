@@ -42,15 +42,15 @@ public class FixCheckstyleMarkersHandler extends AbstractHandler {
     @Override
     public Object execute(ExecutionEvent arg0) throws ExecutionException {
 
-        ITextEditor editor = getActiveEditor();
-        IEditorInput input = editor.getEditorInput();
+        final ITextEditor editor = getActiveEditor();
+        final IEditorInput input = editor.getEditorInput();
 
         if (input instanceof FileEditorInput) {
 
-            IFile file = ((FileEditorInput) input).getFile();
+            final IFile file = ((FileEditorInput) input).getFile();
 
             // call the fixing job
-            Job job = new FixCheckstyleMarkersJob(file);
+            final Job job = new FixCheckstyleMarkersJob(file);
             job.setUser(true);
             job.schedule();
         }
@@ -59,11 +59,11 @@ public class FixCheckstyleMarkersHandler extends AbstractHandler {
 
     private ITextEditor getActiveEditor() {
         ITextEditor activeEditor = null;
-        IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
+        final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();
         if (window != null) {
-            IWorkbenchPage page = window.getActivePage();
+            final IWorkbenchPage page = window.getActivePage();
             if (page != null) {
-                IEditorPart editor = page.getActiveEditor();
+                final IEditorPart editor = page.getActiveEditor();
                 if (editor instanceof ITextEditor) {
                     activeEditor = (ITextEditor) editor;
                 }

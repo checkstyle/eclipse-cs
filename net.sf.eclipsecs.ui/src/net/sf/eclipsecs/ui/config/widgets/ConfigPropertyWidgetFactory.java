@@ -63,7 +63,7 @@ public final class ConfigPropertyWidgetFactory {
         Shell shell) {
         IConfigPropertyWidget widget = null;
 
-        ConfigPropertyType type = prop.getMetaData().getDatatype();
+        final ConfigPropertyType type = prop.getMetaData().getDatatype();
 
         if (prop.isPropertyReference()) {
             widget = ConfigPropertyWidgetString.create(parent, prop);

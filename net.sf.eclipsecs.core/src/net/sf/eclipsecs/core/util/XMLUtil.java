@@ -56,8 +56,8 @@ public final class XMLUtil {
         final ByteArrayOutputStream byteOut = new ByteArrayOutputStream();
 
         // Pretty print the document to System.out
-        OutputFormat format = OutputFormat.createPrettyPrint();
-        XMLWriter writer = new XMLWriter(byteOut, format);
+        final OutputFormat format = OutputFormat.createPrettyPrint();
+        final XMLWriter writer = new XMLWriter(byteOut, format);
         writer.write(document);
 
         return byteOut.toByteArray();

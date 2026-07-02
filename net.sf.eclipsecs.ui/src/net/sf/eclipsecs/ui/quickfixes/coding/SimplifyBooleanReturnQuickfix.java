@@ -99,7 +99,7 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
     private Optional<ReturnStatement> computeReplacement(final IfStatement node) {
         final Optional<Boolean> isThenStatementTrue =
             isReturnStatementTrue(node.getThenStatement());
-        Optional<ReturnStatement> optionalReplacement;
+        final Optional<ReturnStatement> optionalReplacement;
         if (isThenStatementTrue.isEmpty()) {
             // the AST structure of the if statement is not as expected
             optionalReplacement = Optional.empty();

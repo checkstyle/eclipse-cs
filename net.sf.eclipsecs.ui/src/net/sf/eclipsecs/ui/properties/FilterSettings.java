@@ -58,23 +58,23 @@ public class FilterSettings extends Composite {
         super(parent, style);
         setLayout(new FillLayout());
 
-        Group group = new Group(this, style);
+        final Group group = new Group(this, style);
 
         group.setText(Messages.CheckstylePropertyPage_titleFilterGroup);
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(group);
 
-        CheckboxTableViewer filterList = createFilterList(group, project);
+        final CheckboxTableViewer filterList = createFilterList(group, project);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(filterList.getTable());
 
-        Button btnEditFilter = new Button(group, SWT.PUSH);
+        final Button btnEditFilter = new Button(group, SWT.PUSH);
         GridDataFactory.fillDefaults().align(SWT.FILL, SWT.BEGINNING).applyTo(btnEditFilter);
 
         // Description
-        Label lblDesc = new Label(group, SWT.LEFT);
+        final Label lblDesc = new Label(group, SWT.LEFT);
         lblDesc.setText(Messages.CheckstylePropertyPage_lblDescription);
         GridDataFactory.fillDefaults().span(2, 1).applyTo(lblDesc);
 
-        Text txtFilterDescription = new Text(group,
+        final Text txtFilterDescription = new Text(group,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.fillDefaults().span(2, 1).grab(true, true)
             .hint(SWT.DEFAULT, FILTER_LIST_HEIGHT).applyTo(txtFilterDescription);
@@ -100,7 +100,7 @@ public class FilterSettings extends Composite {
     }
 
     private CheckboxTableViewer createFilterList(Group group, IProject project) {
-        CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(group, SWT.BORDER);
+        final CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(group, SWT.BORDER);
         filterList.setLabelProvider(new FilterListLabelProvider());
         filterList.setContentProvider(ArrayContentProvider.getInstance());
         filterList.setCheckStateProvider(new FilterListCheckStateProvider());
@@ -135,7 +135,8 @@ public class FilterSettings extends Composite {
             if (structuredSelection.getFirstElement() instanceof IFilter filterDef) {
                 try {
                     if (PluginFilterEditors.hasEditor(filterDef)) {
-                        IFilterEditor editableFilter = PluginFilterEditors.getNewEditor(filterDef);
+                        final IFilterEditor editableFilter =
+                            PluginFilterEditors.getNewEditor(filterDef);
                         editableFilter.setInputProject(project);
                         editableFilter.setFilterData(filterDef.getFilterData());
 
@@ -155,7 +156,7 @@ public class FilterSettings extends Composite {
     private static final class FilterListLabelProvider extends LabelProvider {
         @Override
         public String getText(Object element) {
-            StringBuilder buf = new StringBuilder();
+            final StringBuilder buf = new StringBuilder();
             if (element instanceof IFilter filter) {
                 buf.append(filter.getName());
                 if (filter.getPresentableFilterData() != null) {

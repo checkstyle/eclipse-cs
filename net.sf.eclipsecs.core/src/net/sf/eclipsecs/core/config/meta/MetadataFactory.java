@@ -126,10 +126,10 @@ public final class MetadataFactory {
         String parent = null;
         try {
 
-            Class<?> checkClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
+            final Class<?> checkClass = CheckstylePlugin.getDefault().getAddonExtensionClassLoader()
                 .loadClass(module.getName());
 
-            Object moduleInstance = checkClass.getDeclaredConstructor().newInstance();
+            final Object moduleInstance = checkClass.getDeclaredConstructor().newInstance();
 
             if (moduleInstance instanceof AbstractFileSetCheck) {
                 parent = XMLTags.CHECKER_MODULE;
@@ -141,8 +141,8 @@ public final class MetadataFactory {
             parent = XMLTags.TREEWALKER_MODULE;
         }
 
-        RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
-        RuleMetadata ruleMeta = new RuleMetadata(
+        final RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
+        final RuleMetadata ruleMeta = new RuleMetadata(
             new RuleIdentity(module.getName(), module.getName(), parent, otherGroup, null,
                 Collections.emptyList()),
             MetadataFactory.getDefaultSeverity(), false, true, true, false, Collections.emptyList(),
@@ -150,13 +150,13 @@ public final class MetadataFactory {
         module.setMetaData(ruleMeta);
         sRuleMetadata.put(ruleMeta.identity().internalName(), ruleMeta);
 
-        List<ConfigProperty> properties = module.getProperties();
-        int size = properties != null ? properties.size() : 0;
+        final List<ConfigProperty> properties = module.getProperties();
+        final int size = properties != null ? properties.size() : 0;
         for (int i = 0; i < size; i++) {
 
-            ConfigProperty property = properties.get(i);
-            ConfigPropertyMetadata meta = new ConfigPropertyMetadata(ConfigPropertyType.STRING,
-                property.getName(), null, null);
+            final ConfigProperty property = properties.get(i);
+            final ConfigPropertyMetadata meta = new ConfigPropertyMetadata(
+                ConfigPropertyType.STRING, property.getName(), null, null);
             property.setMetaData(meta);
         }
         return ruleMeta;
@@ -172,7 +172,7 @@ public final class MetadataFactory {
      * metadata.
      */
     private static void createMetadataMap() {
-        List<ModuleDetails> moduleDetails = XmlMetaReader
+        final List<ModuleDetails> moduleDetails = XmlMetaReader
             .readAllModulesIncludingThirdPartyIfAny(sPackageNameSet.toArray(new String[0]));
         if (moduleDetails.isEmpty()) {
             CheckstyleLog.log(null, "Cannot read module details");
@@ -190,9 +190,9 @@ public final class MetadataFactory {
      *           registered check classes only.
      */
     private static void loadThirdPartyModuleExtensionMetadata() {
-        var rootPackages = sPackageNameSet.stream().map(pack -> {
-            String root;
-            int secondDot = StringUtils.ordinalIndexOf(pack, ".", 2);
+        final var rootPackages = sPackageNameSet.stream().map(pack -> {
+            final String root;
+            final int secondDot = StringUtils.ordinalIndexOf(pack, ".", 2);
             if (secondDot < 0) {
                 root = pack;
             } else {
@@ -200,7 +200,7 @@ public final class MetadataFactory {
             }
             return root;
         }).distinct().toArray(String[]::new);
-        Set<String> eclipseMetaDataFiles = new HashSet<>();
+        final Set<String> eclipseMetaDataFiles = new HashSet<>();
 
         try (ScanResult scanResult = new ClassGraph().acceptPackages(rootPackages).scan()) {
             try {
@@ -218,9 +218,9 @@ public final class MetadataFactory {
     }
 
     private static void loadThirdPartyData(String metadataContent) {
-        Map<String, List<Map<String, Object>>> objects = new Yaml().load(metadataContent);
+        final Map<String, List<Map<String, Object>>> objects = new Yaml().load(metadataContent);
         for (Map<String, Object> obj : objects.get("ruleGroups")) {
-            Map<String, String> ruleGroupData = new HashMap<>();
+            final Map<String, String> ruleGroupData = new HashMap<>();
             ruleGroupData.put("name", (String) obj.get("name"));
             ruleGroupData.put("description", (String) obj.get("description"));
             ruleGroupData.put("priority", Integer.toString((Integer) obj.get("priority")));
@@ -234,7 +234,7 @@ public final class MetadataFactory {
      * @return List of <code>RuleGroupMetadata</code> objects.
      */
     public static List<RuleGroupMetadata> getRuleGroupMetadata() {
-        List<RuleGroupMetadata> groups = new ArrayList<>(sRuleGroupMetadata.values());
+        final List<RuleGroupMetadata> groups = new ArrayList<>(sRuleGroupMetadata.values());
         groups.sort(Comparator.comparingInt(RuleGroupMetadata::getPriority));
         return groups;
     }
@@ -292,7 +292,7 @@ public final class MetadataFactory {
      */
     public static String getStandardMessage(String messageKey, String moduleInternalName) {
 
-        RuleMetadata rule = getRuleMetadata(moduleInternalName);
+        final RuleMetadata rule = getRuleMetadata(moduleInternalName);
         return getStandardMessage(messageKey, rule);
     }
 
@@ -308,20 +308,20 @@ public final class MetadataFactory {
     private static String getStandardMessage(String messageKey, RuleMetadata rule) {
         String message = null;
         if (messageKey != null && rule != null) {
-            List<String> namesToCheck = new ArrayList<>();
+            final List<String> namesToCheck = new ArrayList<>();
             namesToCheck.add(rule.identity().internalName());
             namesToCheck.addAll(rule.identity().alternativeNames());
 
             for (String moduleClass : namesToCheck) {
                 try {
 
-                    int endIndex = moduleClass.lastIndexOf('.');
+                    final int endIndex = moduleClass.lastIndexOf('.');
                     String messages = "messages";
                     if (endIndex >= 0) {
-                        String packageName = moduleClass.substring(0, endIndex);
+                        final String packageName = moduleClass.substring(0, endIndex);
                         messages = packageName + "." + messages;
                     }
-                    ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
+                    final ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
                         CheckstylePlugin.getPlatformLocale(),
                         CheckstylePlugin.class.getClassLoader(), new Utf8Control());
 
@@ -359,8 +359,9 @@ public final class MetadataFactory {
      *             error loading the meta data file
      */
     private static void doInitialization() throws CheckstylePluginException {
-        ClassLoader classLoader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
-        Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles(classLoader);
+        final ClassLoader classLoader =
+            CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
+        final Collection<String> potentialMetadataFiles = getAllPotentialMetadataFiles(classLoader);
 
         loadThirdPartyModuleExtensionMetadata();
         createMetadataMap();
@@ -370,7 +371,7 @@ public final class MetadataFactory {
             try (InputStream metadataStream = classLoader.getResourceAsStream(metadataFile)) {
 
                 if (metadataStream != null) {
-                    ResourceBundle metadataBundle = getMetadataI18nBundle(metadataFile,
+                    final ResourceBundle metadataBundle = getMetadataI18nBundle(metadataFile,
                         classLoader);
                     parseMetadata(metadataStream, metadataBundle, groupId(metadataFile));
                 }
@@ -392,7 +393,7 @@ public final class MetadataFactory {
      * Creates RuleMetadata.
      */
     private static void loadRuleMetadata() {
-        List<RuleMetadata> rules = new CheckstyleMetadataAdapter().loadRuleMetadata(
+        final List<RuleMetadata> rules = new CheckstyleMetadataAdapter().loadRuleMetadata(
             sRuleGroupMetadata, sModuleDetailsRepo.values(), sThirdPartyRuleGroupMap);
         for (RuleMetadata module : rules) {
             sRuleMetadata.put(module.identity().internalName(), module);
@@ -413,7 +414,7 @@ public final class MetadataFactory {
     private static Collection<String> getAllPotentialMetadataFiles(ClassLoader classLoader)
             throws CheckstylePluginException {
 
-        Collection<String> potentialMetadataFiles = new ArrayList<>();
+        final Collection<String> potentialMetadataFiles = new ArrayList<>();
 
         Set<String> packages = null;
         try {
@@ -462,7 +463,7 @@ public final class MetadataFactory {
 
     private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle,
         String groupId) throws DocumentException, CheckstylePluginException {
-        Collection<RuleGroupMetadata> groups = MetadataXmlReader.parseMetadata(metadataStream,
+        final Collection<RuleGroupMetadata> groups = MetadataXmlReader.parseMetadata(metadataStream,
             metadataBundle, groupId);
         groups.forEach(
             group -> sRuleGroupMetadata.merge(group.getGroupName(), group, (groupA, groupB) -> {

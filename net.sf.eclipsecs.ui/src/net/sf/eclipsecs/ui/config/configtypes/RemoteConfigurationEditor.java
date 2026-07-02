@@ -88,11 +88,11 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
     @Override
     public Control createEditorControl(Composite parent, final Shell shell) {
-        Composite contents = new Composite(parent, SWT.NULL);
+        final Composite contents = new Composite(parent, SWT.NULL);
         contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
 
-        Label lblConfigName = new Label(contents, SWT.NULL);
+        final Label lblConfigName = new Label(contents, SWT.NULL);
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         lblConfigName.setLayoutData(new GridData());
 
@@ -100,7 +100,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         mConfigName.setFocus();
 
-        Label lblConfigLocation = new Label(contents, SWT.NULL);
+        final Label lblConfigLocation = new Label(contents, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
             .applyTo(lblConfigLocation);
@@ -108,7 +108,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
         mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        Label lblDescription = new Label(contents, SWT.NULL);
+        final Label lblDescription = new Label(contents, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
@@ -121,7 +121,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
         createCredentialsGroup(contents);
 
-        Group advancedGroup = new Group(contents, SWT.NULL);
+        final Group advancedGroup = new Group(contents, SWT.NULL);
         advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
         advancedGroup.setLayout(new GridLayout(2, false));
@@ -136,19 +136,19 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     }
 
     private void createCredentialsGroup(Composite parent) {
-        Group credentialsGroup = new Group(parent, SWT.NULL);
+        final Group credentialsGroup = new Group(parent, SWT.NULL);
         credentialsGroup.setText(Messages.RemoteConfigurationEditor_titleCredentialsGroup);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(credentialsGroup);
         credentialsGroup.setLayout(new GridLayout(2, false));
 
-        Label lblUserName = new Label(credentialsGroup, SWT.NULL);
+        final Label lblUserName = new Label(credentialsGroup, SWT.NULL);
         lblUserName.setText(Messages.RemoteConfigurationEditor_lblUserName);
         lblUserName.setLayoutData(new GridData());
 
         mUserName = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER);
         GridDataFactory.fillDefaults().grab(true, false).applyTo(mUserName);
 
-        Label lblPassword = new Label(credentialsGroup, SWT.NULL);
+        final Label lblPassword = new Label(credentialsGroup, SWT.NULL);
         lblPassword.setText(Messages.RemoteConfigurationEditor_lblPassword);
         lblPassword.setLayoutData(new GridData());
 
@@ -194,7 +194,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         if (mChkCacheConfig.getSelection() && mWorkingCopy.getAdditionalData()
             .get(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION) == null) {
 
-            long currentTime = System.currentTimeMillis();
+            final long currentTime = System.currentTimeMillis();
 
             mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
                 mWorkingCopy.getName() + "_" + currentTime + "_cache.xml");

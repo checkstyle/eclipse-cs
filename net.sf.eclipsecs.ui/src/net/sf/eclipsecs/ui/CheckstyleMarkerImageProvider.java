@@ -36,7 +36,7 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
     @Override
     public Image getManagedImage(Annotation annotation) {
         Image image = null;
-        String type = annotation.getType();
+        final String type = annotation.getType();
         if (CheckstyleMarker.ERROR_TYPE.equals(type)) {
             image = CheckstyleUIPluginImages.MARKER_ERROR.getImage();
         }

@@ -77,7 +77,7 @@ public final class ConfiguredModulesTable extends Composite {
         tableViewer.addSelectionChangedListener(event -> {
             String description = null;
             if (event.getStructuredSelection().getFirstElement() instanceof Module module) {
-                RuleMetadata meta = module.getMetaData();
+                final RuleMetadata meta = module.getMetaData();
                 if (meta != null) {
                     description = meta.identity().description();
                 }
@@ -97,7 +97,8 @@ public final class ConfiguredModulesTable extends Composite {
             tableViewer.getTable().addKeyListener(KeyListener.keyReleasedAdapter(event -> {
                 if (event.character == SWT.DEL || event.keyCode == SWT.ARROW_LEFT) {
                     @SuppressWarnings("unchecked")
-                    List<Module> modulesToDelete = tableViewer.getStructuredSelection().toList();
+                    final List<Module> modulesToDelete =
+                        tableViewer.getStructuredSelection().toList();
                     callbacks.removeModule().accept(modulesToDelete);
                 }
             }));

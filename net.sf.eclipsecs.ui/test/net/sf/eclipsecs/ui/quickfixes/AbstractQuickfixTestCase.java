@@ -58,24 +58,24 @@ public abstract class AbstractQuickfixTestCase {
 
     private void testQuickfix(InputStream testdataStream, AbstractASTResolution quickfix)
             throws Exception {
-        QuickfixTestData[] testdata = getTestData(testdataStream);
+        final QuickfixTestData[] testdata = getTestData(testdataStream);
 
         for (int i = 0; i < testdata.length; i++) {
 
-            org.eclipse.jface.text.Document doc =
+            final org.eclipse.jface.text.Document doc =
                 new org.eclipse.jface.text.Document(testdata[i].input);
-            ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
+            final ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
             parser.setSource(doc.get().toCharArray());
-            CompilationUnit compUnit =
+            final CompilationUnit compUnit =
                 (CompilationUnit) parser.createAST(new NullProgressMonitor());
             compUnit.recordModifications();
-            IRegion region = doc.getLineInformation(testdata[i].line);
+            final IRegion region = doc.getLineInformation(testdata[i].line);
 
-            int markerStartOffset = region.getOffset() + testdata[i].position;
+            final int markerStartOffset = region.getOffset() + testdata[i].position;
 
             compUnit.accept(quickfix.handleGetCorrectingASTVisitor(region, markerStartOffset));
 
-            Map<String, String> options = new HashMap<>();
+            final Map<String, String> options = new HashMap<>();
             options.put(DefaultCodeFormatterConstants.FORMATTER_TAB_CHAR, JavaCore.SPACE);
             options.put(DefaultCodeFormatterConstants.FORMATTER_TAB_SIZE, "4");
             options.put(
@@ -85,10 +85,10 @@ public abstract class AbstractQuickfixTestCase {
                 DefaultCodeFormatterConstants.FORMATTER_INDENT_SWITCHSTATEMENTS_COMPARE_TO_SWITCH,
                 "true");
 
-            TextEdit edit = compUnit.rewrite(doc, options);
+            final TextEdit edit = compUnit.rewrite(doc, options);
             edit.apply(doc);
 
-            String trailingSpaceRemoved =
+            final String trailingSpaceRemoved =
                 doc.get().lines().map(String::stripTrailing).collect(Collectors.joining("\n"));
             assertThat(trailingSpaceRemoved).isEqualTo(testdata[i].result);
         }
@@ -97,26 +97,26 @@ public abstract class AbstractQuickfixTestCase {
 
     private QuickfixTestData[] getTestData(InputStream testDataStream) throws Exception {
 
-        List<QuickfixTestData> testdata = new ArrayList<>();
+        final List<QuickfixTestData> testdata = new ArrayList<>();
 
-        DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+        final DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 
-        DocumentBuilder docBuilder = factory.newDocumentBuilder();
-        Document doc = docBuilder.parse(testDataStream);
+        final DocumentBuilder docBuilder = factory.newDocumentBuilder();
+        final Document doc = docBuilder.parse(testDataStream);
 
-        NodeList nl = doc.getElementsByTagName("testcase");
+        final NodeList nl = doc.getElementsByTagName("testcase");
         for (int i = 0, size = nl.getLength(); i < size; i++) {
-            Element testCase = (Element) nl.item(i);
-            Element input = (Element) testCase.getElementsByTagName("input").item(0);
+            final Element testCase = (Element) nl.item(i);
+            final Element input = (Element) testCase.getElementsByTagName("input").item(0);
 
-            int position;
+            final int position;
             if (StringUtils.isNotBlank(input.getAttribute("position"))) {
                 position = Integer.parseInt(input.getAttribute("position"));
             } else {
                 position = 0;
             }
 
-            Element result = (Element) testCase.getElementsByTagName("result").item(0);
+            final Element result = (Element) testCase.getElementsByTagName("result").item(0);
 
             testdata.add(new QuickfixTestData(input.getFirstChild().getNodeValue().trim(),
                 result.getFirstChild().getNodeValue().trim(),

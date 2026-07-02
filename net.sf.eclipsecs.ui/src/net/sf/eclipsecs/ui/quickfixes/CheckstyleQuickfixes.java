@@ -75,14 +75,14 @@ public final class CheckstyleQuickfixes {
      * @return all registered quickfixes
      */
     private Collection<ICheckstyleMarkerResolution> readRegistry() {
-        List<ICheckstyleMarkerResolution> result = new ArrayList<>();
-        IExtensionRegistry registry = Platform.getExtensionRegistry();
-        IConfigurationElement[] elements =
+        final List<ICheckstyleMarkerResolution> result = new ArrayList<>();
+        final IExtensionRegistry registry = Platform.getExtensionRegistry();
+        final IConfigurationElement[] elements =
             registry.getConfigurationElementsFor(QUICKFIX_EXTENSION_POINT);
         for (IConfigurationElement element : elements) {
-            var module = element.getAttribute(EXTENSION_MODULE_ATTRIBUTE);
+            final var module = element.getAttribute(EXTENSION_MODULE_ATTRIBUTE);
             if (StringUtils.isNotBlank(module)) {
-                var resolution = toClass(element);
+                final var resolution = toClass(element);
                 if (resolution != null) {
                     resolution.setModule(module);
                     result.add(resolution);
@@ -96,7 +96,7 @@ public final class CheckstyleQuickfixes {
     private ICheckstyleMarkerResolution toClass(IConfigurationElement element) {
         ICheckstyleMarkerResolution resolution = null;
         try {
-            var extension = element.createExecutableExtension(EXTENSION_CLASS_ATTRIBUTE);
+            final var extension = element.createExecutableExtension(EXTENSION_CLASS_ATTRIBUTE);
             if (extension instanceof ICheckstyleMarkerResolution) {
                 resolution = (ICheckstyleMarkerResolution) extension;
             }

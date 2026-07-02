@@ -47,7 +47,7 @@ public class ProjectConfigurationType extends AbstractConfigurationType {
 
     @Override
     protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
-        IResource configFileResource =
+        final IResource configFileResource =
             ResourcesPlugin.getWorkspace().getRoot().findMember(checkConfiguration.getLocation());
 
         if (configFileResource != null) {
@@ -64,7 +64,7 @@ public class ProjectConfigurationType extends AbstractConfigurationType {
     public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
         boolean isConfigurable = true;
 
-        boolean isProtected =
+        final boolean isProtected =
             Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG));
         isConfigurable = !isProtected;
 
@@ -74,7 +74,7 @@ public class ProjectConfigurationType extends AbstractConfigurationType {
             // file can is writable
             try {
 
-                File file =
+                final File file =
                     URIUtil.toFile(checkConfiguration.getResolvedConfigurationFileURL().toURI());
                 isConfigurable = file != null && file.canWrite();
             }

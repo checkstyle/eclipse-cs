@@ -81,7 +81,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         }
 
         if (config == null) {
-            CheckConfigurationWorkingCopy[] allConfigs = propertyPageContext.configuration()
+            final CheckConfigurationWorkingCopy[] allConfigs = propertyPageContext.configuration()
                 .getGlobalCheckConfigWorkingSet().getWorkingCopies();
             if (allConfigs.length > 0) {
                 config = allConfigs[0];
@@ -112,12 +112,13 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     }
 
     private void manageConfig() {
-        ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
+        final ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
         if (config != null) {
             try {
                 config.getCheckstyleConfiguration();
-                CheckConfigurationConfigureDialog dialog = new CheckConfigurationConfigureDialog(
-                    shell, (CheckConfigurationWorkingCopy) config);
+                final CheckConfigurationConfigureDialog dialog =
+                    new CheckConfigurationConfigureDialog(shell,
+                        (CheckConfigurationWorkingCopy) config);
                 dialog.setBlockOnOpen(true);
                 dialog.open();
             }

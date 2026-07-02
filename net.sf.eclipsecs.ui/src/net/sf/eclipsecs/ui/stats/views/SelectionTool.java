@@ -44,7 +44,7 @@ public final class SelectionTool {
     public static List<IResource> resolveSelection(IWorkbenchPart part, ISelection selection) {
         List<IResource> resources = Collections.emptyList();
         if (part instanceof IEditorPart editor) {
-            IFile file = ResourceUtil.getFile(editor.getEditorInput());
+            final IFile file = ResourceUtil.getFile(editor.getEditorInput());
             if (file != null) {
                 resources = List.of(file);
             }
@@ -52,7 +52,7 @@ public final class SelectionTool {
             resources = new ArrayList<>();
             for (Object object : structuredSelection) {
                 if (object instanceof IWorkingSet workingSet) {
-                    IAdaptable[] elements = workingSet.getElements();
+                    final IAdaptable[] elements = workingSet.getElements();
                     for (int i = 0; i < elements.length; i++) {
                         considerAdaptable(elements[i]).ifPresent(resources::add);
                     }

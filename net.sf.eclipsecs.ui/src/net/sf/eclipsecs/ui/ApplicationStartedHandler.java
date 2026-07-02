@@ -86,7 +86,7 @@ public final class ApplicationStartedHandler implements EventHandler {
                 for (IWorkbenchWindow window : workbench.getWorkbenchWindows()) {
                     // collect open editors and have then run against Checkstyle if appropriate
                     // add already opened files to the filter - bugfix for 2923044
-                    Set<IWorkbenchPartReference> parts =
+                    final Set<IWorkbenchPartReference> parts =
                         Arrays.stream(window.getPages()).map(IWorkbenchPage::getEditorReferences)
                             .flatMap(Arrays::stream).collect(Collectors.toSet());
                     mPartListener.partsOpened(parts);
@@ -101,7 +101,7 @@ public final class ApplicationStartedHandler implements EventHandler {
     }
 
     protected void registerProgressIcon() {
-        IProgressService service = PlatformUI.getWorkbench().getProgressService();
+        final IProgressService service = PlatformUI.getWorkbench().getProgressService();
         if (service != null) {
             service.registerIconForFamily(
                 CheckstyleUIPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),

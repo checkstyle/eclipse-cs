@@ -64,9 +64,9 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
     @SuppressWarnings("unchecked")
     public void run(IAction action) {
 
-        List<IResource> resourcesToClear = mSelection.toList();
+        final List<IResource> resourcesToClear = mSelection.toList();
 
-        ClearMarkersJob job = new ClearMarkersJob(resourcesToClear);
+        final ClearMarkersJob job = new ClearMarkersJob(resourcesToClear);
         job.schedule();
     }
 

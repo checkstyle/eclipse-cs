@@ -153,10 +153,10 @@ public class FileSet implements Cloneable {
      */
     public boolean includesFile(IFile file) {
         boolean result = false;
-        String filePath = file.getProjectRelativePath().toString();
+        final String filePath = file.getProjectRelativePath().toString();
 
         for (FileMatchPattern pattern : fileMatchPatterns) {
-            boolean matches = pattern.isMatch(filePath);
+            final boolean matches = pattern.isMatch(filePath);
             if (matches) {
                 if (pattern.isIncludePattern()) {
                     result = true;
@@ -173,10 +173,10 @@ public class FileSet implements Cloneable {
     @Override
     public FileSet clone() {
         try {
-            FileSet clone = (FileSet) super.clone();
+            final FileSet clone = (FileSet) super.clone();
 
             // clone filesets
-            List<FileMatchPattern> clonedPatterns = new LinkedList<>();
+            final List<FileMatchPattern> clonedPatterns = new LinkedList<>();
             for (FileMatchPattern pattern : fileMatchPatterns) {
                 clonedPatterns.add(pattern.clone());
             }
@@ -199,7 +199,7 @@ public class FileSet implements Cloneable {
         if (this == obj) {
             return true;
         }
-        FileSet rhs = (FileSet) obj;
+        final FileSet rhs = (FileSet) obj;
         return enabled == rhs.enabled && Objects.equals(name, rhs.name)
             && Objects.equals(fileMatchPatterns, rhs.fileMatchPatterns)
             && Objects.equals(checkConfig, rhs.checkConfig);

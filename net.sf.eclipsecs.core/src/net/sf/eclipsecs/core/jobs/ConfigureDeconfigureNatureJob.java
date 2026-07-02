@@ -95,12 +95,12 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
     private void enableNature() throws CoreException {
 
         // get the description
-        IProjectDescription desc = mProject.getDescription();
+        final IProjectDescription desc = mProject.getDescription();
 
         // copy existing natures and add the nature
-        String[] natures = desc.getNatureIds();
+        final String[] natures = desc.getNatureIds();
 
-        String[] newNatures = new String[natures.length + 1];
+        final String[] newNatures = new String[natures.length + 1];
         System.arraycopy(natures, 0, newNatures, 0, natures.length);
         newNatures[natures.length] = mNatureId;
 
@@ -117,18 +117,18 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
      */
     private void disableNature() throws CoreException {
 
-        IProjectDescription desc = mProject.getDescription();
-        String[] natures = desc.getNatureIds();
+        final IProjectDescription desc = mProject.getDescription();
+        final String[] natures = desc.getNatureIds();
 
         // remove given nature from the array
-        List<String> newNaturesList = new ArrayList<>();
+        final List<String> newNaturesList = new ArrayList<>();
         for (int i = 0; i < natures.length; i++) {
             if (!mNatureId.equals(natures[i])) {
                 newNaturesList.add(natures[i]);
             }
         }
 
-        String[] newNatures = newNaturesList.toArray(new String[newNaturesList.size()]);
+        final String[] newNatures = newNaturesList.toArray(new String[newNaturesList.size()]);
 
         // set natures
         desc.setNatureIds(newNatures);

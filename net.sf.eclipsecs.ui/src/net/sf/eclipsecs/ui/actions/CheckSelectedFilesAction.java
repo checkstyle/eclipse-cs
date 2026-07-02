@@ -75,20 +75,20 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
     }
 
     private void checkSelection(IStructuredSelection selection) {
-        Set<IResource> resources = new HashSet<>();
+        final Set<IResource> resources = new HashSet<>();
         for (Object object : selection.toList()) {
             if (object instanceof IAdaptable adaptable) {
-                var resource = adaptable.getAdapter(IResource.class);
+                final var resource = adaptable.getAdapter(IResource.class);
                 if (resource != null) {
                     resources.add(resource);
                 }
             }
         }
-        List<IFile> filesToCheck = new ArrayList<>();
+        final List<IFile> filesToCheck = new ArrayList<>();
         try {
             addFileResources(List.copyOf(resources), filesToCheck);
             if (!filesToCheck.isEmpty()) {
-                RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
+                final RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
                 job.setRule(job);
                 job.schedule();
             }
@@ -127,7 +127,7 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        var selection = HandlerUtil.getCurrentSelection(event);
+        final var selection = HandlerUtil.getCurrentSelection(event);
         if (selection instanceof IStructuredSelection structuredSelection) {
             checkSelection(structuredSelection);
         }

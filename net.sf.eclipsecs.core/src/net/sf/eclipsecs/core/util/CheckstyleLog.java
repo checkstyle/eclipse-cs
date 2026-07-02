@@ -62,7 +62,7 @@ public final class CheckstyleLog {
      *            the message
      */
     public static void log(Throwable throwable, String message) {
-        Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
+        final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.OK,
             NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), throwable);
         log.log(status);
     }

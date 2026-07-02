@@ -73,7 +73,7 @@ public final class CheckUtil {
     }
 
     private static List<Integer> subtractTokens(int[] tokens, int... requiredTokens) {
-        Set<Integer> requiredTokensSet =
+        final Set<Integer> requiredTokensSet =
             new HashSet<>(Arrays.stream(requiredTokens).boxed().collect(Collectors.toList()));
         return Arrays.stream(tokens).boxed().filter(token -> !requiredTokensSet.contains(token))
             .collect(Collectors.toList());

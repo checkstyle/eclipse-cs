@@ -75,14 +75,14 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
         public boolean visit(Block node) {
             if (containsPosition(lineInfo, node.getStartPosition())) {
                 if (node.getParent() instanceof Block) {
-                    List<?> statements = ((Block) node.getParent()).statements();
-                    int index = statements.indexOf(node);
+                    final List<?> statements = ((Block) node.getParent()).statements();
+                    final int index = statements.indexOf(node);
                     statements.remove(node);
                     statements.addAll(index,
                         ASTNode.copySubtrees(node.getAST(), node.statements()));
                 } else if (node.getParent() instanceof SwitchStatement) {
-                    List<?> statements = ((SwitchStatement) node.getParent()).statements();
-                    int index = statements.indexOf(node);
+                    final List<?> statements = ((SwitchStatement) node.getParent()).statements();
+                    final int index = statements.indexOf(node);
                     statements.remove(node);
                     statements.addAll(index,
                         ASTNode.copySubtrees(node.getAST(), node.statements()));

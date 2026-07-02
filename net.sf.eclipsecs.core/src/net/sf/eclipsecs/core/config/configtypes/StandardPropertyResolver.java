@@ -80,7 +80,7 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
         }
         else if (mConfigLocation != null
             && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
-            String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
+            final String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
 
             final int lastSlash = configLocWOBackslashes.lastIndexOf("/");
             if (lastSlash > -1) {

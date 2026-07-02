@@ -43,11 +43,11 @@ public final class CheckConfigurationViewerSorter extends ViewerComparator {
         int result = 0;
 
         if (e1 instanceof ICheckConfiguration && e2 instanceof ICheckConfiguration) {
-            ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
-            ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
+            final ICheckConfiguration cfg1 = (ICheckConfiguration) e1;
+            final ICheckConfiguration cfg2 = (ICheckConfiguration) e2;
 
-            String string1 = cfg1.getName();
-            String string2 = cfg2.getName();
+            final String string1 = cfg1.getName();
+            final String string2 = cfg2.getName();
 
             result = string1.compareToIgnoreCase(string2);
         }

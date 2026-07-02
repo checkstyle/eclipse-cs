@@ -43,7 +43,7 @@ public class ExternalFileConfigurationType extends AbstractConfigurationType {
     private static final PropertyResolver DYNAMIC_LOC_RESOLVER;
 
     static {
-        MultiPropertyResolver resolver = new MultiPropertyResolver();
+        final MultiPropertyResolver resolver = new MultiPropertyResolver();
         resolver.addPropertyResolver(new ClasspathVariableResolver());
         resolver.addPropertyResolver(new SystemPropertyResolver());
         DYNAMIC_LOC_RESOLVER = resolver;
@@ -97,7 +97,7 @@ public class ExternalFileConfigurationType extends AbstractConfigurationType {
 
         boolean isConfigurable = true;
 
-        boolean isProtected =
+        final boolean isProtected =
             Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_PROTECT_CONFIG));
         isConfigurable = !isProtected;
 

@@ -83,7 +83,7 @@ public class PropertiesContentAssistProcessor implements ISubjectControlContentA
     @Override
     public ICompletionProposal[] computeCompletionProposals(
         IContentAssistSubjectControl contentAssistSubjectControl, int documentOffset) {
-        List<CompletionProposal> proposals = new ArrayList<>();
+        final List<CompletionProposal> proposals = new ArrayList<>();
 
         final String basedir = "${basedir}";
         final String projectLoc = "${project_loc}";

@@ -43,8 +43,8 @@ public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
 
         for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
-            Module module = configuredModules.get(i);
-            String internalName = module.getMetaData().identity().internalName();
+            final Module module = configuredModules.get(i);
+            final String internalName = module.getMetaData().identity().internalName();
 
             if (XMLTags.SUPPRESSWARNINGSHOLDER_MODULE.equals(internalName)) {
                 containsSuppressWarningsHolderModule = true;
@@ -61,7 +61,7 @@ public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
 
         // add the SuppressWarningsHolder if needed
         if (!containsSuppressWarningsHolderModule && needsSuppressWarningsHolderModule) {
-            Module fileContentsHolder = new Module(
+            final Module fileContentsHolder = new Module(
                 MetadataFactory.getRuleMetadata(XMLTags.SUPPRESSWARNINGSHOLDER_MODULE), false);
             configuredModules.add(0, fileContentsHolder);
         }

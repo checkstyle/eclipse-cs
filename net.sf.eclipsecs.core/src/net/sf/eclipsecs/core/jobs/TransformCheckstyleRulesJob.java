@@ -73,9 +73,9 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
     @Override
     public IStatus runInWorkspace(final IProgressMonitor monitor) throws CoreException {
-        SubMonitor subMonitor = SubMonitor.convert(monitor);
+        final SubMonitor subMonitor = SubMonitor.convert(monitor);
         subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
-        IStatus status;
+        final IStatus status;
         try {
             final IProjectConfiguration conf =
                 ProjectConfigurationFactory.getConfiguration(mProject);
@@ -85,11 +85,12 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
             // collect rules from all configured filesets
             for (FileSet fileSet : conf.getFileSets()) {
 
-                ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+                final ICheckConfiguration checkConfig = fileSet.getCheckConfig();
 
-                CheckstyleConfigurationFile configFile = checkConfig.getCheckstyleConfiguration();
+                final CheckstyleConfigurationFile configFile =
+                    checkConfig.getCheckstyleConfiguration();
 
-                PropertyResolver resolver = configFile.getPropertyResolver();
+                final PropertyResolver resolver = configFile.getPropertyResolver();
 
                 // set the project context if the property resolver needs the
                 // context
@@ -101,7 +102,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
                 try {
                     input = configFile.getCheckConfigFileInputSource();
 
-                    Configuration configuration = ConfigurationLoader.loadConfiguration(input,
+                    final Configuration configuration = ConfigurationLoader.loadConfiguration(input,
                         resolver, IgnoredModulesOptions.OMIT);
 
                     // flatten the nested configuration tree into a list
@@ -134,7 +135,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
         flatModules.add(module);
 
-        Configuration[] childs = module.getChildren();
+        final Configuration[] childs = module.getChildren();
         if (childs != null && childs.length > 0) {
 
             for (Configuration child : childs) {

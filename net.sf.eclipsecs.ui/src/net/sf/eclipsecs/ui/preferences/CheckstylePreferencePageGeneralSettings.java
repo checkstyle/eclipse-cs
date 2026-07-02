@@ -54,11 +54,11 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         List.of(DEFAULT_LANGUAGE, "de", "en", "es", "fi", "fr", "ja", "pt", "tr", "zh");
     /** The display items for the language combo. */
     private static final String[] LANGUAGE_ITEMS = SUPPORTED_LANGUAGES.stream().map(code -> {
-        String displayLang;
+        final String displayLang;
         if (code == DEFAULT_LANGUAGE) {
             displayLang = code;
         } else {
-            var loc = Locale.forLanguageTag(code);
+            final var loc = Locale.forLanguageTag(code);
             displayLang = code + " - " + loc.getDisplayLanguage(loc);
         }
         return displayLang;
@@ -90,7 +90,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         super(parent, style);
         setLayout(new FillLayout());
 
-        Group group = new Group(this, style);
+        final Group group = new Group(this, style);
 
         group.setText(Messages.CheckstylePreferencePage_lblGeneralSettings);
         GridLayoutFactory.swtDefaults().applyTo(group);
@@ -156,10 +156,10 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
             .applyTo(rebuildComposite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(rebuildComposite);
 
-        Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
+        final Label lblRebuild = new Label(rebuildComposite, SWT.NULL);
         lblRebuild.setText(Messages.CheckstylePreferencePage_lblRebuild);
 
-        Combo mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
+        final Combo mRebuildIfNeeded = new Combo(rebuildComposite, SWT.READ_ONLY);
         mRebuildIfNeeded.setItems(new String[] {
             MessageDialogWithToggle.PROMPT, MessageDialogWithToggle.ALWAYS,
             MessageDialogWithToggle.NEVER,
@@ -171,7 +171,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         // Create button to purge the checker cache
         //
 
-        Button mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
+        final Button mPurgeCacheButton = new Button(rebuildComposite, SWT.FLAT);
         mPurgeCacheButton.setImage(CheckstyleUIPluginImages.REFRESH_ICON.getImage());
         mPurgeCacheButton.setToolTipText(Messages.CheckstylePreferencePage_btnRefreshCheckerCache);
         mPurgeCacheButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
@@ -185,13 +185,13 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     }
 
     private static Combo createLanguageSetting(Group group) {
-        Composite langComposite = new Composite(group, SWT.NULL);
+        final Composite langComposite = new Composite(group, SWT.NULL);
         RowLayoutFactory.fillDefaults().applyTo(langComposite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(langComposite);
 
         final Label lblLanguage = new Label(langComposite, SWT.NULL);
         lblLanguage.setText(Messages.CheckstylePreferencePage_lblLocaleLanguage);
-        Combo languageIf = new Combo(langComposite, SWT.READ_ONLY);
+        final Combo languageIf = new Combo(langComposite, SWT.READ_ONLY);
         languageIf.setItems(LANGUAGE_ITEMS);
         final String lang =
             CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
@@ -205,22 +205,22 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
     private static Button makeCheckboxWithRebuildNoteLabel(Group group, String text,
         boolean selection) {
-        Composite composite = new Composite(group, SWT.NULL);
+        final Composite composite = new Composite(group, SWT.NULL);
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(composite);
-        Button button = makeButton(composite, SWT.CHECK, text, selection);
+        final Button button = makeButton(composite, SWT.CHECK, text, selection);
         addRebuildNoteLabel(composite);
         return button;
     }
 
     private static Button makeButton(Composite parent, int style, String text, boolean selection) {
-        Button button = new Button(parent, style);
+        final Button button = new Button(parent, style);
         button.setText(text);
         button.setSelection(selection);
         return button;
     }
 
     private static void addRebuildNoteLabel(Composite parent) {
-        Label lblRebuildNote = new Label(parent, SWT.NULL);
+        final Label lblRebuildNote = new Label(parent, SWT.NULL);
         lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
         lblRebuildNote.setToolTipText(Messages.CheckstylePreferencePage_txtSuggestRebuild);
         SWTUtil.addTooltipOnPressSupport(lblRebuildNote);

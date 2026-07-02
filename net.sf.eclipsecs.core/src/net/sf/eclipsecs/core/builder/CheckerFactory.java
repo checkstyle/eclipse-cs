@@ -96,9 +96,9 @@ public final class CheckerFactory {
     public static Checker createChecker(ICheckConfiguration config, IProject project)
             throws CheckstyleException, CheckstylePluginException {
 
-        String cacheKey = getCacheKey(config, project);
+        final String cacheKey = getCacheKey(config, project);
 
-        CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
+        final CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
         Checker checker = tryCheckerCache(cacheKey, configFileData.getModificationStamp());
 
         // clear Checkstyle internal caches upon checker reuse
@@ -108,7 +108,7 @@ public final class CheckerFactory {
 
         // no cache hit
         if (checker == null) {
-            PropertyResolver resolver = configFileData.getPropertyResolver();
+            final PropertyResolver resolver = configFileData.getPropertyResolver();
 
             // set the project context if the property resolver needs the
             // context
@@ -126,7 +126,7 @@ public final class CheckerFactory {
             }
 
             // store checker in cache
-            Long modified = Long.valueOf(configFileData.getModificationStamp());
+            final Long modified = Long.valueOf(configFileData.getModificationStamp());
             sCheckerMap.put(cacheKey, checker);
             sModifiedMap.put(cacheKey, modified);
         }
@@ -158,10 +158,11 @@ public final class CheckerFactory {
      */
     private static String getCacheKey(ICheckConfiguration config, IProject project)
             throws CheckstylePluginException {
-        CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
+        final CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
 
-        URL configLocation = configFileData.getResolvedConfigFileURL();
-        String checkConfigName = config.getName() + "#" + (config.isGlobal() ? "Global" : "Local");
+        final URL configLocation = configFileData.getResolvedConfigFileURL();
+        final String checkConfigName =
+            config.getName() + "#" + (config.isGlobal() ? "Global" : "Local");
 
         return project.getName() + "#" + configLocation + "#" + checkConfigName;
     }
@@ -184,8 +185,8 @@ public final class CheckerFactory {
         if (checker != null) {
 
             // compare modification times of the configs
-            Long oldTime = sModifiedMap.get(cacheKey);
-            Long newTime = Long.valueOf(modificationStamp);
+            final Long oldTime = sModifiedMap.get(cacheKey);
+            final Long newTime = Long.valueOf(modificationStamp);
 
             // no match - remove checker from cache
             if (oldTime == null || oldTime.compareTo(newTime) != 0) {
@@ -219,12 +220,12 @@ public final class CheckerFactory {
         final Configuration configuration =
             ConfigurationLoader.loadConfiguration(input, propResolver, IgnoredModulesOptions.OMIT);
 
-        ClassLoader moduleClassLoader =
+        final ClassLoader moduleClassLoader =
             CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
-        Set<String> packageNames = PackageNamesLoader.getPackageNames(moduleClassLoader);
+        final Set<String> packageNames = PackageNamesLoader.getPackageNames(moduleClassLoader);
 
         // create and configure checker
-        Checker checker = new Checker();
+        final Checker checker = new Checker();
         checker.setModuleFactory(new PackageObjectFactory(packageNames, moduleClassLoader,
             ModuleLoadOption.TRY_IN_ALL_REGISTERED_PACKAGES));
         try {

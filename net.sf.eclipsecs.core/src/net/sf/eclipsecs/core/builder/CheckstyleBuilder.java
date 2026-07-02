@@ -74,8 +74,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
      *             Error during the build.
      */
     public static void buildAllProjects() throws CheckstylePluginException {
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IProject[] projects = workspace.getRoot().getProjects();
+        final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        final IProject[] projects = workspace.getRoot().getProjects();
 
         buildProjects(Arrays.asList(projects));
     }
@@ -92,7 +92,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             throws CheckstylePluginException {
 
         // Build only open projects with Checkstyle enabled
-        List<IProject> checkstyleProjects = new ArrayList<>();
+        final List<IProject> checkstyleProjects = new ArrayList<>();
 
         for (IProject project : projects) {
 
@@ -108,7 +108,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         }
 
         // uses the new Jobs API to run the build in the background
-        BuildProjectJob buildJob =
+        final BuildProjectJob buildJob =
             new BuildProjectJob(checkstyleProjects.toArray(new IProject[checkstyleProjects.size()]),
                 IncrementalProjectBuilder.FULL_BUILD);
         buildJob.setRule(ResourcesPlugin.getWorkspace().getRoot());
@@ -120,7 +120,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         final IProgressMonitor monitor) throws CoreException {
 
         // get the associated project for this builder
-        IProject project = getProject();
+        final IProject project = getProject();
 
         // remove project level error markers
         project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
@@ -135,17 +135,17 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
                 config = ProjectConfigurationFactory.getConfiguration(project);
             }
             catch (CheckstylePluginException ex) {
-                Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-                    ex.getMessage() != null ? ex.getMessage()
+                final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                    IStatus.ERROR, ex.getMessage() != null ? ex.getMessage()
                         : Messages.CheckstyleBuilder_msgErrorUnknown,
                     ex);
                 throw new CoreException(status);
             }
 
-            Collection<IResource> resources;
+            final Collection<IResource> resources;
 
             // get the delta of the latest changes
-            IResourceDelta resourceDelta = getDelta(project);
+            final IResourceDelta resourceDelta = getDelta(project);
 
             // find the files for the build
             if (resourceDelta != null) {
@@ -166,7 +166,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             // remove all existing Checkstyle markers
             project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
 
-            Map<String, Object> markerAttributes = new HashMap<>();
+            final Map<String, Object> markerAttributes = new HashMap<>();
             markerAttributes.put(IMarker.PRIORITY, Integer.valueOf(IMarker.PRIORITY_HIGH));
             markerAttributes.put(IMarker.SEVERITY, Integer.valueOf(IMarker.SEVERITY_ERROR));
             markerAttributes.put(IMarker.MESSAGE,
@@ -177,7 +177,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             markerAttributes.put("categoryId", CheckstyleMarker.CATEGORY_ID);
 
             // create a marker for the actual resource
-            IMarker marker = project.createMarker(CheckstyleMarker.MARKER_ID);
+            final IMarker marker = project.createMarker(CheckstyleMarker.MARKER_ID);
             marker.setAttributes(markerAttributes);
         }
 
@@ -217,10 +217,11 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             project.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_INFINITE);
         }
 
-        boolean backgroundFullBuild =
+        final boolean backgroundFullBuild =
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD);
 
-        Map<ICheckConfiguration, Auditor> audits = resolveAudits(resources, configuration, project);
+        final Map<ICheckConfiguration, Auditor> audits =
+            resolveAudits(resources, configuration, project);
 
         try {
             // run all auditors
@@ -232,7 +233,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
                     continue;
                 }
                 if (backgroundFullBuild && kind == FULL_BUILD) {
-                    AuditorJob job = new AuditorJob(project, audit);
+                    final AuditorJob job = new AuditorJob(project, audit);
                     job.schedule();
                 }
                 else {
@@ -241,8 +242,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             }
         }
         catch (CheckstylePluginException ex) {
-            Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR,
-                ex.getLocalizedMessage(), ex);
+            final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
+                IStatus.ERROR, ex.getLocalizedMessage(), ex);
             throw new CoreException(status);
         }
     }
@@ -266,27 +267,29 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     private <T extends IResource> Map<ICheckConfiguration, Auditor> resolveAudits(
         Collection<T> resources, IProjectConfiguration configuration, IProject project)
             throws CoreException {
-        List<FileSet> enabledFileSets =
+        final List<FileSet> enabledFileSets =
             configuration.getFileSets().stream().filter(FileSet::isEnabled).toList();
 
-        List<IFile> files = resources.stream().filter(resource -> resource instanceof IFile)
+        final List<IFile> files = resources.stream().filter(resource -> resource instanceof IFile)
             .map(resource -> (IFile) resource).toList();
-        Map<ICheckConfiguration, Auditor> audits = new HashMap<>();
+        final Map<ICheckConfiguration, Auditor> audits = new HashMap<>();
         for (FileSet fileSet : enabledFileSets) {
-            ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+            final ICheckConfiguration checkConfig = fileSet.getCheckConfig();
             if (checkConfig == null) {
                 throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
                     NLS.bind(Messages.errorNoCheckConfig, project.getName())));
             }
 
-            Auditor audit = audits.computeIfAbsent(checkConfig, Auditor::new);
+            final Auditor audit = audits.computeIfAbsent(checkConfig, Auditor::new);
 
             // check which files belong to the file set
-            List<IFile> filesInFileset = files.stream().filter(fileSet::includesFile).toList();
+            final List<IFile> filesInFileset =
+                files.stream().filter(fileSet::includesFile).toList();
 
             for (IFile file : filesInFileset) {
-                boolean hasCompileErrors = IMarker.SEVERITY_ERROR == file.findMaxProblemSeverity(
-                    IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ZERO);
+                final boolean hasCompileErrors =
+                    IMarker.SEVERITY_ERROR == file.findMaxProblemSeverity(
+                        IJavaModelMarker.JAVA_MODEL_PROBLEM_MARKER, true, IResource.DEPTH_ZERO);
 
                 // remove markers on this file
                 file.deleteMarkers(CheckstyleMarker.MARKER_ID, false, IResource.DEPTH_ZERO);
@@ -321,14 +324,14 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     private Collection<IResource> getResources(final IResourceDelta delta,
         final List<IFilter> filters) throws CoreException {
 
-        List<IResource> resources = new ArrayList<>();
+        final List<IResource> resources = new ArrayList<>();
 
         for (IResourceDelta childDelta : delta.getAffectedChildren()) {
             // check if a resource has changed
-            int deltaKind = childDelta.getKind();
+            final int deltaKind = childDelta.getKind();
             if (deltaKind == IResourceDelta.ADDED || deltaKind == IResourceDelta.CHANGED) {
 
-                IResource child = childDelta.getResource();
+                final IResource child = childDelta.getResource();
 
                 // filter resources
                 boolean goesThrough = true;
@@ -372,7 +375,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     private Collection<IResource> getResources(final IContainer container,
         final List<IFilter> filters) throws CoreException {
 
-        List<IResource> resources = new ArrayList<>();
+        final List<IResource> resources = new ArrayList<>();
 
         // loop over children resources
         for (IResource child : container.members()) {

@@ -48,9 +48,9 @@ public class BuiltInConfigurationType extends AbstractConfigurationType {
     @Override
     protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
 
-        String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
+        final String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
 
-        Bundle contributor = Platform.getBundle(contributorName);
+        final Bundle contributor = Platform.getBundle(contributorName);
         URL locationUrl =
             FileLocator.find(contributor, new Path(checkConfiguration.getLocation()), null);
 
@@ -72,7 +72,7 @@ public class BuiltInConfigurationType extends AbstractConfigurationType {
     @Override
     protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
         CheckstyleConfigurationFile configFile) {
-        MultiPropertyResolver resolver = new MultiPropertyResolver();
+        final MultiPropertyResolver resolver = new MultiPropertyResolver();
         resolver.addPropertyResolver(new ResolvablePropertyResolver(config));
         resolver.addPropertyResolver(
             new BuiltInFilePropertyResolver(resolveLocation(config).toString()));

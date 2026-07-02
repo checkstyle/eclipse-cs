@@ -69,7 +69,7 @@ public class CheckstyleTransformer {
         final Iterator<Configuration> it = mRules.iterator();
 
         while (it.hasNext()) {
-            Configuration item = it.next();
+            final Configuration item = it.next();
             classnames.add("net.sf.eclipsecs.core.transformer.ctransformerclasses." + item.getName()
                 + "Transformer");
         }

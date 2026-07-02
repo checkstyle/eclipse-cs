@@ -58,19 +58,18 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
 
     @Override
     protected Control getValueWidget(Composite parent) {
-
         if (mComboItem == null) {
-
             //
             // Create a combo box for selecting a value from the enumeration.
             //
-            List<String> valueList = getConfigProperty().getMetaData().getPropertyEnumeration();
-            String[] valueLabels = new String[valueList.size()];
+            final List<String> valueList =
+                getConfigProperty().getMetaData().getPropertyEnumeration();
+            final String[] valueLabels = new String[valueList.size()];
             int initialIndex = 0;
-            String initValue = getInitValue();
-            Iterator<String> iter = valueList.iterator();
+            final String initValue = getInitValue();
+            final Iterator<String> iter = valueList.iterator();
             for (int i = 0; iter.hasNext(); i++) {
-                String value = iter.next();
+                final String value = iter.next();
                 valueLabels[i] = value;
                 if (initValue != null && initValue.equals(value)) {
                     initialIndex = i;
@@ -92,9 +91,10 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
 
     @Override
     public void restorePropertyDefault() {
-        ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        String defaultValue = metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-            : metadata.getDefaultValue();
+        final ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
+        final String defaultValue =
+            metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
+                : metadata.getDefaultValue();
         if (defaultValue == null) {
             mComboItem.select(0);
         } else {

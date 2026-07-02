@@ -162,7 +162,7 @@ public final class ConfigurationReader {
                 if (XMLTags.MODULE_TAG.equals(node.getName())) {
                     final String name = node.attributeValue(XMLTags.NAME_TAG);
                     final RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
-                    Module module =
+                    final Module module =
                         metadata != null ? new Module(metadata, true) : new Module(name);
                     addProperties(node, module);
                     addMessages(node, module);

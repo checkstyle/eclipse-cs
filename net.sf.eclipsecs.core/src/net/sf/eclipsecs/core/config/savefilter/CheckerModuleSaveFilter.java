@@ -39,7 +39,7 @@ public class CheckerModuleSaveFilter implements ISaveFilter {
 
         for (int i = 0, size = configuredModules.size(); i < size; i++) {
 
-            Module module = configuredModules.get(i);
+            final Module module = configuredModules.get(i);
 
             if (XMLTags.CHECKER_MODULE.equals(module.getMetaData().identity().internalName())) {
 
@@ -50,7 +50,7 @@ public class CheckerModuleSaveFilter implements ISaveFilter {
 
         // add checker module if it is not contained in the configured modules
         if (!containsCheckerModule) {
-            Module checker =
+            final Module checker =
                 new Module(MetadataFactory.getRuleMetadata(XMLTags.CHECKER_MODULE), false);
             configuredModules.add(0, checker);
         }

@@ -43,13 +43,13 @@ public class RightCurlyTransformer extends AbstractCTransformationClass {
         if (option == null) {
             option = "same";
         }
-        String value = switch (option) {
+        final String value = switch (option) {
             case "same" -> "do not insert";
             default -> "insert";
         };
 
         for (String token : tokens.split("\\s*,\\s*")) {
-            List<String> settings = switch (token) {
+            final List<String> settings = switch (token) {
                 case "LITERAL_TRY" -> List.of("insert_new_line_before_catch_in_try_statement",
                     "insert_new_line_before_finally_in_try_statement");
                 case "LITERAL_CATCH" -> List.of("insert_new_line_before_finally_in_try_statement");

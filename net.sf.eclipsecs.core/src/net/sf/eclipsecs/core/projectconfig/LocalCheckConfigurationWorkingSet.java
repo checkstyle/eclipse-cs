@@ -65,7 +65,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
         mDeletedConfigurations = new ArrayList<>();
 
         for (ICheckConfiguration cfg : checkConfigs) {
-            CheckConfigurationWorkingCopy workingCopy =
+            final CheckConfigurationWorkingCopy workingCopy =
                 new CheckConfigurationWorkingCopy(cfg, this);
             mWorkingCopies.add(workingCopy);
         }
@@ -94,7 +94,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     @Override
     public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
 
-        boolean inUse = mProjectConfig.isConfigInUse(checkConfig);
+        final boolean inUse = mProjectConfig.isConfigInUse(checkConfig);
 
         if (!inUse) {
             mWorkingCopies.remove(checkConfig);
@@ -150,9 +150,9 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
 
     @Override
     public Collection<IProject> getAffectedProjects() {
-        Set<IProject> projects = new HashSet<>();
+        final Set<IProject> projects = new HashSet<>();
 
-        CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
+        final CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
         for (int i = 0; i < workingCopies.length; i++) {
 
             // skip non dirty configurations

@@ -50,7 +50,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
         super(parent, style);
         GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0).applyTo(this);
 
-        Label lblConfigName = new Label(this, SWT.NULL);
+        final Label lblConfigName = new Label(this, SWT.NULL);
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         GridDataFactory.swtDefaults().applyTo(lblConfigName);
 
@@ -60,7 +60,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
 
         location = createLocationSection(this, parent.getShell());
 
-        Label lblDescription = new Label(this, SWT.NULL);
+        final Label lblDescription = new Label(this, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
@@ -70,7 +70,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
             .grab(true, true)
             .applyTo(mDescription);
 
-        Group advancedGroup = new Group(this, SWT.NULL);
+        final Group advancedGroup = new Group(this, SWT.NULL);
         advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(advancedGroup);
@@ -113,27 +113,27 @@ public final class ExternalFileConfigurationEditorView extends Composite {
     }
 
     private static Text createLocationSection(Composite parent, Shell shell) {
-        Label lblConfigLocation = new Label(parent, SWT.NULL);
+        final Label lblConfigLocation = new Label(parent, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         GridDataFactory.swtDefaults().applyTo(lblConfigLocation);
 
-        Composite locationComposite = new Composite(parent, SWT.NULL);
+        final Composite locationComposite = new Composite(parent, SWT.NULL);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(locationComposite);
         GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0)
             .applyTo(locationComposite);
 
-        Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        final Text location = new Text(locationComposite, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(location);
 
-        Button btnBrowse = new Button(locationComposite, SWT.PUSH);
+        final Button btnBrowse = new Button(locationComposite, SWT.PUSH);
         btnBrowse.setText(Messages.FileConfigurationLocationEditor_btnBrowse);
         GridDataFactory.swtDefaults().applyTo(btnBrowse);
 
         btnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-            FileDialog fileDialog = new FileDialog(shell);
+            final FileDialog fileDialog = new FileDialog(shell);
             fileDialog.setFileName(location.getText());
 
-            String file = fileDialog.open();
+            final String file = fileDialog.open();
             if (file != null) {
                 location.setText(file);
             }

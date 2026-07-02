@@ -41,7 +41,7 @@ public class CheckstylePreferencePageHeader extends Composite {
         super(parent, style);
         RowLayoutFactory.fillDefaults().applyTo(this);
 
-        Link link = new Link(this, SWT.NONE);
+        final Link link = new Link(this, SWT.NONE);
         var text = NLS.bind(Messages.CheckstylePreferencePage_version,
             "<a>" + CHECKSTYLE_VERSION + "</a>");
         text = text.replace("Checkstyle", "<a>Checkstyle</a>");

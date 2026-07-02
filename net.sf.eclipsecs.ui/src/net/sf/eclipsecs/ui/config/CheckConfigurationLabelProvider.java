@@ -42,7 +42,7 @@ public class CheckConfigurationLabelProvider extends LabelProvider {
 
     @Override
     public String getText(Object element) {
-        String text;
+        final String text;
         if (element instanceof ICheckConfiguration checkConfig) {
             text = checkConfig.getName() + " "
                 + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal

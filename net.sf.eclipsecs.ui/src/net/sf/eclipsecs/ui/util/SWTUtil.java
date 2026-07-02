@@ -93,8 +93,8 @@ public final class SWTUtil {
      */
     public static void addResizeSupport(Dialog dialog, IDialogSettings settings, String dialogKey) {
 
-        Shell shell = dialog.getShell();
-        ShellResizeSupportListener shellSupport =
+        final Shell shell = dialog.getShell();
+        final ShellResizeSupportListener shellSupport =
             new ShellResizeSupportListener(dialog, settings, dialogKey);
 
         shell.addControlListener(shellSupport);
@@ -111,24 +111,24 @@ public final class SWTUtil {
 
         @Override
         public void mouseDown(MouseEvent e) {
-            Control theControl = (Control) e.widget;
+            final Control theControl = (Control) e.widget;
 
-            Display display = theControl.getDisplay();
-            Shell tip = new Shell(theControl.getShell(), SWT.ON_TOP | SWT.TOOL);
+            final Display display = theControl.getDisplay();
+            final Shell tip = new Shell(theControl.getShell(), SWT.ON_TOP | SWT.TOOL);
             tip.setBackground(display.getSystemColor(SWT.COLOR_INFO_BACKGROUND));
-            FillLayout layout = new FillLayout();
+            final FillLayout layout = new FillLayout();
             layout.marginHeight = 1;
             layout.marginWidth = 2;
             tip.setLayout(layout);
-            Label label = new Label(tip, SWT.NONE);
+            final Label label = new Label(tip, SWT.NONE);
             label.setForeground(display.getSystemColor(SWT.COLOR_INFO_FOREGROUND));
             label.setBackground(display.getSystemColor(SWT.COLOR_INFO_BACKGROUND));
 
             label.setText(theControl.getToolTipText());
             label.addMouseTrackListener(this);
-            Point size = tip.computeSize(SWT.DEFAULT, SWT.DEFAULT);
-            Rectangle rect = theControl.getBounds();
-            Point point = theControl.getParent().toDisplay(rect.x, rect.y);
+            final Point size = tip.computeSize(SWT.DEFAULT, SWT.DEFAULT);
+            final Rectangle rect = theControl.getBounds();
+            final Point point = theControl.getParent().toDisplay(rect.x, rect.y);
             tip.setBounds(point.x, point.y, size.x, size.y);
             tip.setVisible(true);
         }
@@ -136,8 +136,8 @@ public final class SWTUtil {
         @Override
         public void mouseExit(MouseEvent e) {
             // dispose the tooltip shell
-            Label label = (Label) e.widget;
-            Shell shell = label.getShell();
+            final Label label = (Label) e.widget;
+            final Shell shell = label.getShell();
             shell.dispose();
         }
 
@@ -274,7 +274,7 @@ public final class SWTUtil {
         @Override
         public void controlResized(ControlEvent e) {
             // update the internal bounds
-            Shell shell = (Shell) e.getSource();
+            final Shell shell = (Shell) e.getSource();
             mMaximized = shell.getMaximized();
             mMinimized = shell.getMinimized();
 
@@ -295,7 +295,7 @@ public final class SWTUtil {
 
                 // Hack to get the initial size computed for this dialog
                 try {
-                    Method getInitialSizeMethod =
+                    final Method getInitialSizeMethod =
                         Window.class.getDeclaredMethod("getInitialSize", (Class<?>) null);
                     getInitialSizeMethod.setAccessible(true);
                     initialSize = (Point) getInitialSizeMethod.invoke(mDialog, (Object) null);
@@ -303,12 +303,12 @@ public final class SWTUtil {
                 catch (Exception ex) {
                     initialSize = new Point(0, 0);
                 }
-                Shell shell = (Shell) event.getSource();
+                final Shell shell = (Shell) event.getSource();
 
                 // this is only supported in Eclipse 3.1 and greater
                 // shell.setMinimumSize(initialSize);
 
-                IDialogSettings bounds = mSettings.getSection(mDialogKey);
+                final IDialogSettings bounds = mSettings.getSection(mDialogKey);
                 if (bounds != null) {
 
                     mMaximized = bounds.getBoolean(MAXIMIZED);

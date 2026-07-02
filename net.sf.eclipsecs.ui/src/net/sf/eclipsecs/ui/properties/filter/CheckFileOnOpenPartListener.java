@@ -80,7 +80,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     @Override
     public void partClosed(IWorkbenchPartReference partRef) {
 
-        IFile editorFile = getEditorFile(partRef);
+        final IFile editorFile = getEditorFile(partRef);
         if (editorFile != null) {
             UnOpenedFilesFilter.removeOpenedFile(editorFile);
         }
@@ -161,19 +161,19 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
      */
     private boolean isFileAffected(IFile file) {
         boolean isFileAffected = false;
-        IProject project = file.getProject();
+        final IProject project = file.getProject();
 
         try {
             // check if checkstyle is enabled on the project
             if (project.isAccessible() && project.hasNature(CheckstyleNature.NATURE_ID)) {
 
-                IProjectConfiguration config =
+                final IProjectConfiguration config =
                     ProjectConfigurationFactory.getConfiguration(project);
 
                 // now check if the UnOpenedFilesFilter is active
                 boolean unOpenedFilesFilterActive = false;
                 boolean filtered = false;
-                List<IFilter> filters = config.getFilters();
+                final List<IFilter> filters = config.getFilters();
                 for (IFilter filter : filters) {
                     if (filter.isEnabled()) {
                         if (filter instanceof UnOpenedFilesFilter) {
@@ -212,12 +212,12 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
         @Override
         public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-            SubMonitor subMonitor = SubMonitor.convert(monitor, mParts.size());
-            List<IFile> filesToCheck = new ArrayList<>();
+            final SubMonitor subMonitor = SubMonitor.convert(monitor, mParts.size());
+            final List<IFile> filesToCheck = new ArrayList<>();
 
             for (IWorkbenchPartReference partRef : mParts) {
                 subMonitor.worked(1);
-                IFile editorFile = getEditorFile(partRef);
+                final IFile editorFile = getEditorFile(partRef);
                 if (editorFile != null) {
                     UnOpenedFilesFilter.addOpenedFile(editorFile);
                 }
@@ -229,7 +229,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
                 }
             }
 
-            RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
+            final RunCheckstyleOnFilesJob job = new RunCheckstyleOnFilesJob(filesToCheck);
             job.schedule();
 
             return Status.OK_STATUS;

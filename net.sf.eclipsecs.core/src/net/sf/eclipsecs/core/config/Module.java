@@ -85,12 +85,12 @@ public class Module implements Cloneable {
         if (metaData != null) {
 
             // create the properties according to the meta data
-            List<ConfigPropertyMetadata> propMetas = metaData.configPropMetadata();
-            int size = propMetas != null ? propMetas.size() : 0;
+            final List<ConfigPropertyMetadata> propMetas = metaData.configPropMetadata();
+            final int size = propMetas != null ? propMetas.size() : 0;
             for (int i = 0; i < size; i++) {
 
-                ConfigPropertyMetadata propMeta = propMetas.get(i);
-                ConfigProperty property = new ConfigProperty(propMeta);
+                final ConfigPropertyMetadata propMeta = propMetas.get(i);
+                final ConfigProperty property = new ConfigProperty(propMeta);
                 getProperties().add(property);
 
                 if (withDefaults) {
@@ -190,9 +190,9 @@ public class Module implements Cloneable {
 
         ConfigProperty propertyObj = null;
 
-        int size = mProperties != null ? mProperties.size() : 0;
+        final int size = mProperties != null ? mProperties.size() : 0;
         for (int i = 0; i < size; i++) {
-            ConfigProperty tmp = mProperties.get(i);
+            final ConfigProperty tmp = mProperties.get(i);
 
             if (tmp.getName().equals(property)) {
                 propertyObj = tmp;
@@ -298,7 +298,7 @@ public class Module implements Cloneable {
     @Override
     public Module clone() {
         try {
-            Module clone = (Module) super.clone();
+            final Module clone = (Module) super.clone();
             clone.mProperties = new ArrayList<>();
 
             for (ConfigProperty prop : mProperties) {

@@ -137,7 +137,7 @@ public abstract class AbstractFilter implements IFilter {
             return true;
         }
 
-        AbstractFilter rhs = (AbstractFilter) o;
+        final AbstractFilter rhs = (AbstractFilter) o;
         return Objects.equals(mFilterName, rhs.mFilterName)
             && Objects.equals(mInternalName, rhs.mInternalName)
             && Objects.equals(mFilterDescription, rhs.mFilterDescription)

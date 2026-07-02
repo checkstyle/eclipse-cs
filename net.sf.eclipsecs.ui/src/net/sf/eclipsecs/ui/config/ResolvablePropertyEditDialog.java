@@ -77,21 +77,21 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     @Override
     protected Control createDialogArea(Composite parent) {
 
-        Composite composite = (Composite) super.createDialogArea(parent);
+        final Composite composite = (Composite) super.createDialogArea(parent);
         this.setTitle(Messages.ResolvablePropertyEditDialog_titleMessageArea);
         this.setMessage(Messages.ResolvablePropertyEditDialog_msgEditProperty);
 
-        Composite dialog = new Composite(composite, SWT.NONE);
+        final Composite dialog = new Composite(composite, SWT.NONE);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(dialog);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialog);
 
-        Label lblName = new Label(dialog, SWT.NULL);
+        final Label lblName = new Label(dialog, SWT.NULL);
         lblName.setText(Messages.ResolvablePropertyEditDialog_lblName);
         mTxtName = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTxtName);
         mTxtName.setText(mProperty.getPropertyName() != null ? mProperty.getPropertyName() : "");
 
-        Label lblValue = new Label(dialog, SWT.NULL);
+        final Label lblValue = new Label(dialog, SWT.NULL);
         lblValue.setText(Messages.ResolvablePropertyEditDialog_lblValue);
         mTxtValue = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTxtValue);
@@ -152,7 +152,7 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
         contentAssistant
             .setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
 
-        IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
+        final IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
         contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);
         contentAssistant
             .setContextInformationPopupOrientation(IContentAssistant.CONTEXT_INFO_ABOVE);

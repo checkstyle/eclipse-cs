@@ -47,7 +47,7 @@ public final class CheckstylePropertyApplyOperation {
         boolean checkstyleEnabled, boolean checkstyleInitiallyEnabled) {
         try {
 
-            IProject project = projectConfig.getProject();
+            final IProject project = projectConfig.getProject();
 
             // save the edited project configuration
             if (projectConfig.isDirty()) {
@@ -56,18 +56,18 @@ public final class CheckstylePropertyApplyOperation {
 
             // check if checkstyle nature has to be configured/deconfigured
             if (checkstyleEnabled != checkstyleInitiallyEnabled) {
-                ConfigureDeconfigureNatureJob configOperation =
+                final ConfigureDeconfigureNatureJob configOperation =
                     new ConfigureDeconfigureNatureJob(project, CheckstyleNature.NATURE_ID);
                 configOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
                 configOperation.schedule();
             }
 
             if (checkstyleEnabled) {
-                boolean needRebuild =
+                final boolean needRebuild =
                     !checkstyleInitiallyEnabled || projectConfig.isRebuildNeeded();
 
                 if (projectConfig.isSyncFormatter()) {
-                    TransformCheckstyleRulesJob transFormJob =
+                    final TransformCheckstyleRulesJob transFormJob =
                         new TransformCheckstyleRulesJob(project);
                     transFormJob.schedule();
                 }
@@ -75,7 +75,7 @@ public final class CheckstylePropertyApplyOperation {
                 // if a rebuild is advised, check/prompt if the rebuild should
                 // really be done.
                 if (needRebuild) {
-                    String promptRebuildPref = CheckstyleUIPluginPrefs
+                    final String promptRebuildPref = CheckstyleUIPluginPrefs
                         .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
                     boolean doRebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
@@ -84,7 +84,8 @@ public final class CheckstylePropertyApplyOperation {
                     // Prompt for rebuild
                     //
                     if (MessageDialogWithToggle.PROMPT.equals(promptRebuildPref)) {
-                        MessageDialogWithToggle dialog = MessageDialogWithToggle.openYesNoQuestion(
+                        final MessageDialogWithToggle dialog =
+                            MessageDialogWithToggle.openYesNoQuestion(
                             shell, Messages.CheckstylePropertyPage_titleRebuild,
                             Messages.CheckstylePropertyPage_msgRebuild,
                             Messages.CheckstylePropertyPage_nagRebuild, false,
@@ -97,7 +98,7 @@ public final class CheckstylePropertyApplyOperation {
                     // check if a rebuild is necessary
                     if (doRebuild) {
 
-                        BuildProjectJob rebuildOperation =
+                        final BuildProjectJob rebuildOperation =
                             new BuildProjectJob(project, IncrementalProjectBuilder.FULL_BUILD);
                         rebuildOperation.setRule(ResourcesPlugin.getWorkspace().getRoot());
                         rebuildOperation.schedule();

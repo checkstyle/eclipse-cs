@@ -53,18 +53,18 @@ public final class SaveFilters {
      */
     static {
 
-        IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
+        final IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
 
-        IConfigurationElement[] elements =
+        final IConfigurationElement[] elements =
             pluginRegistry.getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-        List<ISaveFilter> filters = new ArrayList<>();
+        final List<ISaveFilter> filters = new ArrayList<>();
 
         for (int i = 0; i < elements.length; i++) {
 
             try {
 
-                ISaveFilter filter =
+                final ISaveFilter filter =
                     (ISaveFilter) elements[i].createExecutableExtension(ATTR_CLASS);
                 filters.add(filter);
             }

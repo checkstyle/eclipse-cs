@@ -81,7 +81,7 @@ public final class ProjectConfigurationFactory {
      */
     public static IProjectConfiguration createDefaultProjectConfiguration(IProject project) {
 
-        FileSet standardFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset,
+        final FileSet standardFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset,
             CheckConfigurationFactory.getDefaultCheckConfiguration());
         try {
             standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
@@ -90,10 +90,10 @@ public final class ProjectConfigurationFactory {
             throw new RuntimeException(ex);
         }
 
-        List<FileSet> fileSets = Arrays.asList(standardFileSet);
+        final List<FileSet> fileSets = Arrays.asList(standardFileSet);
 
-        IFilter[] filters = PluginFilters.getConfiguredFilters();
-        List<IFilter> defaultFilters = new ArrayList<>();
+        final IFilter[] filters = PluginFilters.getConfiguredFilters();
+        final List<IFilter> defaultFilters = new ArrayList<>();
         for (IFilter filter : filters) {
             if (filter.isEnabled()) {
                 defaultFilters.add(filter);
@@ -143,10 +143,10 @@ public final class ProjectConfigurationFactory {
     public static List<IProject> getProjectsUsingConfig(ICheckConfiguration checkConfig)
             throws CheckstylePluginException {
 
-        List<IProject> result = new ArrayList<>();
+        final List<IProject> result = new ArrayList<>();
 
-        IWorkspace workspace = ResourcesPlugin.getWorkspace();
-        IProject[] projects = workspace.getRoot().getProjects();
+        final IWorkspace workspace = ResourcesPlugin.getWorkspace();
+        final IProject[] projects = workspace.getRoot().getProjects();
         for (int i = 0; i < projects.length; i++) {
             if (ProjectConfigurationFactory.getConfiguration(projects[i])
                 .isConfigInUse(checkConfig)) {
@@ -173,8 +173,8 @@ public final class ProjectConfigurationFactory {
         //
         // Make sure the files exists, it might not.
         //
-        IFile file = project.getFile(PROJECT_CONFIGURATION_FILE);
-        boolean exists = file.exists();
+        final IFile file = project.getFile(PROJECT_CONFIGURATION_FILE);
+        final boolean exists = file.exists();
         if (exists) {
             try (InputStream inStream = file.getContents(true)) {
                 configuration = getProjectConfiguration(inStream, project);
@@ -192,24 +192,24 @@ public final class ProjectConfigurationFactory {
     private static IProjectConfiguration getProjectConfiguration(InputStream input,
         IProject project) throws DocumentException, CheckstylePluginException {
 
-        SAXReader reader = new SAXReader();
-        Document document = reader.read(input);
+        final SAXReader reader = new SAXReader();
+        final Document document = reader.read(input);
 
-        Element root = document.getRootElement();
+        final Element root = document.getRootElement();
 
-        String version = root.attributeValue(XMLTags.FORMAT_VERSION_TAG);
+        final String version = root.attributeValue(XMLTags.FORMAT_VERSION_TAG);
         if (!SUPPORTED_VERSIONS.contains(version)) {
             throw new CheckstylePluginException(NLS.bind(Messages.errorUnknownFileFormat, version));
         }
 
-        boolean useSimpleConfig =
+        final boolean useSimpleConfig =
             Boolean.parseBoolean(root.attributeValue(XMLTags.SIMPLE_CONFIG_TAG));
-        boolean syncFormatter =
+        final boolean syncFormatter =
             Boolean.parseBoolean(root.attributeValue(XMLTags.SYNC_FORMATTER_TAG));
 
-        List<ICheckConfiguration> checkConfigs = getLocalCheckConfigs(root, project);
-        List<FileSet> fileSets = getFileSets(root, checkConfigs);
-        List<IFilter> filters = getFilters(root);
+        final List<ICheckConfiguration> checkConfigs = getLocalCheckConfigs(root, project);
+        final List<FileSet> fileSets = getFileSets(root, checkConfigs);
+        final List<IFilter> filters = getFilters(root);
 
         return new ProjectConfiguration(project, checkConfigs, fileSets, filters, useSimpleConfig,
             syncFormatter);
@@ -217,9 +217,9 @@ public final class ProjectConfigurationFactory {
 
     private static List<ICheckConfiguration> getLocalCheckConfigs(Element root, IProject project) {
 
-        List<ICheckConfiguration> configurations = new ArrayList<>();
+        final List<ICheckConfiguration> configurations = new ArrayList<>();
 
-        List<Element> configElements = root.elements(XMLTags.CHECK_CONFIG_TAG);
+        final List<Element> configElements = root.elements(XMLTags.CHECK_CONFIG_TAG);
 
         for (Element configEl : configElements) {
 
@@ -227,13 +227,13 @@ public final class ProjectConfigurationFactory {
             final String description = configEl.attributeValue(XMLTags.DESCRIPTION_TAG);
             String location = configEl.attributeValue(XMLTags.LOCATION_TAG);
 
-            String type = configEl.attributeValue(XMLTags.TYPE_TAG);
-            IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
+            final String type = configEl.attributeValue(XMLTags.TYPE_TAG);
+            final IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
 
             if (configType instanceof ProjectConfigurationType) {
                 // RFE 1420212
                 // treat config files relative to *THIS* project
-                IWorkspaceRoot workspaceRoot = project.getWorkspace().getRoot();
+                final IWorkspaceRoot workspaceRoot = project.getWorkspace().getRoot();
                 // test if the location contains the project name
                 if (workspaceRoot.findMember(location) == null) {
                     location = project.getFullPath().append(location).toString();
@@ -241,27 +241,27 @@ public final class ProjectConfigurationFactory {
             }
 
             // get resolvable properties
-            List<ResolvableProperty> props = new ArrayList<>();
-            List<Element> propertiesElements = configEl.elements(XMLTags.PROPERTY_TAG);
+            final List<ResolvableProperty> props = new ArrayList<>();
+            final List<Element> propertiesElements = configEl.elements(XMLTags.PROPERTY_TAG);
             for (Element propsEl : propertiesElements) {
 
-                ResolvableProperty prop =
+                final ResolvableProperty prop =
                     new ResolvableProperty(propsEl.attributeValue(XMLTags.NAME_TAG),
                         propsEl.attributeValue(XMLTags.VALUE_TAG));
                 props.add(prop);
             }
 
             // get additional data
-            Map<String, String> additionalData = new HashMap<>();
-            List<Element> dataElements = configEl.elements(XMLTags.ADDITIONAL_DATA_TAG);
+            final Map<String, String> additionalData = new HashMap<>();
+            final List<Element> dataElements = configEl.elements(XMLTags.ADDITIONAL_DATA_TAG);
             for (Element dataEl : dataElements) {
 
                 additionalData.put(dataEl.attributeValue(XMLTags.NAME_TAG),
                     dataEl.attributeValue(XMLTags.VALUE_TAG));
             }
 
-            ICheckConfiguration checkConfig = new CheckConfiguration(name, location, description,
-                configType, false, props, additionalData);
+            final ICheckConfiguration checkConfig = new CheckConfiguration(name, location,
+                description, configType, false, props, additionalData);
             configurations.add(checkConfig);
         }
 
@@ -271,20 +271,20 @@ public final class ProjectConfigurationFactory {
     private static List<FileSet> getFileSets(Element root,
         List<ICheckConfiguration> localCheckConfigs) throws CheckstylePluginException {
 
-        List<FileSet> fileSets = new ArrayList<>();
+        final List<FileSet> fileSets = new ArrayList<>();
 
-        List<Element> fileSetElements = root.elements(XMLTags.FILESET_TAG);
+        final List<Element> fileSetElements = root.elements(XMLTags.FILESET_TAG);
         for (Element fileSetEl : fileSetElements) {
 
-            boolean local = Boolean.parseBoolean(fileSetEl.attributeValue(XMLTags.LOCAL_TAG));
+            final boolean local = Boolean.parseBoolean(fileSetEl.attributeValue(XMLTags.LOCAL_TAG));
 
-            FileSet fileSet = new FileSet();
+            final FileSet fileSet = new FileSet();
             fileSet.setName(fileSetEl.attributeValue(XMLTags.NAME_TAG));
             fileSet.setEnabled(Boolean.parseBoolean(fileSetEl.attributeValue(XMLTags.ENABLED_TAG)));
 
             // find the referenced check configuration
             ICheckConfiguration checkConfig = null;
-            String checkConfigName = fileSetEl.attributeValue(XMLTags.CHECK_CONFIG_NAME_TAG);
+            final String checkConfigName = fileSetEl.attributeValue(XMLTags.CHECK_CONFIG_NAME_TAG);
             if (local) {
                 for (ICheckConfiguration tmp : localCheckConfigs) {
                     if (tmp.getName().equals(checkConfigName)) {
@@ -300,10 +300,11 @@ public final class ProjectConfigurationFactory {
             fileSet.setCheckConfig(checkConfig);
 
             // get patterns
-            List<FileMatchPattern> patterns = new ArrayList<>();
-            List<Element> patternElements = fileSetEl.elements(XMLTags.FILE_MATCH_PATTERN_TAG);
+            final List<FileMatchPattern> patterns = new ArrayList<>();
+            final List<Element> patternElements =
+                fileSetEl.elements(XMLTags.FILE_MATCH_PATTERN_TAG);
             for (Element patternEl : patternElements) {
-                FileMatchPattern pattern =
+                final FileMatchPattern pattern =
                     new FileMatchPattern(patternEl.attributeValue(XMLTags.MATCH_PATTERN_TAG));
                 pattern.setIsIncludePattern(
                     Boolean.parseBoolean(patternEl.attributeValue(XMLTags.INCLUDE_PATTERN_TAG)));
@@ -319,12 +320,12 @@ public final class ProjectConfigurationFactory {
 
     private static List<IFilter> getFilters(Element root) {
 
-        List<IFilter> filters = new ArrayList<>();
+        final List<IFilter> filters = new ArrayList<>();
 
-        List<Element> filterElements = root.elements(XMLTags.FILTER_TAG);
+        final List<Element> filterElements = root.elements(XMLTags.FILTER_TAG);
         for (Element filterEl : filterElements) {
 
-            IFilter filter =
+            final IFilter filter =
                 PluginFilters.getByInternalName(filterEl.attributeValue(XMLTags.NAME_TAG));
 
             // guard against unknown/retired filters
@@ -333,8 +334,8 @@ public final class ProjectConfigurationFactory {
                     .setEnabled(Boolean.parseBoolean(filterEl.attributeValue(XMLTags.ENABLED_TAG)));
 
                 // get the filter data
-                List<String> filterData = new ArrayList<>();
-                List<Element> dataElements = filterEl.elements(XMLTags.FILTER_DATA_TAG);
+                final List<String> filterData = new ArrayList<>();
+                final List<Element> dataElements = filterEl.elements(XMLTags.FILTER_DATA_TAG);
                 for (Element dataEl : dataElements) {
                     filterData.add(dataEl.attributeValue(XMLTags.VALUE_TAG));
                 }

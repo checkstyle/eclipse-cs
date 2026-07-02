@@ -106,7 +106,7 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
         mBtnWorkingSet.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> selectWorkingSet.run()));
 
-        Composite severityGroup = new Composite(mFilterComposite, SWT.NULL);
+        final Composite severityGroup = new Composite(mFilterComposite, SWT.NULL);
         GridLayoutFactory.fillDefaults().numColumns(SEVERITY_GROUP_NUM_COLUMS)
             .applyTo(severityGroup);
         GridDataFactory.fillDefaults().span(NUM_COLUMNS, 1)
@@ -167,7 +167,7 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
     }
 
     public int getOnResource() {
-        int onResource;
+        final int onResource;
         if (mRadioSelectedResource.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
         } else if (mRadioSelectedResourceAndChildren.getSelection()) {
@@ -202,7 +202,7 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
 
     private static Button createButton(Composite parent, int style, String text,
         GridDataFactory gridDataFactory) {
-        Button button = new Button(parent, style);
+        final Button button = new Button(parent, style);
         button.setText(text);
         gridDataFactory.applyTo(button);
         return button;

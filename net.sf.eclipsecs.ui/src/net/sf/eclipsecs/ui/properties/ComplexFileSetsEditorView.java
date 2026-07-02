@@ -47,7 +47,7 @@ public final class ComplexFileSetsEditorView extends Composite {
         super(parent, style);
         setLayout(new FillLayout());
 
-        Group composite = new Group(this, SWT.NONE);
+        final Group composite = new Group(this, SWT.NONE);
         composite.setText(Messages.ComplexFileSetsEditor_titleAdvancedFilesetEditor);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
 
@@ -58,18 +58,20 @@ public final class ComplexFileSetsEditorView extends Composite {
         //
         // Build the buttons.
         //
-        Composite buttons = new Composite(composite, SWT.NULL);
+        final Composite buttons = new Composite(composite, SWT.NULL);
         GridDataFactory.create(GridData.VERTICAL_ALIGN_BEGINNING).applyTo(buttons);
         GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttons);
 
-        Button mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
+        final Button mAddButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnAdd);
         mAddButton.addListener(SWT.Selection, event -> addFileSet.run());
 
-        Button mEditButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
+        final Button mEditButton =
+            createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
         mEditButton.addListener(SWT.Selection,
             event -> editFileSet.accept(mViewer.getSelectedFileSet()));
 
-        Button mRemoveButton = createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
+        final Button mRemoveButton =
+            createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
         mRemoveButton.addListener(SWT.Selection,
             event -> removeFileSet.accept(mViewer.getSelectedFileSet()));
     }
@@ -83,7 +85,7 @@ public final class ComplexFileSetsEditorView extends Composite {
     }
 
     private static Button createPushButton(Composite parent, String label) {
-        Button button = new Button(parent, SWT.PUSH);
+        final Button button = new Button(parent, SWT.PUSH);
         button.setText(label);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).applyTo(button);
         return button;

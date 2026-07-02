@@ -52,7 +52,7 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
         super(parent, style);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
 
-        Label lblConfigType = new Label(this, SWT.NULL);
+        final Label lblConfigType = new Label(this, SWT.NULL);
         lblConfigType.setText(Messages.CheckConfigurationPropertiesDialog_lblConfigType);
 
         // this is a weird hack to find the longest label
@@ -60,11 +60,12 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
         // and the labels below
         // this is very difficult to do, because they belong to different
         // layouts
-        GC graphics = new GC(lblConfigType);
-        int nameSize = graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblName).x;
-        int locationsSize =
+        final GC graphics = new GC(lblConfigType);
+        final int nameSize =
+            graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblName).x;
+        final int locationsSize =
             graphics.textExtent(Messages.CheckConfigurationPropertiesDialog_lblLocation).x;
-        int max = Math.max(nameSize, locationsSize);
+        final int max = Math.max(nameSize, locationsSize);
         graphics.dispose();
 
         GridDataFactory.swtDefaults().hint(max, SWT.DEFAULT).applyTo(lblConfigType);
@@ -95,7 +96,7 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
 
     public void bindEditor(ICheckConfigurationEditor mConfigurationEditor) {
         // remove old editor
-        Control[] controls = mEditorPlaceHolder.getChildren();
+        final Control[] controls = mEditorPlaceHolder.getChildren();
         for (int i = 0; i < controls.length; i++) {
             controls[i].dispose();
         }

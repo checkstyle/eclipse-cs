@@ -43,7 +43,7 @@ public class WhitespaceAfterTransformer extends AbstractCTransformationClass {
         }
 
         for (String token : tokens.split("\\s*,\\s*")) {
-            List<String> settings = switch (token) {
+            final List<String> settings = switch (token) {
                 case "COMMA" -> List.of("insert_space_after_comma_in_allocation_expression",
                     "insert_space_after_comma_in_annotation",
                     "insert_space_after_comma_in_array_initializer",

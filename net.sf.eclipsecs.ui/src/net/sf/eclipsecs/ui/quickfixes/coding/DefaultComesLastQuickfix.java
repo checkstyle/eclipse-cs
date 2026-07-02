@@ -58,15 +58,15 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
     @SuppressWarnings("unchecked")
     private static void visitSwitchCase(SwitchCase node) {
         if (node.isDefault() && !isLastSwitchCase(node)) {
-            SwitchStatement switchStatement = (SwitchStatement) node.getParent();
+            final SwitchStatement switchStatement = (SwitchStatement) node.getParent();
 
-            List<ASTNode> defaultCaseStatements = new ArrayList<>();
+            final List<ASTNode> defaultCaseStatements = new ArrayList<>();
             defaultCaseStatements.add(node);
 
             // collect all statements belonging to the default case
-            int defaultStatementIndex = switchStatement.statements().indexOf(node);
+            final int defaultStatementIndex = switchStatement.statements().indexOf(node);
             for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
-                ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+                final ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
 
                 if (tmpNode instanceof SwitchCase) {
                     break;
@@ -84,12 +84,12 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
 
     private static boolean isLastSwitchCase(SwitchCase switchCase) {
         boolean isLastSwitchCase = true;
-        SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
+        final SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();
 
         // collect all statements belonging to the default case
-        int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
+        final int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
         for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
-            ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+            final ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
 
             if (tmpNode instanceof SwitchCase) {
                 isLastSwitchCase = false;

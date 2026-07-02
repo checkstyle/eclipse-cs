@@ -71,10 +71,10 @@ public class CheckstyleMetadataAdapter {
     public List<RuleMetadata> loadRuleMetadata(Map<String, RuleGroupMetadata> groups,
         Collection<ModuleDetails> allModuleDetails,
         Map<String, Map<String, String>> thirdPartyGroups) {
-        List<RuleMetadata> rules = new ArrayList<>();
+        final List<RuleMetadata> rules = new ArrayList<>();
         for (ModuleDetails moduleDetails : allModuleDetails) {
             RuleGroupMetadata group;
-            String moduleClassName = moduleDetails.getFullQualifiedName();
+            final String moduleClassName = moduleDetails.getFullQualifiedName();
             // standard checkstyle module
             if (moduleClassName.startsWith("com.puppycrawl.tools.checkstyle")) {
                 final String[] packageTokens =
@@ -83,8 +83,8 @@ public class CheckstyleMetadataAdapter {
             }
             // third party extension modules
             else {
-                String lookupKey = findLookupKey(thirdPartyGroups, moduleClassName);
-                String ruleGroupName = thirdPartyGroups.get(lookupKey).get("name");
+                final String lookupKey = findLookupKey(thirdPartyGroups, moduleClassName);
+                final String ruleGroupName = thirdPartyGroups.get(lookupKey).get("name");
                 group = groups.get(ruleGroupName);
                 // if the group of the new check hasn't been formed yet
                 // and put into the sRuleGroupMetadata map
@@ -117,12 +117,12 @@ public class CheckstyleMetadataAdapter {
      */
     private RuleMetadata createRuleMetadata(RuleGroupMetadata group, ModuleDetails moduleDetails) {
         final String[] packageTokens = moduleDetails.getParent().split(DOT_PATTERN);
-        List<String> alternativeNames = List.of(moduleDetails.getFullQualifiedName());
-        List<ConfigPropertyMetadata> properties = moduleDetails.getProperties().stream()
+        final List<String> alternativeNames = List.of(moduleDetails.getFullQualifiedName());
+        final List<ConfigPropertyMetadata> properties = moduleDetails.getProperties().stream()
             .map(
                 modulePropertyDetails -> createPropertyConfig(moduleDetails, modulePropertyDetails))
             .toList();
-        RuleMetadata ruleMeta = new RuleMetadata(
+        final RuleMetadata ruleMeta = new RuleMetadata(
             new RuleIdentity(moduleDetails.getName(), moduleDetails.getName(),
                 packageTokens[packageTokens.length - 1], group, moduleDetails.getDescription(),
                 alternativeNames),
@@ -144,12 +144,12 @@ public class CheckstyleMetadataAdapter {
     private ConfigPropertyMetadata createPropertyConfig(ModuleDetails moduleDetails,
         ModulePropertyDetails modulePropertyDetails) {
         ConfigPropertyType dataType = null;
-        String propertyType = modulePropertyDetails.getType();
+        final String propertyType = modulePropertyDetails.getType();
         // if the data type ends with option, the result is singleselect enum value
         // if the property validationType is tokenSet, the result is multicheck
         // everything else is String/String[] depth depending on the presence of "[]"
         if (propertyTypes.get(propertyType) != null) {
-            String validationType = modulePropertyDetails.getValidationType();
+            final String validationType = modulePropertyDetails.getValidationType();
             if (validationType != null) {
                 if (TYPE_ID_PATTERN.equals(validationType)) {
                     dataType = ConfigPropertyType.REGEX;
@@ -171,15 +171,16 @@ public class CheckstyleMetadataAdapter {
                 }
             }
         }
-        ConfigPropertyMetadata modifiedConfigPropertyMetadata = new ConfigPropertyMetadata(dataType,
-            modulePropertyDetails.getName(), modulePropertyDetails.getDefaultValue(), null);
+        final ConfigPropertyMetadata modifiedConfigPropertyMetadata =
+            new ConfigPropertyMetadata(dataType, modulePropertyDetails.getName(),
+                modulePropertyDetails.getDefaultValue(), null);
         modifiedConfigPropertyMetadata.setDescription(modulePropertyDetails.getDescription());
 
         if (dataType == ConfigPropertyType.SINGLE_SELECT) {
-            List<String> resultList = getEnumValues(propertyType);
+            final List<String> resultList = getEnumValues(propertyType);
             resultList.forEach(modifiedConfigPropertyMetadata.getPropertyEnumeration()::add);
         } else if (dataType == ConfigPropertyType.MULTI_CHECK) {
-            String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
+            final String result = CheckUtil.getModifiableTokens(moduleDetails.getName());
             Collections.addAll(modifiedConfigPropertyMetadata.getPropertyEnumeration(),
                 result.split(","));
         }
@@ -195,7 +196,7 @@ public class CheckstyleMetadataAdapter {
      * @return list of values of enum
      */
     private static List<String> getEnumValues(String className) {
-        List<String> resultList = new ArrayList<>();
+        final List<String> resultList = new ArrayList<>();
         Class<?> providerClass = null;
         try {
             providerClass =
@@ -203,7 +204,7 @@ public class CheckstyleMetadataAdapter {
             @SuppressWarnings({
                 "rawtypes", "unchecked"
             })
-            EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
+            final EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
             for (Enum<?> value : values) {
                 resultList.add(value.name().toLowerCase());
             }
@@ -227,7 +228,7 @@ public class CheckstyleMetadataAdapter {
     private static String findLookupKey(Map<String, Map<String, String>> thirdPartyGroups,
         String packageName) {
         final String[] packageTokens = packageName.split(DOT_PATTERN);
-        List<String> prefixList = new ArrayList<>();
+        final List<String> prefixList = new ArrayList<>();
         String lookupKey = packageTokens[0];
         prefixList.add(lookupKey);
         for (int i = 1; i < packageTokens.length; i++) {
@@ -252,7 +253,7 @@ public class CheckstyleMetadataAdapter {
      * @return the package to group name mapping
      */
     private static Map<String, String> createPackageToGroupNameMapping() {
-        Map<String, String> packageToGroupName = new HashMap<>();
+        final Map<String, String> packageToGroupName = new HashMap<>();
         packageToGroupName.put("annotation", "Annotations");
         packageToGroupName.put("checks", "Miscellaneous");
         packageToGroupName.put("checkstyle", OTHER_GROUP_NAME);
@@ -280,7 +281,7 @@ public class CheckstyleMetadataAdapter {
      * @return the property type mapping
      */
     private static Map<String, ConfigPropertyType> createPropertyTypeMapping() {
-        Map<String, ConfigPropertyType> propertyTypes = new HashMap<>();
+        final Map<String, ConfigPropertyType> propertyTypes = new HashMap<>();
         propertyTypes.put("java.lang.String", ConfigPropertyType.STRING);
         propertyTypes.put("java.lang.String[]", ConfigPropertyType.STRING_ARRAY);
         propertyTypes.put("boolean", ConfigPropertyType.BOOLEAN);

@@ -62,36 +62,36 @@ public final class AstQuickfixExecutor {
     public static final void run(IMarker marker,
         BiFunction<IRegion, Integer, ASTVisitor> handleGetCorrectingASTVisitor) {
         if (marker.getResource() instanceof IFile) {
-            ICompilationUnit compilationUnit = getCompilationUnit(marker);
+            final ICompilationUnit compilationUnit = getCompilationUnit(marker);
             if (compilationUnit != null) {
-                ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
-                IPath path = compilationUnit.getPath();
+                final ITextFileBufferManager bufferManager = FileBuffers.getTextFileBufferManager();
+                final IPath path = compilationUnit.getPath();
                 try {
                     JavaUI.openInEditor(compilationUnit);
 
                     bufferManager.connect(path, LocationKind.IFILE, null);
-                    ITextFileBuffer textFileBuffer =
+                    final ITextFileBuffer textFileBuffer =
                         bufferManager.getTextFileBuffer(path, LocationKind.IFILE);
-                    IDocument document = textFileBuffer.getDocument();
+                    final IDocument document = textFileBuffer.getDocument();
 
-                    Optional<Integer> markerStart = getOffset(textFileBuffer, marker);
+                    final Optional<Integer> markerStart = getOffset(textFileBuffer, marker);
                     if (!markerStart.isEmpty()) {
                         final IRegion lineInfo =
                             document.getLineInformationOfOffset(markerStart.get());
 
-                        ASTParser astParser = ASTParser.newParser(AST.getJLSLatest());
+                        final ASTParser astParser = ASTParser.newParser(AST.getJLSLatest());
                         astParser.setKind(ASTParser.K_COMPILATION_UNIT);
                         astParser.setSource(compilationUnit);
 
                         final IProgressMonitor monitor = new NullProgressMonitor();
-                        CompilationUnit ast = (CompilationUnit) astParser.createAST(monitor);
+                        final CompilationUnit ast = (CompilationUnit) astParser.createAST(monitor);
                         ast.recordModifications();
 
                         ast.accept(
                             handleGetCorrectingASTVisitor.apply(lineInfo, markerStart.get()));
 
                         // rewrite all recorded changes to the document
-                        var wasDirtyBefore = textFileBuffer.isDirty();
+                        final var wasDirtyBefore = textFileBuffer.isDirty();
                         ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true))
                             .apply(document);
 
@@ -125,7 +125,7 @@ public final class AstQuickfixExecutor {
     }
 
     private static Optional<Integer> getOffset(ITextFileBuffer textFileBuffer, IMarker marker) {
-        IAnnotationModel annotationModel = textFileBuffer.getAnnotationModel();
+        final IAnnotationModel annotationModel = textFileBuffer.getAnnotationModel();
         return getMarkerAnnotation(annotationModel, marker).map(annotationModel::getPosition)
             .map(Position::getOffset);
     }
@@ -133,7 +133,7 @@ public final class AstQuickfixExecutor {
     private static Optional<MarkerAnnotation> getMarkerAnnotation(IAnnotationModel annotationModel,
         IMarker marker) {
         Optional<MarkerAnnotation> result = Optional.empty();
-        Iterator<Annotation> iter = annotationModel.getAnnotationIterator();
+        final Iterator<Annotation> iter = annotationModel.getAnnotationIterator();
         while (iter.hasNext()) {
             if (iter.next() instanceof MarkerAnnotation markerAnnotation) {
                 if (markerAnnotation.getMarker().equals(marker)) {
