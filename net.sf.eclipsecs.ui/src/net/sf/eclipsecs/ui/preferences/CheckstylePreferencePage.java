@@ -49,6 +49,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
 
 /**
  * This class represents a preference page that is contributed to the Preferences dialog.
+ *
  * <p>
  * This page is used to modify preferences only. They are stored in the preference store that
  * belongs to the main plug-in class. That way, preferences can be accessed directly via the

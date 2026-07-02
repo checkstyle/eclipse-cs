@@ -699,6 +699,7 @@
         <module name="JavadocMissingLeadingAsterisk"/>
         <module name="JavadocMissingWhitespaceAfterAsterisk"/>
         <module name="JavadocLeadingAsteriskAlign"/>
+        <module name="JavadocParagraph"/>
         <module name="JavadocStyle">
             <property name="scope" value="public"/>
         </module>
