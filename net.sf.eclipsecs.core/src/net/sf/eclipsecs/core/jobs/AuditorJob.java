@@ -68,11 +68,10 @@ public class AuditorJob extends AbstractCheckJob {
 
     @Override
     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-
         try {
-
             mAuditor.runAudit(mProject, monitor);
-        } catch (CheckstylePluginException ex) {
+        }
+        catch (CheckstylePluginException ex) {
             final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
                 IStatus.ERROR, ex.getLocalizedMessage(), ex);
             throw new CoreException(status);

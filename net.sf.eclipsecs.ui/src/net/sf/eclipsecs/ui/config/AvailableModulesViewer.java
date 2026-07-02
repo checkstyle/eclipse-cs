@@ -85,12 +85,12 @@ public final class AvailableModulesViewer extends Composite {
             selectionChanged.accept(event.getStructuredSelection().getFirstElement());
         });
         treeViewer.getViewer().addDoubleClickListener(event -> {
-            final IStructuredSelection selection = (IStructuredSelection) event.getSelection();
-            final Object element = selection.getFirstElement();
+            final Object element = ((IStructuredSelection) event.getSelection()).getFirstElement();
             if (element instanceof RuleGroupMetadata) {
                 treeViewer.getViewer().setExpandedState(element,
                     !treeViewer.getViewer().getExpandedState(element));
-            } else if (configurable) {
+            }
+            else if (configurable) {
                 newModule((IStructuredSelection) event.getSelection());
             }
         });
@@ -112,7 +112,8 @@ public final class AvailableModulesViewer extends Composite {
             }));
             addButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(
                 event -> newModule(treeViewer.getViewer().getStructuredSelection())));
-        } else {
+        }
+        else {
             addButton.setEnabled(false);
         }
 
@@ -126,7 +127,8 @@ public final class AvailableModulesViewer extends Composite {
                 // if group is selected add all modules from this group
                 rules.addAll(group.getRuleMetadata());
 
-            } else if (element instanceof RuleMetadata rule) {
+            }
+            else if (element instanceof RuleMetadata rule) {
                 rules.add(rule);
             }
         }
@@ -198,7 +200,8 @@ public final class AvailableModulesViewer extends Composite {
             Object[] children = null;
             if (parentElement instanceof List) {
                 children = getElements(parentElement);
-            } else if (parentElement instanceof RuleGroupMetadata) {
+            }
+            else if (parentElement instanceof RuleGroupMetadata) {
                 children = ((RuleGroupMetadata) parentElement).getRuleMetadata().toArray();
             }
 
@@ -220,7 +223,8 @@ public final class AvailableModulesViewer extends Composite {
 
             if (element instanceof RuleGroupMetadata) {
                 hasChildren = ((RuleGroupMetadata) element).getRuleMetadata().size() > 0;
-            } else if (element instanceof RuleMetadata) {
+            }
+            else if (element instanceof RuleMetadata) {
                 hasChildren = false;
             }
             return hasChildren;
@@ -255,7 +259,8 @@ public final class AvailableModulesViewer extends Composite {
             String text = null;
             if (element instanceof RuleGroupMetadata) {
                 text = ((RuleGroupMetadata) element).getGroupName();
-            } else if (element instanceof RuleMetadata) {
+            }
+            else if (element instanceof RuleMetadata) {
                 text = ((RuleMetadata) element).identity().ruleName();
             }
             return text;
@@ -269,7 +274,8 @@ public final class AvailableModulesViewer extends Composite {
                 image = isGroupUsed((RuleGroupMetadata) element)
                     ? CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON.getImage()
                     : CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage();
-            } else if (element instanceof RuleMetadata) {
+            }
+            else if (element instanceof RuleMetadata) {
 
                 image = isMetadataUsed((RuleMetadata) element)
                     ? CheckstyleUIPluginImages.MODULE_TICKED_ICON.getImage()
@@ -322,7 +328,8 @@ public final class AvailableModulesViewer extends Composite {
             boolean passes = true;
             if (element instanceof RuleGroupMetadata) {
                 passes = !((RuleGroupMetadata) element).isHidden();
-            } else if (element instanceof RuleMetadata) {
+            }
+            else if (element instanceof RuleMetadata) {
                 passes = !((RuleMetadata) element).hidden();
             }
             return passes;

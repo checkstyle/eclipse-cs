@@ -80,7 +80,8 @@ public class FormatterConfigWriter {
             final InputStream stream = XmlProfileWriter
                 .writeCleanupProfileToStream(CS_GENERATED + mProject.getName(), settings);
             createOrUpdateFile(settingsFile, stream);
-        } catch (CoreException | TransformerException | ParserConfigurationException exc) {
+        }
+        catch (CoreException | TransformerException | ParserConfigurationException exc) {
             CheckstyleLog.log(exc, "Error saving cleanup profile");
         }
     }
@@ -97,7 +98,8 @@ public class FormatterConfigWriter {
             final InputStream stream = XmlProfileWriter
                 .writeFormatterProfileToStream(CS_GENERATED + mProject.getName(), settings);
             createOrUpdateFile(settingsFile, stream);
-        } catch (CoreException | TransformerException | ParserConfigurationException exc) {
+        }
+        catch (CoreException | TransformerException | ParserConfigurationException exc) {
             CheckstyleLog.log(exc, "Error saving formatter profile");
         }
     }
@@ -106,7 +108,8 @@ public class FormatterConfigWriter {
             throws CoreException {
         if (settingsFile.exists()) {
             settingsFile.setContents(stream, true, false, null);
-        } else {
+        }
+        else {
             settingsFile.create(stream, true, null);
         }
     }

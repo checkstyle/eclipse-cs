@@ -104,7 +104,8 @@ public class CheckstyleNature implements IProjectNature {
         for (int i = 0; i < commands.length; ++i) {
             if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
                 continue;
-            } else {
+            }
+            else {
                 newCommandsVec.add(commands[i]);
             }
         }
@@ -153,7 +154,8 @@ public class CheckstyleNature implements IProjectNature {
 
             if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
                 checkstyleBuilderIndex = i;
-            } else if (commands[i].getBuilderName().equals(JavaCore.BUILDER_ID)) {
+            }
+            else if (commands[i].getBuilderName().equals(JavaCore.BUILDER_ID)) {
                 javaBuilderIndex = i;
             }
         }

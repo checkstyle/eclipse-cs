@@ -79,7 +79,8 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
                 actions.setDefaultCheckConfig());
             mDefaultButton.setToolTipText(Messages.CheckstylePreferencePage_txtDefault);
             GridDataFactory.fillDefaults().applyTo(mDefaultButton);
-        } else {
+        }
+        else {
             mDefaultButton = null;
         }
 

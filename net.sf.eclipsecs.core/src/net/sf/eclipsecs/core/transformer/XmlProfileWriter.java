@@ -106,7 +106,8 @@ public final class XmlProfileWriter {
                 setting.setAttribute(XML_ATTRIBUTE_ID, key);
                 setting.setAttribute(XML_ATTRIBUTE_VALUE, value);
                 profileElement.appendChild(setting);
-            } else {
+            }
+            else {
                 CheckstyleLog.log(null,
                     String.format("Profile is missing value for [key=%s]", key));
             }

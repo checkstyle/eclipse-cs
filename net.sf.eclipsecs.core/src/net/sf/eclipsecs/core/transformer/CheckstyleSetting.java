@@ -100,7 +100,8 @@ public class CheckstyleSetting {
                     mCheckerModules.get(module).putIfAbsent(property,
                         setting.getmCheckerModules().get(module).get(property));
                 }
-            } else {
+            }
+            else {
                 mCheckerModules.put(module, setting.getmCheckerModules().get(module));
             }
         }
@@ -118,7 +119,8 @@ public class CheckstyleSetting {
                     mTreeWalkerModules.get(module).putIfAbsent(property,
                         setting.getmTreeWalkerModules().get(module).get(property));
                 }
-            } else {
+            }
+            else {
                 mTreeWalkerModules.put(module, setting.getmTreeWalkerModules().get(module));
             }
         }

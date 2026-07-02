@@ -287,7 +287,8 @@ public class Module {
 
         if (mMetaData != null && mMetaData.hasSeverity()) {
             defaultLevel = getMetaData().defaultSeverity();
-        } else if (mMetaData == null) {
+        }
+        else if (mMetaData == null) {
             defaultLevel = MetadataFactory.getDefaultSeverity();
         }
 
@@ -295,13 +296,15 @@ public class Module {
             if (severityLevel == defaultLevel) {
                 mSeverityLevel = null;
                 setLastEnabledSeverity(null);
-            } else if (Severity.IGNORE == severityLevel) {
+            }
+            else if (Severity.IGNORE == severityLevel) {
                 if (mSeverityLevel != null && Severity.IGNORE != mSeverityLevel) {
                     setLastEnabledSeverity(mSeverityLevel);
                 }
 
                 mSeverityLevel = severityLevel;
-            } else {
+            }
+            else {
                 mSeverityLevel = severityLevel;
             }
         }

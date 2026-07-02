@@ -44,7 +44,8 @@ public class CheckstyleMarkerPropertyTester extends PropertyTester {
                     final Object module = marker.getAttribute(CheckstyleMarker.MODULE_NAME);
                     result = module instanceof String && !((String) module).isBlank();
                 }
-            } catch (CoreException ex) {
+            }
+            catch (CoreException ex) {
                 CheckstyleLog.log(ex);
             }
         }

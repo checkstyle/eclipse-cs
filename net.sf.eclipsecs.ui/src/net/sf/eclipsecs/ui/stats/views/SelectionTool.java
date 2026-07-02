@@ -48,7 +48,8 @@ public final class SelectionTool {
             if (file != null) {
                 resources = List.of(file);
             }
-        } else if (selection instanceof IStructuredSelection structuredSelection) {
+        }
+        else if (selection instanceof IStructuredSelection structuredSelection) {
             resources = new ArrayList<>();
             for (Object object : structuredSelection) {
                 if (object instanceof IWorkingSet workingSet) {
@@ -56,7 +57,8 @@ public final class SelectionTool {
                     for (int i = 0; i < elements.length; i++) {
                         considerAdaptable(elements[i]).ifPresent(resources::add);
                     }
-                } else if (object instanceof IAdaptable adaptable) {
+                }
+                else if (object instanceof IAdaptable adaptable) {
                     considerAdaptable(adaptable).ifPresent(resources::add);
                 }
             }

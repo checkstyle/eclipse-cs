@@ -170,13 +170,17 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
         final int onResource;
         if (mRadioSelectedResource.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
-        } else if (mRadioSelectedResourceAndChildren.getSelection()) {
+        }
+        else if (mRadioSelectedResourceAndChildren.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
-        } else if (mRadioAnyResourceInSameProject.getSelection()) {
+        }
+        else if (mRadioAnyResourceInSameProject.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
-        } else if (mRadioSelectedWorkingSet.getSelection()) {
+        }
+        else if (mRadioSelectedWorkingSet.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_WORKING_SET;
-        } else {
+        }
+        else {
             onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE;
         }
         return onResource;

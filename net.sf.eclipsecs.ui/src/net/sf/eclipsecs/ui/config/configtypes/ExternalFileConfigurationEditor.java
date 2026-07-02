@@ -103,12 +103,14 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
 
         try {
             mWorkingCopy.setLocation(editorView.getConfigLocation());
-        } catch (CheckstylePluginException ex) {
+        }
+        catch (CheckstylePluginException ex) {
             final String locationText = editorView.getConfigLocation();
 
             if (StringUtils.isNotBlank(locationText) && ensureFileExists(locationText)) {
                 mWorkingCopy.setLocation(locationText);
-            } else {
+            }
+            else {
                 throw ex;
             }
         }
@@ -144,14 +146,17 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
 
                 try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
                     ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
-                } catch (IOException ioe) {
+                }
+                catch (IOException ioe) {
                     CheckstylePluginException.rethrow(ioe);
                 }
                 exists = true;
-            } else {
+            }
+            else {
                 exists = false;
             }
-        } else {
+        }
+        else {
             exists = true;
         }
         return exists;

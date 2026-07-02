@@ -137,11 +137,13 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
                 try {
                     mUsageView.setInput(ProjectConfigurationFactory
                         .getProjectsUsingConfig(config.getSourceCheckConfiguration()));
-                } catch (CheckstylePluginException ex) {
+                }
+                catch (CheckstylePluginException ex) {
                     CheckstyleLog.log(ex);
                 }
             }
-        } else {
+        }
+        else {
             mConfigurationDescription.setText("");
             if (model.global()) {
                 mUsageView.setInput(new ArrayList<>());

@@ -55,7 +55,8 @@ public final class PropertyUtil {
             final List<String> props = new ArrayList<>();
             parsePropertyString(value, new ArrayList<>(), props);
             return !props.isEmpty();
-        } else {
+        }
+        else {
             return false;
         }
     }
@@ -143,7 +144,8 @@ public final class PropertyUtil {
             if (pos == (aValue.length() - 1)) {
                 aFragments.add("$");
                 prev = pos + 1;
-            } else if (aValue.charAt(pos + 1) != '{') {
+            }
+            else if (aValue.charAt(pos + 1) != '{') {
                 // peek ahead to see if the next char is a property or not
                 // not a property: insert the char as a literal
                 // fragments.addElement(value.substring(pos + 1, pos + 2)); prev = pos + 2;
@@ -151,13 +153,15 @@ public final class PropertyUtil {
                     // backwards compatibility two $ map to one mode
                     aFragments.add("$");
                     prev = pos + 2;
-                } else {
+                }
+                else {
                     // new behaviour: $X maps to $X for all values of X!='$'
                     aFragments.add(aValue.substring(pos, pos + 2));
                     prev = pos + 2;
                 }
 
-            } else {
+            }
+            else {
                 // property found, extract its name or bail on a typo
                 final int endName = aValue.indexOf('}', pos);
                 if (endName < 0) {

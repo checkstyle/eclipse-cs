@@ -172,7 +172,8 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
         try {
             Pattern.compile(text);
             valid = true;
-        } catch (PatternSyntaxException ex) {
+        }
+        catch (PatternSyntaxException ex) {
             CheckstyleMarkerFilterRegexDialog.this.setErrorMessage(NLS.bind(
                 Messages.CheckstyleMarkerFilterDialog_msgInvalidRegex, ex.getLocalizedMessage()));
             valid = false;

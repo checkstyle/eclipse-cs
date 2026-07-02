@@ -75,7 +75,8 @@ public class PackageFilter extends AbstractFilter {
             final IContainer folder;
             if (resource instanceof IContainer) {
                 folder = (IContainer) resource;
-            } else {
+            }
+            else {
                 folder = resource.getParent();
             }
 

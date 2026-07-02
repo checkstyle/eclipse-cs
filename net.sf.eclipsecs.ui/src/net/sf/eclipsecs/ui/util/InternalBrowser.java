@@ -50,7 +50,8 @@ public final class InternalBrowser {
             final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport()
                 .createBrowser(IWorkbenchBrowserSupport.AS_EXTERNAL, null, null, null);
             browser.openURL(new URL(url));
-        } catch (PartInitException | MalformedURLException ex) {
+        }
+        catch (PartInitException | MalformedURLException ex) {
             CheckstyleLog.log(ex);
         }
     }

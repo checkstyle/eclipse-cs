@@ -80,7 +80,8 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
                     final FormatterTransformer transformer = new FormatterTransformer();
                     transformer.transformRules(projectPath + "/test-checkstyle.xml",
                         formatterSettings);
-                } catch (CheckstylePluginException ex) {
+                }
+                catch (CheckstylePluginException ex) {
                     throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
                         IStatus.ERROR, ex.getMessage(), ex));
                 }

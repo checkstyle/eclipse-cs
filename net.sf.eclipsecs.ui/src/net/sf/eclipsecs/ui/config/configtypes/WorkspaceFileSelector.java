@@ -54,7 +54,8 @@ public final class WorkspaceFileSelector {
             final int status;
             if (selection.length == 1 && selection[0] instanceof IFile) {
                 status = IStatus.OK;
-            } else {
+            }
+            else {
                 status = IStatus.ERROR;
             }
             return new Status(status, PlatformUI.PLUGIN_ID, IStatus.ERROR, new String(), null);

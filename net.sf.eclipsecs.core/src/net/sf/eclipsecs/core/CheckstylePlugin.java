@@ -105,7 +105,8 @@ public class CheckstylePlugin extends Plugin {
             final String[] parts = language.split("_");
             if (parts.length > 0) {
                 platformLocale = new Locale(parts[0]);
-            } else {
+            }
+            else {
                 platformLocale = Locale.getDefault();
             }
         }

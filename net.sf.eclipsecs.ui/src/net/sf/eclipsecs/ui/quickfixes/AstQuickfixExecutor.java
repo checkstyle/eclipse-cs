@@ -68,7 +68,6 @@ public final class AstQuickfixExecutor {
                 final IPath path = compilationUnit.getPath();
                 try {
                     JavaUI.openInEditor(compilationUnit);
-
                     bufferManager.connect(path, LocationKind.IFILE, null);
                     final ITextFileBuffer textFileBuffer =
                         bufferManager.getTextFileBuffer(path, LocationKind.IFILE);
@@ -86,27 +85,27 @@ public final class AstQuickfixExecutor {
                         final IProgressMonitor monitor = new NullProgressMonitor();
                         final CompilationUnit ast = (CompilationUnit) astParser.createAST(monitor);
                         ast.recordModifications();
-
                         ast.accept(
                             handleGetCorrectingASTVisitor.apply(lineInfo, markerStart.get()));
-
                         // rewrite all recorded changes to the document
                         final var wasDirtyBefore = textFileBuffer.isDirty();
                         ast.rewrite(document, compilationUnit.getJavaProject().getOptions(true))
                             .apply(document);
-
                         // commit changes to underlying file
                         if (!wasDirtyBefore) {
                             textFileBuffer.commit(monitor, false);
                         }
                     }
-                } catch (CoreException | MalformedTreeException | BadLocationException ex) {
+                }
+                catch (CoreException | MalformedTreeException | BadLocationException ex) {
                     CheckstyleLog.log(ex, Messages.AbstractASTResolution_msgErrorQuickfix);
-                } finally {
+                }
+                finally {
                     if (bufferManager != null) {
                         try {
                             bufferManager.disconnect(path, LocationKind.IFILE, null);
-                        } catch (CoreException ex) {
+                        }
+                        catch (CoreException ex) {
                             CheckstyleLog.log(ex, "Error processing quickfix");
                         }
                     }

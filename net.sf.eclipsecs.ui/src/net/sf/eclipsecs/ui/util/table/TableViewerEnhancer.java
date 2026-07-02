@@ -91,12 +91,7 @@ public final class TableViewerEnhancer {
         for (int i = 0, size = columns.length; i < size; i++) {
             final int colIndex = i;
             columns[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-                if (columns[colIndex] == table.getSortColumn()) {
-                    setSortDirection(table, getSortDirection(table) * -1);
-                } else {
-                    table.setSortColumn(columns[colIndex]);
-                    setSortDirection(table, DIRECTION_FORWARD);
-                }
+                handleSortColumn(columns, colIndex, table);
                 tableViewer.refresh(false);
                 saveState(table, tableSettings);
             }));
@@ -124,15 +119,27 @@ public final class TableViewerEnhancer {
                 final int width = tableSettings.getInt(TAG_COLUMN_WIDTH + i);
                 tableColumnLayout.setColumnData(columns[i], new ColumnPixelData(width));
             }
-        } catch (NumberFormatException ex) {
+        }
+        catch (NumberFormatException ex) {
             // fall back to the default layout
         }
 
         // restore the selection
         try {
             table.select(tableSettings.getInt(TAG_CURRENT_SELECTION));
-        } catch (NumberFormatException ex) {
+        }
+        catch (NumberFormatException ex) {
             // NOOP
+        }
+    }
+
+    private static void handleSortColumn(TableColumn[] columns, int colIndex, Table table) {
+        if (columns[colIndex] == table.getSortColumn()) {
+            setSortDirection(table, getSortDirection(table) * -1);
+        }
+        else {
+            table.setSortColumn(columns[colIndex]);
+            setSortDirection(table, DIRECTION_FORWARD);
         }
     }
 
@@ -140,7 +147,8 @@ public final class TableViewerEnhancer {
         int value;
         try {
             value = tableSettings.getInt(setting);
-        } catch (NumberFormatException ex) {
+        }
+        catch (NumberFormatException ex) {
             value = def;
         }
         return value;

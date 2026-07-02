@@ -97,7 +97,8 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
                 : metadata.getDefaultValue();
         if (defaultValue == null) {
             mComboItem.select(0);
-        } else {
+        }
+        else {
             mComboItem.select(mComboItem.indexOf(defaultValue));
         }
     }
