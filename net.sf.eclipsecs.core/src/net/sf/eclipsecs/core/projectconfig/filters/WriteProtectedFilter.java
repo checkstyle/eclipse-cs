@@ -29,6 +29,24 @@ import org.eclipse.core.resources.ResourceAttributes;
  */
 public class WriteProtectedFilter extends AbstractFilter {
 
+    public WriteProtectedFilter() {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    public WriteProtectedFilter(WriteProtectedFilter other) {
+        super(other);
+    }
+
+    @Override
+    public IFilter copy() {
+        return new WriteProtectedFilter(this);
+    }
+
     @Override
     public boolean accept(Object element) {
 

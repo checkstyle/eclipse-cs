@@ -527,6 +527,7 @@
             <!-- This Check is conflicting with ArrayTrailingComma -->
             <property name="severity" value="ignore"/>
         </module>
+        <module name="NoClone"/>
         <module name="NoCodeInFile"/>
         <module name="NoEnumTrailingComma">
             <!-- This Check is conflicting with our vision of code

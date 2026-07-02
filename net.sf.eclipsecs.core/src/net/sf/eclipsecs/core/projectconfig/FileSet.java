@@ -32,7 +32,7 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
 /**
  * A File Set is a collection of files audited with a common set of audit rules.
  */
-public class FileSet implements Cloneable {
+public class FileSet {
 
     /** The file set name. */
     private String name;
@@ -45,6 +45,22 @@ public class FileSet implements Cloneable {
 
     /** The file match patterns. */
     private List<FileMatchPattern> fileMatchPatterns = new LinkedList<>();
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the file set to copy
+     */
+    public FileSet(FileSet other) {
+        this.name = other.name;
+        this.checkConfig = other.checkConfig;
+        this.enabled = other.enabled;
+        this.fileMatchPatterns = new LinkedList<>();
+        for (FileMatchPattern pattern : other.fileMatchPatterns) {
+            this.fileMatchPatterns.add(new FileMatchPattern(pattern));
+        }
+    }
 
     /**
      * Default constructor.
@@ -168,26 +184,6 @@ public class FileSet implements Cloneable {
         }
 
         return result;
-    }
-
-    @Override
-    public FileSet clone() {
-        try {
-            final FileSet clone = (FileSet) super.clone();
-
-            // clone filesets
-            final List<FileMatchPattern> clonedPatterns = new LinkedList<>();
-            for (FileMatchPattern pattern : fileMatchPatterns) {
-                clonedPatterns.add(pattern.clone());
-            }
-            clone.fileMatchPatterns = clonedPatterns;
-
-            return clone;
-        }
-        catch (CloneNotSupportedException ex) {
-            // should never happen
-            throw new InternalError(ex);
-        }
     }
 
     @Override

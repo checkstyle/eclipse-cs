@@ -133,7 +133,7 @@ public final class PluginFilters {
 
         // Clone and set the state of the filter
         for (int i = 0; i < mFilter.length; i++) {
-            mFilter[i] = FILTER_PROTOTYPES[i].clone();
+            mFilter[i] = FILTER_PROTOTYPES[i].copy();
         }
 
         return mFilter;
@@ -152,7 +152,7 @@ public final class PluginFilters {
 
         for (int i = 0; i < FILTER_PROTOTYPES.length; i++) {
             if (FILTER_PROTOTYPES[i].getInternalName().equals(internalName)) {
-                filter = FILTER_PROTOTYPES[i].clone();
+                filter = FILTER_PROTOTYPES[i].copy();
                 break;
             }
         }

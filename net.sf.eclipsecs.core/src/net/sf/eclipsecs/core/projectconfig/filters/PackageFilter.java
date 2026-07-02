@@ -48,6 +48,26 @@ public class PackageFilter extends AbstractFilter {
     /** Whether to exclude sub-packages. */
     private boolean mExcludeSubPackages = true;
 
+    public PackageFilter() {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    public PackageFilter(PackageFilter other) {
+        super(other);
+        mData = new ArrayList<>(other.mData);
+        mExcludeSubPackages = other.mExcludeSubPackages;
+    }
+
+    @Override
+    public IFilter copy() {
+        return new PackageFilter(this);
+    }
+
     @Override
     public boolean accept(Object object) {
         boolean accept = true;

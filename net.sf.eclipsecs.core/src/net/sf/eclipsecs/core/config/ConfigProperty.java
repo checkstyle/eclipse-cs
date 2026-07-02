@@ -25,7 +25,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 /**
  * A simple configuration consisting of a name/value pair.
  */
-public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
+public class ConfigProperty implements Comparable<ConfigProperty> {
 
     /** The name of the property. */
     private String name;
@@ -38,6 +38,19 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
 
     /** Signals that the property value is actually a ${}-like reference. */
     private boolean propertyReference;
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the property to copy
+     */
+    public ConfigProperty(ConfigProperty other) {
+        this.name = other.name;
+        this.value = other.value;
+        this.metaData = other.metaData;
+        this.propertyReference = other.propertyReference;
+    }
 
     /**
      * Constructor.
@@ -147,13 +160,4 @@ public class ConfigProperty implements Comparable<ConfigProperty>, Cloneable {
         return this.name.compareTo(obj.name);
     }
 
-    @Override
-    public ConfigProperty clone() {
-        try {
-            return (ConfigProperty) super.clone();
-        } catch (CloneNotSupportedException ex) {
-            // Should not happen
-            throw new InternalError(ex);
-        }
-    }
 }

@@ -207,7 +207,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
     private void editFileMatchPattern(FileMatchPattern pattern) {
         if (pattern != null) {
             final FileMatchPatternEditDialog dialog =
-                new FileMatchPatternEditDialog(getShell(), pattern.clone());
+                new FileMatchPatternEditDialog(getShell(), new FileMatchPattern(pattern));
 
             if (Window.OK == dialog.open()) {
 

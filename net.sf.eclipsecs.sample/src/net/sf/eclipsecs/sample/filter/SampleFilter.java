@@ -21,9 +21,28 @@
 package net.sf.eclipsecs.sample.filter;
 
 import net.sf.eclipsecs.core.projectconfig.filters.AbstractFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 
 @ThreadSafe
 public class SampleFilter extends AbstractFilter {
+
+    public SampleFilter() {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    public SampleFilter(SampleFilter other) {
+        super(other);
+    }
+
+    @Override
+    public IFilter copy() {
+        return new SampleFilter(this);
+    }
 
     @Override
     public boolean accept(Object element) {

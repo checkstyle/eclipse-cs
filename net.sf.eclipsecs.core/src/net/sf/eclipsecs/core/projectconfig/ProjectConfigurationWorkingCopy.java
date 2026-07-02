@@ -56,7 +56,7 @@ import net.sf.eclipsecs.core.util.XMLUtil;
  * A modifiable project configuration implementation.
  *
  */
-public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfiguration {
+public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
 
     /** The original, unmodified project configuration. */
     private final IProjectConfiguration projectConfig;
@@ -95,7 +95,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
         // clone file sets of the original config
 
         for (FileSet fileSet : projectConfig.getFileSets()) {
-            fileSets.add(fileSet.clone());
+            fileSets.add(new FileSet(fileSet));
         }
 
         // build list of filters
@@ -112,7 +112,7 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
                 final IFilter configuredFilter = configuredFilters.get(j);
 
                 if (standardFilter.getInternalName().equals(configuredFilter.getInternalName())) {
-                    filters.set(i, configuredFilter.clone());
+                    filters.set(i, configuredFilter.copy());
                 }
             }
         }
@@ -284,34 +284,6 @@ public class ProjectConfigurationWorkingCopy implements Cloneable, IProjectConfi
             }
         }
         return result;
-    }
-
-    @Override
-    public Object clone() {
-        final ProjectConfigurationWorkingCopy clone;
-        try {
-            clone = (ProjectConfigurationWorkingCopy) super.clone();
-        }
-        catch (CloneNotSupportedException ex) {
-            throw new IllegalStateException(ex);
-        }
-        clone.fileSets = new LinkedList<>();
-        clone.setUseSimpleConfig(this.isUseSimpleConfig());
-        clone.setSyncFormatter(this.isSyncFormatter());
-
-        // clone file sets
-        for (FileSet fileSet : fileSets) {
-            clone.getFileSets().add(fileSet.clone());
-        }
-
-        // clone filters
-        final List<IFilter> clonedFilters = new ArrayList<>();
-        for (IFilter filter : filters) {
-            clonedFilters.add(filter.clone());
-        }
-        clone.filters = clonedFilters;
-
-        return clone;
     }
 
     @Override

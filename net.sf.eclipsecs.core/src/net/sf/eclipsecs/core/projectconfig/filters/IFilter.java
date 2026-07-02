@@ -108,11 +108,11 @@ public interface IFilter extends Cloneable {
     String getPresentableFilterData();
 
     /**
-     * A clone of this filter.
+     * A copy of this filter.
      *
-     * @return the clone
+     * @return the copy
      */
-    IFilter clone();
+    IFilter copy();
 
     /**
      * Determines wheter an object passes this filter.

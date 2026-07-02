@@ -34,6 +34,24 @@ public class UnOpenedFilesFilter extends AbstractFilter {
     /** The list of opened files. */
     private static List<IFile> sOpenedFiles = new ArrayList<>();
 
+    public UnOpenedFilesFilter() {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    public UnOpenedFilesFilter(UnOpenedFilesFilter other) {
+        super(other);
+    }
+
+    @Override
+    public IFilter copy() {
+        return new UnOpenedFilesFilter(this);
+    }
+
     /**
      * Registers a opened file.
      *

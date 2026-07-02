@@ -114,7 +114,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         if (fileSet != null) {
             try {
                 final FileSetEditDialog dialog =
-                    new FileSetEditDialog(shell, fileSet.clone(), propertyPageContext);
+                    new FileSetEditDialog(shell, new FileSet(fileSet), propertyPageContext);
                 if (Window.OK == dialog.open()) {
                     final FileSet newFileSet = dialog.getFileSet();
                     mFileSets.remove(fileSet);
