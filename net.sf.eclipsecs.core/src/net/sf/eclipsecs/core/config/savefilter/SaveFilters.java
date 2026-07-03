@@ -23,6 +23,7 @@ package net.sf.eclipsecs.core.config.savefilter;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -68,7 +69,7 @@ public final class SaveFilters {
                     (ISaveFilter) elements[i].createExecutableExtension(ATTR_CLASS);
                 filters.add(filter);
             }
-            catch (Exception ex) {
+            catch (CoreException ex) {
                 CheckstyleLog.log(ex);
             }
         }

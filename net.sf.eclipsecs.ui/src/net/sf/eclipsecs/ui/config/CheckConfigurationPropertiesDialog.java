@@ -265,7 +265,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             getShell().setSize(initialSize);
 
             mBtnProperties.setEnabled(mCheckConfig.getType().isEditable());
-        } catch (Exception ex) {
+        }
+        catch (CheckstylePluginException ex) {
             CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
         }
     }

@@ -86,7 +86,7 @@ public final class MetadataXmlReader {
                 try {
                     priority = Integer.parseInt(groupEl.attributeValue(XMLTags.PRIORITY_TAG));
                 }
-                catch (Exception ex) {
+                catch (NumberFormatException ex) {
                     CheckstyleLog.log(ex);
                     priority = Integer.MAX_VALUE;
                 }

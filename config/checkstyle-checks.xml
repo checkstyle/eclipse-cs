@@ -397,6 +397,13 @@
             <property name="ignoreSetter" value="true"/>
             <property name="setterCanReturnItsClass" value="true"/>
         </module>
+        <module name="IllegalCatch">
+            <property name="illegalClassNames"
+                      value="java.lang.Exception,
+                             java.lang.Throwable,
+                             java.lang.RuntimeException,
+                             java.lang.NullPointerException"/>
+        </module>
         <module name="IllegalInstantiation">
             <property name="classes"
                       value="org.xml.sax.SAXException, org.xml.sax.SAXParseException,

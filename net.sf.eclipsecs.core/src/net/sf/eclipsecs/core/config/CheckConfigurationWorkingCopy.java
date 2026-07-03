@@ -198,7 +198,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
                 // test if configuration file exists
                 getCheckstyleConfiguration();
             }
-            catch (Exception ex) {
+            catch (CheckstylePluginException ex) {
                 mEditedLocation = oldLocation;
                 CheckstylePluginException.rethrow(ex, NLS.bind(Messages.errorResolveConfigLocation,
                     location, ex.getLocalizedMessage()));

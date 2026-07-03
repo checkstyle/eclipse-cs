@@ -23,6 +23,7 @@ package net.sf.eclipsecs.ui.config.configtypes;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -95,7 +96,7 @@ public final class ConfigurationTypesUI {
                 CONFIGURATION_TYPE_EDITORS.put(internalName, editor.getClass());
                 CONFIGURATION_TYPE_ICONS.put(internalName, iconPath);
             }
-            catch (Exception ex) {
+            catch (CoreException ex) {
                 CheckstyleLog.log(ex);
             }
         }
