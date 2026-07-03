@@ -23,8 +23,8 @@ package net.sf.eclipsecs.core.transformer;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 
@@ -91,7 +91,7 @@ public final class CheckstyleFileWriter {
      * @throws IOException
      *             an I/O exception occurred
      */
-    private static void writeModules(final HashMap<String, HashMap<String, String>> modules,
+    private static void writeModules(final Map<String, Map<String, String>> modules,
         final OutputStream outStream) throws IOException {
 
         final Iterator<String> modit = modules.keySet().iterator();
@@ -120,7 +120,7 @@ public final class CheckstyleFileWriter {
      * @throws IOException
      *             an I/O exception occurred
      */
-    private static void writeProperty(final HashMap<String, String> properties,
+    private static void writeProperty(final Map<String, String> properties,
         final OutputStream outStream) throws IOException {
         final Iterator<String> propit = properties.keySet().iterator();
         String prop;

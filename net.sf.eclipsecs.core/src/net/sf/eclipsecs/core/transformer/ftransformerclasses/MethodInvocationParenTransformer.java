@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.core.transformer.ftransformerclasses;
 
 import java.util.HashMap;
+import java.util.Map;
 
 import net.sf.eclipsecs.core.transformer.AbstractFTransformationClass;
 import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
@@ -35,7 +36,7 @@ import net.sf.eclipsecs.core.transformer.FormatterKey;
 public class MethodInvocationParenTransformer extends AbstractFTransformationClass {
     @Override
     public CheckstyleSetting transformRule() {
-        final HashMap<String, String> properties = new HashMap<>();
+        final Map<String, String> properties = new HashMap<>();
         properties.put("tokens", "METHOD_CALL");
         useTreeWalkerModule("MethodParamPad", properties);
         return getCheckstyleSetting();

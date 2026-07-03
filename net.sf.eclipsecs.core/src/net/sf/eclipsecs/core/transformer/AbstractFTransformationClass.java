@@ -20,7 +20,7 @@
 
 package net.sf.eclipsecs.core.transformer;
 
-import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Abstract class which all transformationclasses have to implement. These classes handle how to
@@ -71,7 +71,7 @@ public abstract class AbstractFTransformationClass {
      *            Properties of the module.
      */
     public final void useTreeWalkerModule(final String name,
-        final HashMap<String, String> properties) {
+        final Map<String, String> properties) {
 
         mCheckstyleSetting.addTreeWalkerModule(name, properties);
     }
@@ -85,7 +85,7 @@ public abstract class AbstractFTransformationClass {
      *            Properties of the module.
      */
     public final void useCheckerModule(final String name,
-        final HashMap<String, String> properties) {
+        final Map<String, String> properties) {
 
         mCheckstyleSetting.addCheckerModule(name, properties);
     }

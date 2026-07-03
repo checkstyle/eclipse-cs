@@ -22,6 +22,7 @@ package net.sf.eclipsecs.core.transformer;
 
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Class for storing all settings of a checkstyle-configuration file.
@@ -30,10 +31,10 @@ import java.util.Iterator;
  */
 public class CheckstyleSetting {
     /** Map which holds all checker-modules of the configuration. */
-    private final HashMap<String, HashMap<String, String>> mCheckerModules = new HashMap<>();
+    private final Map<String, Map<String, String>> mCheckerModules = new HashMap<>();
 
     /** Map which holds all treewalker-modules of the configuration. */
-    private final HashMap<String, HashMap<String, String>> mTreeWalkerModules = new HashMap<>();
+    private final Map<String, Map<String, String>> mTreeWalkerModules = new HashMap<>();
 
     /**
      * Method for adding a new treewalker-module.
@@ -43,7 +44,7 @@ public class CheckstyleSetting {
      * @param properties
      *            A hashmap of properties of this module.
      */
-    public void addTreeWalkerModule(final String name, final HashMap<String, String> properties) {
+    public void addTreeWalkerModule(final String name, final Map<String, String> properties) {
 
         mTreeWalkerModules.put(name, properties);
     }
@@ -56,7 +57,7 @@ public class CheckstyleSetting {
      * @param properties
      *            A hashmap of properties of this module.
      */
-    public void addCheckerModule(final String name, final HashMap<String, String> properties) {
+    public void addCheckerModule(final String name, final Map<String, String> properties) {
 
         mCheckerModules.put(name, properties);
     }
@@ -66,7 +67,7 @@ public class CheckstyleSetting {
      *
      * @return A hashmap containing all checker-modules.
      */
-    public HashMap<String, HashMap<String, String>> getmCheckerModules() {
+    public Map<String, Map<String, String>> getmCheckerModules() {
         return mCheckerModules;
     }
 
@@ -75,7 +76,7 @@ public class CheckstyleSetting {
      *
      * @return A hashmap containing all treewalker-modules.
      */
-    public HashMap<String, HashMap<String, String>> getmTreeWalkerModules() {
+    public Map<String, Map<String, String>> getmTreeWalkerModules() {
         return mTreeWalkerModules;
     }
 
