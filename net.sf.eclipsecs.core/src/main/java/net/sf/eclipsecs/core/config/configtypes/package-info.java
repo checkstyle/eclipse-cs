@@ -18,4 +18,7 @@
 //
 //============================================================================
 
+/**
+ * Configuration type classes for the Checkstyle Eclipse plugin.
+ */
 package net.sf.eclipsecs.core.config.configtypes;

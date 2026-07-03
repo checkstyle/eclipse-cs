@@ -18,4 +18,7 @@
 //
 //============================================================================
 
+/**
+ * Configuration UI classes for the Checkstyle Eclipse plugin.
+ */
 package net.sf.eclipsecs.ui.config;

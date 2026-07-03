@@ -18,4 +18,7 @@
 //
 //============================================================================
 
+/**
+ * Miscellaneous quickfixes for the Checkstyle Eclipse UI.
+ */
 package net.sf.eclipsecs.ui.quickfixes.misc;

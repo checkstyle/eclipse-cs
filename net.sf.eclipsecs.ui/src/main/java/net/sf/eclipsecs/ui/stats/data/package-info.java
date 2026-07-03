@@ -18,4 +18,7 @@
 //
 //============================================================================
 
+/**
+ * Data model classes for the Checkstyle violations stats view.
+ */
 package net.sf.eclipsecs.ui.stats.data;
