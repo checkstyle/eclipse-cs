@@ -59,7 +59,7 @@ public final class AstQuickfixExecutor {
 
     }
 
-    public static final void run(IMarker marker,
+    public static void run(IMarker marker,
         BiFunction<IRegion, Integer, ASTVisitor> handleGetCorrectingASTVisitor) {
         if (marker.getResource() instanceof IFile) {
             final ICompilationUnit compilationUnit = getCompilationUnit(marker);
