@@ -39,17 +39,16 @@ public class RightCurlyTransformer extends AbstractCTransformationClass {
             tokens = "LITERAL_TRY, LITERAL_CATCH, LITERAL_FINALLY, LITERAL_IF, LITERAL_ELSE";
         }
 
-        String option = getAttribute("option");
-        if (option == null) {
-            option = "same";
-        }
+        final String option = getAttribute("option");
         final String value = switch (option) {
+            case null -> "do not insert";
             case "same" -> "do not insert";
             default -> "insert";
         };
 
         for (String token : tokens.split("\\s*,\\s*")) {
             final List<String> settings = switch (token) {
+                case null -> List.of();
                 case "LITERAL_TRY" -> List.of("insert_new_line_before_catch_in_try_statement",
                     "insert_new_line_before_finally_in_try_statement");
                 case "LITERAL_CATCH" -> List.of("insert_new_line_before_finally_in_try_statement");

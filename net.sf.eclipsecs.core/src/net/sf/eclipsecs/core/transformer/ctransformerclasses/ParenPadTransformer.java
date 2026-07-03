@@ -37,17 +37,16 @@ public class ParenPadTransformer extends AbstractCTransformationClass {
         if (tokens == null) {
             tokens = "CTOR_CALL, LPAREN, METHOD_CALL, RPAREN, SUPER_CTOR_CALL";
         }
-        String option = getAttribute("option");
-        if (option == null) {
-            option = "nospace";
-        }
+        final String option = getAttribute("option");
         final String value = switch (option) {
+            case null -> "do not insert";
             case "nospace" -> "do not insert";
             default -> "insert";
         };
 
         for (String token : tokens.split("\\s*,\\s*")) {
             final List<String> settings = switch (token) {
+                case null -> List.of();
                 case "LPAREN" -> List.of(
                     "insert_space_after_opening_paren_in_parenthesized_expression",
                     "insert_space_after_opening_paren_in_while",

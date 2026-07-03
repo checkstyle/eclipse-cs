@@ -63,6 +63,7 @@ public enum ConfigPropertyType {
             case "Hidden" -> HIDDEN;
             case "File" -> FILE;
             case "Regex" -> REGEX;
+            case null -> throw new IllegalArgumentException("Unexpected value: null");
             default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
         };
     }

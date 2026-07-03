@@ -50,6 +50,7 @@ public class WhitespaceAroundTransformer extends AbstractCTransformationClass {
 
         for (String token : tokens.split("\\s*,\\s*")) {
             final List<String> settings = switch (token) {
+                case null -> List.of();
                 case "ASSIGN", "BAND_ASSIGN", "BOR_ASSIGN", "BSR_ASSIGN", "BXOR_ASSIGN",
                     "DIV_ASSIGN", "MINUS_ASSIGN", "MOD_ASSIGN", "PLUS_ASSIGN", "SL_ASSIGN",
                     "SR_ASSIGN", "STAR_ASSIGN" -> List.of("insert_space_after_assignment_operator",

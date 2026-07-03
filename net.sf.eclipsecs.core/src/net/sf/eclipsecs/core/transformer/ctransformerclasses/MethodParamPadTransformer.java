@@ -31,11 +31,9 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 public class MethodParamPadTransformer extends AbstractCTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
-        String option = getAttribute("option");
-        if (option == null) {
-            option = "nospace";
-        }
+        final String option = getAttribute("option");
         final String space = switch (option) {
+            case null -> "do not insert";
             case "space" -> "insert";
             default -> "do not insert";
         };
@@ -48,6 +46,9 @@ public class MethodParamPadTransformer extends AbstractCTransformationClass {
 
         for (String token : val.split("\\s*,\\s*")) {
             switch (token) {
+                case null -> {
+                    // nothing
+                }
                 case "CTOR_DEF" -> userFormatterSetting(
                     "insert_space_before_opening_paren_in_constructor_declaration", space);
                 case "METHOD_CALL", "SUPER_CTOR_CALL", "CTOR_CALL",
