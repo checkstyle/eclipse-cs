@@ -79,7 +79,7 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
         /** The resources to clear markers from. */
         private Collection<IResource> mResourcesToClear;
 
-        public ClearMarkersJob(Collection<IResource> resourcesToClear) {
+        ClearMarkersJob(Collection<IResource> resourcesToClear) {
             super(Messages.ClearSelectedFilesAction_title);
             this.mResourcesToClear = resourcesToClear;
         }

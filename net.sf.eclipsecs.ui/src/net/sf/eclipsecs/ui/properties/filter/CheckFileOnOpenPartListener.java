@@ -200,7 +200,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
         /** The collection of opened workbench parts. */
         private Collection<IWorkbenchPartReference> mParts;
 
-        public PartsOpenedJob(Collection<IWorkbenchPartReference> parts) {
+        PartsOpenedJob(Collection<IWorkbenchPartReference> parts) {
             super(Messages.PartsOpenedJob_title);
             this.mParts = parts;
         }

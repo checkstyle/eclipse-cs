@@ -40,7 +40,7 @@ class ResourceBundlePropertyResolver implements PropertyResolver {
      * @param bundle
      *            the resource bundle
      */
-    public ResourceBundlePropertyResolver(ResourceBundle bundle) {
+    ResourceBundlePropertyResolver(ResourceBundle bundle) {
         mBundle = bundle;
     }
 

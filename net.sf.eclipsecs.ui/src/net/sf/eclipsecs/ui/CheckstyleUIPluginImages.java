@@ -116,7 +116,7 @@ public enum CheckstyleUIPluginImages {
      */
     private Image image;
 
-    private CheckstyleUIPluginImages(Supplier<ImageDescriptor> factory) {
+    CheckstyleUIPluginImages(Supplier<ImageDescriptor> factory) {
         this.factory = factory;
     }
 

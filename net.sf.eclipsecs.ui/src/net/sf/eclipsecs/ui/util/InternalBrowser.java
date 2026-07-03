@@ -45,7 +45,7 @@ public final class InternalBrowser {
      * @param url
      *            the URL to open
      */
-    public static final void openLinkInExternalBrowser(String url) {
+    public static void openLinkInExternalBrowser(String url) {
         try {
             final IWebBrowser browser = PlatformUI.getWorkbench().getBrowserSupport()
                 .createBrowser(IWorkbenchBrowserSupport.AS_EXTERNAL, null, null, null);

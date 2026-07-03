@@ -256,7 +256,7 @@ public final class SWTUtil {
          * @param dialogKey
          *            the unique key of the dialog
          */
-        public ShellResizeSupportListener(Dialog dialog, IDialogSettings settings,
+        ShellResizeSupportListener(Dialog dialog, IDialogSettings settings,
             String dialogKey) {
             mDialog = dialog;
             mSettings = settings;

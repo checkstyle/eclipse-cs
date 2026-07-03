@@ -76,7 +76,7 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
         /** The projects to deactivate Checkstyle on. */
         private Collection<IProject> mProjectsToDeactivate;
 
-        public BulkCheckstyleActivateJob(Collection<IProject> projectsToDeactivate) {
+        BulkCheckstyleActivateJob(Collection<IProject> projectsToDeactivate) {
             super(Messages.DeactivateProjectsPrintAction_msgDeactivateSelectedProjects);
             this.mProjectsToDeactivate = projectsToDeactivate;
         }

@@ -228,7 +228,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         return true;
     }
 
-    private static final boolean updateBooleanPreference(boolean selection, String preference)
+    private static boolean updateBooleanPreference(boolean selection, String preference)
             throws BackingStoreException {
         final boolean original = CheckstylePluginPrefs.getBoolean(preference);
         CheckstylePluginPrefs.setBoolean(preference, selection);

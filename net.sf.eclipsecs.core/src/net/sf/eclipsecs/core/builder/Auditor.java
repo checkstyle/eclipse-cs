@@ -260,7 +260,7 @@ public final class Auditor {
          */
         private Set<IPath> mConnectedFileBufferPaths = new HashSet<>();
 
-        public CheckstyleAuditListener(IProject project) {
+        CheckstyleAuditListener(IProject project) {
             mProject = project;
 
             // init the marker limitation
