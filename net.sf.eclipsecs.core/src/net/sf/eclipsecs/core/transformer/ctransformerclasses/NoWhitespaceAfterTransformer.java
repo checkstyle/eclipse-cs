@@ -42,6 +42,7 @@ public class NoWhitespaceAfterTransformer extends AbstractCTransformationClass {
 
         for (String token : val.split("\\s*,\\s*")) {
             final List<String> settings = switch (token) {
+                case null -> List.of();
                 case "INC", "DEC" -> List.of("insert_space_after_prefix_operator");
                 case "UNARY_MINUS", "UNARY_PLUS", "BNOT",
                     "LNOT" -> List.of("insert_space_after_unary_operator");

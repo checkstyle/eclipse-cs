@@ -49,6 +49,7 @@ public enum Severity {
             case "info" -> INFO;
             case "warning" -> WARNING;
             case "error" -> ERROR;
+            case null -> throw new IllegalArgumentException("Unexpected value: null");
             default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
         };
     }

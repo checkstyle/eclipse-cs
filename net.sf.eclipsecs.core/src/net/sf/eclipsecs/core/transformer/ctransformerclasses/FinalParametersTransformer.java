@@ -38,6 +38,9 @@ public class FinalParametersTransformer extends AbstractCTransformationClass {
 
         for (String token : tokens.split("\\s*,\\s*")) {
             switch (token) {
+                case null -> {
+                    // nothing
+                }
                 case "METHOD_DEF", "CTOR_DEF" -> useCleanupSetting("make_parameters_final", "true");
                 case "LITERAL_CATCH", "FOR_EACH_CLAUSE",
                     "PATTERN_VARIABLE_DEF" -> useCleanupSetting("make_local_variable_final",
