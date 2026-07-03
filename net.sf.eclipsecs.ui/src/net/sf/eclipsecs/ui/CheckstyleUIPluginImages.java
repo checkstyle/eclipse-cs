@@ -102,17 +102,17 @@ public enum CheckstyleUIPluginImages {
         "icons/checkstyle_command.png"));
 
     /**
-     * Lazy creation factory
+     * Lazy creation factory.
      */
     private Supplier<ImageDescriptor> factory;
 
     /**
-     * Image descriptor
+     * Image descriptor.
      */
     private ImageDescriptor imageDescriptor;
 
     /**
-     * Image that got created from the descriptor
+     * Image that got created from the descriptor.
      */
     private Image image;
 

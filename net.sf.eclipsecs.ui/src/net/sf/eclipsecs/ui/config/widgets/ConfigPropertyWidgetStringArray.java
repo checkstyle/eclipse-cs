@@ -52,7 +52,7 @@ public final class ConfigPropertyWidgetStringArray extends ConfigPropertyWidgetS
 
     /**
      * Normalize array properties to be separated by a comma and a blank for better readability of
-     * the plain config file
+     * the plain config file.
      *
      * @param text
      *            the text to normalize

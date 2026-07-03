@@ -37,11 +37,11 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     implements IMarkerHelpContextProvider {
 
     /**
-     * Package of the regexp checks
+     * Package of the regexp checks.
      */
     private static final String REGEXP_PACKAGE = "com.puppycrawl.tools.checkstyle.checks.regexp.";
     /**
-     * Suffix of all standard check implementations
+     * Suffix of all standard check implementations.
      */
     private static final String CHECK_SUFFIX = "Check";
     /**
@@ -86,6 +86,8 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     }
 
     /**
+     * Gets the online help URL for a module.
+     *
      * @param moduleName
      *            module name
      * @return online help URL
@@ -106,13 +108,15 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     }
 
     /**
-     * Help topic forwarding to the online help
+     * Help topic forwarding to the online help.
      */
     private static final class CheckstyleHelpTopic implements IHelpResource {
         /** The module name. */
         private final String moduleName;
 
         /**
+         * Creates a new help topic for the given module.
+         *
          * @param moduleName
          *            module name
          */
@@ -132,7 +136,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
     }
 
     /**
-     * Dynamically created help context for a checkstyle marker
+     * Dynamically created help context for a checkstyle marker.
      */
     private static final class CheckstyleHelpContext implements IContext {
         /** The module name. */

@@ -46,6 +46,8 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
     }
 
     /**
+     * Checks if a marker is a checkstyle marker.
+     *
      * @param marker
      *            the marker to check
      * @return {@code true} if this is a checkstyle marker
