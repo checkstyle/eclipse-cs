@@ -30,7 +30,6 @@ import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
-import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.EclipseLogHandler;
 import net.sf.eclipsecs.core.util.ExtensionClassLoader;
 
@@ -70,16 +69,11 @@ public class CheckstylePlugin extends Plugin {
         mAddonExtensionClassLoader =
             new ExtensionClassLoader(context.getBundle(), ADDON_PROVIDER_EXT_PT_ID);
 
-        try {
-            final Logger checkstyleErrorLog =
-                Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog");
+        final Logger checkstyleErrorLog =
+            Logger.getLogger("com.puppycrawl.tools.checkstyle.ExceptionLog");
 
-            checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
-            checkstyleErrorLog.setLevel(Level.ALL);
-
-        } catch (Exception ioe) {
-            CheckstyleLog.log(ioe);
-        }
+        checkstyleErrorLog.addHandler(new EclipseLogHandler(this));
+        checkstyleErrorLog.setLevel(Level.ALL);
     }
 
     /**

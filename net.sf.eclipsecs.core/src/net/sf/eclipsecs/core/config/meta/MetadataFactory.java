@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.StandardCharsets;
@@ -136,7 +137,10 @@ public final class MetadataFactory {
             } else {
                 parent = XMLTags.TREEWALKER_MODULE;
             }
-        } catch (Exception ex) {
+        }
+        catch (ClassNotFoundException | InstantiationException | IllegalAccessException
+            | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
+            | SecurityException ex) {
             // Ok we tried... default to TreeWalker
             parent = XMLTags.TREEWALKER_MODULE;
         }

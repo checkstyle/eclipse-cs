@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.util;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 
 import org.eclipse.jface.dialogs.Dialog;
@@ -300,7 +301,8 @@ public final class SWTUtil {
                     getInitialSizeMethod.setAccessible(true);
                     initialSize = (Point) getInitialSizeMethod.invoke(mDialog, (Object) null);
                 }
-                catch (Exception ex) {
+                catch (NoSuchMethodException | IllegalAccessException
+                    | InvocationTargetException ex) {
                     initialSize = new Point(0, 0);
                 }
                 final Shell shell = (Shell) event.getSource();

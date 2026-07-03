@@ -21,6 +21,7 @@
 package net.sf.eclipsecs.core.projectconfig;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -37,6 +38,7 @@ import org.eclipse.core.resources.IProject;
 import org.eclipse.core.resources.IResource;
 import org.eclipse.core.resources.IWorkspaceRoot;
 import org.eclipse.core.resources.ResourceAttributes;
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
 
@@ -346,7 +348,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
 
             config.getLocalCheckConfigWorkingSet().store();
         }
-        catch (Exception ex) {
+        catch (CheckstylePluginException | IOException | CoreException ex) {
             CheckstylePluginException.rethrow(ex,
                 NLS.bind(Messages.errorWritingCheckConfigurations, ex.getLocalizedMessage()));
         }

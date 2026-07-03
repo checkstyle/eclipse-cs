@@ -23,6 +23,7 @@ package net.sf.eclipsecs.ui.properties.filter;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -72,7 +73,7 @@ public final class PluginFilterEditors {
                     (IFilterEditor) elements[i].createExecutableExtension(ATTR_CLASS);
                 sFilterEditorClasses.put(filter, editor.getClass());
             }
-            catch (Exception ex) {
+            catch (CoreException ex) {
                 CheckstyleLog.log(ex);
             }
         }

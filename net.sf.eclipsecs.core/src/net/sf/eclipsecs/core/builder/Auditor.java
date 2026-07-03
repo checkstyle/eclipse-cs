@@ -150,16 +150,13 @@ public final class Auditor {
                 handleCheckstyleFailure(project, ex);
             }
         }
-        catch (RuntimeException ex) {
-            if (listener != null) {
-                listener.cleanup();
-            }
-            throw ex;
-        }
         finally {
             monitor.done();
 
-            // Cleanup listener and filter
+            if (listener != null) {
+                listener.cleanup();
+            }
+
             if (checker != null) {
                 checker.removeListener(listener);
             }

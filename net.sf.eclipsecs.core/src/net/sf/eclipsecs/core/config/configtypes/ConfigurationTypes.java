@@ -26,6 +26,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.eclipse.core.runtime.CoreException;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -100,7 +101,7 @@ public final class ConfigurationTypes {
 
                 CONFIGURATION_TYPES.put(internalName, configType);
             }
-            catch (Exception ex) {
+            catch (CoreException ex) {
                 CheckstyleLog.log(ex);
             }
         }

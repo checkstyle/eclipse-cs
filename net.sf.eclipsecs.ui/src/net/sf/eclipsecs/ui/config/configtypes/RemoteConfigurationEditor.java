@@ -20,6 +20,7 @@
 
 package net.sf.eclipsecs.ui.config.configtypes;
 
+import java.net.MalformedURLException;
 import java.net.URI;
 
 import org.apache.commons.lang3.StringUtils;
@@ -216,7 +217,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
                     .removeCachedAuthInfo(URI.create(mLocation.getText()).toURL());
             }
         }
-        catch (Exception ex) {
+        catch (MalformedURLException ex) {
             CheckstylePluginException.rethrow(ex);
         }
 
