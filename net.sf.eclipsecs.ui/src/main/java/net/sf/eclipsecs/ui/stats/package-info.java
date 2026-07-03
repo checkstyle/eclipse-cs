@@ -18,4 +18,7 @@
 //
 //============================================================================
 
+/**
+ * Classes for the Checkstyle violations stats view of the Checkstyle Eclipse UI.
+ */
 package net.sf.eclipsecs.ui.stats;

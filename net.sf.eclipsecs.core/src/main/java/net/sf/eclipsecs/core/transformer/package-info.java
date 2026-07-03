@@ -18,4 +18,7 @@
 //
 //============================================================================
 
+/**
+ * Transformer classes for the Checkstyle Eclipse plugin.
+ */
 package net.sf.eclipsecs.core.transformer;

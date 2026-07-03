@@ -18,4 +18,7 @@
 //
 //============================================================================
 
+/**
+ * Property page classes for the Checkstyle Eclipse UI.
+ */
 package net.sf.eclipsecs.ui.properties;

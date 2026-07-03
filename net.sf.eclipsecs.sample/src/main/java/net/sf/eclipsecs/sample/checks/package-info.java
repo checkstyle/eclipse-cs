@@ -18,4 +18,7 @@
 //
 //============================================================================
 
+/**
+ * Sample check classes for the Checkstyle Eclipse plugin.
+ */
 package net.sf.eclipsecs.sample.checks;
