@@ -61,6 +61,8 @@ public class ResolvableProperty {
     }
 
     /**
+     * Gets the value of the property.
+     *
      * @return The value of the property.
      */
     public String getValue() {
@@ -68,6 +70,8 @@ public class ResolvableProperty {
     }
 
     /**
+     * Gets the property's name.
+     *
      * @return The property's name.
      */
     public String getPropertyName() {
@@ -75,6 +79,8 @@ public class ResolvableProperty {
     }
 
     /**
+     * Sets the value for the property.
+     *
      * @param value
      *            Value for the property.
      */
@@ -83,6 +89,8 @@ public class ResolvableProperty {
     }
 
     /**
+     * Sets the property's name.
+     *
      * @param propertyName
      *            The property's name.
      */

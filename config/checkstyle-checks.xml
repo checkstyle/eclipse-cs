@@ -748,6 +748,7 @@
         <module name="NonEmptyAtclauseDescription"/>
         <module name="SingleLineJavadoc"/>
         <module name="WriteTag"/>
+        <module name="SummaryJavadoc"/>
         <module name="RequireEmptyLineBeforeBlockTagGroup"/>
 
         <!-- Metrics -->

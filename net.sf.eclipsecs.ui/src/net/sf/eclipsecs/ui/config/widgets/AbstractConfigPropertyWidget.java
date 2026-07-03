@@ -60,6 +60,8 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
     protected abstract Control getValueWidget(Composite parent);
 
     /**
+     * Gets the property's value.
+     *
      * @return The property's value.
      */
     @Override

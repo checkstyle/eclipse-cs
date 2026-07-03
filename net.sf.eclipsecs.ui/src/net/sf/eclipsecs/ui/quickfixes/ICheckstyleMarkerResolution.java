@@ -39,6 +39,8 @@ public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
     boolean canFix(IMarker marker);
 
     /**
+     * Sets the module id for this quickfix.
+     *
      * @param module
      *            id of the checkstyle module
      */

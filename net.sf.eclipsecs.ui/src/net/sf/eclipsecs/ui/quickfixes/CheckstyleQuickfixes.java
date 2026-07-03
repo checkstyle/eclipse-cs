@@ -41,15 +41,15 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 public final class CheckstyleQuickfixes {
 
     /**
-     * ID of the quickfix extension point
+     * ID of the quickfix extension point.
      */
     private static final String QUICKFIX_EXTENSION_POINT = "net.sf.eclipsecs.ui.quickfix";
     /**
-     * Attribute under which the fully qualified class name of the quick fix is registered
+     * Attribute under which the fully qualified class name of the quick fix is registered.
      */
     private static final String EXTENSION_CLASS_ATTRIBUTE = "class";
     /**
-     * Attribute under which the module id is registered
+     * Attribute under which the module id is registered.
      */
     private static final String EXTENSION_MODULE_ATTRIBUTE = "module";
 
@@ -65,6 +65,8 @@ public final class CheckstyleQuickfixes {
     }
 
     /**
+     * Gets the registered quickfixes.
+     *
      * @return the quickfixes
      */
     public Collection<ICheckstyleMarkerResolution> getQuickfixes() {
@@ -72,6 +74,8 @@ public final class CheckstyleQuickfixes {
     }
 
     /**
+     * Reads all registered quickfixes from the registry.
+     *
      * @return all registered quickfixes
      */
     private Collection<ICheckstyleMarkerResolution> readRegistry() {
@@ -109,7 +113,7 @@ public final class CheckstyleQuickfixes {
     }
 
     /**
-     * Initialization-on-demand-holder
+     * Initialization-on-demand-holder.
      */
     private static final class LazyHolder {
         /** The singleton instance. */
