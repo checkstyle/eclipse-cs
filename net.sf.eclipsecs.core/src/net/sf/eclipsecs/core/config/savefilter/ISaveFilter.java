@@ -18,47 +18,24 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.ui.properties;
+package net.sf.eclipsecs.core.config.savefilter;
 
 import java.util.List;
 
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
-import net.sf.eclipsecs.core.projectconfig.FileSet;
+import net.sf.eclipsecs.core.config.Module;
 
 /**
- * Interface for the part of the checkstyle plugin properties page that
- * configures file sets for the project.
+ * Interface to implement special module logic.
  *
  */
-public interface FileSetsEditor {
-  /**
-   * Creates the contents of the file set editor.
-   *
-   * @param parent
-   *          the parent component
-   * @return the control
-   */
-  Control createContents(Composite parent);
+public interface ISaveFilter {
 
   /**
-   * Set the file sets for the editor.
+   * Post processes the selection of configurad modules. This can be used to add/remove certain
+   * 'special' modules. Implementations are encouraged to manipulate the list of configured modules.
    *
-   * @param fileSets
-   *          the list of file sets
+   * @param configuredModules
+   *          the configured modules in from this configuration
    */
-  void setFileSets(List<FileSet> fileSets);
-
-  /**
-   * Returns the file sets.
-   *
-   * @return the list of file sets
-   */
-  List<FileSet> getFileSets();
-
-  /**
-   * Refreshes the view.
-   */
-  void refresh();
+  void postProcessConfiguredModules(List<Module> configuredModules);
 }

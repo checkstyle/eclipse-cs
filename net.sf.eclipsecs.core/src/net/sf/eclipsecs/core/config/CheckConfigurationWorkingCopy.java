@@ -45,7 +45,7 @@ import org.xml.sax.InputSource;
 import com.google.common.io.Closeables;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
@@ -56,10 +56,10 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration implements Cloneable {
 
   /** The source check configuration of the working copy. */
-  private final CheckConfiguration mCheckConfiguration;
+  private final ICheckConfiguration mCheckConfiguration;
 
   /** The working set this working copy belongs to. */
-  private final CheckConfigurationWorkingSet mWorkingSet;
+  private final ICheckConfigurationWorkingSet mWorkingSet;
 
   /** The edited name of the configuration. */
   private String mEditedName;
@@ -87,8 +87,8 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
    * @param workingSet
    *          the working set this working copy belongs to
    */
-  public CheckConfigurationWorkingCopy(CheckConfiguration checkConfigToEdit,
-          CheckConfigurationWorkingSet workingSet) {
+  public CheckConfigurationWorkingCopy(ICheckConfiguration checkConfigToEdit,
+          ICheckConfigurationWorkingSet workingSet) {
     mCheckConfiguration = checkConfigToEdit;
     mWorkingSet = workingSet;
 
@@ -110,12 +110,11 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
    * @param global
    *          <code>true</code> if the new configuration is a global configuration
    */
-  public CheckConfigurationWorkingCopy(ConfigurationType configType,
-          CheckConfigurationWorkingSet workingSet, boolean global) {
+  public CheckConfigurationWorkingCopy(IConfigurationType configType,
+          ICheckConfigurationWorkingSet workingSet, boolean global) {
 
     mWorkingSet = workingSet;
-    mCheckConfiguration = new DefaultCheckConfiguration(null, null, null, configType, global, null,
-            null);
+    mCheckConfiguration = new CheckConfiguration(null, null, null, configType, global, null, null);
   }
 
   /**
@@ -123,7 +122,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
    *
    * @return the source check configuration
    */
-  public CheckConfiguration getSourceCheckConfiguration() {
+  public ICheckConfiguration getSourceCheckConfiguration() {
     return mCheckConfiguration;
   }
 
@@ -262,7 +261,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
       ConfigurationWriter.write(byteOut, modules, this);
 
       // all went ok, write to the file
-      File configFile = URIUtil.toFile(getResolvedConfigurationFileUrl().toURI());
+      File configFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
       Files.write(configFile.toPath(), byteOut.toByteArray());
 
       // refresh the files if within the workspace
@@ -304,7 +303,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
   }
 
   @Override
-  public ConfigurationType getType() {
+  public IConfigurationType getType() {
     return getSourceCheckConfiguration().getType();
   }
 
@@ -319,8 +318,8 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
   }
 
   @Override
-  public URL getResolvedConfigurationFileUrl() throws CheckstylePluginException {
-    return getType().getResolvedConfigurationFileUrl(this);
+  public URL getResolvedConfigurationFileURL() throws CheckstylePluginException {
+    return getType().getResolvedConfigurationFileURL(this);
   }
 
   @Override
@@ -345,13 +344,13 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
 
   @Override
   public boolean equals(Object obj) {
-    if (obj == null || !(obj instanceof CheckConfiguration)) {
+    if (obj == null || !(obj instanceof ICheckConfiguration)) {
       return false;
     }
     if (this == obj) {
       return true;
     }
-    CheckConfiguration rhs = (CheckConfiguration) obj;
+    ICheckConfiguration rhs = (ICheckConfiguration) obj;
     return Objects.equals(getName(), rhs.getName())
             && Objects.equals(getLocation(), rhs.getLocation())
             && Objects.equals(getDescription(), rhs.getDescription())

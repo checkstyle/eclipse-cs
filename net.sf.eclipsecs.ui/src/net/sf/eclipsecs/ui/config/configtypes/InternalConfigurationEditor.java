@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Shell;
 import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ConfigurationWriter;
-import net.sf.eclipsecs.core.config.DefaultCheckConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.InternalConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
@@ -52,7 +52,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * a text field to input the URL.
  *
  */
-public class InternalConfigurationEditor implements CheckConfigurationEditor {
+public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
   //
   // attributes
@@ -98,7 +98,7 @@ public class InternalConfigurationEditor implements CheckConfigurationEditor {
 
   private void importConfig(Shell shell) {
     promptImportConfigFile(shell).ifPresent(configFileString -> {
-      CheckConfiguration tmpSourceConfig = new DefaultCheckConfiguration("dummy",
+      ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
               configFileString, null, new ExternalFileConfigurationType(), true, null,
               null);
       try {

@@ -59,9 +59,9 @@ public final class ConfigPropertyWidgetFactory {
    *          the parent shell
    * @return the widget or <code>null</code> if the property type is unknown
    */
-  public static ConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop,
+  public static IConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop,
           Shell shell) {
-    ConfigPropertyWidget widget = null;
+    IConfigPropertyWidget widget = null;
 
     ConfigPropertyType type = prop.getMetaData().getDatatype();
 
@@ -75,12 +75,12 @@ public final class ConfigPropertyWidgetFactory {
     return widget;
   }
 
-  private static ConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
+  private static IConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
           ConfigProperty prop, ConfigPropertyType type) {
     return REGISTRY.getOrDefault(type, ConfigPropertyWidgetString::create).create(parent, prop);
   }
 
   public interface ConfigPropertyWidgetBuilder {
-    ConfigPropertyWidget create(Composite parent, ConfigProperty prop);
+    IConfigPropertyWidget create(Composite parent, ConfigProperty prop);
   }
 }

@@ -41,9 +41,9 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.contentassist.ContentAssistHandler;
 
 import net.sf.eclipsecs.core.config.ResolvableProperty;
-import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.SwtUtil;
+import net.sf.eclipsecs.ui.util.SWTUtil;
 
 /**
  * Property page.
@@ -103,7 +103,7 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
   @Override
   public void create() {
     super.create();
-    SwtUtil.addResizeSupport(this, CheckstyleUiPlugin.getDefault().getDialogSettings(),
+    SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
             ResolvablePropertyEditDialog.class.getName());
   }
 
@@ -146,7 +146,7 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
     final SubjectControlContentAssistant contentAssistant = new SubjectControlContentAssistant();
 
     contentAssistant
-            .setRestoreCompletionProposalSize(CheckstyleUiPlugin.getDefault().getDialogSettings());
+            .setRestoreCompletionProposalSize(CheckstyleUIPlugin.getDefault().getDialogSettings());
 
     IContentAssistProcessor processor = new PropertiesContentAssistProcessor();
     contentAssistant.setContentAssistProcessor(processor, IDocument.DEFAULT_CONTENT_TYPE);

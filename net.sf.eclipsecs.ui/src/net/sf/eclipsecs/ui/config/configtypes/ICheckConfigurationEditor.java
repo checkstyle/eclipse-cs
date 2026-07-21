@@ -32,7 +32,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * Interface for the check configuration type specific location editor.
  *
  */
-public interface CheckConfigurationEditor {
+public interface ICheckConfigurationEditor {
 
   /**
    * Initializes the configuration editor with its properties.

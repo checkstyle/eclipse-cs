@@ -59,7 +59,7 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
-import net.sf.eclipsecs.core.config.XmlTags;
+import net.sf.eclipsecs.core.config.XMLTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
@@ -131,16 +131,16 @@ public final class MetadataFactory {
       Object moduleInstance = checkClass.getDeclaredConstructor().newInstance();
 
       if (moduleInstance instanceof AbstractFileSetCheck) {
-        parent = XmlTags.CHECKER_MODULE;
+        parent = XMLTags.CHECKER_MODULE;
       } else {
-        parent = XmlTags.TREEWALKER_MODULE;
+        parent = XMLTags.TREEWALKER_MODULE;
       }
     } catch (Exception ex) {
       // Ok we tried... default to TreeWalker
-      parent = XmlTags.TREEWALKER_MODULE;
+      parent = XMLTags.TREEWALKER_MODULE;
     }
 
-    RuleGroupMetadata otherGroup = getRuleGroupMetadata(XmlTags.OTHER_GROUP);
+    RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
     RuleMetadata ruleMeta = new RuleMetadata(
             new RuleIdentity(module.getName(), module.getName(), parent, otherGroup, null,
                     Collections.emptyList()),
@@ -326,7 +326,7 @@ public final class MetadataFactory {
           }
           ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
                   CheckstylePlugin.getPlatformLocale(), CheckstylePlugin.class.getClassLoader(),
-                  new Utf8Control());
+                  new UTF8Control());
 
           message = resourceBundle.getString(messageKey);
           break;
@@ -373,7 +373,7 @@ public final class MetadataFactory {
       try (InputStream metadataStream = classLoader.getResourceAsStream(metadataFile)) {
 
         if (metadataStream != null) {
-          ResourceBundle metadataBundle = getMetadataI18nBundle(metadataFile, classLoader);
+          ResourceBundle metadataBundle = getMetadataI18NBundle(metadataFile, classLoader);
           parseMetadata(metadataStream, metadataBundle, groupId(metadataFile));
         }
       } catch (DocumentException | IOException ex) {
@@ -444,7 +444,7 @@ public final class MetadataFactory {
    * @return the corresponding ResourceBundle for the metadata file or <code>null</code> if none
    *         exists
    */
-  private static ResourceBundle getMetadataI18nBundle(String metadataFile,
+  private static ResourceBundle getMetadataI18NBundle(String metadataFile,
           ClassLoader classLoader) {
     ResourceBundle resourceBundle;
     String bundle = metadataFile.substring(0, metadataFile.length() - 4).replace('/', '.');
@@ -479,7 +479,7 @@ public final class MetadataFactory {
    * as UTF-8.
    *
    */
-  private static final class Utf8Control extends Control {
+  private static final class UTF8Control extends Control {
     @Override
     public ResourceBundle newBundle(String aBaseName, Locale aLocale, String aFormat,
             ClassLoader aLoader, boolean aReload) throws IOException {

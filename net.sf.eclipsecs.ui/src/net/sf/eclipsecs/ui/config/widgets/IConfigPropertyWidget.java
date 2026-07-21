@@ -26,7 +26,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * Interface all configuration property input widget classes.
  */
-public interface ConfigPropertyWidget {
+public interface IConfigPropertyWidget {
 
   /**
    * Initialized the widget and its controls.

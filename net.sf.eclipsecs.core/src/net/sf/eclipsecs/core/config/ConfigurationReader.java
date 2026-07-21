@@ -37,7 +37,7 @@ import com.google.common.base.Strings;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XmlUtil;
+import net.sf.eclipsecs.core.util.XMLUtil;
 
 /**
  * Utility class to read a checkstyle configuration and transform to the plugins module objects.
@@ -138,7 +138,7 @@ public final class ConfigurationReader {
     try {
 
       final SAXReader reader = new SAXReader();
-      reader.setEntityResolver(new XmlUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
+      reader.setEntityResolver(new XMLUtil.InternalDtdEntityResolver(PUBLIC2INTERNAL_DTD_MAP));
       final Document document = reader.read(input);
 
       rules = getModules(document);
@@ -156,8 +156,8 @@ public final class ConfigurationReader {
     document.accept(new VisitorSupport() {
       @Override
       public void visit(final Element node) {
-        if (XmlTags.MODULE_TAG.equals(node.getName())) {
-          final String name = node.attributeValue(XmlTags.NAME_TAG);
+        if (XMLTags.MODULE_TAG.equals(node.getName())) {
+          final String name = node.attributeValue(XMLTags.NAME_TAG);
           final RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
           Module module = metadata != null ? new Module(metadata, true) : new Module(name);
           addProperties(node, module);
@@ -176,24 +176,24 @@ public final class ConfigurationReader {
 
   private static void addProperties(final Element moduleEl, final Module module) {
 
-    final List<Element> propertyEls = moduleEl.elements(XmlTags.PROPERTY_TAG);
+    final List<Element> propertyEls = moduleEl.elements(XMLTags.PROPERTY_TAG);
 
     for (final Element propertyEl : propertyEls) {
 
-      final String name = propertyEl.attributeValue(XmlTags.NAME_TAG);
-      final String value = propertyEl.attributeValue(XmlTags.VALUE_TAG);
+      final String name = propertyEl.attributeValue(XMLTags.NAME_TAG);
+      final String value = propertyEl.attributeValue(XMLTags.VALUE_TAG);
 
       final boolean isPropertyRef = value != null
               && PROPERTY_REF_PATTERN.matcher(value).matches();
 
-      if (XmlTags.SEVERITY_TAG.equals(name) && module.getMetaData() != null
+      if (XMLTags.SEVERITY_TAG.equals(name) && module.getMetaData() != null
               && module.getMetaData().hasSeverity()) {
         try {
           module.setSeverity(Severity.fromXmlValue(value));
         } catch (final IllegalArgumentException ex) {
           module.setSeverity(Severity.INHERIT);
         }
-      } else if (XmlTags.ID_TAG.equals(name)) {
+      } else if (XMLTags.ID_TAG.equals(name)) {
         module.setId(Strings.emptyToNull(value));
       } else if (module.getMetaData() != null) {
 
@@ -215,12 +215,12 @@ public final class ConfigurationReader {
 
   private static void addMessages(final Element moduleEl, final Module module) {
 
-    final List<Element> messageEls = moduleEl.elements(XmlTags.MESSAGE_TAG);
+    final List<Element> messageEls = moduleEl.elements(XMLTags.MESSAGE_TAG);
 
     for (final Element messageEl : messageEls) {
 
-      final String key = messageEl.attributeValue(XmlTags.KEY_TAG);
-      final String value = messageEl.attributeValue(XmlTags.VALUE_TAG);
+      final String key = messageEl.attributeValue(XMLTags.KEY_TAG);
+      final String value = messageEl.attributeValue(XMLTags.VALUE_TAG);
 
       module.getCustomMessages().put(key, value);
     }
@@ -228,16 +228,16 @@ public final class ConfigurationReader {
 
   private static void addMetadata(final Element moduleEl, final Module module) {
 
-    final List<Element> metaEls = moduleEl.elements(XmlTags.METADATA_TAG);
+    final List<Element> metaEls = moduleEl.elements(XMLTags.METADATA_TAG);
 
     for (final Element metaEl : metaEls) {
 
-      final String name = metaEl.attributeValue(XmlTags.NAME_TAG);
-      final String value = metaEl.attributeValue(XmlTags.VALUE_TAG);
+      final String name = metaEl.attributeValue(XMLTags.NAME_TAG);
+      final String value = metaEl.attributeValue(XMLTags.VALUE_TAG);
 
-      if (XmlTags.COMMENT_ID.equals(name)) {
+      if (XMLTags.COMMENT_ID.equals(name)) {
         module.setComment(value);
-      } else if (XmlTags.LAST_ENABLED_SEVERITY_ID.equals(name)) {
+      } else if (XMLTags.LAST_ENABLED_SEVERITY_ID.equals(name)) {
         module.setLastEnabledSeverity(Severity.fromXmlValue(value));
       } else {
         module.getCustomMetaData().put(name, value);

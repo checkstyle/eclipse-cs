@@ -24,14 +24,14 @@ import java.util.Collection;
 
 import org.eclipse.core.resources.IProject;
 
-import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Interface for implementations that provide editing services for a group of check configuration.
  *
  */
-public interface CheckConfigurationWorkingSet {
+public interface ICheckConfigurationWorkingSet {
 
   /**
    * Creates a new working copy for an existing check configuration. The working copy is associated
@@ -42,7 +42,7 @@ public interface CheckConfigurationWorkingSet {
    *          the check configuration to create the working copy for
    * @return the working copy
    */
-  CheckConfigurationWorkingCopy newWorkingCopy(CheckConfiguration checkConfig);
+  CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig);
 
   /**
    * Creates a new working copy with a given configuration type. The working copy is associated with
@@ -53,7 +53,7 @@ public interface CheckConfigurationWorkingSet {
    *          the desired configuration type of the new working copy
    * @return the working copy
    */
-  CheckConfigurationWorkingCopy newWorkingCopy(ConfigurationType configType);
+  CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType);
 
   /**
    * Returns the working copies that belong to this working set.

@@ -32,7 +32,7 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.sf.eclipsecs.core.config.CheckConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
@@ -76,7 +76,7 @@ public final class SimpleFileSetsEditorView extends Composite {
             .applyTo(mTxtConfigDescription);
 
     mComboViewer.addSelectionChangedListener(event -> {
-      CheckConfiguration config = (CheckConfiguration) event.getStructuredSelection()
+      ICheckConfiguration config = (ICheckConfiguration) event.getStructuredSelection()
               .getFirstElement();
       mDefaultFileSet.setCheckConfig(config);
       mTxtConfigDescription.setText(config.getDescription() != null ? config.getDescription() : "");

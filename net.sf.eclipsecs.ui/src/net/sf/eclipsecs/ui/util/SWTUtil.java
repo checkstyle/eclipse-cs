@@ -51,12 +51,12 @@ import org.eclipse.swt.widgets.Text;
  * Some widely used helper funktionality regarding SWT shortcomings.
  *
  */
-public final class SwtUtil {
+public final class SWTUtil {
 
   /**
    * Hidden default constructor.
    */
-  private SwtUtil() {
+  private SWTUtil() {
     // NOOP
   }
 

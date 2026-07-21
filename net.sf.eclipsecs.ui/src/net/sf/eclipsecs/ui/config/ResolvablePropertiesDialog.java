@@ -48,12 +48,12 @@ import net.sf.eclipsecs.core.config.CheckConfigurationTester;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ResolvableProperty;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.SwtUtil;
-import net.sf.eclipsecs.ui.util.table.TableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.TableSettingsProvider;
+import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
+import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check
@@ -111,7 +111,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     super.create();
     initialize();
 
-    SwtUtil.addResizeSupport(this, CheckstyleUiPlugin.getDefault().getDialogSettings(),
+    SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
             ResolvablePropertiesDialog.class.getName());
   }
 
@@ -124,7 +124,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
   @Override
   protected Control createDialogArea(Composite parent) {
     // set the logo
-    this.setTitleImage(CheckstyleUiPluginImages.PLUGIN_LOGO.getImage());
+    this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     this.setTitle(Messages.ResolvablePropertiesDialog_titleMessageArea);
     this.setMessage(Messages.ResolvablePropertiesDialog_msgAdditionalProperties);
 
@@ -276,7 +276,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
                 Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
       }
     } catch (CheckstylePluginException ex) {
-      CheckstyleUiPlugin.errorDialog(getShell(), ex, true);
+      CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
     }
   }
 
@@ -286,7 +286,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
    *
    */
   public static final class PropertiesLabelProvider extends LabelProvider
-          implements ITableLabelProvider, TableComparableProvider, TableSettingsProvider {
+          implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     public static final PropertiesLabelProvider INSTANCE = new PropertiesLabelProvider();
 
@@ -323,7 +323,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     public IDialogSettings getTableSettings() {
       String concreteViewId = ResolvablePropertiesDialog.class.getName();
 
-      IDialogSettings workbenchSettings = CheckstyleUiPlugin.getDefault().getDialogSettings();
+      IDialogSettings workbenchSettings = CheckstyleUIPlugin.getDefault().getDialogSettings();
       IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
       if (settings == null) {

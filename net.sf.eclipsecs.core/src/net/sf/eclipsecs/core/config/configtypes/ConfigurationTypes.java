@@ -63,7 +63,7 @@ public final class ConfigurationTypes {
   private static final String ATTR_CONFIGURABLE = "configurable"; //$NON-NLS-1$
 
   /** the configuration types configured to the extension point. */
-  private static final Map<String, ConfigurationType> CONFIGURATION_TYPES;
+  private static final Map<String, IConfigurationType> CONFIGURATION_TYPES;
 
   /**
    * Initialize the configured to the filter extension point.
@@ -89,7 +89,7 @@ public final class ConfigurationTypes {
         boolean isEditable = Boolean.parseBoolean(elements[i].getAttribute(ATTR_EDITABLE));
         boolean isConfigurable = Boolean.parseBoolean(elements[i].getAttribute(ATTR_CONFIGURABLE));
 
-        ConfigurationType configType = (ConfigurationType) elements[i]
+        IConfigurationType configType = (IConfigurationType) elements[i]
                 .createExecutableExtension(ATTR_CLASS);
         configType.initialize(name, internalName, definingPluginId, isCreatable, isEditable,
                 isConfigurable);
@@ -111,16 +111,16 @@ public final class ConfigurationTypes {
    *
    * @return the configuration types.
    */
-  public static ConfigurationType[] getCreatableConfigTypes() {
-    List<ConfigurationType> creatableTypes = new ArrayList<>();
+  public static IConfigurationType[] getCreatableConfigTypes() {
+    List<IConfigurationType> creatableTypes = new ArrayList<>();
 
-    for (ConfigurationType type : CONFIGURATION_TYPES.values()) {
+    for (IConfigurationType type : CONFIGURATION_TYPES.values()) {
       if (type.isCreatable()) {
         creatableTypes.add(type);
       }
     }
 
-    return creatableTypes.toArray(new ConfigurationType[creatableTypes.size()]);
+    return creatableTypes.toArray(new IConfigurationType[creatableTypes.size()]);
   }
 
   /**
@@ -129,15 +129,15 @@ public final class ConfigurationTypes {
    *
    * @return the configurable configuration types.
    */
-  public static ConfigurationType[] getConfigurableConfigTypes() {
+  public static IConfigurationType[] getConfigurableConfigTypes() {
 
-    List<ConfigurationType> configurableTypes = new ArrayList<>();
+    List<IConfigurationType> configurableTypes = new ArrayList<>();
     configurableTypes.addAll(Arrays.asList(getCreatableConfigTypes()));
 
-    ConfigurationType remoteType = getByInternalName("remote"); //$NON-NLS-1$
+    IConfigurationType remoteType = getByInternalName("remote"); //$NON-NLS-1$
     configurableTypes.remove(remoteType);
 
-    return configurableTypes.toArray(new ConfigurationType[configurableTypes.size()]);
+    return configurableTypes.toArray(new IConfigurationType[configurableTypes.size()]);
   }
 
   /**
@@ -147,7 +147,7 @@ public final class ConfigurationTypes {
    *          the configuration type internal name
    * @return the configuration type or <code>null</code>
    */
-  public static ConfigurationType getByInternalName(String name) {
+  public static IConfigurationType getByInternalName(String name) {
     return CONFIGURATION_TYPES.get(name);
   }
 
@@ -158,9 +158,9 @@ public final class ConfigurationTypes {
    *          the configuration type name
    * @return the configuration type or <code>null</code>
    */
-  public static ConfigurationType getByName(String name) {
-    ConfigurationType result = null;
-    for (ConfigurationType type : CONFIGURATION_TYPES.values()) {
+  public static IConfigurationType getByName(String name) {
+    IConfigurationType result = null;
+    for (IConfigurationType type : CONFIGURATION_TYPES.values()) {
       if (type.getName().equals(name)) {
         result = type;
         break;
