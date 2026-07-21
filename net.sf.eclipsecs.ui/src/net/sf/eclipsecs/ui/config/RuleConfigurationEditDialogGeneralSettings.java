@@ -42,13 +42,13 @@ import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidget;
 import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidgetFactory;
+import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 
 public final class RuleConfigurationEditDialogGeneralSettings extends Composite {
 
   private final ComboViewer mSeverityCombo;
-  private final List<ConfigPropertyWidget> mConfigPropertyWidgets;
+  private final List<IConfigPropertyWidget> mConfigPropertyWidgets;
 
   public RuleConfigurationEditDialogGeneralSettings(Composite parent, int style, Module rule,
           boolean readonly) {
@@ -96,12 +96,12 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
   }
 
   public void restoreProperties() {
-    mConfigPropertyWidgets.forEach(ConfigPropertyWidget::restorePropertyDefault);
+    mConfigPropertyWidgets.forEach(IConfigPropertyWidget::restorePropertyDefault);
   }
 
   public Optional<String> validatePropertyWidgets() {
     Optional<String> errorMessage = Optional.empty();
-    for (ConfigPropertyWidget widget : mConfigPropertyWidgets) {
+    for (IConfigPropertyWidget widget : mConfigPropertyWidgets) {
       ConfigProperty property = widget.getConfigProperty();
       try {
         widget.validate();

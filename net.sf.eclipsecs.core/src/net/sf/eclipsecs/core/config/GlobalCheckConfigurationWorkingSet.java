@@ -38,21 +38,21 @@ import org.eclipse.core.runtime.IPath;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType;
-import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XmlUtil;
+import net.sf.eclipsecs.core.util.XMLUtil;
 
 /**
  * Working set implementation that manages global configurations configured for the Eclipse
  * workspace.
  *
  */
-public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWorkingSet {
+public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
 
   /** The internal list of working copies belonging to this working set. */
   private final List<CheckConfigurationWorkingCopy> mWorkingCopies;
@@ -66,7 +66,7 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
   /**
    * The default built-in check configuration to be used for unconfigured projects.
    */
-  private CheckConfiguration mDefaultBuiltInCheckConfig;
+  private ICheckConfiguration mDefaultBuiltInCheckConfig;
 
   /**
    * Creates a working set to manage global configurations.
@@ -76,14 +76,14 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
    * @param defaultConfig
    *          the defaul check configuration
    */
-  GlobalCheckConfigurationWorkingSet(List<CheckConfiguration> checkConfigs,
-          CheckConfiguration defaultConfig, CheckConfiguration defaultBuiltInCheckConfiguration) {
+  GlobalCheckConfigurationWorkingSet(List<ICheckConfiguration> checkConfigs,
+          ICheckConfiguration defaultConfig, ICheckConfiguration defaultBuiltInCheckConfiguration) {
 
     mWorkingCopies = new ArrayList<>();
     mDeletedConfigurations = new ArrayList<>();
     mDefaultBuiltInCheckConfig = defaultBuiltInCheckConfiguration;
 
-    for (CheckConfiguration cfg : checkConfigs) {
+    for (ICheckConfiguration cfg : checkConfigs) {
 
       CheckConfigurationWorkingCopy workingCopy = new CheckConfigurationWorkingCopy(cfg, this);
       mWorkingCopies.add(workingCopy);
@@ -95,12 +95,12 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
   }
 
   @Override
-  public CheckConfigurationWorkingCopy newWorkingCopy(CheckConfiguration checkConfig) {
+  public CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig) {
     return new CheckConfigurationWorkingCopy(checkConfig, this);
   }
 
   @Override
-  public CheckConfigurationWorkingCopy newWorkingCopy(ConfigurationType configType) {
+  public CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType) {
     return new CheckConfigurationWorkingCopy(configType, this, true);
   }
 
@@ -227,7 +227,7 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
 
     for (CheckConfigurationWorkingCopy checkConfig : mWorkingCopies) {
 
-      CheckConfiguration original = checkConfig.getSourceCheckConfiguration();
+      ICheckConfiguration original = checkConfig.getSourceCheckConfiguration();
 
       // only if the name of the check config differs from the original
       if (original != null && original.getName() != null
@@ -236,7 +236,7 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
         List<IProject> projects = ProjectConfigurationFactory.getProjectsUsingConfig(checkConfig);
         for (IProject project : projects) {
 
-          ProjectConfiguration projectConfig = ProjectConfigurationFactory
+          IProjectConfiguration projectConfig = ProjectConfigurationFactory
                   .getConfiguration(project);
 
           ProjectConfigurationWorkingCopy workingCopy = new ProjectConfigurationWorkingCopy(
@@ -272,7 +272,7 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
       configPath = configPath.append(CheckConfigurationFactory.CHECKSTYLE_CONFIG_FILE);
       File configFile = configPath.toFile();
 
-      CheckConfiguration defaultConfig = mDefaultCheckConfig;
+      ICheckConfiguration defaultConfig = mDefaultCheckConfig;
 
       // don't store as default when it's already the built-in default
       if (defaultConfig != null
@@ -284,7 +284,7 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
 
       // write to the file after the document creation was successful
       // prevents corrupted files in case of error
-      byte[] data = XmlUtil.toByteArray(doc);
+      byte[] data = XMLUtil.toByteArray(doc);
       Files.write(configFile.toPath(), data);
     } catch (IOException ex) {
       CheckstylePluginException.rethrow(ex, Messages.errorWritingConfigFile);
@@ -299,7 +299,7 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
    */
   private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
 
-    for (CheckConfiguration checkConfig : mDeletedConfigurations) {
+    for (ICheckConfiguration checkConfig : mDeletedConfigurations) {
       checkConfig.getType().notifyCheckConfigRemoved(checkConfig);
     }
   }
@@ -308,18 +308,18 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
    * Transforms the check configurations to a document.
    */
   private static Document createCheckConfigurationsDocument(
-          List<CheckConfigurationWorkingCopy> configurations, CheckConfiguration defaultConfig) {
+          List<CheckConfigurationWorkingCopy> configurations, ICheckConfiguration defaultConfig) {
 
     Document doc = DocumentHelper.createDocument();
-    Element root = doc.addElement(XmlTags.CHECKSTYLE_ROOT_TAG);
-    root.addAttribute(XmlTags.VERSION_TAG,
+    Element root = doc.addElement(XMLTags.CHECKSTYLE_ROOT_TAG);
+    root.addAttribute(XMLTags.VERSION_TAG,
             CheckConfigurationFactory.CURRENT_CONFIG_FILE_FORMAT_VERSION);
 
     if (defaultConfig != null) {
-      root.addAttribute(XmlTags.DEFAULT_CHECK_CONFIG_TAG, defaultConfig.getName());
+      root.addAttribute(XMLTags.DEFAULT_CHECK_CONFIG_TAG, defaultConfig.getName());
     }
 
-    for (CheckConfiguration config : configurations) {
+    for (ICheckConfiguration config : configurations) {
 
       // don't store built-in configurations to persistence or local
       // configurations
@@ -328,7 +328,7 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
       }
 
       CheckConfigurationXmlWriter.writeCheckConfiguration(root, config, config.getLocation(),
-              XmlTags.CHECK_CONFIG_TAG);
+              XMLTags.CHECK_CONFIG_TAG);
     }
     return doc;
   }

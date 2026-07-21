@@ -23,7 +23,7 @@ package net.sf.eclipsecs.core.projectconfig;
 /**
  * Defines XML tages used in configuration files.
  */
-public final class XmlTags {
+public final class XMLTags {
 
   /** common description tag. */
   public static final String DESCRIPTION_TAG = "description"; //$NON-NLS-1$
@@ -72,7 +72,7 @@ public final class XmlTags {
 
   static final String SYNC_FORMATTER_TAG = "sync-formatter"; //$NON-NLS-1$
 
-  private XmlTags() {
+  private XMLTags() {
     // NOOP
   }
 

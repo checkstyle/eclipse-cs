@@ -37,7 +37,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public class FormatterTransformer {
 
-  private final Map<String, Class<? extends AbstractFormatterTransformationClass>> allTransformers;
+  private final Map<String, Class<? extends AbstractFTransformationClass>> allTransformers;
 
   /**
    * Creates a new instance of class CheckstyleTransformer.
@@ -62,7 +62,7 @@ public class FormatterTransformer {
           throws CheckstylePluginException {
     CheckstyleSetting checkstyleSetting = new CheckstyleSetting();
     loadTransformationClasses(formatterSettings).stream()
-        .map(AbstractFormatterTransformationClass::transformRule)
+        .map(AbstractFTransformationClass::transformRule)
         .forEach(checkstyleSetting::addSetting);
     new CheckstyleFileWriter(checkstyleSetting, path).writeXmlFile();
   }
@@ -73,20 +73,19 @@ public class FormatterTransformer {
    * constructor.
    * @return
    */
-  private List<AbstractFormatterTransformationClass> loadTransformationClasses(
+  private List<AbstractFTransformationClass> loadTransformationClasses(
           Map<String, String> formatterSettings) throws CheckstylePluginException {
-    List<AbstractFormatterTransformationClass> targetTransformers = new ArrayList<>();
+    List<AbstractFTransformationClass> targetTransformers = new ArrayList<>();
     for (Map.Entry<String, String> entry : formatterSettings.entrySet()) {
       String rule = entry.getKey();
       String value = entry.getValue();
 
-      Class<? extends AbstractFormatterTransformationClass> transformationClass = allTransformers
-              .get(rule);
+      Class<? extends AbstractFTransformationClass> transformationClass = allTransformers.get(rule);
 
       if (transformationClass != null) {
         try {
-          final AbstractFormatterTransformationClass transObj = transformationClass
-                  .getDeclaredConstructor().newInstance();
+          final AbstractFTransformationClass transObj = transformationClass.getDeclaredConstructor()
+                  .newInstance();
 
           transObj.setValue(value);
 
@@ -101,8 +100,7 @@ public class FormatterTransformer {
   }
 
   @SuppressWarnings("unchecked")
-  private static Map<String, Class<? extends AbstractFormatterTransformationClass>>
-      discoverTransformers() {
+  private static Map<String, Class<? extends AbstractFTransformationClass>> discoverTransformers() {
     String formatterKeyAnnotation = FormatterKey.class.getName();
     ClassLoader loader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
     try (ScanResult scanResult = new ClassGraph()
@@ -114,7 +112,7 @@ public class FormatterTransformer {
                       classInfo -> "org.eclipse.jdt.core.formatter."
                               + classInfo.getAnnotationInfo(formatterKeyAnnotation)
                                       .getParameterValues().getValue("value"),
-                      classInfo -> (Class<? extends AbstractFormatterTransformationClass>) classInfo
+                      classInfo -> (Class<? extends AbstractFTransformationClass>) classInfo
                               .loadClass()));
     }
   }

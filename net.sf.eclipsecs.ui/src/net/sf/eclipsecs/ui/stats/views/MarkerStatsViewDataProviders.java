@@ -39,8 +39,8 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.data.MarkerStat;
 import net.sf.eclipsecs.ui.stats.data.Stats;
-import net.sf.eclipsecs.ui.util.table.TableComparableProvider;
-import net.sf.eclipsecs.ui.util.table.TableSettingsProvider;
+import net.sf.eclipsecs.ui.util.table.ITableComparableProvider;
+import net.sf.eclipsecs.ui.util.table.ITableSettingsProvider;
 
 public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders master,
         MarkerStatsViewDetailDataProviders detail) {
@@ -167,7 +167,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
    * @author Lars Ködderitzsch
    */
   public static final class MasterViewMultiProvider extends LabelProvider
-          implements ITableLabelProvider, TableComparableProvider, TableSettingsProvider {
+          implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     private final IDialogSettings mainSettings;
 
@@ -232,7 +232,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
    * @author Lars Ködderitzsch
    */
   public static final class DetailViewMultiProvider extends LabelProvider
-          implements ITableLabelProvider, TableComparableProvider, TableSettingsProvider {
+          implements ITableLabelProvider, ITableComparableProvider, ITableSettingsProvider {
 
     private final IDialogSettings mainSettings;
 

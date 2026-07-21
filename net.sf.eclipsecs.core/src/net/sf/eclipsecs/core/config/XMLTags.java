@@ -25,7 +25,7 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
 /**
  * Defines XML tages used in configuration files.
  */
-public final class XmlTags {
+public final class XMLTags {
 
   //
   // common tags
@@ -219,7 +219,7 @@ public final class XmlTags {
   /** default weight of a builtin configuration. */
   public static final String DEFAULT_WEIGHT = "default-weight"; //$NON-NLS-1$
 
-  private XmlTags() {
+  private XMLTags() {
     // NOOP
   }
 

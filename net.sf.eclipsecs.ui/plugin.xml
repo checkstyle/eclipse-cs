@@ -60,7 +60,7 @@
     <extension
         point="org.eclipse.core.runtime.preferences">
         <initializer
-            class="net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs"/>
+            class="net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs"/>
     </extension>
     <extension
         point="org.eclipse.ui.preferenceTransfer">

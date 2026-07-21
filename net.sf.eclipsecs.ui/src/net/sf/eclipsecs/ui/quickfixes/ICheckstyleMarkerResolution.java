@@ -18,49 +18,30 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.ui.properties.filter;
+package net.sf.eclipsecs.ui.quickfixes;
 
-import java.util.List;
-
-import org.eclipse.core.resources.IProject;
-import org.eclipse.swt.widgets.Shell;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.ui.IMarkerResolution2;
 
 /**
- * Interface for a filter editor.
+ * Interface for a quickfix implementation for checkstyle markers.
  *
  */
-public interface FilterEditor {
+public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
 
   /**
-   * Opens the filter editor dialog (blocking).
+   * Checks if this quickfix can actually fix the marker occurrence.
    *
-   * @param parent
-   *          the parent shell
-   * @return the returncode
+   * @param marker
+   *          the marker to potentially be fixed.
+   * @return <code>true</code> if this quickfix can fix the marker,
+   *         <code>false</code> otherwise.
    */
-  int openEditor(Shell parent);
+  boolean canFix(IMarker marker);
 
   /**
-   * Sets the input for this filter editor.
-   *
-   * @param input
-   *          the input
+   * @param module id of the checkstyle module
    */
-  void setInputProject(IProject input);
-
-  /**
-   * Sets the actual filter data for the editor.
-   *
-   * @param filterData
-   *          the actual filter data
-   */
-  void setFilterData(List<String> filterData);
-
-  /**
-   * Gets the filter data from the editor.
-   *
-   * @return the edited filter data
-   */
-  List<String> getFilterData();
+  void setModule(String module);
 
 }

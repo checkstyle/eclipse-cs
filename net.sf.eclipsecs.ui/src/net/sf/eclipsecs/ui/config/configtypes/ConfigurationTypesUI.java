@@ -32,24 +32,24 @@ import org.eclipse.jface.resource.JFaceResources;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 
-import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
 /**
  * Register for the configuration types ui thats use the
  * <i>net.sf.eclipsecs.ui.configtypesui </i> extension point.
  *
  */
-public final class ConfigurationTypesUi {
+public final class ConfigurationTypesUI {
 
   //
   // constants
   //
 
   /** constant for the extension point id. */
-  private static final String CONFIGTYPES_EXTENSION_POINT = CheckstyleUiPlugin.PLUGIN_ID
+  private static final String CONFIGTYPES_EXTENSION_POINT = CheckstyleUIPlugin.PLUGIN_ID
           + ".configtypesui"; //$NON-NLS-1$
 
   /** constant for the name attribute. */
@@ -62,7 +62,7 @@ public final class ConfigurationTypesUi {
   private static final String ATTR_ICON = "icon"; //$NON-NLS-1$
 
   /** the configuration types configured to the extension point. */
-  private static final Map<String, Class<? extends CheckConfigurationEditor>>
+  private static final Map<String, Class<? extends ICheckConfigurationEditor>>
       CONFIGURATION_TYPE_EDITORS;
 
   /** Map of icon paths for the configuration types. */
@@ -87,7 +87,7 @@ public final class ConfigurationTypesUi {
 
         String internalName = elements[i].getAttribute(ATTR_NAME);
 
-        CheckConfigurationEditor editor = (CheckConfigurationEditor) elements[i]
+        ICheckConfigurationEditor editor = (ICheckConfigurationEditor) elements[i]
                 .createExecutableExtension(ATTR_CLASS);
 
         String iconPath = elements[i].getAttribute(ATTR_ICON);
@@ -101,7 +101,7 @@ public final class ConfigurationTypesUi {
   }
 
   /** Hidden default constructor. */
-  private ConfigurationTypesUi() {
+  private ConfigurationTypesUI() {
     // NOOP
   }
 
@@ -114,10 +114,10 @@ public final class ConfigurationTypesUi {
    * @throws CheckstylePluginException
    *           if the filter editor could not be instantiated.
    */
-  public static CheckConfigurationEditor getNewEditor(ConfigurationType configType)
+  public static ICheckConfigurationEditor getNewEditor(IConfigurationType configType)
           throws CheckstylePluginException {
-    CheckConfigurationEditor editor = null;
-    Class<? extends CheckConfigurationEditor> editorClass = CONFIGURATION_TYPE_EDITORS
+    ICheckConfigurationEditor editor = null;
+    Class<? extends ICheckConfigurationEditor> editorClass = CONFIGURATION_TYPE_EDITORS
             .get(configType.getInternalName());
 
     if (editorClass != null) {
@@ -139,7 +139,7 @@ public final class ConfigurationTypesUi {
    * @return the image representing the configuration type or <code>null</code>
    *         if no image is registered
    */
-  public static Image getConfigurationTypeImage(ConfigurationType configType) {
+  public static Image getConfigurationTypeImage(IConfigurationType configType) {
     Image image = null;
     String iconPath = CONFIGURATION_TYPE_ICONS.get(configType.getInternalName());
     if (iconPath != null) {
@@ -147,7 +147,7 @@ public final class ConfigurationTypesUi {
       image = imageRegistry.get(iconPath);
       if (image == null) {
         ImageDescriptor descriptor = AbstractUIPlugin
-                .imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID, iconPath);
+                .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, iconPath);
         imageRegistry.put(iconPath, descriptor);
         image = imageRegistry.get(iconPath);
       }

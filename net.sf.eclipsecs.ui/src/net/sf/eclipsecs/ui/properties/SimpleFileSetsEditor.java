@@ -28,12 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
-import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
 
@@ -42,7 +42,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
  * configuration can be chosen.
  *
  */
-public class SimpleFileSetsEditor implements FileSetsEditor {
+public class SimpleFileSetsEditor implements IFileSetsEditor {
 
   private final PropertyPageContext propertyPageContext;
   private final Shell shell;
@@ -68,7 +68,7 @@ public class SimpleFileSetsEditor implements FileSetsEditor {
   public void setFileSets(List<FileSet> fileSets) {
     mFileSets = fileSets;
 
-    CheckConfiguration config = null;
+    ICheckConfiguration config = null;
     if (!mFileSets.isEmpty()) {
       config = (mFileSets.get(0)).getCheckConfig();
     }
@@ -104,7 +104,7 @@ public class SimpleFileSetsEditor implements FileSetsEditor {
   }
 
   private void manageConfig() {
-    CheckConfiguration config = mDefaultFileSet.getCheckConfig();
+    ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
     if (config != null) {
       try {
         config.getCheckstyleConfiguration();
@@ -113,7 +113,7 @@ public class SimpleFileSetsEditor implements FileSetsEditor {
         dialog.setBlockOnOpen(true);
         dialog.open();
       } catch (CheckstylePluginException ex) {
-        CheckstyleUiPlugin.warningDialog(shell,
+        CheckstyleUIPlugin.warningDialog(shell,
                 NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
                         propertyPageContext.project(), config.getLocation()), ex);
       }

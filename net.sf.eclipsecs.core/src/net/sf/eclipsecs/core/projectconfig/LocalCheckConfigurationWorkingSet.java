@@ -28,20 +28,20 @@ import java.util.Set;
 
 import org.eclipse.core.resources.IProject;
 
-import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
  * Working set implementation that manages local configurations configured for the project.
  *
  */
-public class LocalCheckConfigurationWorkingSet implements CheckConfigurationWorkingSet {
+public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
 
   /** The project configuration. */
-  private final ProjectConfiguration mProjectConfig;
+  private final IProjectConfiguration mProjectConfig;
 
   /** The internal list of working copies belonging to this working set. */
   private final List<CheckConfigurationWorkingCopy> mWorkingCopies;
@@ -57,26 +57,26 @@ public class LocalCheckConfigurationWorkingSet implements CheckConfigurationWork
    * @param checkConfigs
    *          the list of local check configurations
    */
-  LocalCheckConfigurationWorkingSet(ProjectConfiguration projectConfig,
-          List<CheckConfiguration> checkConfigs) {
+  LocalCheckConfigurationWorkingSet(IProjectConfiguration projectConfig,
+          List<ICheckConfiguration> checkConfigs) {
 
     mProjectConfig = projectConfig;
     mWorkingCopies = new ArrayList<>();
     mDeletedConfigurations = new ArrayList<>();
 
-    for (CheckConfiguration cfg : checkConfigs) {
+    for (ICheckConfiguration cfg : checkConfigs) {
       CheckConfigurationWorkingCopy workingCopy = new CheckConfigurationWorkingCopy(cfg, this);
       mWorkingCopies.add(workingCopy);
     }
   }
 
   @Override
-  public CheckConfigurationWorkingCopy newWorkingCopy(CheckConfiguration checkConfig) {
+  public CheckConfigurationWorkingCopy newWorkingCopy(ICheckConfiguration checkConfig) {
     return new CheckConfigurationWorkingCopy(checkConfig, this);
   }
 
   @Override
-  public CheckConfigurationWorkingCopy newWorkingCopy(ConfigurationType configType) {
+  public CheckConfigurationWorkingCopy newWorkingCopy(IConfigurationType configType) {
     return new CheckConfigurationWorkingCopy(configType, this, false);
   }
 
@@ -171,7 +171,7 @@ public class LocalCheckConfigurationWorkingSet implements CheckConfigurationWork
    *           an exception while notifiing for deletion
    */
   private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
-    for (CheckConfiguration checkConfig : mDeletedConfigurations) {
+    for (ICheckConfiguration checkConfig : mDeletedConfigurations) {
       checkConfig.getType().notifyCheckConfigRemoved(checkConfig);
     }
   }

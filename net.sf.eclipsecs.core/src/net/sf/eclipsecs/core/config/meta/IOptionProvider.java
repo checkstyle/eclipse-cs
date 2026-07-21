@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,21 +18,22 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.ui.util.table;
+package net.sf.eclipsecs.core.config.meta;
 
-import org.eclipse.jface.dialogs.IDialogSettings;
+import java.util.List;
 
 /**
- * Interface for implementations that provide settings where the
- * <code>EnhancedTableViewer</code> can store its current state.
+ * Interface for an option provider. This is used to provide dynamic or massive amount of options
+ * which would be too difficult to handle in metadata. For instance this is true for module metadata
+ * that need all token types as options.
  *
  */
-public interface TableSettingsProvider {
+public interface IOptionProvider {
 
   /**
-   * Provides a settings instance.
+   * Returns a list of options.
    *
-   * @return the settings
+   * @return the options
    */
-  IDialogSettings getTableSettings();
+  List<String> getOptions();
 }

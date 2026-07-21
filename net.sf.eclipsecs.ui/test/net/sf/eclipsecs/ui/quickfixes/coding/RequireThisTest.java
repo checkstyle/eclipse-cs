@@ -27,12 +27,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 class RequireThisTest extends AbstractQuickfixTestCase {
 
   @Test
-  void requireThisFieldAccessAssignmentLhs() throws Exception {
+  void requireThisFieldAccessAssignmentLHS() throws Exception {
     testQuickfix("RequireThisFieldAccessAssignmentLHS.xml", new RequireThisQuickfix());
   }
 
   @Test
-  void requireThisFieldAccessAssignmentRhs() throws Exception {
+  void requireThisFieldAccessAssignmentRHS() throws Exception {
     testQuickfix("RequireThisFieldAccessAssignmentRHS.xml", new RequireThisQuickfix());
   }
 
@@ -57,7 +57,7 @@ class RequireThisTest extends AbstractQuickfixTestCase {
   }
 
   @Test
-  void requireThisMethodInvocationAssignmentRhs() throws Exception {
+  void requireThisMethodInvocationAssignmentRHS() throws Exception {
     testQuickfix("RequireThisMethodInvocationAssignmentRHS.xml", new RequireThisQuickfix());
   }
 

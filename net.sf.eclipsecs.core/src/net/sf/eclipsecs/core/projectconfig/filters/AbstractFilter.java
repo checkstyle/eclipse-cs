@@ -30,7 +30,7 @@ import com.google.common.base.MoreObjects;
  * Base implementation of a filter.
  *
  */
-public abstract class AbstractFilter implements AuditFilter {
+public abstract class AbstractFilter implements IFilter {
 
   /** name of the filter. */
   private String mFilterName;
@@ -118,9 +118,9 @@ public abstract class AbstractFilter implements AuditFilter {
   }
 
   @Override
-  public AuditFilter clone() {
+  public IFilter clone() {
     try {
-      return (AuditFilter) super.clone();
+      return (IFilter) super.clone();
     } catch (CloneNotSupportedException cnse) {
       // this shouldn't happen, since we are Cloneable
       throw new IllegalStateException(cnse);

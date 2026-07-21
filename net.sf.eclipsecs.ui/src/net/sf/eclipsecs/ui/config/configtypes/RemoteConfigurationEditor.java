@@ -40,7 +40,7 @@ import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType.RemoteConfigAuthenticator;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
@@ -49,7 +49,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * a text field to input the URL.
  *
  */
-public class RemoteConfigurationEditor implements CheckConfigurationEditor {
+public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
 
   //
   // attributes
@@ -168,14 +168,14 @@ public class RemoteConfigurationEditor implements CheckConfigurationEditor {
       try {
 
         final RemoteConfigAuthenticator auth = RemoteConfigAuthenticator
-                .create(mWorkingCopy.getResolvedConfigurationFileUrl());
+                .create(mWorkingCopy.getResolvedConfigurationFileURL());
 
         if (auth != null) {
           mUserName.setText(auth.getUsername());
           mPassword.setText(new String(auth.getPassword()));
         }
       } catch (CheckstylePluginException ex) {
-        CheckstyleUiPlugin.errorDialog(shell, ex, true);
+        CheckstyleUIPlugin.errorDialog(shell, ex, true);
       }
     }
   }

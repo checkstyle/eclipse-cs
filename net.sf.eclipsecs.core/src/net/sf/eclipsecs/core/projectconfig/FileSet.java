@@ -27,7 +27,7 @@ import java.util.Objects;
 import org.eclipse.core.resources.IFile;
 
 import com.google.common.base.MoreObjects;
-import net.sf.eclipsecs.core.config.CheckConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**
  * A File Set is a collection of files audited with a common set of audit rules.
@@ -36,7 +36,7 @@ public class FileSet implements Cloneable {
 
   private String name;
 
-  private CheckConfiguration checkConfig;
+  private ICheckConfiguration checkConfig;
 
   private boolean enabled = true;
 
@@ -58,7 +58,7 @@ public class FileSet implements Cloneable {
    *          The name of the <code>CheckConfiguration</code> used to check this
    *          <code>FileSet</code>.
    */
-  public FileSet(String name, CheckConfiguration checkConfig) {
+  public FileSet(String name, ICheckConfiguration checkConfig) {
     this.name = name;
     this.checkConfig = checkConfig;
   }
@@ -87,7 +87,7 @@ public class FileSet implements Cloneable {
    *
    * @return The check configuration used to audit files in the file set.
    */
-  public CheckConfiguration getCheckConfig() {
+  public ICheckConfiguration getCheckConfig() {
     return checkConfig;
   }
 
@@ -97,7 +97,7 @@ public class FileSet implements Cloneable {
    * @param checkConfig
    *          the check configuration
    */
-  public void setCheckConfig(CheckConfiguration checkConfig) {
+  public void setCheckConfig(ICheckConfiguration checkConfig) {
     this.checkConfig = checkConfig;
   }
 

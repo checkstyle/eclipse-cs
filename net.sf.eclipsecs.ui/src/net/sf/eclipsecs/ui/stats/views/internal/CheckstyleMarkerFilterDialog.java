@@ -38,7 +38,7 @@ import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.IWorkingSetSelectionDialog;
 
-import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.stats.Messages;
 
 /**
@@ -105,9 +105,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     GridDataFactory.create(GridData.FILL_BOTH).applyTo(dialogView);
 
     // init the controls
-    updateUiFromFilter();
+    updateUIFromFilter();
 
-    setTitleImage(CheckstyleUiPluginImages.PLUGIN_LOGO.getImage());
+    setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
     setTitle(Messages.CheckstyleMarkerFilterDialog_title);
     setMessage(Messages.CheckstyleMarkerFilterDialog_titleMessage);
 
@@ -130,7 +130,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
             Messages.CheckstyleMarkerFilterDialog_btnRestoreDefault, false);
     mBtnDefault.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
       mFilter = CheckstyleMarkerFilter.resetState(mFilter.focusResources());
-      updateUiFromFilter();
+      updateUIFromFilter();
     }));
 
     // create OK and Cancel buttons by default
@@ -146,14 +146,14 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
   @Override
   protected void okPressed() {
-    updateFilterFromUi();
+    updateFilterFromUI();
     super.okPressed();
   }
 
   /**
    * Updates the ui controls from the filter data.
    */
-  private void updateUiFromFilter() {
+  private void updateUIFromFilter() {
     mSelectedWorkingSet = mFilter.workingSet();
     initWorkingSetLabel();
 
@@ -167,7 +167,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
   /**
    * Updates the filter data from the ui controls.
    */
-  private void updateFilterFromUi() {
+  private void updateFilterFromUI() {
     mFilter = new CheckstyleMarkerFilter(dialogView.getFilterEnabled(),
             dialogView.getOnResource(), mSelectedWorkingSet,
             dialogView.getSelectBySeverity(), dialogView.getSeverity(),

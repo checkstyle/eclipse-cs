@@ -27,7 +27,7 @@ import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
-import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
@@ -65,7 +65,7 @@ public final class PluginFilters {
   private static final String TAG_DATA = "data"; //$NON-NLS-1$
 
   /** the filter prototypes configured to the extension point. */
-  private static final AuditFilter[] FILTER_PROTOTYPES;
+  private static final IFilter[] FILTER_PROTOTYPES;
 
   /**
    * Initialize the configured to the filter extension point.
@@ -77,7 +77,7 @@ public final class PluginFilters {
     IConfigurationElement[] elements = pluginRegistry
             .getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-    List<AuditFilter> filters = new ArrayList<>();
+    List<IFilter> filters = new ArrayList<>();
 
     for (int i = 0; i < elements.length; i++) {
 
@@ -88,7 +88,7 @@ public final class PluginFilters {
         String desc = elements[i].getAttribute(ATTR_DESCRIPTION);
         boolean readOnly = Boolean.parseBoolean(elements[i].getAttribute(ATTR_READONLY));
 
-        AuditFilter filter = (AuditFilter) elements[i].createExecutableExtension(ATTR_CLASS);
+        IFilter filter = (IFilter) elements[i].createExecutableExtension(ATTR_CLASS);
         filter.initialize(name, internalName, desc, readOnly);
 
         boolean defaultState = Boolean.parseBoolean(elements[i].getAttribute(ATTR_SELECTED));
@@ -110,7 +110,7 @@ public final class PluginFilters {
       }
     }
 
-    FILTER_PROTOTYPES = filters.toArray(new AuditFilter[filters.size()]);
+    FILTER_PROTOTYPES = filters.toArray(new IFilter[filters.size()]);
   }
 
   /** Hidden default constructor. */
@@ -123,10 +123,10 @@ public final class PluginFilters {
    *
    * @return the available filters.
    */
-  public static AuditFilter[] getConfiguredFilters() {
+  public static IFilter[] getConfiguredFilters() {
 
     // Copy the prototypes for the client
-    AuditFilter[] mFilter = new AuditFilter[FILTER_PROTOTYPES.length];
+    IFilter[] mFilter = new IFilter[FILTER_PROTOTYPES.length];
 
     // Clone and set the state of the filter
     for (int i = 0; i < mFilter.length; i++) {
@@ -143,9 +143,9 @@ public final class PluginFilters {
    *          the filters internal name
    * @return the filter prototype or <code>null</code>
    */
-  public static AuditFilter getByInternalName(String internalName) {
+  public static IFilter getByInternalName(String internalName) {
 
-    AuditFilter filter = null;
+    IFilter filter = null;
 
     for (int i = 0; i < FILTER_PROTOTYPES.length; i++) {
       if (FILTER_PROTOTYPES[i].getInternalName().equals(internalName)) {

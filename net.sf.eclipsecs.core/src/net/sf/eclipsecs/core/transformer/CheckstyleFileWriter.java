@@ -54,7 +54,7 @@ public final class CheckstyleFileWriter {
 
   public void writeXmlFile() {
     try (FileOutputStream fw = new FileOutputStream(file)) {
-      writeXmlFile(fw);
+      writeXMLFile(fw);
     } catch (final IOException ex) {
       CheckstyleLog.log(ex);
     }
@@ -66,7 +66,7 @@ public final class CheckstyleFileWriter {
    * @param outStream
    *          BufferedWriter to outputfile.
    */
-  private void writeXmlFile(final OutputStream outStream) throws IOException {
+  private void writeXMLFile(final OutputStream outStream) throws IOException {
     outStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes("UTF-8"));
     outStream.write("<module name=\"Checker\">\n".getBytes("UTF-8"));
     outStream.write("<property name=\"severity\" value=\"warning\"/>\n".getBytes("UTF-8"));

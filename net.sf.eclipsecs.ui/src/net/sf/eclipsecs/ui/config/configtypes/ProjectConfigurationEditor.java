@@ -48,9 +48,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.ConfigurationWriter;
 import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType;
 import net.sf.eclipsecs.core.projectconfig.LocalCheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
@@ -62,7 +62,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * the config file path and a 'Browse...' button opening a file dialog.
  *
  */
-public class ProjectConfigurationEditor implements CheckConfigurationEditor {
+public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
   //
   // attributes
@@ -191,7 +191,7 @@ public class ProjectConfigurationEditor implements CheckConfigurationEditor {
         throw ex;
       }
 
-      CheckConfigurationWorkingSet workingSet = mCheckConfigDialog
+      ICheckConfigurationWorkingSet workingSet = mCheckConfigDialog
               .getCheckConfigurationWorkingSet();
       IPath tmp = IPath.fromOSString(location);
       boolean isFirstPartProject = ResourcesPlugin.getWorkspace().getRoot()

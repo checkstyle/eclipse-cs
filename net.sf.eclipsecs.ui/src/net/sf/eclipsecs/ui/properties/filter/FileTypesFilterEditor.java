@@ -47,7 +47,7 @@ import net.sf.eclipsecs.ui.Messages;
  * Editor dialog for the package filter.
  *
  */
-public class FileTypesFilterEditor implements FilterEditor {
+public class FileTypesFilterEditor implements IFilterEditor {
 
   /** the dialog for this editor. */
   private FileTypesDialog mDialog;

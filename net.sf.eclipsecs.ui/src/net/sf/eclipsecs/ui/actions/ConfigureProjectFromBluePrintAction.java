@@ -40,14 +40,14 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
-import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.projectconfig.ProjectConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.Messages;
 
 /**
@@ -125,14 +125,14 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
     public IStatus runInWorkspace(IProgressMonitor monitor) {
       IStatus status;
       try {
-        ProjectConfiguration bluePrintConfig = ProjectConfigurationFactory
+        IProjectConfiguration bluePrintConfig = ProjectConfigurationFactory
                 .getConfiguration(mBlueprint);
 
-        List<CheckConfiguration> bluePrintLocalConfigs = bluePrintConfig
+        List<ICheckConfiguration> bluePrintLocalConfigs = bluePrintConfig
                 .getLocalCheckConfigurations();
 
         for (IProject configurationTarget : mProjectsToConfigure) {
-          ProjectConfiguration config = ProjectConfigurationFactory
+          IProjectConfiguration config = ProjectConfigurationFactory
                   .getConfiguration(configurationTarget);
           ProjectConfigurationWorkingCopy workingCopy = new ProjectConfigurationWorkingCopy(config);
 
@@ -141,10 +141,10 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
           workingCopy.getFilters().clear();
 
           // clear local configurations
-          CheckConfigurationWorkingSet checkConfigsWorkingSet = workingCopy
+          ICheckConfigurationWorkingSet checkConfigsWorkingSet = workingCopy
                   .getLocalCheckConfigWorkingSet();
 
-          for (CheckConfiguration localConfig : workingCopy.getLocalCheckConfigurations()) {
+          for (ICheckConfiguration localConfig : workingCopy.getLocalCheckConfigurations()) {
 
             if (localConfig instanceof CheckConfigurationWorkingCopy) {
               checkConfigsWorkingSet
@@ -153,7 +153,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
           }
 
           // add local configurations from blueprint
-          for (CheckConfiguration localConfig : bluePrintLocalConfigs) {
+          for (ICheckConfiguration localConfig : bluePrintLocalConfigs) {
             CheckConfigurationWorkingCopy newCopy = checkConfigsWorkingSet
                     .newWorkingCopy(localConfig);
             checkConfigsWorkingSet.addCheckConfiguration(newCopy);
@@ -168,7 +168,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
         }
         status = Status.OK_STATUS;
       } catch (CheckstylePluginException ex) {
-        status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK,
+        status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
                 ex.getMessage(), ex);
       }
       return status;

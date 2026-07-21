@@ -32,7 +32,7 @@ import org.eclipse.core.runtime.URIUtil;
 import org.eclipse.osgi.util.NLS;
 
 import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.CheckConfiguration;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
@@ -46,7 +46,7 @@ public class ProjectConfigurationType extends AbstractConfigurationType {
   public static final String KEY_PROTECT_CONFIG = "protect-config-file"; //$NON-NLS-1$
 
   @Override
-  protected URL resolveLocation(CheckConfiguration checkConfiguration) throws IOException {
+  protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
     IResource configFileResource = ResourcesPlugin.getWorkspace().getRoot()
             .findMember(checkConfiguration.getLocation());
 
@@ -59,7 +59,7 @@ public class ProjectConfigurationType extends AbstractConfigurationType {
   }
 
   @Override
-  public boolean isConfigurable(CheckConfiguration checkConfiguration) {
+  public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
     boolean isConfigurable = true;
 
     boolean isProtected = Boolean
@@ -72,7 +72,7 @@ public class ProjectConfigurationType extends AbstractConfigurationType {
       // file can is writable
       try {
 
-        File file = URIUtil.toFile(checkConfiguration.getResolvedConfigurationFileUrl().toURI());
+        File file = URIUtil.toFile(checkConfiguration.getResolvedConfigurationFileURL().toURI());
         isConfigurable = file != null && file.canWrite();
       } catch (CheckstylePluginException | URISyntaxException ex) {
         CheckstyleLog.log(ex);

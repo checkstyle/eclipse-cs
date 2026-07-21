@@ -57,7 +57,7 @@ public final class CheckConfigurationTester {
    *           most likely the configuration file could not be found
    */
   public static List<ResolvableProperty> getUnresolvedProperties(
-          CheckConfiguration checkConfiguration) throws CheckstylePluginException {
+          ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
     CheckstyleConfigurationFile configFile = checkConfiguration.getCheckstyleConfiguration();
 
