@@ -193,12 +193,12 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
             .flatMap(CheckstyleMarkerFilter::tryParseInt)
             .orElse(DEFAULT_SEVERITY);
 
-    List<String> mFilterRegex;
-    String[] regex = settings.getArray(TAG_REGULAR_EXPRESSIONS);
-    if (regex != null) {
-      mFilterRegex = Arrays.asList(regex);
-    } else {
-      mFilterRegex = new ArrayList<>();
+    List<String> mFilterRegex = new ArrayList<>();
+    if (settings != null) {
+      String[] regex = settings.getArray(TAG_REGULAR_EXPRESSIONS);
+      if (regex != null) {
+        mFilterRegex = Arrays.asList(regex);
+      }
     }
 
     return new CheckstyleMarkerFilter(enabled, mOnResource, mWorkingSet, selectBySeverity,
