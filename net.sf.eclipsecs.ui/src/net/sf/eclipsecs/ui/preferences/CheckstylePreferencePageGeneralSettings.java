@@ -178,7 +178,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
             CheckerFactory.cleanup();
             setRebuildAll.run();
         }));
-        GridDataFactory.swtDefaults().align(GridData.END, GridData.CENTER).grab(true, false)
+        GridDataFactory.swtDefaults().align(GridData.END, GridData.CENTER)
             .applyTo(mPurgeCacheButton);
 
         return mRebuildIfNeeded;
