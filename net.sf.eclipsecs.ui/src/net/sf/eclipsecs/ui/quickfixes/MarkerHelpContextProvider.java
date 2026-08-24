@@ -48,7 +48,7 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
      * Common prefix for all Checkstyle marker help contexts. Must be same as plugin id and must end
      * with a dot.
      */
-    private static final String PLUGIN_PREFIX = "net.sf.eclipsecs.ui" + ".";
+    private static final String PLUGIN_PREFIX = "net.sf.eclipsecs.ui.";
 
     @Override
     public String getHelpContextForMarker(IMarker marker) {

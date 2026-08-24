@@ -173,7 +173,7 @@ public final class ConfigurationWriter {
 
             final Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
             propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
-            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().toXmlValue());
+            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().getXmlValue());
         }
 
         // write module id
@@ -215,7 +215,7 @@ public final class ConfigurationWriter {
 
             final Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
             metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
-            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().toXmlValue());
+            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().getXmlValue());
         }
 
         return moduleEl;

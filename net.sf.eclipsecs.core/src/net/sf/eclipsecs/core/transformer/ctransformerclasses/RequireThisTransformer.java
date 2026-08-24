@@ -31,12 +31,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 public class RequireThisTransformer extends AbstractCTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
-        useCleanupSetting("always_use_this_for_non_static_field_access", "true");
-        useCleanupSetting("use_this_for_non_static_field_access", "true");
-        useCleanupSetting("always_use_this_for_non_static_method_access", "true");
-        useCleanupSetting("use_this_for_non_static_method_access_only_if_necessary", "false");
-        useCleanupSetting("use_this_for_non_static_method_access", "true");
-        useCleanupSetting("use_this_for_non_static_field_access_only_if_necessary", "false");
+        useCleanupSetting("always_use_this_for_non_static_field_access", true);
+        useCleanupSetting("use_this_for_non_static_field_access", true);
+        useCleanupSetting("always_use_this_for_non_static_method_access", true);
+        useCleanupSetting("use_this_for_non_static_method_access_only_if_necessary", false);
+        useCleanupSetting("use_this_for_non_static_method_access", true);
+        useCleanupSetting("use_this_for_non_static_field_access_only_if_necessary", false);
         return getFormatterSetting();
     }
 }

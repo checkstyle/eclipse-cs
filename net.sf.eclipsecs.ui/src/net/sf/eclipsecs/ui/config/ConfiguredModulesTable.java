@@ -131,7 +131,7 @@ public final class ConfiguredModulesTable extends Composite {
         col3.getColumn().setText(Messages.CheckConfigurationConfigureDialog_colSeverity);
         col3.setLabelProvider(ColumnLabelProvider.createTextProvider(element -> {
             final Severity severity = ((Module) element).getSeverity();
-            return severity != null ? severity.toXmlValue() : "";
+            return severity != null ? severity.getXmlValue() : "";
         }));
         col3.getColumn().pack();
         layout.setColumnData(col3.getColumn(),

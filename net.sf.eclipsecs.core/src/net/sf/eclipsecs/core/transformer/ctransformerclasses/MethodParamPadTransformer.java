@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
+import org.eclipse.jdt.core.JavaCore;
+
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
@@ -33,9 +35,9 @@ public class MethodParamPadTransformer extends AbstractCTransformationClass {
     public FormatterConfiguration transformRule() {
         final String option = getAttribute("option");
         final String space = switch (option) {
-            case null -> "do not insert";
+            case null -> JavaCore.DO_NOT_INSERT;
             case "space" -> "insert";
-            default -> "do not insert";
+            default -> JavaCore.DO_NOT_INSERT;
         };
 
         String val = getAttribute("tokens");

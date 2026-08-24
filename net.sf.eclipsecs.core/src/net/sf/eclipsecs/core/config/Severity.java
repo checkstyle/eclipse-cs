@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.core.config;
 
+import java.util.Arrays;
+
 /**
  * Enumeration for Checkstyle's severity levels. The intent is to decouple highler level funtions
  * (UI) from dealing with Checkstyle code API.
@@ -28,39 +30,40 @@ package net.sf.eclipsecs.core.config;
 public enum Severity {
 
     /** Unspecified severity level, inherited from parent module. */
-    INHERIT,
+    INHERIT("inherit"),
 
     /** Severity level 'ignore'. */
-    IGNORE,
+    IGNORE("ignore"),
 
     /** Severity level 'info'. */
-    INFO,
+    INFO("info"),
 
     /** Severity level 'warning'. */
-    WARNING,
+    WARNING("warning"),
 
     /** Severity level 'error'. */
-    ERROR;
+    ERROR("error");
+
+    /** String used to serialize the Severity in XML files. */
+    private final String xmlValue;
+
+    Severity(String xmlValue) {
+        this.xmlValue = xmlValue;
+    }
+
+    /**
+     * Get xmlValue.
+     *
+     * @return the xmlValue
+     */
+    public String getXmlValue() {
+        return xmlValue;
+    }
 
     public static Severity fromXmlValue(String xmlValue) {
-        return switch (xmlValue) {
-            case "inherit" -> INHERIT;
-            case "ignore" -> IGNORE;
-            case "info" -> INFO;
-            case "warning" -> WARNING;
-            case "error" -> ERROR;
-            case null -> throw new IllegalArgumentException("Unexpected value: null");
-            default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
-        };
+        return Arrays.stream(Severity.values())
+            .filter(severity -> severity.getXmlValue().equals(xmlValue)).findFirst()
+            .orElseThrow(() -> new IllegalArgumentException("Unexpected value: " + xmlValue));
     }
 
-    public String toXmlValue() {
-        return switch (this) {
-            case INHERIT -> "inherit";
-            case IGNORE -> "ignore";
-            case INFO -> "info";
-            case WARNING -> "warning";
-            case ERROR -> "error";
-        };
-    }
 }

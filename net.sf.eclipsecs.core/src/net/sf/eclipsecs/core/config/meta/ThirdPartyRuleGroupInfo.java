@@ -1,6 +1,6 @@
 //============================================================================
 //
-// Copyright (C) 2003-2023  Lukas Frena
+// Copyright (C) 2003-2023 the original author or authors.
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,25 +18,17 @@
 //
 //============================================================================
 
-package net.sf.eclipsecs.core.transformer.ctransformerclasses;
-
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
-import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
+package net.sf.eclipsecs.core.config.meta;
 
 /**
- * Wrapperclass for converting the checkstyle-rule NeedBraces to appropriate
- * eclipse-formatter-rules.
+ * Rule group data of a third party extension module as declared in its eclipse-metadata.yml file.
  *
+ * @param name
+ *            the rule group name
+ * @param description
+ *            the rule group description
+ * @param priority
+ *            the rule group priority
  */
-public class NeedBracesTransformer extends AbstractCTransformationClass {
-
-    @Override
-    public FormatterConfiguration transformRule() {
-        useCleanupSetting("use_blocks", true);
-        useCleanupSetting("never_use_blocks", false);
-        useCleanupSetting("use_blocks_only_for_return_and_throw", false);
-        useCleanupSetting("always_use_blocks", true);
-        return getFormatterSetting();
-    }
-
+record ThirdPartyRuleGroupInfo(String name, String description, int priority) {
 }

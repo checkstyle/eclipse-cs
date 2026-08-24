@@ -92,6 +92,21 @@ public abstract class AbstractCTransformationClass {
     }
 
     /**
+     * Method for defining which eclipse-formatter-rules should be used for transforming. In
+     * contrast to {@link #userFormatterSetting(String, String)} this variant expects the full
+     * formatter-setting id, e.g. the value of one of the constants of
+     * org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants.
+     *
+     * @param settingId
+     *            The full id of the eclipse-formatter-setting.
+     * @param val
+     *            The value for the rule.
+     */
+    public final void userFullFormatterSetting(final String settingId, final String val) {
+        mFormatterSetting.addFormatterSetting(settingId, val);
+    }
+
+    /**
      * Method for defining which eclipse-editor-rules should be used for transforming.
      *
      * @param rule
@@ -99,8 +114,8 @@ public abstract class AbstractCTransformationClass {
      * @param val
      *            The value for the rule.
      */
-    public final void useCleanupSetting(final String rule, final String val) {
-        mFormatterSetting.addCleanupSetting("cleanup." + rule, val);
+    public final void useCleanupSetting(final String rule, final boolean val) {
+        mFormatterSetting.addCleanupSetting("cleanup." + rule, String.valueOf(val));
     }
 
     /**
