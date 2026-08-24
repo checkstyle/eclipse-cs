@@ -40,14 +40,12 @@ public class AllTokensProvider implements IOptionProvider {
     static {
 
         final Field[] fields = TokenTypes.class.getDeclaredFields();
-        for (int i = 0; i < fields.length; i++) {
-            final Field f = fields[i];
-
+        for (Field field : fields) {
             // Only process the int declarations.
-            if (f.getType() != Integer.TYPE) {
+            if (field.getType() != Integer.TYPE) {
                 continue;
             }
-            sAllOptions.add(f.getName());
+            sAllOptions.add(field.getName());
         }
     }
 

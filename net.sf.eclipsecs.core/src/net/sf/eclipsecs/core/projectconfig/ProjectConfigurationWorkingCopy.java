@@ -106,15 +106,13 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
 
         // merge with filters configured for the project
         final List<IFilter> configuredFilters = projectConfig.getFilters();
-        for (int i = 0, size = filters.size(); i < size; i++) {
+        for (int index = 0, size = filters.size(); index < size; index++) {
 
-            final IFilter standardFilter = filters.get(i);
+            final IFilter standardFilter = filters.get(index);
 
-            for (int j = 0, size2 = configuredFilters.size(); j < size2; j++) {
-                final IFilter configuredFilter = configuredFilters.get(j);
-
+            for (IFilter configuredFilter : configuredFilters) {
                 if (standardFilter.getInternalName().equals(configuredFilter.getInternalName())) {
-                    filters.set(i, configuredFilter.copy());
+                    filters.set(index, configuredFilter.copy());
                 }
             }
         }
@@ -152,9 +150,9 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
     public ICheckConfiguration getLocalCheckConfigByName(String name) {
         ICheckConfiguration config = null;
         final ICheckConfiguration[] configs = localConfigWorkingSet.getWorkingCopies();
-        for (int i = 0; i < configs.length; i++) {
-            if (configs[i].getName().equals(name)) {
-                config = configs[i];
+        for (ICheckConfiguration conf : configs) {
+            if (conf.getName().equals(name)) {
+                config = conf;
                 break;
             }
         }
@@ -173,9 +171,9 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
     public ICheckConfiguration getGlobalCheckConfigByName(String name) {
         ICheckConfiguration config = null;
         final ICheckConfiguration[] configs = globalConfigWorkingSet.getWorkingCopies();
-        for (int i = 0; i < configs.length; i++) {
-            if (configs[i].getName().equals(name)) {
-                config = configs[i];
+        for (ICheckConfiguration conf : configs) {
+            if (conf.getName().equals(name)) {
+                config = conf;
                 break;
             }
         }
@@ -376,8 +374,8 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
 
         final ICheckConfiguration[] workingCopies =
             config.getLocalCheckConfigWorkingSet().getWorkingCopies();
-        for (int i = 0; i < workingCopies.length; i++) {
-            writeLocalConfiguration(workingCopies[i], root);
+        for (ICheckConfiguration workingCopy : workingCopies) {
+            writeLocalConfiguration(workingCopy, root);
         }
 
         for (FileSet fileSet : config.getFileSets()) {

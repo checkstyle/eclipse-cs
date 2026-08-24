@@ -37,10 +37,7 @@ public class CheckerModuleSaveFilter implements ISaveFilter {
 
         boolean containsCheckerModule = false;
 
-        for (int i = 0, size = configuredModules.size(); i < size; i++) {
-
-            final Module module = configuredModules.get(i);
-
+        for (Module module : configuredModules) {
             if (XMLTags.CHECKER_MODULE.equals(module.getMetaData().identity().internalName())) {
 
                 containsCheckerModule = true;

@@ -60,18 +60,18 @@ public abstract class AbstractQuickfixTestCase {
             throws Exception {
         final QuickfixTestData[] testdata = getTestData(testdataStream);
 
-        for (int i = 0; i < testdata.length; i++) {
+        for (QuickfixTestData testDataItem : testdata) {
 
             final org.eclipse.jface.text.Document doc =
-                new org.eclipse.jface.text.Document(testdata[i].input);
+                new org.eclipse.jface.text.Document(testDataItem.input);
             final ASTParser parser = ASTParser.newParser(AST.getJLSLatest());
             parser.setSource(doc.get().toCharArray());
             final CompilationUnit compUnit =
                 (CompilationUnit) parser.createAST(new NullProgressMonitor());
             compUnit.recordModifications();
-            final IRegion region = doc.getLineInformation(testdata[i].line);
+            final IRegion region = doc.getLineInformation(testDataItem.line);
 
-            final int markerStartOffset = region.getOffset() + testdata[i].position;
+            final int markerStartOffset = region.getOffset() + testDataItem.position;
 
             compUnit.accept(quickfix.handleGetCorrectingASTVisitor(region, markerStartOffset));
 
@@ -90,7 +90,7 @@ public abstract class AbstractQuickfixTestCase {
 
             final String trailingSpaceRemoved =
                 doc.get().lines().map(String::stripTrailing).collect(Collectors.joining("\n"));
-            assertThat(trailingSpaceRemoved).isEqualTo(testdata[i].result);
+            assertThat(trailingSpaceRemoved).isEqualTo(testDataItem.result);
         }
 
     }
@@ -105,8 +105,8 @@ public abstract class AbstractQuickfixTestCase {
         final Document doc = docBuilder.parse(testDataStream);
 
         final NodeList nl = doc.getElementsByTagName("testcase");
-        for (int i = 0, size = nl.getLength(); i < size; i++) {
-            final Element testCase = (Element) nl.item(i);
+        for (int index = 0, size = nl.getLength(); index < size; index++) {
+            final Element testCase = (Element) nl.item(index);
             final Element input = (Element) testCase.getElementsByTagName("input").item(0);
 
             final int position;

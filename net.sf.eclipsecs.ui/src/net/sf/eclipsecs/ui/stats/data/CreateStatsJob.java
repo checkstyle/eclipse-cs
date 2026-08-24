@@ -99,11 +99,10 @@ public class CreateStatsJob extends Job {
 
             final Map<String, MarkerStat> markerStats = new HashMap<>();
 
-            for (int i = 0, size = markers.length; i < size; i++) {
-
+            for (IMarker marker : markers) {
                 String message = null;
                 try {
-                    message = getUnlocalizedMessage(markers[i]);
+                    message = getUnlocalizedMessage(marker);
                     message = cleanMessage(message);
                 }
                 catch (CoreException ex) {
@@ -122,12 +121,12 @@ public class CreateStatsJob extends Job {
                 if (stat == null) {
                     // 1ere fois qu'on rencontre un marqueur de ce type
                     final MarkerStat newMarkerStat = new MarkerStat(message);
-                    newMarkerStat.addMarker(markers[i]);
+                    newMarkerStat.addMarker(marker);
                     markerStats.put(newMarkerStat.getIdentifiant(), newMarkerStat);
                 }
                 else {
                     // on augmente juste le nombre d'occurence
-                    stat.addMarker(markers[i]);
+                    stat.addMarker(marker);
                 }
             }
 

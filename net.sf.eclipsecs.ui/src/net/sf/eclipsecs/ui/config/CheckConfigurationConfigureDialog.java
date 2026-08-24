@@ -277,10 +277,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     private boolean isAlreadyConfigured(RuleMetadata metadata) {
         final String internalName = metadata.identity().internalName();
         boolean containsModule = false;
-        for (int i = 0, size = mModules.size(); i < size; i++) {
-
-            final Module module = mModules.get(i);
-
+        for (Module module : mModules) {
             if (internalName.equals(module.getMetaData().identity().internalName())) {
                 containsModule = true;
                 break;

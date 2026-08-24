@@ -78,24 +78,24 @@ public final class ConfigurationTypes {
         final IConfigurationElement[] elements =
             pluginRegistry.getConfigurationElementsFor(CONFIGTYPES_EXTENSION_POINT);
 
-        for (int i = 0; i < elements.length; i++) {
+        for (IConfigurationElement element : elements) {
 
             try {
 
-                final String name = elements[i].getAttribute(ATTR_NAME);
-                final String internalName = elements[i].getAttribute(ATTR_INTERNAL_NAME);
+                final String name = element.getAttribute(ATTR_NAME);
+                final String internalName = element.getAttribute(ATTR_INTERNAL_NAME);
 
                 final String definingPluginId =
-                    elements[i].getDeclaringExtension().getNamespaceIdentifier();
+                    element.getDeclaringExtension().getNamespaceIdentifier();
                 final boolean isCreatable =
-                    Boolean.parseBoolean(elements[i].getAttribute(ATTR_CREATABLE));
+                    Boolean.parseBoolean(element.getAttribute(ATTR_CREATABLE));
                 final boolean isEditable =
-                    Boolean.parseBoolean(elements[i].getAttribute(ATTR_EDITABLE));
+                    Boolean.parseBoolean(element.getAttribute(ATTR_EDITABLE));
                 final boolean isConfigurable =
-                    Boolean.parseBoolean(elements[i].getAttribute(ATTR_CONFIGURABLE));
+                    Boolean.parseBoolean(element.getAttribute(ATTR_CONFIGURABLE));
 
                 final IConfigurationType configType =
-                    (IConfigurationType) elements[i].createExecutableExtension(ATTR_CLASS);
+                    (IConfigurationType) element.createExecutableExtension(ATTR_CLASS);
                 configType.initialize(name, internalName, definingPluginId, isCreatable, isEditable,
                     isConfigurable);
 

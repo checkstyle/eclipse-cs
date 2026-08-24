@@ -191,15 +191,15 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         final Set<IProject> projects = new HashSet<>();
 
         final CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
-        for (int i = 0; i < workingCopies.length; i++) {
+        for (CheckConfigurationWorkingCopy workingCopy : workingCopies) {
 
             // skip non dirty configurations
-            if (!workingCopies[i].hasConfigurationChanged()) {
+            if (!workingCopy.hasConfigurationChanged()) {
                 continue;
             }
 
             final List<IProject> usingProjects =
-                ProjectConfigurationFactory.getProjectsUsingConfig(workingCopies[i]);
+                ProjectConfigurationFactory.getProjectsUsingConfig(workingCopy);
 
             projects.addAll(usingProjects);
         }

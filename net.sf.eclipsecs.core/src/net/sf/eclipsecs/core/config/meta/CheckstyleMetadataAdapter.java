@@ -234,8 +234,8 @@ public class CheckstyleMetadataAdapter {
         final List<String> prefixList = new ArrayList<>();
         String lookupKey = packageTokens[0];
         prefixList.add(lookupKey);
-        for (int i = 1; i < packageTokens.length; i++) {
-            lookupKey += "." + packageTokens[i];
+        for (String packageToken : packageTokens) {
+            lookupKey += "." + packageToken;
             prefixList.add(lookupKey);
         }
 

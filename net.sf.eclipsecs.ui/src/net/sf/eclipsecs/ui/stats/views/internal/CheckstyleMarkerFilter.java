@@ -206,16 +206,16 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
         final int mSeverity = findSetting(settings, TAG_SEVERITY)
             .flatMap(CheckstyleMarkerFilter::tryParseInt).orElse(DEFAULT_SEVERITY);
 
-        List<String> mFilterRegex = new ArrayList<>();
+        List<String> filterRegex = new ArrayList<>();
         if (settings != null) {
             final String[] regex = settings.getArray(TAG_REGULAR_EXPRESSIONS);
             if (regex != null) {
-                mFilterRegex = Arrays.asList(regex);
+                filterRegex = Arrays.asList(regex);
             }
         }
 
         return new CheckstyleMarkerFilter(enabled, mOnResource, mWorkingSet, selectBySeverity,
-            mSeverity, filterByRegex, mFilterRegex, focusResource);
+            mSeverity, filterByRegex, filterRegex, focusResource);
     }
 
     private static Optional<Integer> tryParseInt(String setting) {
@@ -349,11 +349,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
     private boolean selectByRegex(IMarker item) {
         boolean select = true;
         if (filterByRegex) {
-            final int size = filterRegex != null ? filterRegex.size() : 0;
-            for (int i = 0; i < size; i++) {
-
-                final String regex = filterRegex.get(i);
-
+            for (String regex : filterRegex) {
                 final String message = item.getAttribute(IMarker.MESSAGE, null);
 
                 if (message != null && message.matches(regex)) {

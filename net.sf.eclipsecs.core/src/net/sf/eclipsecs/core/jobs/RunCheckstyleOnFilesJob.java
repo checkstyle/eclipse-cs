@@ -117,9 +117,7 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
 
         final Map<IProject, List<IFile>> projectFilesMap = new HashMap<>();
 
-        for (int i = 0, size = filesToCheck.size(); i < size; i++) {
-
-            final IFile file = filesToCheck.get(i);
+        for (IFile file : filesToCheck) {
             final IProject project = file.getProject();
 
             List<IFile> projectFiles = projectFilesMap.get(project);

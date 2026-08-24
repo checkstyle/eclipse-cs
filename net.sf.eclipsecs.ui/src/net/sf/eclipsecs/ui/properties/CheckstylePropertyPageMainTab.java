@@ -110,8 +110,8 @@ public final class CheckstylePropertyPageMainTab extends Composite {
      */
     private Control createFileSetsArea(Composite fileSetsContainer) {
         final Control[] controls = fileSetsContainer.getChildren();
-        for (int i = 0; i < controls.length; i++) {
-            controls[i].dispose();
+        for (Control control : controls) {
+            control.dispose();
         }
 
         this.mFileSetsEditor = FileSetsEditorFactory.createEditor(getShell(), propertyPageContext,

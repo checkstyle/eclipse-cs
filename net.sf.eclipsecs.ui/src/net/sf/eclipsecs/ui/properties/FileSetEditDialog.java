@@ -285,8 +285,7 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         final LinkedList<IFolder> folders = new LinkedList<>();
 
         final IResource[] children = container.members();
-        for (int i = 0; i < children.length; i++) {
-            final IResource child = children[i];
+        for (IResource child : children) {
             final int childType = child.getType();
             if (childType == IResource.FILE) {
                 files.add((IFile) child);

@@ -56,17 +56,18 @@ class ChecksTest {
 
         assertThat(modules).as("modules").isNotEmpty();
 
-        for (String p : packages) {
-            assertThat(new File(getEclipseCsPath(p, ""))).exists();
+        for (String packageName : packages) {
+            assertThat(new File(getEclipseCsPath(packageName, ""))).exists();
 
-            final Set<Class<?>> packgeModules = CheckUtil.getModulesInPackage(modules, p);
+            final Set<Class<?>> packgeModules = CheckUtil.getModulesInPackage(modules, packageName);
             assertThat(packgeModules).as("package modules").isNotEmpty();
 
-            validateEclipseCsMetaXmlFile(new File(getEclipseCsPath(p, "/checkstyle-metadata.xml")),
-                p);
+            validateEclipseCsMetaXmlFile(
+                new File(getEclipseCsPath(packageName, "/checkstyle-metadata.xml")), packageName);
 
             validateEclipseCsMetaPropFile(
-                new File(getEclipseCsPath(p, "/checkstyle-metadata.properties")), p);
+                new File(getEclipseCsPath(packageName, "/checkstyle-metadata.properties")),
+                packageName);
         }
     }
 

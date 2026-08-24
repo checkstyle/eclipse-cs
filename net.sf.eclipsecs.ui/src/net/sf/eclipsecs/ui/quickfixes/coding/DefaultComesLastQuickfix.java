@@ -65,8 +65,9 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
 
             // collect all statements belonging to the default case
             final int defaultStatementIndex = switchStatement.statements().indexOf(node);
-            for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
-                final ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+            for (int index = defaultStatementIndex + 1; index < switchStatement.statements()
+                .size(); index++) {
+                final ASTNode tmpNode = (ASTNode) switchStatement.statements().get(index);
 
                 if (tmpNode instanceof SwitchCase) {
                     break;
@@ -88,8 +89,9 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
 
         // collect all statements belonging to the default case
         final int defaultStatementIndex = switchStatement.statements().indexOf(switchCase);
-        for (int i = defaultStatementIndex + 1; i < switchStatement.statements().size(); i++) {
-            final ASTNode tmpNode = (ASTNode) switchStatement.statements().get(i);
+        for (int index = defaultStatementIndex + 1; index < switchStatement.statements()
+            .size(); index++) {
+            final ASTNode tmpNode = (ASTNode) switchStatement.statements().get(index);
 
             if (tmpNode instanceof SwitchCase) {
                 isLastSwitchCase = false;

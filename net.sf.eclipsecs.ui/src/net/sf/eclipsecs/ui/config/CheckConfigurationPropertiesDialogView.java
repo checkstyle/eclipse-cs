@@ -97,8 +97,8 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
     public void bindEditor(ICheckConfigurationEditor mConfigurationEditor) {
         // remove old editor
         final Control[] controls = mEditorPlaceHolder.getChildren();
-        for (int i = 0; i < controls.length; i++) {
-            controls[i].dispose();
+        for (Control control : controls) {
+            control.dispose();
         }
 
         mConfigurationEditor.createEditorControl(mEditorPlaceHolder, getShell());

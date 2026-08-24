@@ -107,10 +107,7 @@ public class Module {
 
             // create the properties according to the meta data
             final List<ConfigPropertyMetadata> propMetas = metaData.configPropMetadata();
-            final int size = propMetas != null ? propMetas.size() : 0;
-            for (int i = 0; i < size; i++) {
-
-                final ConfigPropertyMetadata propMeta = propMetas.get(i);
+            for (ConfigPropertyMetadata propMeta : propMetas) {
                 final ConfigProperty property = new ConfigProperty(propMeta);
                 getProperties().add(property);
 
@@ -208,13 +205,8 @@ public class Module {
      * @return the coresponding property or <code>null</code>
      */
     public ConfigProperty getProperty(String property) {
-
         ConfigProperty propertyObj = null;
-
-        final int size = mProperties != null ? mProperties.size() : 0;
-        for (int i = 0; i < size; i++) {
-            final ConfigProperty tmp = mProperties.get(i);
-
+        for (ConfigProperty tmp : mProperties) {
             if (tmp.getName().equals(property)) {
                 propertyObj = tmp;
                 break;

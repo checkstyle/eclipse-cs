@@ -58,8 +58,8 @@ public class CheckstyleNature implements IProjectNature {
         final IProjectDescription description = mProject.getDescription();
         final ICommand[] commands = description.getBuildSpec();
         boolean found = false;
-        for (int i = 0; i < commands.length; ++i) {
-            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
+        for (ICommand command : commands) {
+            if (command.getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
                 found = true;
                 break;
             }
@@ -101,12 +101,12 @@ public class CheckstyleNature implements IProjectNature {
         final IProjectDescription description = mProject.getDescription();
         final ICommand[] commands = description.getBuildSpec();
         final List<ICommand> newCommandsVec = new ArrayList<>();
-        for (int i = 0; i < commands.length; ++i) {
-            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
+        for (ICommand command : commands) {
+            if (command.getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
                 continue;
             }
             else {
-                newCommandsVec.add(commands[i]);
+                newCommandsVec.add(command);
             }
         }
 
@@ -150,13 +150,13 @@ public class CheckstyleNature implements IProjectNature {
         int javaBuilderIndex = -1;
         int checkstyleBuilderIndex = -1;
 
-        for (int i = 0; i < commands.length; i++) {
+        for (int index = 0; index < commands.length; index++) {
 
-            if (commands[i].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
-                checkstyleBuilderIndex = i;
+            if (commands[index].getBuilderName().equals(CheckstyleBuilder.BUILDER_ID)) {
+                checkstyleBuilderIndex = index;
             }
-            else if (commands[i].getBuilderName().equals(JavaCore.BUILDER_ID)) {
-                javaBuilderIndex = i;
+            else if (commands[index].getBuilderName().equals(JavaCore.BUILDER_ID)) {
+                javaBuilderIndex = index;
             }
         }
         return javaBuilderIndex < checkstyleBuilderIndex;

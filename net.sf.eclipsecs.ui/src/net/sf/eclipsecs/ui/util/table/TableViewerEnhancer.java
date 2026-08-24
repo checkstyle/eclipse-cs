@@ -88,18 +88,18 @@ public final class TableViewerEnhancer {
         final Table table = tableViewer.getTable();
         final TableColumn[] columns = table.getColumns();
         int defaultSortColumnIndex = 0;
-        for (int i = 0, size = columns.length; i < size; i++) {
-            final int colIndex = i;
-            columns[i].addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+        for (int index = 0, size = columns.length; index < size; index++) {
+            final int colIndex = index;
+            columns[index].addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
                 handleSortColumn(columns, colIndex, table);
                 tableViewer.refresh(false);
                 saveState(table, tableSettings);
             }));
-            columns[i].addControlListener(
+            columns[index].addControlListener(
                 ControlListener.controlResizedAdapter(event -> saveState(table, tableSettings)));
-            columns[i].setData(WIDGET_DATA_COLUMN_INDEX, i);
-            if (columns[i] == table.getSortColumn()) {
-                defaultSortColumnIndex = i;
+            columns[index].setData(WIDGET_DATA_COLUMN_INDEX, index);
+            if (columns[index] == table.getSortColumn()) {
+                defaultSortColumnIndex = index;
             }
         }
 
@@ -115,9 +115,9 @@ public final class TableViewerEnhancer {
 
         // restore the column widths
         try {
-            for (int i = 0, size = columns.length; i < size; i++) {
-                final int width = tableSettings.getInt(TAG_COLUMN_WIDTH + i);
-                tableColumnLayout.setColumnData(columns[i], new ColumnPixelData(width));
+            for (int index = 0, size = columns.length; index < size; index++) {
+                final int width = tableSettings.getInt(TAG_COLUMN_WIDTH + index);
+                tableColumnLayout.setColumnData(columns[index], new ColumnPixelData(width));
             }
         }
         catch (NumberFormatException ex) {
@@ -169,10 +169,10 @@ public final class TableViewerEnhancer {
 
         // store the column widths
         final TableColumn[] columns = table.getColumns();
-        for (int i = 0, size = columns.length; i < size; i++) {
-            final int width = columns[i].getWidth();
+        for (int index = 0, size = columns.length; index < size; index++) {
+            final int width = columns[index].getWidth();
             if (width > 0) {
-                tableSettings.put(TAG_COLUMN_WIDTH + i, width);
+                tableSettings.put(TAG_COLUMN_WIDTH + index, width);
             }
         }
 

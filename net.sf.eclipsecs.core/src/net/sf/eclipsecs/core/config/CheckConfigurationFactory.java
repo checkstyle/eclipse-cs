@@ -297,12 +297,12 @@ public final class CheckConfigurationFactory {
 
         ICheckConfiguration defaultBuiltInCheckConfig = null;
 
-        for (int i = 0; i < elements.length; i++) {
-            final String name = elements[i].getAttribute(XMLTags.NAME_TAG);
-            final String description = elements[i].getAttribute(XMLTags.DESCRIPTION_TAG);
-            final String location = elements[i].getAttribute(XMLTags.LOCATION_TAG);
+        for (IConfigurationElement element : elements) {
+            final String name = element.getAttribute(XMLTags.NAME_TAG);
+            final String description = element.getAttribute(XMLTags.DESCRIPTION_TAG);
+            final String location = element.getAttribute(XMLTags.LOCATION_TAG);
 
-            final String defaultWeightAsString = elements[i].getAttribute(XMLTags.DEFAULT_WEIGHT);
+            final String defaultWeightAsString = element.getAttribute(XMLTags.DEFAULT_WEIGHT);
             final int defaultWeight =
                 defaultWeightAsString != null ? Integer.parseInt(defaultWeightAsString) : 0;
 
@@ -310,10 +310,10 @@ public final class CheckConfigurationFactory {
 
             final Map<String, String> additionalData = new HashMap<>();
             additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY,
-                elements[i].getContributor().getName());
+                element.getContributor().getName());
 
             final List<ResolvableProperty> props = new ArrayList<>();
-            final IConfigurationElement[] propEls = elements[i].getChildren(XMLTags.PROPERTY_TAG);
+            final IConfigurationElement[] propEls = element.getChildren(XMLTags.PROPERTY_TAG);
             for (IConfigurationElement propEl : propEls) {
                 props.add(new ResolvableProperty(propEl.getAttribute(XMLTags.NAME_TAG),
                     propEl.getAttribute(XMLTags.VALUE_TAG)));
