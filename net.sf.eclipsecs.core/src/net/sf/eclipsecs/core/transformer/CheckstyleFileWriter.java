@@ -23,10 +23,15 @@ package net.sf.eclipsecs.core.transformer;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.util.Iterator;
 import java.util.Map;
 
+import org.dom4j.Document;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
+
+import net.sf.eclipsecs.core.config.XMLTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
+import net.sf.eclipsecs.core.util.XMLUtil;
 
 /**
  * Class for writing the checkstyle configuration to a xml-file.
@@ -71,65 +76,59 @@ public final class CheckstyleFileWriter {
      *             an I/O exception occurred
      */
     private void writeXMLFile(final OutputStream outStream) throws IOException {
-        outStream.write("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n".getBytes("UTF-8"));
-        outStream.write("<module name=\"Checker\">\n".getBytes("UTF-8"));
-        outStream.write("<property name=\"severity\" value=\"warning\"/>\n".getBytes("UTF-8"));
-        writeModules(mCheckstyleSetting.getmCheckerModules(), outStream);
-        outStream.write("<module name=\"TreeWalker\">\n".getBytes("UTF-8"));
-        writeModules(mCheckstyleSetting.getmTreeWalkerModules(), outStream);
-        outStream.write("</module>\n".getBytes("UTF-8"));
-        outStream.write("</module>\n".getBytes("UTF-8"));
+        final Document document = DocumentHelper.createDocument();
+
+        final Element checkerElement = document.addElement(XMLTags.MODULE_TAG)
+            .addAttribute(XMLTags.NAME_TAG, XMLTags.CHECKER_MODULE);
+        checkerElement.addElement(XMLTags.PROPERTY_TAG).addAttribute(XMLTags.NAME_TAG,
+            XMLTags.SEVERITY_TAG).addAttribute(XMLTags.VALUE_TAG, "warning");
+
+        writeModules(mCheckstyleSetting.getmCheckerModules(), checkerElement);
+
+        final Element treeWalkerElement = checkerElement.addElement(XMLTags.MODULE_TAG)
+            .addAttribute(XMLTags.NAME_TAG, XMLTags.TREEWALKER_MODULE);
+
+        writeModules(mCheckstyleSetting.getmTreeWalkerModules(), treeWalkerElement);
+
+        outStream.write(XMLUtil.toByteArray(document));
     }
 
     /**
-     * Method for writing all modules to file.
+     * Method for writing all modules to a parent module element.
      *
      * @param modules
      *            the modules to write
-     * @param outStream
-     *            BufferedWriter to xml-file.
-     * @throws IOException
-     *             an I/O exception occurred
+     * @param parentElement
+     *            the parent module element to add the modules to
      */
     private static void writeModules(final Map<String, Map<String, String>> modules,
-        final OutputStream outStream) throws IOException {
+        final Element parentElement) {
 
-        final Iterator<String> modit = modules.keySet().iterator();
-        String module;
+        for (Map.Entry<String, Map<String, String>> module : modules.entrySet()) {
+            final Element moduleElement = parentElement.addElement(XMLTags.MODULE_TAG);
+            moduleElement.addAttribute(XMLTags.NAME_TAG, module.getKey());
 
-        while (modit.hasNext()) {
-            module = modit.next();
-            if (modules.get(module) == null) {
-                outStream.write(("<module name=\"" + module + "\"/>\n").getBytes("UTF-8"));
-            }
-            else {
-                outStream.write(("<module name=\"" + module + "\">\n").getBytes("UTF-8"));
-                writeProperty(modules.get(module), outStream);
-                outStream.write("</module>\n".getBytes("UTF-8"));
+            if (module.getValue() != null) {
+                writeProperty(module.getValue(), moduleElement);
             }
         }
     }
 
     /**
-     * Method for writing a propterty to file.
+     * Method for writing all properties to a module element.
      *
      * @param properties
      *            A HashMap containing all properties.
-     * @param outStream
-     *            the output stream to write to
-     * @throws IOException
-     *             an I/O exception occurred
+     * @param moduleElement
+     *            the module element to add the properties to
      */
     private static void writeProperty(final Map<String, String> properties,
-        final OutputStream outStream) throws IOException {
-        final Iterator<String> propit = properties.keySet().iterator();
-        String prop;
+        final Element moduleElement) {
 
-        while (propit.hasNext()) {
-            prop = propit.next();
-            outStream.write(
-                ("<property name=\"" + prop + "\" value=\"" + properties.get(prop) + "\"/>\n")
-                    .getBytes("UTF-8"));
+        for (Map.Entry<String, String> property : properties.entrySet()) {
+            final Element propertyElement = moduleElement.addElement(XMLTags.PROPERTY_TAG);
+            propertyElement.addAttribute(XMLTags.NAME_TAG, property.getKey());
+            propertyElement.addAttribute(XMLTags.VALUE_TAG, property.getValue());
         }
     }
 }

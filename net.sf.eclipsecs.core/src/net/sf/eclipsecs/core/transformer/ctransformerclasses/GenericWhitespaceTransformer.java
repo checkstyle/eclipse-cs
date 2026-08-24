@@ -20,6 +20,8 @@
 
 package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
+import org.eclipse.jdt.core.JavaCore;
+
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
@@ -31,22 +33,22 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 public class GenericWhitespaceTransformer extends AbstractCTransformationClass {
     @Override
     public FormatterConfiguration transformRule() {
-        userFormatterSetting("insert_space_before_question_in_wildcard", "do not insert");
+        userFormatterSetting("insert_space_before_question_in_wildcard", JavaCore.DO_NOT_INSERT);
         userFormatterSetting("insert_space_before_closing_angle_bracket_in_type_arguments",
-            "do not insert");
-        userFormatterSetting("insert_space_after_question_in_wildcard", "do not insert");
+            JavaCore.DO_NOT_INSERT);
+        userFormatterSetting("insert_space_after_question_in_wildcard", JavaCore.DO_NOT_INSERT);
         userFormatterSetting("insert_space_after_opening_angle_bracket_in_type_arguments",
-            "do not insert");
+            JavaCore.DO_NOT_INSERT);
         userFormatterSetting(
             "insert_space_before_closing_angle_bracket_in_parameterized_type_reference",
-            "do not insert");
+            JavaCore.DO_NOT_INSERT);
         userFormatterSetting("insert_space_after_opening_angle_bracket_in_type_parameters",
-            "do not insert");
+            JavaCore.DO_NOT_INSERT);
         userFormatterSetting("insert_space_before_closing_angle_bracket_in_type_parameters",
-            "do not insert");
+            JavaCore.DO_NOT_INSERT);
         userFormatterSetting(
             "insert_space_after_opening_angle_bracket_in_parameterized_type_reference",
-            "do not insert");
+            JavaCore.DO_NOT_INSERT);
         return getFormatterSetting();
     }
 

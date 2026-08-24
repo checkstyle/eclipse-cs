@@ -22,6 +22,9 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
+
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
@@ -41,22 +44,31 @@ public class RightCurlyTransformer extends AbstractCTransformationClass {
 
         final String option = getAttribute("option");
         final String value = switch (option) {
-            case null -> "do not insert";
-            case "same" -> "do not insert";
+            case null -> JavaCore.DO_NOT_INSERT;
+            case "same" -> JavaCore.DO_NOT_INSERT;
             default -> "insert";
         };
 
         for (String token : tokens.split("\\s*,\\s*")) {
             final List<String> settings = switch (token) {
                 case null -> List.of();
-                case "LITERAL_TRY" -> List.of("insert_new_line_before_catch_in_try_statement",
-                    "insert_new_line_before_finally_in_try_statement");
-                case "LITERAL_CATCH" -> List.of("insert_new_line_before_finally_in_try_statement");
-                case "LITERAL_IF" -> List.of("insert_new_line_before_else_in_if_statement");
-                case "LITERAL_DO" -> List.of("insert_new_line_before_while_in_do_statement");
+                case "LITERAL_TRY" -> List.of(
+                    DefaultCodeFormatterConstants
+                        .FORMATTER_INSERT_NEW_LINE_BEFORE_CATCH_IN_TRY_STATEMENT,
+                    DefaultCodeFormatterConstants
+                        .FORMATTER_INSERT_NEW_LINE_BEFORE_FINALLY_IN_TRY_STATEMENT);
+                case "LITERAL_CATCH" -> List.of(
+                    DefaultCodeFormatterConstants
+                        .FORMATTER_INSERT_NEW_LINE_BEFORE_FINALLY_IN_TRY_STATEMENT);
+                case "LITERAL_IF" -> List.of(
+                    DefaultCodeFormatterConstants
+                        .FORMATTER_INSERT_NEW_LINE_BEFORE_ELSE_IN_IF_STATEMENT);
+                case "LITERAL_DO" -> List.of(
+                    DefaultCodeFormatterConstants
+                        .FORMATTER_INSERT_NEW_LINE_BEFORE_WHILE_IN_DO_STATEMENT);
                 default -> List.of();
             };
-            settings.forEach(setting -> userFormatterSetting(setting, value));
+            settings.forEach(setting -> userFullFormatterSetting(setting, value));
         }
         return getFormatterSetting();
     }

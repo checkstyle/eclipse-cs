@@ -123,10 +123,8 @@ public final class MetadataXmlReader {
                 : null;
             final boolean hidden =
                 Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.HIDDEN_TAG));
-            final boolean hasSeverity =
-                !"false".equals(moduleEl.attributeValue(XMLTags.HAS_SEVERITY_TAG));
-            final boolean deletable =
-                !"false".equals(moduleEl.attributeValue(XMLTags.DELETABLE_TAG));
+            final boolean hasSeverity = isNotFalse(moduleEl, XMLTags.HAS_SEVERITY_TAG);
+            final boolean deletable = isNotFalse(moduleEl, XMLTags.DELETABLE_TAG);
             final boolean isSingleton =
                 Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.IS_SINGLETON_TAG));
 
@@ -154,6 +152,20 @@ public final class MetadataXmlReader {
                 severity, hidden, hasSeverity, deletable, isSingleton, messageKeys, properties));
         }
         return modules;
+    }
+
+    /**
+     * Returns whether the given attribute is not set to false, i.e. an absent or non-"false"
+     * attribute value yields true.
+     *
+     * @param element
+     *            the element holding the attribute
+     * @param attributeName
+     *            the name of the boolean attribute
+     * @return false only if the attribute value equals "false", otherwise true
+     */
+    private static boolean isNotFalse(Element element, String attributeName) {
+        return !"false".equals(element.attributeValue(attributeName));
     }
 
     private static String localize(String localizationCandidate, ResourceBundle metadataBundle) {

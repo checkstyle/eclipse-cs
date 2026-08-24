@@ -29,14 +29,18 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class IndentationTransformer extends AbstractCTransformationClass {
+
+    /** Default offset. */
+    private static final String DEFAULT_OFFSET = "4";
+
     @Override
     public FormatterConfiguration transformRule() {
         // basicOffset -> indentation.size, tabulation.size
         String basicOffset = getAttribute("basicOffset");
         if (basicOffset == null) {
-            basicOffset = "4";
+            basicOffset = DEFAULT_OFFSET;
         }
-        userFormatterSetting("use_tabs_only_for_leading_indentations", "false");
+        userFormatterSetting("use_tabs_only_for_leading_indentations", String.valueOf(false));
         userFormatterSetting("tabulation.char", "space");
         userFormatterSetting("indentation.size", basicOffset);
         userFormatterSetting("tabulation.size", basicOffset);
@@ -45,22 +49,22 @@ public class IndentationTransformer extends AbstractCTransformationClass {
         // (non-zero means cases are indented relative to the switch)
         String caseIndent = getAttribute("caseIndent");
         if (caseIndent == null) {
-            caseIndent = "4";
+            caseIndent = DEFAULT_OFFSET;
         }
         userFormatterSetting("indent_switchstatements_compare_to_switch",
-            "0".equals(caseIndent) ? "false" : "true");
+            String.valueOf(!"0".equals(caseIndent)));
 
         // lineWrappingIndentation -> continuation_indentation
         String lineWrappingIndentation = getAttribute("lineWrappingIndentation");
         if (lineWrappingIndentation == null) {
-            lineWrappingIndentation = "4";
+            lineWrappingIndentation = DEFAULT_OFFSET;
         }
         userFormatterSetting("continuation_indentation", lineWrappingIndentation);
 
         // arrayInitIndent -> continuation_indentation_for_array_initializer
         String arrayInitIndent = getAttribute("arrayInitIndent");
         if (arrayInitIndent == null) {
-            arrayInitIndent = "4";
+            arrayInitIndent = DEFAULT_OFFSET;
         }
         userFormatterSetting("continuation_indentation_for_array_initializer", arrayInitIndent);
 

@@ -32,6 +32,9 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 
 public class MethodLimitQuickfix extends AbstractASTResolution {
 
+    /** Label & description for this quick fix. */
+    private static final String LABEL = "Sample MethodLimit Quickfix";
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartOffset) {
@@ -60,12 +63,12 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
 
     @Override
     public String getDescription() {
-        return "Sample MethodLimit Quickfix";
+        return LABEL;
     }
 
     @Override
     public String getLabel() {
-        return "Sample MethodLimit Quickfix";
+        return LABEL;
     }
 
     @Override

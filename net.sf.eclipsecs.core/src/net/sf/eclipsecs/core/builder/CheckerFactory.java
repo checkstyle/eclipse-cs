@@ -161,10 +161,8 @@ public final class CheckerFactory {
         final CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
 
         final URL configLocation = configFileData.getResolvedConfigFileURL();
-        final String checkConfigName =
-            config.getName() + "#" + (config.isGlobal() ? "Global" : "Local");
-
-        return project.getName() + "#" + configLocation + "#" + checkConfigName;
+        return String.join("#", project.getName(), configLocation.toString(), config.getName(),
+            config.isGlobal() ? "Global" : "Local");
     }
 
     /**

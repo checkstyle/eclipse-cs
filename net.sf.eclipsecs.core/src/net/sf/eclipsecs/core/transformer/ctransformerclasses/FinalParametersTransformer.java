@@ -41,16 +41,16 @@ public class FinalParametersTransformer extends AbstractCTransformationClass {
                 case null -> {
                     // nothing
                 }
-                case "METHOD_DEF", "CTOR_DEF" -> useCleanupSetting("make_parameters_final", "true");
+                case "METHOD_DEF", "CTOR_DEF" -> useCleanupSetting("make_parameters_final", true);
                 case "LITERAL_CATCH", "FOR_EACH_CLAUSE",
                     "PATTERN_VARIABLE_DEF" -> useCleanupSetting("make_local_variable_final",
-                        "true");
+                        true);
                 default -> {
                     // nothing to transform
                 }
             }
         }
-        useCleanupSetting("make_variable_declarations_final", "true");
+        useCleanupSetting("make_variable_declarations_final", true);
         return getFormatterSetting();
     }
 }

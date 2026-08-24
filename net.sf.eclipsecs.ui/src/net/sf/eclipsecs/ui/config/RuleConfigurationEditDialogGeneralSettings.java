@@ -68,7 +68,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
         mSeverityCombo = new ComboViewer(this);
         mSeverityCombo.setContentProvider(ArrayContentProvider.getInstance());
         mSeverityCombo.setLabelProvider(
-            LabelProvider.createTextProvider(element -> ((Severity) element).toXmlValue()));
+            LabelProvider.createTextProvider(element -> ((Severity) element).getXmlValue()));
         GridDataFactory.swtDefaults().applyTo(mSeverityCombo.getControl());
 
         mSeverityCombo.setInput(Severity.values());

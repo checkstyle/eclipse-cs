@@ -70,7 +70,7 @@ public class CheckstyleMetadataAdapter {
      */
     public List<RuleMetadata> loadRuleMetadata(Map<String, RuleGroupMetadata> groups,
         Collection<ModuleDetails> allModuleDetails,
-        Map<String, Map<String, String>> thirdPartyGroups) {
+        Map<String, ThirdPartyRuleGroupInfo> thirdPartyGroups) {
         final List<RuleMetadata> rules = new ArrayList<>();
         for (ModuleDetails moduleDetails : allModuleDetails) {
             RuleGroupMetadata group;
@@ -84,18 +84,14 @@ public class CheckstyleMetadataAdapter {
             // third party extension modules
             else {
                 final String lookupKey = findLookupKey(thirdPartyGroups, moduleClassName);
-                final String ruleGroupName = thirdPartyGroups.get(lookupKey).get("name");
-                group = groups.get(ruleGroupName);
+                final ThirdPartyRuleGroupInfo groupInfo = thirdPartyGroups.get(lookupKey);
+                group = groups.get(groupInfo.name());
                 // if the group of the new check hasn't been formed yet
                 // and put into the sRuleGroupMetadata map
                 if (group == null) {
-                    final String ruleDescription =
-                        thirdPartyGroups.get(lookupKey).get("description");
-                    final int rulePriority =
-                        Integer.parseInt(thirdPartyGroups.get(lookupKey).get("priority"));
-                    group = new RuleGroupMetadata(ruleGroupName, ruleGroupName, ruleDescription,
-                        false, rulePriority);
-                    groups.put(ruleGroupName, group);
+                    group = new RuleGroupMetadata(groupInfo.name(), groupInfo.name(),
+                        groupInfo.description(), false, groupInfo.priority());
+                    groups.put(groupInfo.name(), group);
                 }
             }
             final RuleMetadata createdRuleMetadata = createRuleMetadata(group, moduleDetails);
@@ -232,7 +228,7 @@ public class CheckstyleMetadataAdapter {
      *            the package name to lookup
      * @return the lookup key or null
      */
-    private static String findLookupKey(Map<String, Map<String, String>> thirdPartyGroups,
+    private static String findLookupKey(Map<String, ThirdPartyRuleGroupInfo> thirdPartyGroups,
         String packageName) {
         final String[] packageTokens = packageName.split(DOT_PATTERN);
         final List<String> prefixList = new ArrayList<>();

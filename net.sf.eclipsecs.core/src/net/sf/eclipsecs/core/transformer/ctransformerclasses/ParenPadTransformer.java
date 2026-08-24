@@ -22,6 +22,9 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import java.util.List;
 
+import org.eclipse.jdt.core.JavaCore;
+import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
+
 import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
@@ -31,6 +34,53 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class ParenPadTransformer extends AbstractCTransformationClass {
 
+    /** Formatter settings to apply for the LPAREN token. */
+    private static final List<String> LPAREN_SETTINGS = List.of(
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_PARENTHESIZED_EXPRESSION,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_WHILE,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_FOR,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_IF,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_SWITCH,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_SYNCHRONIZED,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_CATCH,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_METHOD_INVOCATION,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_ANNOTATION,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_CONSTRUCTOR_DECLARATION,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_ENUM_CONSTANT,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_METHOD_DECLARATION);
+
+    /** Formatter settings to apply for the RPAREN token. */
+    private static final List<String> RPAREN_SETTINGS = List.of(
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_PARENTHESIZED_EXPRESSION,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_WHILE,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_FOR,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_IF,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_SWITCH,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_SYNCHRONIZED,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_CATCH,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_METHOD_INVOCATION,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_METHOD_DECLARATION,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_CONSTRUCTOR_DECLARATION,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_ENUM_CONSTANT,
+        DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_ANNOTATION);
+
+    /** Formatter settings to apply for method-invocation tokens. */
+    private static final List<String> METHOD_INVOCATION_SETTINGS = List.of(
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_BEFORE_CLOSING_PAREN_IN_METHOD_INVOCATION,
+        DefaultCodeFormatterConstants
+            .FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_METHOD_INVOCATION);
+
     @Override
     public FormatterConfiguration transformRule() {
         String tokens = getAttribute("tokens");
@@ -39,47 +89,20 @@ public class ParenPadTransformer extends AbstractCTransformationClass {
         }
         final String option = getAttribute("option");
         final String value = switch (option) {
-            case null -> "do not insert";
-            case "nospace" -> "do not insert";
+            case null -> JavaCore.DO_NOT_INSERT;
+            case "nospace" -> JavaCore.DO_NOT_INSERT;
             default -> "insert";
         };
 
         for (String token : tokens.split("\\s*,\\s*")) {
             final List<String> settings = switch (token) {
                 case null -> List.of();
-                case "LPAREN" -> List.of(
-                    "insert_space_after_opening_paren_in_parenthesized_expression",
-                    "insert_space_after_opening_paren_in_while",
-                    "insert_space_after_opening_paren_in_for",
-                    "insert_space_after_opening_paren_in_if",
-                    "insert_space_after_opening_paren_in_switch",
-                    "insert_space_after_opening_paren_in_synchronized",
-                    "insert_space_after_opening_paren_in_catch",
-                    "insert_space_after_opening_paren_in_method_invocation",
-                    "insert_space_after_opening_paren_in_annotation",
-                    "insert_space_after_opening_paren_in_constructor_declaration",
-                    "insert_space_after_opening_paren_in_enum_constant",
-                    "insert_space_after_opening_paren_in_method_declaration");
-                case "RPAREN" -> List.of(
-                    "insert_space_before_closing_paren_in_parenthesized_expression",
-                    "insert_space_before_closing_paren_in_while",
-                    "insert_space_before_closing_paren_in_for",
-                    "insert_space_before_closing_paren_in_if",
-                    "insert_space_before_closing_paren_in_switch",
-                    "insert_space_before_closing_paren_in_synchronized",
-                    "insert_space_before_closing_paren_in_catch",
-                    "insert_space_before_closing_paren_in_method_invocation",
-                    "insert_space_before_closing_paren_in_method_declaration",
-                    "insert_space_before_closing_paren_in_constructor_declaration",
-                    "insert_space_before_closing_paren_in_enum_constant",
-                    "insert_space_before_closing_paren_in_annotation");
-                case "CTOR_CALL", "METHOD_CALL",
-                    "SUPER_CTOR_CALL" -> List.of(
-                        "insert_space_before_closing_paren_in_method_invocation",
-                        "insert_space_after_opening_paren_in_method_invocation");
+                case "LPAREN" -> LPAREN_SETTINGS;
+                case "RPAREN" -> RPAREN_SETTINGS;
+                case "CTOR_CALL", "METHOD_CALL", "SUPER_CTOR_CALL" -> METHOD_INVOCATION_SETTINGS;
                 default -> List.of();
             };
-            settings.forEach(setting -> userFormatterSetting(setting, value));
+            settings.forEach(setting -> userFullFormatterSetting(setting, value));
         }
         return getFormatterSetting();
     }

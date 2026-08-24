@@ -198,10 +198,10 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
             final long currentTime = System.currentTimeMillis();
 
             mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
-                mWorkingCopy.getName() + "_" + currentTime + "_cache.xml");
+                makeCacheFileName(mWorkingCopy.getName(), currentTime, "xml"));
             mWorkingCopy.getAdditionalData().put(
                 RemoteConfigurationType.KEY_CACHE_PROPS_FILE_LOCATION,
-                mWorkingCopy.getName() + "_" + currentTime + "_cache.properties");
+                makeCacheFileName(mWorkingCopy.getName(), currentTime, "properties"));
         }
 
         // store credentials if necessary
@@ -229,5 +229,9 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
             Boolean.toString(mChkCacheConfig.getSelection()));
 
         return mWorkingCopy;
+    }
+
+    private static String makeCacheFileName(String configName, long time, String extension) {
+        return String.join("_", configName, String.valueOf(time), "cache.") + extension;
     }
 }

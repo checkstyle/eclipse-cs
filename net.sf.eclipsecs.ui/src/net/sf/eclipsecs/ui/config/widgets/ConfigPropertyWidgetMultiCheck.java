@@ -114,7 +114,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
             installSorter(mSortTokens);
 
             mTable.setInput(mTokens);
-            mTable.setCheckedElements(getInitialValues().toArray());
+            mTable.setCheckedElements(tokenize(getInitValue()).toArray());
 
             final GridData gridData = new GridData(GridData.FILL_BOTH);
             gridData.heightHint = WIDGET_HEIGHT;
@@ -141,16 +141,6 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
             .collect(Collectors.joining(", "));
     }
 
-    private List<String> getInitialValues() {
-        final List<String> result = new LinkedList<>();
-        final StringTokenizer tokenizer = new StringTokenizer(getInitValue(), ",");
-        while (tokenizer.hasMoreTokens()) {
-            result.add(tokenizer.nextToken().trim());
-        }
-
-        return result;
-    }
-
     private void installSorter(boolean sort) {
         if (sort) {
             final Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
@@ -171,16 +161,22 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
         final List<String> result = new LinkedList<>();
 
         if (defaultValue != null) {
-            final StringTokenizer tokenizer = new StringTokenizer(defaultValue, ",");
-            while (tokenizer.hasMoreTokens()) {
-                result.add(tokenizer.nextToken().trim());
-            }
+            result.addAll(tokenize(defaultValue));
         }
 
         // clear current checked state
         mTable.setCheckedElements(new Object[0]);
 
         mTable.setCheckedElements(result.toArray());
+    }
+
+    private static List<String> tokenize(String value) {
+        final List<String> result = new LinkedList<>();
+        final StringTokenizer tokenizer = new StringTokenizer(value, ",");
+        while (tokenizer.hasMoreTokens()) {
+            result.add(tokenizer.nextToken().trim());
+        }
+        return result;
     }
 
     @Override

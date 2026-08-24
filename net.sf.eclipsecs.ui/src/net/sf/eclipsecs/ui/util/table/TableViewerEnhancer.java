@@ -163,7 +163,8 @@ public final class TableViewerEnhancer {
      *            the dialog settings
      */
     private static void saveState(Table table, IDialogSettings tableSettings) {
-        tableSettings.put(TAG_COLUMN_INDEX, (int) table.getSortColumn().getData("index"));
+        tableSettings.put(TAG_COLUMN_INDEX,
+            (int) table.getSortColumn().getData(WIDGET_DATA_COLUMN_INDEX));
         tableSettings.put(TAG_SORT_DIRECTION, getSortDirection(table));
 
         // store the column widths

@@ -46,7 +46,6 @@ import java.util.TreeMap;
 
 import org.apache.commons.lang3.StringUtils;
 import org.dom4j.DocumentException;
-import org.yaml.snakeyaml.Yaml;
 
 import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.api.AbstractFileSetCheck;
@@ -75,6 +74,12 @@ public final class MetadataFactory {
     /** Name of the rules metadata XML file. */
     private static final String METADATA_FILENAME = "checkstyle-metadata.xml";
 
+    /** Package name separator. */
+    private static final String PACKAGE_NAME_SEPARATOR = ".";
+
+    /** File name separator. */
+    private static final String FILE_NAME_SEPARATOR = "/";
+
     /** Metadata for the rule groups. */
     private static Map<String, RuleGroupMetadata> sRuleGroupMetadata;
 
@@ -97,9 +102,9 @@ public final class MetadataFactory {
     private static Set<String> sPackageNameSet;
 
     /**
-     * Mapping of third party extension package name to rule group name.
+     * Mapping of third party extension package name to rule group data.
      */
-    private static Map<String, Map<String, String>> sThirdPartyRuleGroupMap;
+    private static Map<String, ThirdPartyRuleGroupInfo> sThirdPartyRuleGroupMap;
 
     /**
      * Private constructor to prevent instantiation.
@@ -197,7 +202,7 @@ public final class MetadataFactory {
     private static void loadThirdPartyModuleExtensionMetadata() {
         final var rootPackages = sPackageNameSet.stream().map(pack -> {
             String root = pack;
-            final int secondDot = StringUtils.ordinalIndexOf(pack, ".", 2);
+            final int secondDot = StringUtils.ordinalIndexOf(pack, PACKAGE_NAME_SEPARATOR, 2);
             if (secondDot >= 0) {
                 root = pack.substring(0, secondDot);
             }
@@ -218,18 +223,8 @@ public final class MetadataFactory {
                 CheckstyleLog.log(ex, "Cannot read metadata YML");
             }
         }
-        eclipseMetaDataFiles.forEach(MetadataFactory::loadThirdPartyData);
-    }
-
-    private static void loadThirdPartyData(String metadataContent) {
-        final Map<String, List<Map<String, Object>>> objects = new Yaml().load(metadataContent);
-        for (Map<String, Object> obj : objects.get("ruleGroups")) {
-            final Map<String, String> ruleGroupData = new HashMap<>();
-            ruleGroupData.put("name", (String) obj.get("name"));
-            ruleGroupData.put("description", (String) obj.get("description"));
-            ruleGroupData.put("priority", Integer.toString((Integer) obj.get("priority")));
-            sThirdPartyRuleGroupMap.put((String) obj.get("package"), ruleGroupData);
-        }
+        eclipseMetaDataFiles.forEach(
+            content -> sThirdPartyRuleGroupMap.putAll(ThirdPartyRuleGroupParser.parse(content)));
     }
 
     /**
@@ -323,7 +318,7 @@ public final class MetadataFactory {
                     String messages = "messages";
                     if (endIndex >= 0) {
                         final String packageName = moduleClass.substring(0, endIndex);
-                        messages = packageName + "." + messages;
+                        messages = packageName + PACKAGE_NAME_SEPARATOR + messages;
                     }
                     final ResourceBundle resourceBundle = ResourceBundle.getBundle(messages,
                         CheckstylePlugin.getPlatformLocale(),
@@ -391,7 +386,7 @@ public final class MetadataFactory {
     }
 
     private static String groupId(String metadataFile) {
-        String res = StringUtils.substringBetween(metadataFile, "/checks/", "/");
+        String res = StringUtils.substringBetween(metadataFile, "/checks/", FILE_NAME_SEPARATOR);
         res = StringUtils.defaultString(res, metadataFile);
         return res;
     }
@@ -433,11 +428,8 @@ public final class MetadataFactory {
         sPackageNameSet.addAll(packages);
 
         for (String packageName : packages) {
-            String metaFileLocation = packageName.replace('.', '/');
-            if (!metaFileLocation.endsWith("/")) {
-                metaFileLocation = metaFileLocation + "/";
-            }
-            metaFileLocation = metaFileLocation + METADATA_FILENAME;
+            final String metaFileLocation =
+                packageName.replace('.', '/') + FILE_NAME_SEPARATOR + METADATA_FILENAME;
             potentialMetadataFiles.add(metaFileLocation);
         }
 

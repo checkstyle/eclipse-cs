@@ -35,22 +35,22 @@ public class FinalLocalVariableTransformer extends AbstractCTransformationClass 
     public FormatterConfiguration transformRule() {
         String val = getAttribute("tokens");
         if (val == null) {
-            val = "VARIABLE_DEF";
+            val = CheckstyleTokens.VARIABLE_DEF;
         }
 
         final StringTokenizer args = new StringTokenizer(val, ", ");
         String token;
         while (args.hasMoreTokens()) {
             token = args.nextToken();
-            if ("VARIABLE_DEF".equals(token)) {
-                useCleanupSetting("make_local_variable_final", "true");
-                useCleanupSetting("make_private_fields_final", "true");
+            if (CheckstyleTokens.VARIABLE_DEF.equals(token)) {
+                useCleanupSetting("make_local_variable_final", true);
+                useCleanupSetting("make_private_fields_final", true);
             }
-            else if ("PARAMETER_DEF".equals(token)) {
-                useCleanupSetting("make_parameters_final", "true");
+            else if (CheckstyleTokens.PARAMETER_DEF.equals(token)) {
+                useCleanupSetting("make_parameters_final", true);
             }
         }
-        useCleanupSetting("make_variable_declarations_final", "true");
+        useCleanupSetting("make_variable_declarations_final", true);
         return getFormatterSetting();
     }
 }
