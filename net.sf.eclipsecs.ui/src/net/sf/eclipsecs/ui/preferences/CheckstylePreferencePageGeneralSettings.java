@@ -193,8 +193,14 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         languageIf.setItems(LANGUAGE_ITEMS);
         final String lang =
             CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
-        final int selectedLang =
-            SUPPORTED_LANGUAGES.indexOf(lang == null || lang.isEmpty() ? DEFAULT_LANGUAGE : lang);
+        final String effectiveLang;
+        if (lang == null || lang.isEmpty()) {
+            effectiveLang = DEFAULT_LANGUAGE;
+        }
+        else {
+            effectiveLang = lang;
+        }
+        final int selectedLang = SUPPORTED_LANGUAGES.indexOf(effectiveLang);
         if (selectedLang != -1) {
             languageIf.select(selectedLang);
         }

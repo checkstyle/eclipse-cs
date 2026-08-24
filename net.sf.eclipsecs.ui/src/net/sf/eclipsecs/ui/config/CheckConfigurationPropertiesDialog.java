@@ -280,8 +280,12 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     private void initialize() {
         final IConfigurationType[] types;
         if (mCheckConfig == null) {
-            types = mTemplate != null ? ConfigurationTypes.getConfigurableConfigTypes()
-                : ConfigurationTypes.getCreatableConfigTypes();
+            if (mTemplate != null) {
+                types = ConfigurationTypes.getConfigurableConfigTypes();
+            }
+            else {
+                types = ConfigurationTypes.getCreatableConfigTypes();
+            }
 
             mCheckConfig = mWorkingSet.newWorkingCopy(types[0]);
 

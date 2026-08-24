@@ -110,17 +110,26 @@ public final class MetadataXmlReader {
         for (Element moduleEl : moduleElements) {
             // default severity
             final String defaultSeverity = moduleEl.attributeValue(XMLTags.DEFAULT_SEVERITY_TAG);
-            final Severity severity =
-                defaultSeverity == null || defaultSeverity.trim().length() == 0 ? Severity.INHERIT
-                    : Severity.fromXmlValue(defaultSeverity);
+            final Severity severity;
+            if (defaultSeverity == null || defaultSeverity.trim().length() == 0) {
+                severity = Severity.INHERIT;
+            }
+            else {
+                severity = Severity.fromXmlValue(defaultSeverity);
+            }
 
             String name = moduleEl.attributeValue(XMLTags.NAME_TAG).trim();
             name = localize(name, metadataBundle);
             final String internalName = moduleEl.attributeValue(XMLTags.INTERNAL_NAME_TAG).trim();
 
-            final String parentName = moduleEl.attributeValue(XMLTags.PARENT_TAG) != null
-                ? moduleEl.attributeValue(XMLTags.PARENT_TAG).trim()
-                : null;
+            final String parentTag = moduleEl.attributeValue(XMLTags.PARENT_TAG);
+            final String parentName;
+            if (parentTag != null) {
+                parentName = parentTag.trim();
+            }
+            else {
+                parentName = null;
+            }
             final boolean hidden =
                 Boolean.parseBoolean(moduleEl.attributeValue(XMLTags.HIDDEN_TAG));
             final boolean hasSeverity = isNotFalse(moduleEl, XMLTags.HAS_SEVERITY_TAG);

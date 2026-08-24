@@ -160,9 +160,16 @@ public final class CheckerFactory {
             throws CheckstylePluginException {
         final CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
 
+        final String globalVsLocal;
+        if (config.isGlobal()) {
+            globalVsLocal = "Global";
+        }
+        else {
+            globalVsLocal = "Local";
+        }
         final URL configLocation = configFileData.getResolvedConfigFileURL();
         return String.join("#", project.getName(), configLocation.toString(), config.getName(),
-            config.isGlobal() ? "Global" : "Local");
+            globalVsLocal);
     }
 
     /**

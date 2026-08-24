@@ -44,9 +44,14 @@ public class CheckConfigurationLabelProvider extends LabelProvider {
     public String getText(Object element) {
         final String text;
         if (element instanceof ICheckConfiguration checkConfig) {
-            text = checkConfig.getName() + " "
-                + (checkConfig.isGlobal() ? Messages.CheckConfigurationLabelProvider_suffixGlobal
-                    : Messages.CheckConfigurationLabelProvider_suffixLocal);
+            final String suffix;
+            if (checkConfig.isGlobal()) {
+                suffix = Messages.CheckConfigurationLabelProvider_suffixGlobal;
+            }
+            else {
+                suffix = Messages.CheckConfigurationLabelProvider_suffixLocal;
+            }
+            text = checkConfig.getName() + " " + suffix;
         }
         else {
             text = super.getText(element);

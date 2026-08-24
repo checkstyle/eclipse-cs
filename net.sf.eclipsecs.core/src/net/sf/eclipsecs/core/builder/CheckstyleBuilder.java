@@ -135,10 +135,16 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
                 config = ProjectConfigurationFactory.getConfiguration(project);
             }
             catch (CheckstylePluginException ex) {
-                final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                    IStatus.ERROR, ex.getMessage() != null ? ex.getMessage()
-                        : Messages.CheckstyleBuilder_msgErrorUnknown,
-                    ex);
+                final String message;
+                if (ex.getMessage() != null) {
+                    message = ex.getMessage();
+                }
+                else {
+                    message = Messages.CheckstyleBuilder_msgErrorUnknown;
+                }
+                final Status status =
+                    new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, message,
+                        ex);
                 throw new CoreException(status);
             }
 

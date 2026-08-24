@@ -149,7 +149,10 @@ public final class ConfigurationReader {
             CheckstylePluginException.rethrow(ex);
         }
 
-        return rules != null ? rules : new ArrayList<>();
+        if (rules == null) {
+            rules = new ArrayList<>();
+        }
+        return rules;
     }
 
     private static List<Module> getModules(final Document document) {
@@ -160,22 +163,31 @@ public final class ConfigurationReader {
             @Override
             public void visit(final Element node) {
                 if (XMLTags.MODULE_TAG.equals(node.getName())) {
-                    final String name = node.attributeValue(XMLTags.NAME_TAG);
-                    final RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
-                    final Module module =
-                        metadata != null ? new Module(metadata, true) : new Module(name);
-                    addProperties(node, module);
-                    addMessages(node, module);
-                    addMetadata(node, module);
-                    // if the module has not metadata attached we create some generic metadata
-                    if (module.getMetaData() == null) {
-                        MetadataFactory.createGenericMetadata(module);
-                    }
-                    modules.add(module);
+                    modules.add(createModule(node));
                 }
             }
         });
         return modules;
+    }
+
+    private static Module createModule(final Element node) {
+        final String name = node.attributeValue(XMLTags.NAME_TAG);
+        final RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
+        final Module module;
+        if (metadata != null) {
+            module = new Module(metadata, true);
+        }
+        else {
+            module = new Module(name);
+        }
+        addProperties(node, module);
+        addMessages(node, module);
+        addMetadata(node, module);
+        // if the module has not metadata attached we create some generic metadata
+        if (module.getMetaData() == null) {
+            MetadataFactory.createGenericMetadata(module);
+        }
+        return module;
     }
 
     private static void addProperties(final Element moduleEl, final Module module) {

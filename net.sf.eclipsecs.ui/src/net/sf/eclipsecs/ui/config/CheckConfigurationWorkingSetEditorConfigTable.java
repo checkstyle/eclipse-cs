@@ -31,6 +31,7 @@ import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TableViewerColumn;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
@@ -88,9 +89,11 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
                 ColumnLabelProvider.createTextImageProvider(element -> "", element -> {
                     final CheckConfigurationWorkingCopy cfg =
                         (CheckConfigurationWorkingCopy) element;
-                    return model.isDefaultConfig().test(cfg)
-                        ? CheckstyleUIPluginImages.TICK_ICON.getImage()
-                        : null;
+                    Image image = null;
+                    if (model.isDefaultConfig().test(cfg)) {
+                        image = CheckstyleUIPluginImages.TICK_ICON.getImage();
+                    }
+                    return image;
                 }));
             col4.getColumn().pack();
             tableColumnLayout.setColumnData(col4.getColumn(),

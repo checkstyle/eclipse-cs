@@ -142,7 +142,11 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
                 }
             }
 
-            return mCurrentDetails != null ? mCurrentDetails : new Object[0];
+            Object[] details = mCurrentDetails;
+            if (details == null) {
+                details = new Object[0];
+            }
+            return details;
         }
 
         @Override
@@ -156,7 +160,11 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
         }
 
         public int getMarkerCount() {
-            return mCurrentDetails != null ? mCurrentDetails.length : 0;
+            int count = 0;
+            if (mCurrentDetails != null) {
+                count = mCurrentDetails.length;
+            }
+            return count;
         }
 
         public String getCurrentDetailCategory() {

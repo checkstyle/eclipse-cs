@@ -101,8 +101,12 @@ public class CheckConfiguration extends AbstractCheckConfiguration {
             mAdditionalData = Collections.unmodifiableMap(new HashMap<String, String>());
         }
 
-        mProperties = properties != null ? Collections.unmodifiableList(properties)
-            : Collections.unmodifiableList(new ArrayList<ResolvableProperty>());
+        if (properties != null) {
+            mProperties = Collections.unmodifiableList(properties);
+        }
+        else {
+            mProperties = Collections.unmodifiableList(new ArrayList<>());
+        }
     }
 
     @Override

@@ -316,19 +316,38 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
 
     @Override
     public String getName() {
-        return mEditedName != null ? mEditedName : getSourceCheckConfiguration().getName();
+        final String name;
+        if (mEditedName != null) {
+            name = mEditedName;
+        }
+        else {
+            name = getSourceCheckConfiguration().getName();
+        }
+        return name;
     }
 
     @Override
     public String getDescription() {
-        return mEditedDescription != null ? mEditedDescription
-            : getSourceCheckConfiguration().getDescription();
+        final String description;
+        if (mEditedDescription != null) {
+            description = mEditedDescription;
+        }
+        else {
+            description = getSourceCheckConfiguration().getDescription();
+        }
+        return description;
     }
 
     @Override
     public String getLocation() {
-        return mEditedLocation != null ? mEditedLocation
-            : getSourceCheckConfiguration().getLocation();
+        final String location;
+        if (mEditedLocation != null) {
+            location = mEditedLocation;
+        }
+        else {
+            location = getSourceCheckConfiguration().getLocation();
+        }
+        return location;
     }
 
     @Override

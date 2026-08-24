@@ -89,13 +89,27 @@ public class ResolvablePropertyEditDialog extends TitleAreaDialog {
         lblName.setText(Messages.ResolvablePropertyEditDialog_lblName);
         mTxtName = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTxtName);
-        mTxtName.setText(mProperty.getPropertyName() != null ? mProperty.getPropertyName() : "");
+        final String propertyName;
+        if (mProperty.getPropertyName() != null) {
+            propertyName = mProperty.getPropertyName();
+        }
+        else {
+            propertyName = "";
+        }
+        mTxtName.setText(propertyName);
 
         final Label lblValue = new Label(dialog, SWT.NULL);
         lblValue.setText(Messages.ResolvablePropertyEditDialog_lblValue);
         mTxtValue = new Text(dialog, SWT.SINGLE | SWT.BORDER);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTxtValue);
-        mTxtValue.setText(mProperty.getValue() != null ? mProperty.getValue() : "");
+        final String value;
+        if (mProperty.getValue() != null) {
+            value = mProperty.getValue();
+        }
+        else {
+            value = "";
+        }
+        mTxtValue.setText(value);
 
         // integrate content assist
         ContentAssistHandler.createHandlerForText(mTxtValue, createContentAssistant());

@@ -59,9 +59,7 @@ public class ConfigProperty implements Comparable<ConfigProperty> {
      *            the property meta data
      */
     public ConfigProperty(ConfigPropertyMetadata metaData) {
-        this(metaData.getName(),
-            metaData.getOverrideDefault() != null ? metaData.getOverrideDefault()
-                : metaData.getDefaultValue());
+        this(metaData.getName(), determineInitialValue(metaData));
         this.metaData = metaData;
     }
 
@@ -76,6 +74,17 @@ public class ConfigProperty implements Comparable<ConfigProperty> {
     public ConfigProperty(String name, String value) {
         this.name = name;
         this.value = value;
+    }
+
+    private static String determineInitialValue(ConfigPropertyMetadata metaData) {
+        final String value;
+        if (metaData.getOverrideDefault() != null) {
+            value = metaData.getOverrideDefault();
+        }
+        else {
+            value = metaData.getDefaultValue();
+        }
+        return value;
     }
 
     /**

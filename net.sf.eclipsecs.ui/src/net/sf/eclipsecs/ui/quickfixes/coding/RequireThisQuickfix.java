@@ -86,7 +86,11 @@ public class RequireThisQuickfix extends AbstractASTResolution {
                 for (final VariableDeclarationFragment fragment : fragments) {
                     if (name.getFullyQualifiedName()
                         .equals(fragment.getName().getFullyQualifiedName())) {
-                        replacement = createFieldAccessReplacement(level == 1 ? null : type, name);
+                        TypeDeclaration targetType = type;
+                        if (level == 1) {
+                            targetType = null;
+                        }
+                        replacement = createFieldAccessReplacement(targetType, name);
                         break;
                     }
                 }
@@ -125,7 +129,11 @@ public class RequireThisQuickfix extends AbstractASTResolution {
             for (final MethodDeclaration methodDeclaration : type.getMethods()) {
                 if (name.getFullyQualifiedName()
                     .equals(methodDeclaration.getName().getFullyQualifiedName())) {
-                    replacement = createMethodInvocationReplacement(level == 1 ? null : type, node);
+                    TypeDeclaration targetType = type;
+                    if (level == 1) {
+                        targetType = null;
+                    }
+                    replacement = createMethodInvocationReplacement(targetType, node);
                     break;
                 }
             }

@@ -196,7 +196,13 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
         final StringBuilder buf = new StringBuilder();
 
-        final int size = mRegularExpressions != null ? mRegularExpressions.size() : 0;
+        final int size;
+        if (mRegularExpressions != null) {
+            size = mRegularExpressions.size();
+        }
+        else {
+            size = 0;
+        }
         for (int index = 0; index < size; index++) {
             if (index > 0) {
                 buf.append(", ");

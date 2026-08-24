@@ -426,7 +426,7 @@ public final class Auditor {
                     final int line = error.getLine();
 
                     final IRegion lineInformation =
-                        mDocument.getLineInformation(line == 0 ? 0 : line - 1);
+                        mDocument.getLineInformation(Math.max(line - 1, 0));
                     final int lineOffset = lineInformation.getOffset();
                     final int lineLength = lineInformation.getLength();
 

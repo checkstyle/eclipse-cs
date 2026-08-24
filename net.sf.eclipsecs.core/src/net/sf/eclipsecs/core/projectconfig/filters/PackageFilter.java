@@ -116,7 +116,13 @@ public class PackageFilter extends AbstractFilter {
 
         final StringBuilder buf = new StringBuilder();
 
-        final int size = mData != null ? mData.size() : 0;
+        final int size;
+        if (mData != null) {
+            size = mData.size();
+        }
+        else {
+            size = 0;
+        }
         for (int index = 0; index < size; index++) {
             if (index > 0) {
                 buf.append(", ");

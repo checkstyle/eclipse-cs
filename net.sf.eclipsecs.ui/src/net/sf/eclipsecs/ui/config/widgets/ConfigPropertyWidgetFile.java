@@ -126,10 +126,14 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
     @Override
     public void restorePropertyDefault() {
         final ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        final String defaultValue =
-            metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-                : metadata.getDefaultValue();
-        mTextWidget.setText(defaultValue != null ? defaultValue : "");
+        String defaultValue = metadata.getDefaultValue();
+        if (metadata.getOverrideDefault() != null) {
+            defaultValue = metadata.getOverrideDefault();
+        }
+        if (defaultValue == null) {
+            defaultValue = "";
+        }
+        mTextWidget.setText(defaultValue);
     }
 
     /**
