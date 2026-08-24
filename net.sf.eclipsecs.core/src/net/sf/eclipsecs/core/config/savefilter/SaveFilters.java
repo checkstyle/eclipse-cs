@@ -61,12 +61,12 @@ public final class SaveFilters {
 
         final List<ISaveFilter> filters = new ArrayList<>();
 
-        for (int i = 0; i < elements.length; i++) {
+        for (IConfigurationElement element : elements) {
 
             try {
 
                 final ISaveFilter filter =
-                    (ISaveFilter) elements[i].createExecutableExtension(ATTR_CLASS);
+                    (ISaveFilter) element.createExecutableExtension(ATTR_CLASS);
                 filters.add(filter);
             }
             catch (CoreException ex) {
@@ -89,8 +89,8 @@ public final class SaveFilters {
      *            the configured modules of a configuration to be written
      */
     public static void process(List<Module> configuredModules) {
-        for (int i = 0; i < SAVE_FILTERS.length; i++) {
-            SAVE_FILTERS[i].postProcessConfiguredModules(configuredModules);
+        for (ISaveFilter filter : SAVE_FILTERS) {
+            filter.postProcessConfiguredModules(configuredModules);
         }
     }
 }

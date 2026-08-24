@@ -82,9 +82,7 @@ public class PackageFilter extends AbstractFilter {
 
             final IPath projRelativPath = folder.getProjectRelativePath();
 
-            final int size = mData != null ? mData.size() : 0;
-            for (int i = 0; i < size; i++) {
-                final String element = mData.get(i);
+            for (String element : mData) {
 
                 if (!RECURSE_OFF_MARKER.equals(element)) {
                     final IPath filteredPath = new Path(element);
@@ -119,12 +117,12 @@ public class PackageFilter extends AbstractFilter {
         final StringBuilder buf = new StringBuilder();
 
         final int size = mData != null ? mData.size() : 0;
-        for (int i = 0; i < size; i++) {
-            if (i > 0) {
+        for (int index = 0; index < size; index++) {
+            if (index > 0) {
                 buf.append(", ");
             }
 
-            buf.append(mData.get(i));
+            buf.append(mData.get(index));
         }
 
         return buf.toString();

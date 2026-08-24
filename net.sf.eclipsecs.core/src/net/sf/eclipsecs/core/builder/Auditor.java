@@ -400,9 +400,7 @@ public final class Auditor {
             mDocument = null;
 
             // disconnect any leftover buffer paths, in case of an unexpected abortion
-            for (IPath p : mConnectedFileBufferPaths) {
-                disconnectFileBuffer(p);
-            }
+            mConnectedFileBufferPaths.forEach(this::disconnectFileBuffer);
         }
 
         /**

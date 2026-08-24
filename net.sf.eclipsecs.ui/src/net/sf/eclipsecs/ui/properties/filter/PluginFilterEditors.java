@@ -63,14 +63,13 @@ public final class PluginFilterEditors {
         final IConfigurationElement[] elements =
             pluginRegistry.getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-        for (int i = 0; i < elements.length; i++) {
-
+        for (IConfigurationElement element : elements) {
             try {
 
-                final String filter = elements[i].getAttribute(ATTR_FILTER);
+                final String filter = element.getAttribute(ATTR_FILTER);
 
                 final IFilterEditor editor =
-                    (IFilterEditor) elements[i].createExecutableExtension(ATTR_CLASS);
+                    (IFilterEditor) element.createExecutableExtension(ATTR_CLASS);
                 sFilterEditorClasses.put(filter, editor.getClass());
             }
             catch (CoreException ex) {

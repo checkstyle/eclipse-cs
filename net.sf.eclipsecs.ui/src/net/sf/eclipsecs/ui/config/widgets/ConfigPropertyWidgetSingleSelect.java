@@ -68,11 +68,11 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
             int initialIndex = 0;
             final String initValue = getInitValue();
             final Iterator<String> iter = valueList.iterator();
-            for (int i = 0; iter.hasNext(); i++) {
+            for (int index = 0; iter.hasNext(); index++) {
                 final String value = iter.next();
-                valueLabels[i] = value;
+                valueLabels[index] = value;
                 if (initValue != null && initValue.equals(value)) {
-                    initialIndex = i;
+                    initialIndex = index;
                 }
             }
             mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);

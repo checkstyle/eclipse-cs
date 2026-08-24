@@ -62,13 +62,12 @@ public class FixCheckstyleMarkersJob extends UIJob {
             final IMarker[] markers =
                 mFile.findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
 
-            for (int i = 0; i < markers.length; i++) {
-
-                final var resolutions = generator.getResolutions(markers[i]);
+            for (IMarker marker : markers) {
+                final var resolutions = generator.getResolutions(marker);
 
                 if (resolutions.length > 0) {
                     // only run the first fix for this marker
-                    resolutions[0].run(markers[i]);
+                    resolutions[0].run(marker);
                 }
 
             }

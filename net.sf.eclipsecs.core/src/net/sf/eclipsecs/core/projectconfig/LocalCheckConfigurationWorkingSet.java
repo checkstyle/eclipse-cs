@@ -153,11 +153,11 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
         final Set<IProject> projects = new HashSet<>();
 
         final CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
-        for (int i = 0; i < workingCopies.length; i++) {
+        for (CheckConfigurationWorkingCopy workingCopy : workingCopies) {
 
             // skip non dirty configurations
-            if (workingCopies[i].hasConfigurationChanged()
-                && mProjectConfig.isConfigInUse(workingCopies[i])) {
+            if (workingCopy.hasConfigurationChanged()
+                && mProjectConfig.isConfigInUse(workingCopy)) {
                 projects.add(mProjectConfig.getProject());
                 break;
             }

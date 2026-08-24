@@ -81,11 +81,11 @@ public class BuildProjectJob extends Job {
 
         try {
 
-            for (int i = 0; i < mProjects.length; i++) {
+            for (IProject project : mProjects) {
 
                 // build only if open and checkstyle active for the project
-                if (mProjects[i].isOpen() && mProjects[i].hasNature(CheckstyleNature.NATURE_ID)) {
-                    mProjects[i].build(mKind, monitor);
+                if (project.isOpen() && project.hasNature(CheckstyleNature.NATURE_ID)) {
+                    project.build(mKind, monitor);
                 }
             }
             status = Status.OK_STATUS;

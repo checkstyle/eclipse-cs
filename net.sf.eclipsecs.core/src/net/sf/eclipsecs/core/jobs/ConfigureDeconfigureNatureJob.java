@@ -124,9 +124,9 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 
         // remove given nature from the array
         final List<String> newNaturesList = new ArrayList<>();
-        for (int i = 0; i < natures.length; i++) {
-            if (!mNatureId.equals(natures[i])) {
-                newNaturesList.add(natures[i]);
+        for (String nature : natures) {
+            if (!mNatureId.equals(nature)) {
+                newNaturesList.add(nature);
             }
         }
 

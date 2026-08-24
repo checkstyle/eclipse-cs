@@ -82,16 +82,16 @@ public final class ConfigurationTypesUI {
         final IConfigurationElement[] elements =
             pluginRegistry.getConfigurationElementsFor(CONFIGTYPES_EXTENSION_POINT);
 
-        for (int i = 0; i < elements.length; i++) {
+        for (IConfigurationElement element : elements) {
 
             try {
 
-                final String internalName = elements[i].getAttribute(ATTR_NAME);
+                final String internalName = element.getAttribute(ATTR_NAME);
 
                 final ICheckConfigurationEditor editor =
-                    (ICheckConfigurationEditor) elements[i].createExecutableExtension(ATTR_CLASS);
+                    (ICheckConfigurationEditor) element.createExecutableExtension(ATTR_CLASS);
 
-                final String iconPath = elements[i].getAttribute(ATTR_ICON);
+                final String iconPath = element.getAttribute(ATTR_ICON);
 
                 CONFIGURATION_TYPE_EDITORS.put(internalName, editor.getClass());
                 CONFIGURATION_TYPE_ICONS.put(internalName, iconPath);

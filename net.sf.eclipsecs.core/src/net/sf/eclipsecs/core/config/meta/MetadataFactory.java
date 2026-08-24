@@ -160,11 +160,7 @@ public final class MetadataFactory {
         module.setMetaData(ruleMeta);
         sRuleMetadata.put(ruleMeta.identity().internalName(), ruleMeta);
 
-        final List<ConfigProperty> properties = module.getProperties();
-        final int size = properties != null ? properties.size() : 0;
-        for (int i = 0; i < size; i++) {
-
-            final ConfigProperty property = properties.get(i);
+        for (ConfigProperty property : module.getProperties()) {
             final ConfigPropertyMetadata meta = new ConfigPropertyMetadata(
                 ConfigPropertyType.STRING, property.getName(), null, null);
             property.setMetaData(meta);

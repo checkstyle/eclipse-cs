@@ -147,10 +147,10 @@ public final class ProjectConfigurationFactory {
 
         final IWorkspace workspace = ResourcesPlugin.getWorkspace();
         final IProject[] projects = workspace.getRoot().getProjects();
-        for (int i = 0; i < projects.length; i++) {
-            if (ProjectConfigurationFactory.getConfiguration(projects[i])
+        for (IProject project : projects) {
+            if (ProjectConfigurationFactory.getConfiguration(project)
                 .isConfigInUse(checkConfig)) {
-                result.add(projects[i]);
+                result.add(project);
             }
         }
 

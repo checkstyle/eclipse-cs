@@ -132,11 +132,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
             boolean recurse = true;
 
-            final int size = mFilterData != null ? mFilterData.size() : 0;
-            for (int i = 0; i < size; i++) {
-
-                final String element = mFilterData.get(i);
-
+            for (String element : mFilterData) {
                 if (PackageFilter.RECURSE_OFF_MARKER.equals(element)) {
                     recurse = false;
                     continue;
@@ -176,10 +172,9 @@ public class PackageFilterEditor implements IFilterEditor {
         final Object[] checked = this.mDialog.getResult();
 
         final List<String> result = new ArrayList<>();
-        for (int i = 0; i < checked.length; i++) {
-
-            if (checked[i] instanceof IResource) {
-                result.add(((IResource) checked[i]).getProjectRelativePath().toString());
+        for (Object item : checked) {
+            if (item instanceof IResource resource) {
+                result.add(resource.getProjectRelativePath().toString());
             }
         }
         return result;
@@ -251,9 +246,9 @@ public class PackageFilterEditor implements IFilterEditor {
             if (container.isAccessible()) {
                 try {
                     final IResource[] members = container.members();
-                    for (int i = 0; i < members.length; i++) {
-                        if (members[i].getType() != IResource.FILE) {
-                            children.add(members[i]);
+                    for (IResource member : members) {
+                        if (member.getType() != IResource.FILE) {
+                            children.add(member);
                         }
                     }
                 }

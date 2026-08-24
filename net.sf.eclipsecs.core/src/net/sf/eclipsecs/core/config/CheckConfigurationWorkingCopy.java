@@ -295,9 +295,9 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
             final IPath path = new Path(configFile.toString());
             final IFile[] files =
                 CheckstylePlugin.getWorkspace().getRoot().findFilesForLocation(path);
-            for (int i = 0; i < files.length; i++) {
+            for (IFile file : files) {
                 try {
-                    files[i].refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
+                    file.refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
                 }
                 catch (CoreException ex) {
                     // NOOP - just ignore

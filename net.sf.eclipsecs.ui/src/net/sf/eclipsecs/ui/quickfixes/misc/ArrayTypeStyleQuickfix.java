@@ -83,8 +83,8 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
                     int dimensions = 0;
 
                     final List<?> fragments = node.fragments();
-                    for (int i = 0, size = fragments.size(); i < size; i++) {
-                        final VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                    for (Object fragment : fragments) {
+                        final VariableDeclaration decl = (VariableDeclaration) fragment;
                         if (decl.getExtraDimensions() > dimensions) {
                             dimensions = decl.getExtraDimensions();
 
@@ -102,8 +102,8 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
                     final int dimensions = ((ArrayType) node.getType()).getDimensions();
 
                     final List<?> fragments = node.fragments();
-                    for (int i = 0, size = fragments.size(); i < size; i++) {
-                        final VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                    for (Object fragment : fragments) {
+                        final VariableDeclaration decl = (VariableDeclaration) fragment;
                         decl.setExtraDimensions(dimensions);
                     }
 
@@ -148,8 +148,8 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
                     int dimensions = 0;
 
                     final List<?> fragments = node.fragments();
-                    for (int i = 0, size = fragments.size(); i < size; i++) {
-                        final VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                    for (Object fragment : fragments) {
+                        final VariableDeclaration decl = (VariableDeclaration) fragment;
                         if (decl.getExtraDimensions() > dimensions) {
                             dimensions = decl.getExtraDimensions();
 
@@ -166,8 +166,8 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
                     final int dimensions = ((ArrayType) node.getType()).getDimensions();
 
                     final List<?> fragments = node.fragments();
-                    for (int i = 0, size = fragments.size(); i < size; i++) {
-                        final VariableDeclaration decl = (VariableDeclaration) fragments.get(i);
+                    for (Object fragment : fragments) {
+                        final VariableDeclaration decl = (VariableDeclaration) fragment;
                         decl.setExtraDimensions(dimensions);
                     }
 

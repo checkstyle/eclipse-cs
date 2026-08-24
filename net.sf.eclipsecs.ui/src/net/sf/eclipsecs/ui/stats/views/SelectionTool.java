@@ -54,8 +54,8 @@ public final class SelectionTool {
             for (Object object : structuredSelection) {
                 if (object instanceof IWorkingSet workingSet) {
                     final IAdaptable[] elements = workingSet.getElements();
-                    for (int i = 0; i < elements.length; i++) {
-                        considerAdaptable(elements[i]).ifPresent(resources::add);
+                    for (IAdaptable element : elements) {
+                        considerAdaptable(element).ifPresent(resources::add);
                     }
                 }
                 else if (object instanceof IAdaptable adaptable) {

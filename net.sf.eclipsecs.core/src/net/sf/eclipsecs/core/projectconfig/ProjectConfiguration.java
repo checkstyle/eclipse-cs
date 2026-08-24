@@ -90,16 +90,14 @@ public class ProjectConfiguration implements IProjectConfiguration {
 
         if (filters != null) {
             // merge with filters configured for the project
-            for (int i = 0, size = this.filters.size(); i < size; i++) {
+            for (int index = 0, size = this.filters.size(); index < size; index++) {
 
-                final IFilter standardFilter = this.filters.get(i);
+                final IFilter standardFilter = this.filters.get(index);
 
-                for (int j = 0, size2 = filters.size(); j < size2; j++) {
-                    final IFilter configuredFilter = filters.get(j);
-
+                for (IFilter configuredFilter : filters) {
                     if (standardFilter.getInternalName()
                         .equals(configuredFilter.getInternalName())) {
-                        this.filters.set(i, configuredFilter);
+                        this.filters.set(index, configuredFilter);
                     }
                 }
             }

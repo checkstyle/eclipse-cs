@@ -236,8 +236,8 @@ public final class MetadataXmlReader {
                                 "rawtypes", "unchecked"
                             })
                             final EnumSet<?> values = EnumSet.allOf((Class<Enum>) providerClass);
-                            for (Enum<?> e : values) {
-                                property.getPropertyEnumeration().add(e.name().toLowerCase());
+                            for (Enum<?> value : values) {
+                                property.getPropertyEnumeration().add(value.name().toLowerCase());
                             }
                         }
                     }
