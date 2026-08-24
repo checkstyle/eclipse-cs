@@ -47,8 +47,12 @@ public final class HtmlUtil {
         final StringBuilder buf = new StringBuilder();
         buf.append("<html><body style=\"margin: 3px; font-size: 11px; ");
         buf.append("font-family: verdana, 'trebuchet MS', helvetica, sans-serif;\">");
-        buf.append(description != null ? convertInlineCodeTags(description)
-            : Messages.CheckConfigurationConfigureDialog_txtNoDescription);
+        if (description != null) {
+            buf.append(convertInlineCodeTags(description));
+        }
+        else {
+            buf.append(Messages.CheckConfigurationConfigureDialog_txtNoDescription);
+        }
         buf.append("</body></html>");
         return buf.toString();
     }

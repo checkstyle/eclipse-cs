@@ -459,8 +459,14 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
         for (FileMatchPattern pattern : fileSet.getFileMatchPatterns()) {
 
             final Element patternEl = fileSetEl.addElement(XMLTags.FILE_MATCH_PATTERN_TAG);
-            patternEl.addAttribute(XMLTags.MATCH_PATTERN_TAG,
-                pattern.getMatchPattern() != null ? pattern.getMatchPattern() : "");
+            final String matchPattern;
+            if (pattern.getMatchPattern() != null) {
+                matchPattern = pattern.getMatchPattern();
+            }
+            else {
+                matchPattern = "";
+            }
+            patternEl.addAttribute(XMLTags.MATCH_PATTERN_TAG, matchPattern);
             patternEl.addAttribute(XMLTags.INCLUDE_PATTERN_TAG,
                 Boolean.toString(pattern.isIncludePattern()));
         }

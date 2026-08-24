@@ -34,6 +34,13 @@ public class ClasspathVariableResolver implements PropertyResolver {
     @Override
     public String resolve(String name) {
         final IPath path = JavaCore.getClasspathVariable(name);
-        return path != null ? path.toString() : null;
+        final String resolvedPath;
+        if (path != null) {
+            resolvedPath = path.toString();
+        }
+        else {
+            resolvedPath = null;
+        }
+        return resolvedPath;
     }
 }

@@ -122,16 +122,19 @@ public final class ConfiguredModulesTable extends Composite {
 
         final TableViewerColumn col2 = new TableViewerColumn(tableViewer, SWT.NONE);
         col2.getColumn().setText(Messages.CheckConfigurationConfigureDialog_colModule);
-        col2.setLabelProvider(ColumnLabelProvider.createTextProvider(
-            element -> ((Module) element).getName() != null
-                ? ((Module) element).getName() : ""));
+        col2.setLabelProvider(ColumnLabelProvider
+            .createTextProvider(element -> nullSafeText(((Module) element).getName())));
         layout.setColumnData(col2.getColumn(), new ColumnWeightData(2));
 
         final TableViewerColumn col3 = new TableViewerColumn(tableViewer, SWT.NONE);
         col3.getColumn().setText(Messages.CheckConfigurationConfigureDialog_colSeverity);
         col3.setLabelProvider(ColumnLabelProvider.createTextProvider(element -> {
-            final Severity severity = ((Module) element).getSeverity();
-            return severity != null ? severity.getXmlValue() : "";
+            final Module module = (Module) element;
+            String text = "";
+            if (module.getSeverity() != null) {
+                text = module.getSeverity().getXmlValue();
+            }
+            return text;
         }));
         col3.getColumn().pack();
         layout.setColumnData(col3.getColumn(),
@@ -139,9 +142,8 @@ public final class ConfiguredModulesTable extends Composite {
 
         final TableViewerColumn col4 = new TableViewerColumn(tableViewer, SWT.NONE);
         col4.getColumn().setText(Messages.CheckConfigurationConfigureDialog_colComment);
-        col4.setLabelProvider(ColumnLabelProvider.createTextProvider(
-            element -> ((Module) element).getComment() != null
-                ? ((Module) element).getComment() : ""));
+        col4.setLabelProvider(ColumnLabelProvider
+            .createTextProvider(element -> nullSafeText(((Module) element).getComment())));
         layout.setColumnData(col4.getColumn(), new ColumnWeightData(1));
 
         table.setSortColumn(col2.getColumn());
@@ -170,4 +172,14 @@ public final class ConfiguredModulesTable extends Composite {
         return settings;
     }
 
+    private static String nullSafeText(String value) {
+        final String text;
+        if (value != null) {
+            text = value;
+        }
+        else {
+            text = "";
+        }
+        return text;
+    }
 }

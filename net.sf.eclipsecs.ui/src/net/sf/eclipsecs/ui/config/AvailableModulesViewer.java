@@ -271,15 +271,21 @@ public final class AvailableModulesViewer extends Composite {
             Image image = null;
 
             if (element instanceof RuleGroupMetadata) {
-                image = isGroupUsed((RuleGroupMetadata) element)
-                    ? CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON.getImage()
-                    : CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage();
+                if (isGroupUsed((RuleGroupMetadata) element)) {
+                    image = CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON.getImage();
+                }
+                else {
+                    image = CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage();
+                }
             }
             else if (element instanceof RuleMetadata) {
 
-                image = isMetadataUsed((RuleMetadata) element)
-                    ? CheckstyleUIPluginImages.MODULE_TICKED_ICON.getImage()
-                    : CheckstyleUIPluginImages.MODULE_ICON.getImage();
+                if (isMetadataUsed((RuleMetadata) element)) {
+                    image = CheckstyleUIPluginImages.MODULE_TICKED_ICON.getImage();
+                }
+                else {
+                    image = CheckstyleUIPluginImages.MODULE_ICON.getImage();
+                }
             }
             return image;
         }

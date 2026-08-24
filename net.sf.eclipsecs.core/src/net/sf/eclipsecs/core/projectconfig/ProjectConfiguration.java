@@ -79,10 +79,18 @@ public class ProjectConfiguration implements IProjectConfiguration {
         List<FileSet> fileSets, List<IFilter> filters, boolean useSimpleConfig,
         boolean synchFormatter) {
         this.project = project;
-        localCheckConfigs = localConfigs != null ? Collections.unmodifiableList(localConfigs)
-            : Collections.unmodifiableList(new ArrayList<ICheckConfiguration>());
-        this.fileSets = fileSets != null ? Collections.unmodifiableList(fileSets)
-            : Collections.unmodifiableList(new ArrayList<FileSet>());
+        if (localConfigs != null) {
+            localCheckConfigs = Collections.unmodifiableList(localConfigs);
+        }
+        else {
+            localCheckConfigs = Collections.unmodifiableList(new ArrayList<ICheckConfiguration>());
+        }
+        if (fileSets != null) {
+            this.fileSets = Collections.unmodifiableList(fileSets);
+        }
+        else {
+            this.fileSets = Collections.unmodifiableList(new ArrayList<FileSet>());
+        }
 
         // build list of filters
         final List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());

@@ -181,11 +181,25 @@ public final class TableViewerEnhancer {
     }
 
     private static int getSortDirection(Table table) {
-        return table.getSortDirection() == SWT.DOWN ? DIRECTION_REVERSE : DIRECTION_FORWARD;
+        final int direction;
+        if (table.getSortDirection() == SWT.DOWN) {
+            direction = DIRECTION_REVERSE;
+        }
+        else {
+            direction = DIRECTION_FORWARD;
+        }
+        return direction;
     }
 
     private static void setSortDirection(Table table, int sortDirection) {
-        table.setSortDirection(sortDirection == DIRECTION_FORWARD ? SWT.UP : SWT.DOWN);
+        final int direction;
+        if (sortDirection == DIRECTION_FORWARD) {
+            direction = SWT.UP;
+        }
+        else {
+            direction = SWT.DOWN;
+        }
+        table.setSortDirection(direction);
     }
 
     private static final class TableViewerTextLabelComparator extends ViewerComparator {
@@ -198,13 +212,17 @@ public final class TableViewerEnhancer {
             @SuppressWarnings("unchecked")
             final Comparator<Object> columnComparator = (Comparator<Object>)
                 table.getSortColumn().getData(WIDGET_DATA_COLUMN_COMPARATOR);
-            int result = columnComparator != null
-                ? columnComparator.compare(e1, e2)
-                : Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale()).compare(
+            int result;
+            if (columnComparator != null) {
+                result = columnComparator.compare(e1, e2);
+            }
+            else {
+                result = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale()).compare(
                     ((ColumnLabelProvider) ((TableViewer) viewer)
                         .getLabelProvider(colIndex)).getText(e1),
                     ((ColumnLabelProvider) ((TableViewer) viewer)
                         .getLabelProvider(colIndex)).getText(e2));
+            }
 
             if (table.getSortDirection() == SWT.DOWN) {
                 result = -result;

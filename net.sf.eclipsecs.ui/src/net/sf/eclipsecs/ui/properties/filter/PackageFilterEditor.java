@@ -262,7 +262,11 @@ public class PackageFilterEditor implements IFilterEditor {
 
         @Override
         public Object getParent(Object element) {
-            return element instanceof IResource ? ((IResource) element).getParent() : null;
+            Object parent = null;
+            if (element instanceof IResource) {
+                parent = ((IResource) element).getParent();
+            }
+            return parent;
         }
 
         @Override

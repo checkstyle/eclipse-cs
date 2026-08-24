@@ -303,8 +303,13 @@ public final class CheckConfigurationFactory {
             final String location = element.getAttribute(XMLTags.LOCATION_TAG);
 
             final String defaultWeightAsString = element.getAttribute(XMLTags.DEFAULT_WEIGHT);
-            final int defaultWeight =
-                defaultWeightAsString != null ? Integer.parseInt(defaultWeightAsString) : 0;
+            final int defaultWeight;
+            if (defaultWeightAsString != null) {
+                defaultWeight = Integer.parseInt(defaultWeightAsString);
+            }
+            else {
+                defaultWeight = 0;
+            }
 
             final IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
 

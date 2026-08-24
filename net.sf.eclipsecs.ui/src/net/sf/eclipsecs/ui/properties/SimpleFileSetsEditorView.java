@@ -82,8 +82,7 @@ public final class SimpleFileSetsEditorView extends Composite {
             final ICheckConfiguration config =
                 (ICheckConfiguration) event.getStructuredSelection().getFirstElement();
             mDefaultFileSet.setCheckConfig(config);
-            mTxtConfigDescription
-                .setText(config.getDescription() != null ? config.getDescription() : "");
+            mTxtConfigDescription.setText(getDescription(config));
             propertyPageContext.updateButtons();
         });
 
@@ -92,6 +91,17 @@ public final class SimpleFileSetsEditorView extends Composite {
         if (mDefaultFileSet.getCheckConfig() != null) {
             mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
         }
+    }
+
+    private static String getDescription(ICheckConfiguration config) {
+        final String description;
+        if (config.getDescription() != null) {
+            description = config.getDescription();
+        }
+        else {
+            description = "";
+        }
+        return description;
     }
 
     public void refresh() {

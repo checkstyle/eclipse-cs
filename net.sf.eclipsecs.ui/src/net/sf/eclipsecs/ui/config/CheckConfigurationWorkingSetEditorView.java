@@ -70,8 +70,14 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
         GridDataFactory.fillDefaults().span(1, 2).applyTo(buttonBar);
 
         final Composite descAndUsageArea = new Composite(this, SWT.NULL);
-        GridLayoutFactory.fillDefaults().numColumns(model.global() ? 2 : 1)
-            .applyTo(descAndUsageArea);
+        final int numColumns;
+        if (model.global()) {
+            numColumns = 2;
+        }
+        else {
+            numColumns = 1;
+        }
+        GridLayoutFactory.fillDefaults().numColumns(numColumns).applyTo(descAndUsageArea);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(descAndUsageArea);
 
         final Composite descArea = new Composite(descAndUsageArea, SWT.NULL);
@@ -130,8 +136,14 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
     private void handleSelectionChanged(CheckConfigurationWorkingCopy config) {
         final boolean configSelected = config != null;
         if (configSelected) {
-            mConfigurationDescription
-                .setText(config.getDescription() != null ? config.getDescription() : "");
+            final String description;
+            if (config.getDescription() != null) {
+                description = config.getDescription();
+            }
+            else {
+                description = "";
+            }
+            mConfigurationDescription.setText(description);
 
             if (model.global()) {
                 try {

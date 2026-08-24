@@ -111,9 +111,11 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
         public boolean visit(FieldDeclaration node) {
             // recalculate start position because optional javadoc is mixed
             // into the original start position
-            final int pos = node.getStartPosition() + (node.getJavadoc() != null
-                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
-                : 0);
+            int javadocLength = 0;
+            if (node.getJavadoc() != null) {
+                javadocLength = node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH;
+            }
+            final int pos = node.getStartPosition() + javadocLength;
             if (containsPosition(lineInfo, pos)) {
                 List<ModifierKeyword> redundantKeyWords = Collections.emptyList();
 
@@ -145,9 +147,11 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
 
             // recalculate start position because optional javadoc is mixed
             // into the original start position
-            final int pos = node.getStartPosition() + (node.getJavadoc() != null
-                ? node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH
-                : 0);
+            int javadocLength = 0;
+            if (node.getJavadoc() != null) {
+                javadocLength = node.getJavadoc().getLength() + JAVADOC_COMMENT_LENGTH;
+            }
+            final int pos = node.getStartPosition() + javadocLength;
             if (containsPosition(lineInfo, pos)) {
 
                 if (node.getParent() instanceof AnnotationTypeDeclaration) {

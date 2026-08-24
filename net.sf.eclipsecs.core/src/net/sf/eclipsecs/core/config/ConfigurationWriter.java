@@ -98,11 +98,15 @@ public final class ConfigurationWriter {
             doc.addComment(comment);
 
             // write out name and description as comment
+            final String descriptionText;
+            if (Strings.emptyToNull(checkConfig.getDescription()) != null) {
+                descriptionText = lineSeperator + checkConfig.getDescription() + lineSeperator;
+            }
+            else {
+                descriptionText = "none" + lineSeperator;
+            }
             final String description = lineSeperator + "    Checkstyle-Configuration: "
-                + checkConfig.getName() + lineSeperator + "    Description: "
-                + (Strings.emptyToNull(checkConfig.getDescription()) != null
-                    ? lineSeperator + checkConfig.getDescription() + lineSeperator
-                    : "none" + lineSeperator);
+                + checkConfig.getName() + lineSeperator + "    Description: " + descriptionText;
             doc.addComment(description);
 
             // find the root module (Checker)
@@ -233,9 +237,15 @@ public final class ConfigurationWriter {
     private static List<Module> getChildModules(Module module, List<Module> remainingModules) {
         final List<Module> childModules = new ArrayList<>();
 
+        final String parentInternalName;
+        if (module != null) {
+            parentInternalName = module.getMetaData().identity().internalName();
+        }
+        else {
+            parentInternalName = null;
+        }
+
         for (Module tmp : remainingModules) {
-            final String parentInternalName =
-                module != null ? module.getMetaData().identity().internalName() : null;
             final String childParent = tmp.getMetaData().identity().parent();
 
             // only the checker module has no parent

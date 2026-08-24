@@ -92,9 +92,13 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
     @Override
     public void restorePropertyDefault() {
         final ConfigPropertyMetadata metadata = getConfigProperty().getMetaData();
-        final String defaultValue =
-            metadata.getOverrideDefault() != null ? metadata.getOverrideDefault()
-                : metadata.getDefaultValue();
+        final String defaultValue;
+        if (metadata.getOverrideDefault() != null) {
+            defaultValue = metadata.getOverrideDefault();
+        }
+        else {
+            defaultValue = metadata.getDefaultValue();
+        }
         if (defaultValue == null) {
             mComboItem.select(0);
         }

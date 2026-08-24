@@ -88,9 +88,18 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
         final String locale = Platform.getNL();
         final String[] parts = locale.split("_");
 
-        final String language = parts.length > 0 ? parts[0] : "";
-        final String country = parts.length > 1 ? parts[1] : "";
-        final String variant = parts.length > 2 ? parts[2] : "";
+        String language = "";
+        if (parts.length > 0) {
+            language = parts[0];
+        }
+        String country = "";
+        if (parts.length > 1) {
+            country = parts[1];
+        }
+        String variant = "";
+        if (parts.length > 2) {
+            variant = parts[2];
+        }
 
         return new Locale(language, country, variant);
     }
@@ -109,8 +118,12 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      */
     public static void errorDialog(Shell shell, String message, Throwable throwable, boolean log) {
 
+        String statusMessage = message;
+        if (statusMessage == null) {
+            statusMessage = "";
+        }
         final Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
-            message != null ? message : "", throwable);
+            statusMessage, throwable);
 
         final String msg = NLS.bind(Messages.errorDialogMainMessage, message);
         ErrorDialog.openError(shell, Messages.CheckstyleLog_titleInternalError, msg, status);

@@ -138,7 +138,14 @@ public class Module {
      * @return the name of the module
      */
     public String getName() {
-        return mMetaData != null ? mMetaData.identity().ruleName() : mName;
+        final String name;
+        if (mMetaData != null) {
+            name = mMetaData.identity().ruleName();
+        }
+        else {
+            name = mName;
+        }
+        return name;
     }
 
     /**
@@ -242,7 +249,12 @@ public class Module {
     public Severity getSeverity() {
         Severity severity = null;
         if (mMetaData != null && mMetaData.hasSeverity()) {
-            severity = mSeverityLevel != null ? mSeverityLevel : getMetaData().defaultSeverity();
+            if (mSeverityLevel != null) {
+                severity = mSeverityLevel;
+            }
+            else {
+                severity = getMetaData().defaultSeverity();
+            }
         }
         return severity;
     }

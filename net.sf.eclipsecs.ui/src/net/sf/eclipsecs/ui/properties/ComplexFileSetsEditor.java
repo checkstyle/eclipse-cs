@@ -168,9 +168,17 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
                 columnText = switch (columnIndex) {
                     case 0 -> new String();
                     case 1 -> fileSet.getName();
-                    case 2 -> fileSet.getCheckConfig() != null
-                        ? CheckConfigurationLabelProvider.INSTANCE.getText(fileSet.getCheckConfig())
-                        : "";
+                    case 2 -> {
+                        final String text;
+                        if (fileSet.getCheckConfig() != null) {
+                            text = CheckConfigurationLabelProvider.INSTANCE
+                                .getText(fileSet.getCheckConfig());
+                        }
+                        else {
+                            text = "";
+                        }
+                        yield text;
+                    }
                     default -> element.toString();
                 };
             }
