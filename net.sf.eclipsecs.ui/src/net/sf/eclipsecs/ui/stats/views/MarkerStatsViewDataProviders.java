@@ -30,6 +30,14 @@ import org.eclipse.jface.viewers.Viewer;
 import net.sf.eclipsecs.ui.stats.data.MarkerStat;
 import net.sf.eclipsecs.ui.stats.data.Stats;
 
+/**
+ * This record holds the data providers for the marker statistics view.
+ *
+ * @param master
+ *            the providers for the master table showing the marker categories
+ * @param detail
+ *            the providers for the detail table showing the markers of a category
+ */
 public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders master,
     MarkerStatsViewDetailDataProviders detail) {
 
@@ -43,6 +51,14 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
             new MarkerStatsViewDetailDataProviders(dialogSettings));
     }
 
+    /**
+     * This record contains the data providers for the master table of the marker statistics view.
+     *
+     * @param contentProvider
+     *            the content provider that supplies the marker category statistics
+     * @param dialogSettings
+     *            the dialog settings used to persist the master table layout
+     */
     public record MarkerStatsViewMasterDataProviders(MasterContentProvider contentProvider,
         IDialogSettings dialogSettings) {
 
@@ -59,6 +75,14 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
         }
     }
 
+    /**
+     * This record contains the data providers for the detail table of the marker statistics view.
+     *
+     * @param contentProvider
+     *            the content provider that supplies the markers of the selected category
+     * @param dialogSettings
+     *            the dialog settings used to persist the detail table layout
+     */
     public record MarkerStatsViewDetailDataProviders(DetailContentProvider contentProvider,
         IDialogSettings dialogSettings) {
 

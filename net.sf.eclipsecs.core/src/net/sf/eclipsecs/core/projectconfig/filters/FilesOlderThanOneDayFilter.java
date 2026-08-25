@@ -22,6 +22,10 @@ package net.sf.eclipsecs.core.projectconfig.filters;
 
 import org.eclipse.core.resources.IFile;
 
+/**
+ * Filter that accepts files modified within the last 24 hours.
+ *
+ */
 public class FilesOlderThanOneDayFilter extends AbstractFilter {
 
     /** Milliseconds in 24 hours. */

@@ -61,6 +61,10 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
         return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
     }
 
+    /**
+     * AST visitor that removes the flagged nested block while keeping its statements.
+     *
+     */
     private final class AvoidNestedBlocksQuickfixAstVisitor extends ASTVisitor {
 
         /** The line info region. */

@@ -62,6 +62,10 @@ public class FinalLocalVariableQuickfix extends AbstractASTResolution {
         return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
     }
 
+    /**
+     * AST visitor that adds the final modifier to the flagged local variable or parameter.
+     *
+     */
     private final class FinalLocalVariableQuickfixAstVisitor extends ASTVisitor {
 
         /** The actual offset where the problem marker starts. */

@@ -747,6 +747,9 @@
             <property name="allowUnknownTags" value="true"/>
         </module>
         <module name="JavadocVariable"/>
+        <module name="MissingJavadocType">
+            <property name="scope" value="private"/>
+        </module>
         <module name="NonEmptyAtclauseDescription"/>
         <module name="SingleLineJavadoc"/>
         <module name="WriteTag"/>

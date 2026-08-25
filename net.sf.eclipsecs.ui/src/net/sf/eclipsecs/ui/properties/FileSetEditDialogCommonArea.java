@@ -41,6 +41,11 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
 import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
 
+/**
+ * Composite containing the common area of the file set edit dialog, holding the file set name text
+ * field and the check configuration selection.
+ *
+ */
 public final class FileSetEditDialogCommonArea extends Composite {
 
     /** The text field for the file set name. */

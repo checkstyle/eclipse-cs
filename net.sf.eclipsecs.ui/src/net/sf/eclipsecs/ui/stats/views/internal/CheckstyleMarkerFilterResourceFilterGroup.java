@@ -34,6 +34,10 @@ import org.eclipse.swt.widgets.Label;
 
 import net.sf.eclipsecs.ui.stats.Messages;
 
+/**
+ * Composite of the marker filter dialog offering radio buttons to select the resources the filter
+ * applies to, together with checkboxes to restrict filtering by marker severities.
+ */
 public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
 
     /** Number of columns of the radio button group. */

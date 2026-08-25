@@ -254,6 +254,16 @@ public class MarkerStatsView extends AbstractStatsView {
         }
     }
 
+    /**
+     * This record contains the actions available in the marker statistics view.
+     *
+     * @param mDrillDownAction
+     *            the action drilling down from a category to its markers
+     * @param mShowErrorAction
+     *            the action opening an editor on the selected marker
+     * @param mDrillBackAction
+     *            the action drilling back up to the category overview
+     */
     public record MarkerStatsViewActions(IAction mDrillDownAction, IAction mShowErrorAction,
         IAction mDrillBackAction) {
 

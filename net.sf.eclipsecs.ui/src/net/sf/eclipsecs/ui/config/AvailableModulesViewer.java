@@ -53,6 +53,11 @@ import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite providing a filterable tree viewer with all available Checkstyle modules and controls
+ * to add selected modules to a configuration.
+ *
+ */
 public final class AvailableModulesViewer extends Composite {
 
     /** The filtered tree viewer for available modules. */
@@ -319,6 +324,11 @@ public final class AvailableModulesViewer extends Composite {
         }
     }
 
+    /**
+     * Viewer filter that hides all hidden rule groups and hidden rules from the available modules
+     * tree.
+     *
+     */
     private static final class AvailableModulesViewerFilter extends ViewerFilter {
 
         /** Singleton instance. */

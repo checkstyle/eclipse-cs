@@ -42,6 +42,10 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.core.util.XMLUtil;
 
+/**
+ * Reader that parses checkstyle-metadata XML files into rule group metadata.
+ *
+ */
 public final class MetadataXmlReader {
 
     /** Map containing the public - internal DTD mapping. */

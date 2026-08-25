@@ -33,6 +33,11 @@ import com.puppycrawl.tools.checkstyle.meta.ModulePropertyDetails;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 
+/**
+ * Adapter to translate the module metadata provided by Checkstyle into the rule metadata used by
+ * the plugin.
+ *
+ */
 public class CheckstyleMetadataAdapter {
 
     /**

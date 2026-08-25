@@ -35,6 +35,10 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkingSet;
 import org.eclipse.ui.ide.ResourceUtil;
 
+/**
+ * Utility class that resolves a workbench selection into the list of resources it affects, taking
+ * editors, structured selections and working sets into account.
+ */
 public final class SelectionTool {
 
     private SelectionTool() {

@@ -35,6 +35,11 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Utility that opens a workspace selection dialog to pick a Checkstyle configuration file from the
+ * workspace and returns its path.
+ *
+ */
 public final class WorkspaceFileSelector {
 
     private WorkspaceFileSelector() {

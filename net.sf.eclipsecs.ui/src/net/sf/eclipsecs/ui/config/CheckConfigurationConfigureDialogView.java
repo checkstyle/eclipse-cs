@@ -43,6 +43,11 @@ import net.sf.eclipsecs.ui.config.ConfiguredModules.ConfiguredModulesCallbacks;
 import net.sf.eclipsecs.ui.util.HtmlUtil;
 import net.sf.eclipsecs.ui.util.InternalBrowser;
 
+/**
+ * Composite building the layout of the module configuration dialog, combining the available modules
+ * tree, the configured modules panel and a browser showing module descriptions.
+ *
+ */
 public final class CheckConfigurationConfigureDialogView extends Composite {
 
     /** Max height of the available and configured module panels. */
@@ -127,6 +132,18 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         setBrowserDescription(HtmlUtil.getDescriptionHtml(description));
     }
 
+    /**
+     * Record containing the callbacks used by the module configuration dialog view.
+     *
+     * @param newModule
+     *          action to add the modules selected in the available modules tree
+     * @param openModule
+     *          action to edit the module selected in the configured modules table
+     * @param removeModule
+     *          action to delete the modules selected in the configured modules table
+     * @param checkStateChanged
+     *          callback invoked when the checked state of a module changes
+     */
     public record CheckConfigurationConfigureDialogViewCallbacks(
         Consumer<List<RuleMetadata>> newModule, Consumer<Module> openModule,
         Consumer<List<Module>> removeModule, BiConsumer<Module, Boolean> checkStateChanged) {

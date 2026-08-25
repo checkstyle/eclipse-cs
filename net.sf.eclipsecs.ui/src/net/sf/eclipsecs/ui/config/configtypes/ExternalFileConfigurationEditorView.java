@@ -35,6 +35,11 @@ import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite building the editor form for external file check configurations, containing the
+ * configuration name, file location with browse button, description and protect-config option.
+ *
+ */
 public final class ExternalFileConfigurationEditorView extends Composite {
 
     /** The config name text field. */

@@ -40,6 +40,11 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
 import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
 
+/**
+ * Composite building the upper part of the check configuration properties dialog, offering the
+ * configuration type selector and the placeholder hosting the matching editor.
+ *
+ */
 public final class CheckConfigurationPropertiesDialogView extends Composite {
 
     /** The combo viewer for selecting the configuration type. */

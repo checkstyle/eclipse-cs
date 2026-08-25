@@ -22,6 +22,10 @@ package net.sf.eclipsecs.ui.properties;
 
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * Factory creating the file sets editor matching the simple or advanced configuration mode.
+ *
+ */
 public final class FileSetsEditorFactory {
 
     private FileSetsEditorFactory() {

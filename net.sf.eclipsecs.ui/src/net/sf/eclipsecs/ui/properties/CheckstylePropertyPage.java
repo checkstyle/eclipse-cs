@@ -184,6 +184,10 @@ public class CheckstylePropertyPage extends PropertyPage {
             mainTab.isCheckstyleEnabled(), mCheckstyleInitiallyActivated);
     }
 
+    /**
+     * Composite showing the local check configurations of the project inside a working set editor.
+     *
+     */
     private static final class LocalConfig extends Composite {
 
         private LocalConfig(Composite parent, int style, ICheckConfigurationWorkingSet workingSet) {

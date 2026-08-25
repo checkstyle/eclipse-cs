@@ -51,6 +51,11 @@ import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternCo
 import net.sf.eclipsecs.ui.properties.FileSetEditDialogMatchedFilesPreview.FileSetEditDialogMatchedFilesPreviewFilter;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
+/**
+ * Dialog to edit a file set of the project configuration, including its file match patterns and a
+ * preview of the matched files.
+ *
+ */
 public final class FileSetEditDialog extends TitleAreaDialog {
 
     /** The default file match pattern. */

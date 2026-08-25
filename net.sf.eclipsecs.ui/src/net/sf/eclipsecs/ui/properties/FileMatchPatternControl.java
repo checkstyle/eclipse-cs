@@ -34,6 +34,11 @@ import org.eclipse.swt.widgets.Group;
 import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite of the file set edit dialog containing the group with the table of file match patterns
+ * and the buttons to edit them.
+ *
+ */
 public final class FileMatchPatternControl extends Composite {
 
     /** The file match pattern table. */
@@ -102,6 +107,22 @@ public final class FileMatchPatternControl extends Composite {
         return button;
     }
 
+    /**
+     * This record contains the callbacks the file match pattern control invokes on user actions.
+     *
+     * @param editFileMatchPattern
+     *          edits the selected file match pattern
+     * @param updateMatchView
+     *          refreshes the matched files preview
+     * @param addFileMatchPattern
+     *          adds a new file match pattern
+     * @param removeFileMatchPattern
+     *          removes the selected file match pattern
+     * @param upFileMatchPattern
+     *          moves the selected file match pattern up
+     * @param downFileMatchPattern
+     *          moves the selected file match pattern down
+     */
     public record FileMatchPatternControlCallbacks(Consumer<FileMatchPattern> editFileMatchPattern,
         Runnable updateMatchView, Runnable addFileMatchPattern,
         Consumer<FileMatchPattern> removeFileMatchPattern,

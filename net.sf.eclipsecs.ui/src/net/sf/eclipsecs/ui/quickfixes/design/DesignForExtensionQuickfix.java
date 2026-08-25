@@ -65,6 +65,10 @@ public class DesignForExtensionQuickfix extends AbstractASTResolution {
         return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
     }
 
+    /**
+     * AST visitor that adds the final modifier to the flagged method declaration.
+     *
+     */
     private final class DesignForExtensionQuickfixAstVisitor extends ASTVisitor {
 
         /** The line info region. */

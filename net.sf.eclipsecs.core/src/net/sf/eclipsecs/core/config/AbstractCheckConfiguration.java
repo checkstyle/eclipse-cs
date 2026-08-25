@@ -32,6 +32,11 @@ import org.eclipse.core.runtime.URIUtil;
 
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
+/**
+ * Abstract base implementation of {@link ICheckConfiguration} providing common export and copy
+ * behavior.
+ *
+ */
 public abstract class AbstractCheckConfiguration implements ICheckConfiguration {
 
     @Override
