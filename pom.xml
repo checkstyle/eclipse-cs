@@ -89,13 +89,10 @@
     <build>
         <defaultGoal>verify</defaultGoal>
         <finalName>${project.artifactId}_${unqualifiedVersion}.${buildQualifier}</finalName>
-        <testSourceDirectory>test</testSourceDirectory>
+        <testSourceDirectory>src/test/java</testSourceDirectory>
         <testResources>
             <testResource>
-                <directory>test</directory>
-                <excludes>
-                    <exclude>**/*.java</exclude>
-                </excludes>
+                <directory>src/test/resources</directory>
             </testResource>
         </testResources>
         <plugins>
