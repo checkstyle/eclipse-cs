@@ -44,13 +44,13 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
     public static final String PLUGIN_ID = "net.sf.eclipsecs.ui";
 
     /** The shared instance. */
-    private static CheckstyleUIPlugin sPlugin;
+    private static CheckstyleUIPlugin plugin;
 
     /**
      * The constructor.
      */
     public CheckstyleUIPlugin() {
-        sPlugin = this;
+        plugin = this;
     }
 
     @Override
@@ -66,7 +66,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      * @return The shared plug-in instance.
      */
     public static CheckstyleUIPlugin getDefault() {
-        return sPlugin;
+        return plugin;
     }
 
     /**

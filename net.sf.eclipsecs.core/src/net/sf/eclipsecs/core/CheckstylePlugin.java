@@ -50,7 +50,7 @@ public class CheckstylePlugin extends Plugin {
     private static Locale platformLocale;
 
     /** The shared instance. */
-    private static CheckstylePlugin sPlugin;
+    private static CheckstylePlugin plugin;
 
     /** The addon extension class loader. */
     private ClassLoader mAddonExtensionClassLoader;
@@ -59,7 +59,7 @@ public class CheckstylePlugin extends Plugin {
      * The constructor.
      */
     public CheckstylePlugin() {
-        sPlugin = this;
+        plugin = this;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class CheckstylePlugin extends Plugin {
      * @return The shared plug-in instance.
      */
     public static CheckstylePlugin getDefault() {
-        return sPlugin;
+        return plugin;
     }
 
     /**

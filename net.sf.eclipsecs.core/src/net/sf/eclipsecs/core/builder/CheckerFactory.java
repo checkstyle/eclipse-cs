@@ -58,19 +58,17 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public final class CheckerFactory {
 
     /** Map containing the configured checkers. */
-    private static Cache<String, Checker> sCheckerMap;
+    private static final Cache<String, Checker> CHECKERS;
 
     /** Map containing the modification times of configs. */
-    private static Map<String, Long> sModifiedMap;
+    private static final Map<String, Long> MODIFIED_TIME;
 
     /*
      * Initialize the cache.
      */
     static {
-
-        sCheckerMap = CacheBuilder.newBuilder().softValues().build();
-
-        sModifiedMap = new ConcurrentHashMap<>();
+        CHECKERS = CacheBuilder.newBuilder().softValues().build();
+        MODIFIED_TIME = new ConcurrentHashMap<>();
     }
 
     /**
@@ -127,8 +125,8 @@ public final class CheckerFactory {
 
             // store checker in cache
             final Long modified = Long.valueOf(configFileData.getModificationStamp());
-            sCheckerMap.put(cacheKey, checker);
-            sModifiedMap.put(cacheKey, modified);
+            CHECKERS.put(cacheKey, checker);
+            MODIFIED_TIME.put(cacheKey, modified);
         }
         else {
             setLocaleIfChanged(checker);
@@ -141,8 +139,8 @@ public final class CheckerFactory {
      * Cleans up the checker cache.
      */
     public static void cleanup() {
-        sCheckerMap.invalidateAll();
-        sModifiedMap.clear();
+        CHECKERS.invalidateAll();
+        MODIFIED_TIME.clear();
     }
 
     /**
@@ -184,20 +182,20 @@ public final class CheckerFactory {
     private static Checker tryCheckerCache(String cacheKey, long modificationStamp) {
 
         // try the cache
-        Checker checker = sCheckerMap.getIfPresent(cacheKey);
+        Checker checker = CHECKERS.getIfPresent(cacheKey);
 
         // if cache hit
         if (checker != null) {
 
             // compare modification times of the configs
-            final Long oldTime = sModifiedMap.get(cacheKey);
+            final Long oldTime = MODIFIED_TIME.get(cacheKey);
             final Long newTime = Long.valueOf(modificationStamp);
 
             // no match - remove checker from cache
             if (oldTime == null || oldTime.compareTo(newTime) != 0) {
                 checker = null;
-                sCheckerMap.invalidate(cacheKey);
-                sModifiedMap.remove(cacheKey);
+                CHECKERS.invalidate(cacheKey);
+                MODIFIED_TIME.remove(cacheKey);
             }
         }
         return checker;
