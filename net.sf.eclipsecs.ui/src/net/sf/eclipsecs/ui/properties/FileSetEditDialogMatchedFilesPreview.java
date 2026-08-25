@@ -41,6 +41,10 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite showing a preview of the project files matched by the edited file set.
+ *
+ */
 public final class FileSetEditDialogMatchedFilesPreview extends Composite {
 
     /** The table viewer for matched files. */
@@ -102,6 +106,10 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
         totalFileCount = projectFiles.size();
     }
 
+    /**
+     * Viewer filter accepting only the project files included by the previewed file set.
+     *
+     */
     public static class FileSetEditDialogMatchedFilesPreviewFilter extends ViewerFilter {
 
         /** The file set to preview. */

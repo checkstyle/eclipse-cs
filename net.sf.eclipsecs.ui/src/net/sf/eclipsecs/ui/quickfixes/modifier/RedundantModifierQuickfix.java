@@ -71,6 +71,10 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
         return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
     }
 
+    /**
+     * AST visitor that removes the redundant modifiers from the flagged declaration.
+     *
+     */
     private final class RedundantModifierQuickfixAstVisitor extends ASTVisitor {
 
         /** The line info region. */

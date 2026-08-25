@@ -32,6 +32,11 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
+/**
+ * Factory creating the composite {@link PropertyResolver} used when resolving configuration
+ * properties.
+ *
+ */
 public final class PropertyResolverFactory {
 
     private PropertyResolverFactory() {

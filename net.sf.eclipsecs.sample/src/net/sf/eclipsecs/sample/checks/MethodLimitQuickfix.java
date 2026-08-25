@@ -30,6 +30,11 @@ import org.eclipse.swt.graphics.Image;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 
+/**
+ * Sample quickfix that adds a marker tag to the javadoc of methods within a class flagged by the
+ * MethodLimit check.
+ *
+ */
 public class MethodLimitQuickfix extends AbstractASTResolution {
 
     /** Label & description for this quick fix. */

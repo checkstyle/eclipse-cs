@@ -41,6 +41,10 @@ import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternControlCallbacks;
 
+/**
+ * Composite showing the checkbox table of file match patterns for the file set edit dialog.
+ *
+ */
 public final class FileMatchPatternTable extends Composite {
 
     /** The checkbox table viewer for patterns. */
@@ -132,6 +136,10 @@ public final class FileMatchPatternTable extends Composite {
         }
     }
 
+    /**
+     * Check state provider reflecting the include state of the file match patterns.
+     *
+     */
     private static final class FileMatchPatternTableCheckStateProvider
         implements ICheckStateProvider {
 

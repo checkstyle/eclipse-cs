@@ -45,6 +45,11 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.SWTUtil;
 
+/**
+ * Composite containing the general settings section of the Checkstyle preference page,
+ * e.g. language, rebuild behavior and marker limit.
+ *
+ */
 public final class CheckstylePreferencePageGeneralSettings extends Composite {
 
     /** The default language code. */

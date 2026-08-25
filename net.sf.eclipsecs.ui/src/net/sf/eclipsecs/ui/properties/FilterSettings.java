@@ -48,6 +48,11 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.properties.filter.IFilterEditor;
 import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
 
+/**
+ * Composite of the checkstyle property page allowing to configure the filters of the project
+ * configuration.
+ *
+ */
 public class FilterSettings extends Composite {
 
     /** Height in pixels of the filter list. */
@@ -153,6 +158,10 @@ public class FilterSettings extends Composite {
         }
     }
 
+    /**
+     * Label provider showing the name and the presentable filter data of a filter.
+     *
+     */
     private static final class FilterListLabelProvider extends LabelProvider {
         @Override
         public String getText(Object element) {
@@ -170,6 +179,10 @@ public class FilterSettings extends Composite {
         }
     }
 
+    /**
+     * Check state provider reflecting the enabled state of the filters.
+     *
+     */
     private static final class FilterListCheckStateProvider implements ICheckStateProvider {
 
         @Override

@@ -56,6 +56,10 @@ import net.sf.eclipsecs.ui.stats.views.MarkerStatsViewDataProviders.MarkerStatsV
 import net.sf.eclipsecs.ui.stats.views.MarkerStatsViewDataProviders.MarkerStatsViewMasterDataProviders;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
+/**
+ * Composite of the marker statistics view that stacks the master table of marker categories and the
+ * detail table of a selected category's markers, managing drill down and drill back.
+ */
 public final class MarkerStatsMainView extends Composite {
 
     /** The stack layout. */
@@ -147,6 +151,10 @@ public final class MarkerStatsMainView extends Composite {
         manager.add(new Separator(IWorkbenchActionConstants.MB_ADDITIONS));
     }
 
+    /**
+     * Table viewer showing the master list of marker statistic categories with their maximal
+     * severity, the kind of error and the number of occurrences.
+     */
     private static final class MainTableViewer extends AbstractStatTableViewer<MarkerStat> {
 
         /** The table viewer. */
@@ -226,6 +234,10 @@ public final class MarkerStatsMainView extends Composite {
 
     }
 
+    /**
+     * Table viewer showing the detail list of the markers belonging to the selected category with
+     * their severity, file, folder, line number and message.
+     */
     private static final class DetailTableViewer extends AbstractStatTableViewer<IMarker> {
 
         /** The table viewer. */
@@ -323,6 +335,13 @@ public final class MarkerStatsMainView extends Composite {
         }
     }
 
+    /**
+     * Base class of the master and detail table viewers providing typed selection access, stats
+     * input handling and refresh behavior.
+     *
+     * @param <T>
+     *          the type of selection handled by this viewer
+     */
     private abstract static class AbstractStatTableViewer<T> extends Composite {
 
         /** The selection class type. */

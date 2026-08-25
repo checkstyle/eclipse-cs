@@ -45,6 +45,11 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidgetFactory;
 import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 
+/**
+ * Composite offering the general settings of the module edit dialog, providing the severity combo
+ * and the widgets for the module properties.
+ *
+ */
 public final class RuleConfigurationEditDialogGeneralSettings extends Composite {
 
     /** Number of columns for the list of property widgets: name, widget value, help. */

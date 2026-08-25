@@ -48,6 +48,11 @@ import net.sf.eclipsecs.ui.config.ConfiguredModules.ConfiguredModulesCallbacks;
 import net.sf.eclipsecs.ui.util.HtmlUtil;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
+/**
+ * Composite providing a checkbox table of the configured modules with columns for module name,
+ * severity and comment, wiring selection, check-state and keyboard events to callbacks.
+ *
+ */
 public final class ConfiguredModulesTable extends Composite {
 
     /** The checkbox table viewer for configured modules. */

@@ -81,6 +81,10 @@ public final class ConfigPropertyWidgetFactory {
         return REGISTRY.getOrDefault(type, ConfigPropertyWidgetString::create).create(parent, prop);
     }
 
+    /**
+     * Builder interface that creates a configuration property widget for the given property.
+     *
+     */
     public interface ConfigPropertyWidgetBuilder {
         IConfigPropertyWidget create(Composite parent, ConfigProperty prop);
     }

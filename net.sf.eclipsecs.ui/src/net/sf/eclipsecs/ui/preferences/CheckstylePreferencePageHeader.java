@@ -31,6 +31,11 @@ import com.puppycrawl.tools.checkstyle.Main;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.InternalBrowser;
 
+/**
+ * Header composite of the Checkstyle preference page, showing the plugin and Checkstyle
+ * version with links to the project website and release notes.
+ *
+ */
 public class CheckstylePreferencePageHeader extends Composite {
 
     /** The checkstyle version string. */

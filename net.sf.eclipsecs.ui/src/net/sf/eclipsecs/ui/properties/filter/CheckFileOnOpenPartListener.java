@@ -195,6 +195,11 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
         return isFileAffected;
     }
 
+    /**
+     * Background job that registers the opened parts and runs checkstyle on the files needing to be
+     * checked.
+     *
+     */
     private class PartsOpenedJob extends AbstractCheckJob {
 
         /** The collection of opened workbench parts. */

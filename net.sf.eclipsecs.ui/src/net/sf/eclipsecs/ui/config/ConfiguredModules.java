@@ -40,6 +40,11 @@ import net.sf.eclipsecs.core.config.meta.RuleGroupMetadata;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite showing the modules of the currently selected rule group that are configured, together
+ * with the controls to remove or open them.
+ *
+ */
 public final class ConfiguredModules extends Composite {
 
     /** The group containing the configured modules. */
@@ -90,6 +95,18 @@ public final class ConfiguredModules extends Composite {
         table.refresh();
     }
 
+    /**
+     * Record containing the callbacks used by the configured modules composite.
+     *
+     * @param openModule
+     *          callback to edit the given module
+     * @param removeModule
+     *          callback to remove the given modules
+     * @param updateDescription
+     *          callback to show the description of the selected module
+     * @param checkStateChanged
+     *          callback invoked when the checked state of a module changes
+     */
     public record ConfiguredModulesCallbacks(Consumer<Module> openModule,
         Consumer<List<Module>> removeModule, Consumer<String> updateDescription,
         BiConsumer<Module, Boolean> checkStateChanged) {
@@ -111,6 +128,11 @@ public final class ConfiguredModules extends Composite {
         }
     }
 
+    /**
+     * Check state provider that marks all modules with a severity other than ignore as checked and
+     * grays the checks when the modules are not configurable.
+     *
+     */
     private static final class TableCheckStateProvider implements ICheckStateProvider {
 
         /** Whether the table is configurable. */

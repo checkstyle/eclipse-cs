@@ -267,6 +267,18 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         return settings;
     }
 
+    /**
+     * Record containing the model data for the Checkstyle preference page editor.
+     *
+     * @param configs
+     *          the check configurations to edit
+     * @param global
+     *          whether the editor works on the global configuration workspace
+     * @param isDefaultConfig
+     *          predicate that determines if a configuration is the default one
+     * @param tableSettings
+     *          the dialog settings used to persist the table column state
+     */
     public record CheckConfigurationWorkingSetEditorModel(
         CheckConfigurationWorkingCopy[] configs,
         boolean global,

@@ -43,6 +43,11 @@ import net.sf.eclipsecs.core.config.ResolvableProperty;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
+/**
+ * Composite providing the table and Add/Edit/Remove controls to manage resolvable properties within
+ * the properties dialog.
+ *
+ */
 public final class ResolvablePropertiesDialogView extends Composite {
 
     /** The table viewer for resolvable properties. */

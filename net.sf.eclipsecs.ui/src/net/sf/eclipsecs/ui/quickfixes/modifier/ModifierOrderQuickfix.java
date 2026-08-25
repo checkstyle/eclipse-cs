@@ -116,6 +116,11 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
         return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
     }
 
+    /**
+     * AST visitor that reorders the modifiers of the flagged type or method declaration
+     * into the suggested order by the JLS.
+     *
+     */
     private static final class ModifierOrderQuickfixAstVisitor extends ASTVisitor {
         /** The marker start offset. */
         private final int markerStartOffset;

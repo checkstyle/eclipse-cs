@@ -36,6 +36,11 @@ import org.eclipse.swt.widgets.Group;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * View composite of the advanced file sets editor, showing the file sets table and the buttons to
+ * add, edit and remove file sets.
+ *
+ */
 public final class ComplexFileSetsEditorView extends Composite {
 
     /** The table viewer for file sets. */

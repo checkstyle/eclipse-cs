@@ -43,6 +43,11 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor.CheckConfig
 import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
+/**
+ * Composite providing the table of check configurations on the Checkstyle preference page, with
+ * columns for name, location, type and the default configuration marker.
+ *
+ */
 public final class CheckConfigurationWorkingSetEditorConfigTable extends Composite {
 
     /** The table viewer for check configurations. */

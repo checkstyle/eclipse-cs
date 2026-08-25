@@ -32,6 +32,11 @@ import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite building the editor form for internal (built-in) check configurations, containing the
+ * configuration name, location and description fields plus the import button.
+ *
+ */
 public final class InternalConfigurationEditorView extends Composite {
 
     /** The config name text field. */

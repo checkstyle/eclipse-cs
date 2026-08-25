@@ -24,6 +24,16 @@ import org.eclipse.core.resources.IProject;
 
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 
+/**
+ * This record contains the context of the checkstyle property page.
+ *
+ * @param project
+ *          the project being configured
+ * @param configuration
+ *          the working copy of the project configuration
+ * @param updateButtons
+ *          callback to update the page buttons
+ */
 public record PropertyPageContext(IProject project, ProjectConfigurationWorkingCopy configuration,
         Runnable updateButtons) {
 

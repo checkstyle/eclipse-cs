@@ -23,6 +23,10 @@ package net.sf.eclipsecs.sample.filter;
 import net.sf.eclipsecs.core.projectconfig.filters.AbstractFilter;
 import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 
+/**
+ * Sample file filter that rejects all files.
+ *
+ */
 @ThreadSafe
 public class SampleFilter extends AbstractFilter {
 

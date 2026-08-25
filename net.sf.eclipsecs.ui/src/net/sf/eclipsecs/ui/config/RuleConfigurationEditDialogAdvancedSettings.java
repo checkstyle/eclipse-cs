@@ -41,6 +41,11 @@ import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite offering the advanced settings of the module edit dialog, allowing to edit the module
+ * comment, id and custom messages.
+ *
+ */
 public final class RuleConfigurationEditDialogAdvancedSettings extends Composite {
 
     /** The text field for the module comment. */

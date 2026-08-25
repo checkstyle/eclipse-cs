@@ -36,6 +36,10 @@ import com.puppycrawl.tools.checkstyle.utils.JavadocUtil;
 import com.puppycrawl.tools.checkstyle.utils.TokenUtil;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 
+/**
+ * Utility methods for working with Checkstyle checks and their tokens.
+ *
+ */
 public final class CheckUtil {
     private CheckUtil() {
     }

@@ -31,6 +31,11 @@ import org.eclipse.swt.widgets.Label;
 
 import net.sf.eclipsecs.ui.stats.Messages;
 
+/**
+ * Composite implementing the user interface of the Checkstyle marker filter dialog, combining the
+ * filter enablement checkbox, the resource and severity filter group and the regular expression
+ * based exclusion settings.
+ */
 public final class CheckstyleMarkerFilterDialogView extends Composite {
 
     /** Number of columns for the regex group. */

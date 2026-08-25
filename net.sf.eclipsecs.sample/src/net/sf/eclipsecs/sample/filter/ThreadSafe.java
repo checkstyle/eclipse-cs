@@ -20,6 +20,10 @@
 
 package net.sf.eclipsecs.sample.filter;
 
+/**
+ * Annotation marking a class as safe for concurrent access by multiple threads.
+ *
+ */
 public @interface ThreadSafe {
 
 }

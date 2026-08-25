@@ -37,6 +37,11 @@ import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternControlCallbacks;
 import net.sf.eclipsecs.ui.properties.FileSetEditDialogMatchedFilesPreview.FileSetEditDialogMatchedFilesPreviewFilter;
 
+/**
+ * View composite of the file set edit dialog, laying out the common name and configuration area,
+ * the file match pattern editor and the matched files preview.
+ *
+ */
 public final class FileSetEditDialogView extends Composite {
 
     /** The common area with name and config selection. */

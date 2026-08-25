@@ -22,6 +22,10 @@ package net.sf.eclipsecs.ui.quickfixes;
 
 import org.eclipse.osgi.util.NLS;
 
+/**
+ * Message bundle for the generic quickfix implementations.
+ *
+ */
 public final class Messages extends NLS {
 
     public static String ModifierOrderQuickfix_description;

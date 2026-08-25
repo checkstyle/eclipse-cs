@@ -64,6 +64,10 @@ public class FinalClassQuickfix extends AbstractASTResolution {
         return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
     }
 
+    /**
+     * AST visitor that adds the final modifier to the flagged class declaration.
+     *
+     */
     private final class FinalClassQuickfixAstVisitor extends ASTVisitor {
 
         /** The line info region. */

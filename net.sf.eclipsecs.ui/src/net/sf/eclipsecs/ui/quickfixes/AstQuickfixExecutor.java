@@ -53,6 +53,11 @@ import org.eclipse.ui.texteditor.MarkerAnnotation;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Executor that applies the correcting AST visitor of a quickfix to the compilation unit
+ * of a problem marker and writes the resulting changes back to the document.
+ *
+ */
 public final class AstQuickfixExecutor {
 
     private AstQuickfixExecutor() {

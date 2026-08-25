@@ -37,6 +37,11 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Operation that applies the changes made in the checkstyle project property page by storing the
+ * configuration and scheduling the needed jobs.
+ *
+ */
 public final class CheckstylePropertyApplyOperation {
 
     private CheckstylePropertyApplyOperation() {

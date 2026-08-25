@@ -65,6 +65,11 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
         return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
     }
 
+    /**
+     * AST visitor that moves the array brackets of the flagged declaration to the
+     * Java style.
+     *
+     */
     private final class ArrayTypeStyleQuickfixAstVisitor extends ASTVisitor {
         /** The marker start offset. */
         private final int markerStartOffset;

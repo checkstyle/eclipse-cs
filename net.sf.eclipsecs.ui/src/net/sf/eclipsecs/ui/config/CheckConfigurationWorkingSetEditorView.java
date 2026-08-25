@@ -41,6 +41,11 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor.CheckConfigurationWorkingSetEditorModel;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditorButtonBar.ButtonBarActions;
 
+/**
+ * Composite building the main layout of the Checkstyle preference page with the table of check
+ * configurations, the action buttons and the description/project usage area.
+ *
+ */
 public final class CheckConfigurationWorkingSetEditorView extends Composite {
 
     /** The config table. */

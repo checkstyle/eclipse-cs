@@ -38,6 +38,11 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Main tab of the checkstyle property page, providing controls to enable checkstyle, toggle the
+ * simple configuration and to edit the file sets and filters of the project.
+ *
+ */
 public final class CheckstylePropertyPageMainTab extends Composite {
 
     /** The property page context. */
@@ -125,6 +130,11 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         return fileSetsContainer;
     }
 
+    /**
+     * Selection adapter that toggles the simple configuration mode and recreates the file sets
+     * editor accordingly.
+     *
+     */
     private final class ChkSimpleConfigController extends SelectionAdapter {
 
         @Override

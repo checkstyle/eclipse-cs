@@ -22,6 +22,22 @@ package net.sf.eclipsecs.core.config.meta;
 
 import java.util.List;
 
+/**
+ * This record contains the identity information that describes a check rule.
+ *
+ * @param ruleName
+ *          the name of the rule
+ * @param internalName
+ *          the internal name of the rule
+ * @param parent
+ *          the parent package of the rule
+ * @param group
+ *          the rule group the rule belongs to
+ * @param description
+ *          the description of the rule
+ * @param alternativeNames
+ *          the alternative names of the rule
+ */
 public record RuleIdentity(String ruleName, String internalName, String parent,
         RuleGroupMetadata group, String description, List<String> alternativeNames) {
 

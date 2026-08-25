@@ -38,6 +38,11 @@ import org.eclipse.swt.widgets.TableColumn;
 
 import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 
+/**
+ * Utility which enhances table viewers with sortable columns, column widths and state
+ * persistence within the dialog settings.
+ *
+ */
 public final class TableViewerEnhancer {
 
     /** Key for the column index in the TableColumn data. */
@@ -202,6 +207,11 @@ public final class TableViewerEnhancer {
         table.setSortDirection(direction);
     }
 
+    /**
+     * Comparator that sorts table rows using an optional per-column comparator or the
+     * column label provider's text as fallback.
+     *
+     */
     private static final class TableViewerTextLabelComparator extends ViewerComparator {
 
         @Override

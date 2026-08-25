@@ -41,6 +41,10 @@ import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.properties.ComplexFileSetsEditor.FileSetLabelProvider;
 import net.sf.eclipsecs.ui.properties.ComplexFileSetsEditor.FileSetViewerSorter;
 
+/**
+ * Composite showing the checkbox table of file sets for the advanced file sets editor.
+ *
+ */
 public final class ComplexFileSetsEditorTableView extends Composite {
 
     /** The checkbox table viewer. */

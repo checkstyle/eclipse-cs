@@ -29,6 +29,10 @@ import org.eclipse.swt.widgets.Composite;
 
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite holding the Remove and Open buttons below the table of configured modules.
+ *
+ */
 public class ConfiguredModulesButtons extends Composite {
 
     public ConfiguredModulesButtons(Composite parent, int style, boolean configurable,

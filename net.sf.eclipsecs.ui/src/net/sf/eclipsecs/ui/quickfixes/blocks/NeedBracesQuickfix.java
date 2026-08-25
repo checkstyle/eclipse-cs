@@ -63,6 +63,10 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
         return CheckstyleUIPluginImages.CORRECTION_ADD_BRACES.getImage();
     }
 
+    /**
+     * AST visitor that wraps the flagged if/for/while/do statement in braces.
+     *
+     */
     private final class NeedBracesQuickfixAstVisitor extends ASTVisitor {
 
         /** The line info region. */

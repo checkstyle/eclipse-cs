@@ -29,6 +29,11 @@ import org.eclipse.swt.widgets.Composite;
 
 import net.sf.eclipsecs.ui.Messages;
 
+/**
+ * Composite holding the button bar of the Checkstyle preference page, offering the actions to
+ * create, edit, configure, copy, remove, set default and export check configurations.
+ *
+ */
 public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite {
 
     /** Whether the default button should be shown. */
@@ -109,6 +114,24 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
         }
     }
 
+    /**
+     * Record containing the actions triggered by the buttons of the button bar.
+     *
+     * @param addCheckConfig
+     *          action to create a new check configuration
+     * @param editCheckConfig
+     *          action to open the properties of the selected configuration
+     * @param configureCheckConfig
+     *          action to open the module configuration for the selected configuration
+     * @param copyCheckConfig
+     *          action to duplicate the selected configuration
+     * @param removeCheckConfig
+     *          action to delete the selected configuration
+     * @param setDefaultCheckConfig
+     *          action to mark the selected configuration as default
+     * @param exportCheckstyleCheckConfig
+     *          action to export the selected configuration to a file
+     */
     public record ButtonBarActions(Runnable addCheckConfig, Runnable editCheckConfig,
         Runnable configureCheckConfig, Runnable copyCheckConfig, Runnable removeCheckConfig,
         Runnable setDefaultCheckConfig, Runnable exportCheckstyleCheckConfig) {

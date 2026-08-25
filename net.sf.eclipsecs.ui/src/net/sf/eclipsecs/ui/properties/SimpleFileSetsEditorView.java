@@ -39,6 +39,11 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
 import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
 import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
 
+/**
+ * View composite of the simple file sets editor, offering a combo box to assign a single check
+ * configuration to the default file set.
+ *
+ */
 public final class SimpleFileSetsEditorView extends Composite {
 
     /** The combo viewer for check configuration selection. */
