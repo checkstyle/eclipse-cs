@@ -81,7 +81,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     private static final int TIMEOUT = 10000;
 
     /** URLs that have failed with HTTP 401. */
-    private static Set<String> sFailedWith401URLs = new HashSet<>();
+    private static final Set<String> FAILED_WITH_401_URLS = new HashSet<>();
 
     @Override
     public CheckstyleConfigurationFile getCheckstyleConfiguration(
@@ -312,7 +312,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
         if (connection instanceof HttpURLConnection) {
 
-            if (!sFailedWith401URLs.contains(connection.getURL().toString())) {
+            if (!FAILED_WITH_401_URLS.contains(connection.getURL().toString())) {
 
                 final HttpURLConnection httpConn = (HttpURLConnection) connection;
                 httpConn.setInstanceFollowRedirects(true);
@@ -326,7 +326,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
                     }
 
                     // add to 401ed URLs
-                    sFailedWith401URLs.add(connection.getURL().toString());
+                    FAILED_WITH_401_URLS.add(connection.getURL().toString());
                     throw new IOException(Messages.RemoteConfigurationType_msgUnAuthorized);
                 }
             }
@@ -429,7 +429,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
                 prefs.put(KEY_USERNAME, userName, false);
                 prefs.put(KEY_PASSWORD, password, true);
 
-                sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
+                FAILED_WITH_401_URLS.remove(resolvedCheckConfigurationURL.toString());
             }
             catch (CheckstylePluginException | StorageException ex) {
                 CheckstyleLog.log(ex);
@@ -446,7 +446,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
          */
         public static void removeCachedAuthInfo(URL resolvedCheckConfigurationURL)
                 throws CheckstylePluginException {
-            sFailedWith401URLs.remove(resolvedCheckConfigurationURL.toString());
+            FAILED_WITH_401_URLS.remove(resolvedCheckConfigurationURL.toString());
 
             final String storagePath = getSecureStoragePath(resolvedCheckConfigurationURL);
 

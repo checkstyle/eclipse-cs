@@ -75,14 +75,14 @@ public final class CheckConfigurationFactory {
     /**
      * List of known check configurations. Synchronized because of possible concurrend access.
      */
-    private static List<ICheckConfiguration> sConfigurations =
+    private static final List<ICheckConfiguration> CONFIGURATIONS =
         Collections.synchronizedList(new ArrayList<ICheckConfiguration>());
 
     /** The default check configuration. */
-    private static ICheckConfiguration sDefaultCheckConfig;
+    private static ICheckConfiguration defaultCheckConfig;
 
     /** The default built-in check configuration. */
-    private static ICheckConfiguration sDefaultBuiltInConfig;
+    private static ICheckConfiguration defaultBuiltInConfig;
 
     static {
         refresh();
@@ -97,8 +97,8 @@ public final class CheckConfigurationFactory {
      * @return a new configuration working set
      */
     public static ICheckConfigurationWorkingSet newWorkingSet() {
-        return new GlobalCheckConfigurationWorkingSet(sConfigurations,
-            getDefaultCheckConfiguration(), sDefaultBuiltInConfig);
+        return new GlobalCheckConfigurationWorkingSet(CONFIGURATIONS,
+            getDefaultCheckConfiguration(), defaultBuiltInConfig);
     }
 
     /**
@@ -110,7 +110,7 @@ public final class CheckConfigurationFactory {
      */
     public static ICheckConfiguration getByName(String name) {
         ICheckConfiguration result = null;
-        for (ICheckConfiguration config : sConfigurations) {
+        for (ICheckConfiguration config : CONFIGURATIONS) {
             if (config.getName().equals(name)) {
                 result = config;
                 break;
@@ -125,7 +125,7 @@ public final class CheckConfigurationFactory {
      * @return A list containing all instances.
      */
     public static List<ICheckConfiguration> getCheckConfigurations() {
-        return Collections.unmodifiableList(sConfigurations);
+        return Collections.unmodifiableList(CONFIGURATIONS);
     }
 
     /**
@@ -136,17 +136,17 @@ public final class CheckConfigurationFactory {
      */
     public static ICheckConfiguration getDefaultCheckConfiguration() {
         final ICheckConfiguration defaultConfig;
-        if (sDefaultCheckConfig != null) {
-            defaultConfig = sDefaultCheckConfig;
+        if (defaultCheckConfig != null) {
+            defaultConfig = defaultCheckConfig;
         }
-        else if (sDefaultBuiltInConfig != null) {
-            defaultConfig = sDefaultBuiltInConfig;
+        else if (defaultBuiltInConfig != null) {
+            defaultConfig = defaultBuiltInConfig;
         }
-        else if (sConfigurations.isEmpty()) {
+        else if (CONFIGURATIONS.isEmpty()) {
             defaultConfig = null;
         }
         else {
-            defaultConfig = sConfigurations.get(0);
+            defaultConfig = CONFIGURATIONS.get(0);
         }
         return defaultConfig;
     }
@@ -156,9 +156,9 @@ public final class CheckConfigurationFactory {
      */
     public static void refresh() {
         try {
-            sDefaultCheckConfig = null;
-            sDefaultBuiltInConfig = null;
-            sConfigurations.clear();
+            defaultCheckConfig = null;
+            defaultBuiltInConfig = null;
+            CONFIGURATIONS.clear();
             loadBuiltinConfigurations();
             loadFromPersistence();
 
@@ -255,12 +255,12 @@ public final class CheckConfigurationFactory {
                     final String defaultConfigName =
                         root.attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
 
-                    sConfigurations.addAll(getGlobalCheckConfigurations(root));
+                    CONFIGURATIONS.addAll(getGlobalCheckConfigurations(root));
 
-                    for (ICheckConfiguration config : sConfigurations) {
-                        if (config != sDefaultBuiltInConfig
+                    for (ICheckConfiguration config : CONFIGURATIONS) {
+                        if (config != defaultBuiltInConfig
                             && config.getName().equals(defaultConfigName)) {
-                            sDefaultCheckConfig = config;
+                            defaultCheckConfig = config;
                         }
                     }
                 }
@@ -327,7 +327,7 @@ public final class CheckConfigurationFactory {
             final ICheckConfiguration checkConfig = new CheckConfiguration(name, location,
                 description,
                 configType, true, props, additionalData);
-            sConfigurations.add(checkConfig);
+            CONFIGURATIONS.add(checkConfig);
 
             if (defaultWeight > currentMaxDefaultWeight) {
                 currentMaxDefaultWeight = defaultWeight;
@@ -335,7 +335,7 @@ public final class CheckConfigurationFactory {
             }
         }
 
-        sDefaultBuiltInConfig = defaultBuiltInCheckConfig;
+        defaultBuiltInConfig = defaultBuiltInCheckConfig;
     }
 
     /**

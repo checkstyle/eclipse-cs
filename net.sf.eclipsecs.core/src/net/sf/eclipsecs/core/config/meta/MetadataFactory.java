@@ -81,30 +81,30 @@ public final class MetadataFactory {
     private static final String FILE_NAME_SEPARATOR = "/";
 
     /** Metadata for the rule groups. */
-    private static Map<String, RuleGroupMetadata> sRuleGroupMetadata;
+    private static Map<String, RuleGroupMetadata> ruleGroupMetadata;
 
     /** Metadata for all rules, keyed by internal rule name. */
-    private static Map<String, RuleMetadata> sRuleMetadata;
+    private static Map<String, RuleMetadata> ruleMetadataByName;
 
     /**
      * Mapping for all rules, keyed by alternative rule names (full qualified, old full qualified).
      */
-    private static Map<String, RuleMetadata> sAlternativeNamesMap;
+    private static Map<String, RuleMetadata> alternativeNamesMap;
 
     /**
      * Repository of all the the checkstyle metadata, with their name as key.
      */
-    private static Map<String, ModuleDetails> sModuleDetailsRepo;
+    private static Map<String, ModuleDetails> moduleDetailsRepo;
 
     /**
      * Set containing all the packages in the classloader.
      */
-    private static Set<String> sPackageNameSet;
+    private static Set<String> packageNameSet;
 
     /**
      * Mapping of third party extension package name to rule group data.
      */
-    private static Map<String, ThirdPartyRuleGroupInfo> sThirdPartyRuleGroupMap;
+    private static Map<String, ThirdPartyRuleGroupInfo> thirdPartyRuleGroupMap;
 
     /**
      * Private constructor to prevent instantiation.
@@ -158,7 +158,7 @@ public final class MetadataFactory {
             MetadataFactory.getDefaultSeverity(), false, true, true, false, Collections.emptyList(),
             Collections.emptyList());
         module.setMetaData(ruleMeta);
-        sRuleMetadata.put(ruleMeta.identity().internalName(), ruleMeta);
+        ruleMetadataByName.put(ruleMeta.identity().internalName(), ruleMeta);
 
         for (ConfigProperty property : module.getProperties()) {
             final ConfigPropertyMetadata meta = new ConfigPropertyMetadata(
@@ -170,7 +170,7 @@ public final class MetadataFactory {
 
     private static void registerAlternativeNames(RuleMetadata ruleMetadata) {
         ruleMetadata.identity().alternativeNames()
-            .forEach(alternativeName -> sAlternativeNamesMap.put(alternativeName, ruleMetadata));
+            .forEach(alternativeName -> alternativeNamesMap.put(alternativeName, ruleMetadata));
     }
 
     /**
@@ -179,12 +179,12 @@ public final class MetadataFactory {
      */
     private static void createMetadataMap() {
         final List<ModuleDetails> moduleDetails = XmlMetaReader
-            .readAllModulesIncludingThirdPartyIfAny(sPackageNameSet.toArray(new String[0]));
+            .readAllModulesIncludingThirdPartyIfAny(packageNameSet.toArray(new String[0]));
         if (moduleDetails.isEmpty()) {
             CheckstyleLog.log(null, "Cannot read module details");
         }
         moduleDetails
-            .forEach(moduleDetail -> sModuleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
+            .forEach(moduleDetail -> moduleDetailsRepo.put(moduleDetail.getName(), moduleDetail));
     }
 
     /**
@@ -196,7 +196,7 @@ public final class MetadataFactory {
      *           registered check classes only.
      */
     private static void loadThirdPartyModuleExtensionMetadata() {
-        final var rootPackages = sPackageNameSet.stream().map(pack -> {
+        final var rootPackages = packageNameSet.stream().map(pack -> {
             String root = pack;
             final int secondDot = StringUtils.ordinalIndexOf(pack, PACKAGE_NAME_SEPARATOR, 2);
             if (secondDot >= 0) {
@@ -220,7 +220,7 @@ public final class MetadataFactory {
             }
         }
         eclipseMetaDataFiles.forEach(
-            content -> sThirdPartyRuleGroupMap.putAll(ThirdPartyRuleGroupParser.parse(content)));
+            content -> thirdPartyRuleGroupMap.putAll(ThirdPartyRuleGroupParser.parse(content)));
     }
 
     /**
@@ -229,7 +229,7 @@ public final class MetadataFactory {
      * @return List of <code>RuleGroupMetadata</code> objects.
      */
     public static List<RuleGroupMetadata> getRuleGroupMetadata() {
-        final List<RuleGroupMetadata> groups = new ArrayList<>(sRuleGroupMetadata.values());
+        final List<RuleGroupMetadata> groups = new ArrayList<>(ruleGroupMetadata.values());
         groups.sort(Comparator.comparingInt(RuleGroupMetadata::getPriority));
         return groups;
     }
@@ -242,7 +242,7 @@ public final class MetadataFactory {
      * @return the RuleGroupMetadata object or <code>null</code>
      */
     private static RuleGroupMetadata getRuleGroupMetadata(String name) {
-        return sRuleGroupMetadata.get(name);
+        return ruleGroupMetadata.get(name);
     }
 
     /**
@@ -257,11 +257,11 @@ public final class MetadataFactory {
         RuleMetadata metadata = null;
 
         // first try the internal name mapping
-        metadata = sRuleMetadata.get(name);
+        metadata = ruleMetadataByName.get(name);
 
         // try the alternative names
         if (metadata == null) {
-            metadata = sAlternativeNamesMap.get(name);
+            metadata = alternativeNamesMap.get(name);
         }
 
         return metadata;
@@ -335,12 +335,12 @@ public final class MetadataFactory {
      * Refreshes the metadata.
      */
     private static synchronized void refresh() {
-        sRuleGroupMetadata = new TreeMap<>();
-        sRuleMetadata = new HashMap<>();
-        sAlternativeNamesMap = new HashMap<>();
-        sModuleDetailsRepo = new HashMap<>();
-        sThirdPartyRuleGroupMap = new HashMap<>();
-        sPackageNameSet = new HashSet<>();
+        ruleGroupMetadata = new TreeMap<>();
+        ruleMetadataByName = new HashMap<>();
+        alternativeNamesMap = new HashMap<>();
+        moduleDetailsRepo = new HashMap<>();
+        thirdPartyRuleGroupMap = new HashMap<>();
+        packageNameSet = new HashSet<>();
         try {
             doInitialization();
         }
@@ -392,9 +392,9 @@ public final class MetadataFactory {
      */
     private static void loadRuleMetadata() {
         final List<RuleMetadata> rules = new CheckstyleMetadataAdapter().loadRuleMetadata(
-            sRuleGroupMetadata, sModuleDetailsRepo.values(), sThirdPartyRuleGroupMap);
+            ruleGroupMetadata, moduleDetailsRepo.values(), thirdPartyRuleGroupMap);
         for (RuleMetadata module : rules) {
-            sRuleMetadata.put(module.identity().internalName(), module);
+            ruleMetadataByName.put(module.identity().internalName(), module);
             registerAlternativeNames(module);
         }
     }
@@ -421,7 +421,7 @@ public final class MetadataFactory {
         catch (CheckstyleException ex) {
             CheckstylePluginException.rethrow(ex);
         }
-        sPackageNameSet.addAll(packages);
+        packageNameSet.addAll(packages);
 
         for (String packageName : packages) {
             final String metaFileLocation =
@@ -463,13 +463,13 @@ public final class MetadataFactory {
         final Collection<RuleGroupMetadata> groups = MetadataXmlReader.parseMetadata(metadataStream,
             metadataBundle, groupId);
         groups.forEach(
-            group -> sRuleGroupMetadata.merge(group.getGroupName(), group, (groupA, groupB) -> {
+            group -> ruleGroupMetadata.merge(group.getGroupName(), group, (groupA, groupB) -> {
                 groupA.getRuleMetadata().addAll(groupB.getRuleMetadata());
                 return groupA;
             }));
         for (RuleGroupMetadata group : groups) {
             for (RuleMetadata module : group.getRuleMetadata()) {
-                sRuleMetadata.put(module.identity().internalName(), module);
+                ruleMetadataByName.put(module.identity().internalName(), module);
                 registerAlternativeNames(module);
             }
         }

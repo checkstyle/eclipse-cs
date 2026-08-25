@@ -32,7 +32,7 @@ import org.eclipse.core.resources.IFile;
 public class UnOpenedFilesFilter extends AbstractFilter {
 
     /** The list of opened files. */
-    private static List<IFile> sOpenedFiles = new ArrayList<>();
+    private static final List<IFile> OPENED_FILES = new ArrayList<>();
 
     public UnOpenedFilesFilter() {
     }
@@ -59,7 +59,7 @@ public class UnOpenedFilesFilter extends AbstractFilter {
      *            the file
      */
     public static void addOpenedFile(IFile file) {
-        sOpenedFiles.add(file);
+        OPENED_FILES.add(file);
     }
 
     /**
@@ -69,14 +69,14 @@ public class UnOpenedFilesFilter extends AbstractFilter {
      *            the file
      */
     public static void removeOpenedFile(IFile file) {
-        sOpenedFiles.remove(file);
+        OPENED_FILES.remove(file);
     }
 
     @Override
     public boolean accept(Object element) {
         boolean accept = false;
         if (element instanceof IFile) {
-            accept = sOpenedFiles.contains(element);
+            accept = OPENED_FILES.contains(element);
         }
         return accept;
     }
