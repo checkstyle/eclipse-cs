@@ -106,7 +106,7 @@ public final class MetadataFactory {
     private MetadataFactory() {
     }
 
-    /**
+    /*
      * Static initializer.
      */
     static {

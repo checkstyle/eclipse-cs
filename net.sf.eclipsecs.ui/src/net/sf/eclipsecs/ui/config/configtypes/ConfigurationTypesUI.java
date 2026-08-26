@@ -68,7 +68,7 @@ public final class ConfigurationTypesUI {
     /** Map of icon paths for the configuration types. */
     private static final Map<String, String> CONFIGURATION_TYPE_ICONS;
 
-    /**
+    /*
      * Initialize the configured to the filter extension point.
      */
     static {

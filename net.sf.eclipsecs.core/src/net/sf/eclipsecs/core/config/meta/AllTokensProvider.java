@@ -36,7 +36,7 @@ public class AllTokensProvider implements IOptionProvider {
     /** The list of options. */
     private static List<String> sAllOptions = new ArrayList<>();
 
-    /** Static initializer. Builds the option list. */
+    /* Static initializer. Builds the option list. */
     static {
 
         final Field[] fields = TokenTypes.class.getDeclaredFields();
