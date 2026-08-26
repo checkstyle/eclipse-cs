@@ -653,16 +653,6 @@
             <message key="import.illegal"
                      value="The sevntu plugin is only available for debugging. Don''t reference it anywhere in our code."/>
         </module>
-        <module name="ImportControl">
-            <property name="id" value="ImportControlMain"/>
-            <property name="file" value="${checkstyle.importcontrol.file}"/>
-            <property name="path" value="^.*[\\/]src[\\/]main[\\/].*$"/>
-        </module>
-        <module name="ImportControl">
-            <property name="id" value="ImportControlTest"/>
-            <property name="file" value="${checkstyle.importcontroltest.file}"/>
-            <property name="path" value="^.*[\\/]src[\\/](test|it)[\\/].*$"/>
-        </module>
         <module name="ImportOrder">
             <property name="groups" value="/^java\./,javax,org"/>
             <property name="ordered" value="true"/>

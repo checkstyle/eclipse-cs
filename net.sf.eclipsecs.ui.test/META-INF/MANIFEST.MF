@@ -1,0 +1,11 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: eclipse-cs UI Tests
+Bundle-SymbolicName: net.sf.eclipsecs.ui.test
+Bundle-Version: 13.9.0.qualifier
+Fragment-Host: net.sf.eclipsecs.ui
+Bundle-RequiredExecutionEnvironment: JavaSE-21
+Require-Bundle: junit-jupiter-api,
+ junit-jupiter-engine,
+ junit-platform-launcher
+Automatic-Module-Name: net.sf.eclipsecs.ui.test
