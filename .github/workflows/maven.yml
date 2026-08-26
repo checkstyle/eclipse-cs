@@ -33,7 +33,9 @@ jobs:
           ${{ matrix.jdk }}
 
     - name: Build with Maven
-      run: ./mvnw --errors --no-transfer-progress install
+      uses: GabrielBB/xvfb-action@v1
+      with:
+        run: ./mvnw --errors --no-transfer-progress install
 
     - name: Difference Check
       run: ./.ci/validation.sh git-diff

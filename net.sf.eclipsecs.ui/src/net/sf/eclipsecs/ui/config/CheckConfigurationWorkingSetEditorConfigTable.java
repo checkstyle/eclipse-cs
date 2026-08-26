@@ -34,8 +34,8 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
-import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor.CheckConfigurationWorkingSetEditorModel;
@@ -64,21 +64,21 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
         final TableViewerColumn col1 = new TableViewerColumn(tableViewer, SWT.NULL);
         col1.getColumn().setText(Messages.CheckstylePreferencePage_colCheckConfig);
         col1.setLabelProvider(ColumnLabelProvider.createTextImageProvider(
-            element -> ((CheckConfiguration) element).getName(),
+            element -> ((ICheckConfiguration) element).getName(),
             element -> ConfigurationTypesUI.getConfigurationTypeImage(
-                ((CheckConfiguration) element).getType())));
+                ((ICheckConfiguration) element).getType())));
         tableColumnLayout.setColumnData(col1.getColumn(), new ColumnWeightData(1));
 
         final TableViewerColumn col2 = new TableViewerColumn(tableViewer, SWT.NULL);
         col2.getColumn().setText(Messages.CheckstylePreferencePage_colLocation);
         col2.setLabelProvider(ColumnLabelProvider.createTextProvider(
-            element -> ((CheckConfiguration) element).getLocation()));
+            element -> ((ICheckConfiguration) element).getLocation()));
         tableColumnLayout.setColumnData(col2.getColumn(), new ColumnWeightData(1));
 
         final TableViewerColumn col3 = new TableViewerColumn(tableViewer, SWT.NULL);
         col3.getColumn().setText(Messages.CheckstylePreferencePage_colType);
         col3.setLabelProvider(ColumnLabelProvider.createTextProvider(
-            element -> ((CheckConfiguration) element).getType().getName()));
+            element -> ((ICheckConfiguration) element).getType().getName()));
         tableColumnLayout.setColumnData(col3.getColumn(), new ColumnWeightData(1));
 
         if (model.global()) {

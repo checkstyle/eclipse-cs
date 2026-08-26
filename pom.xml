@@ -15,6 +15,7 @@
         <module>net.sf.eclipsecs.doc</module>
         <module>net.sf.eclipsecs.sample</module>
         <module>net.sf.eclipsecs.ui</module>
+        <module>net.sf.eclipsecs.ui.test</module>
         <module>net.sf.eclipsecs-feature</module>
         <module>net.sf.eclipsecs-updatesite</module>
     </modules>
@@ -131,6 +132,11 @@
                             <os>macosx</os>
                             <ws>cocoa</ws>
                             <arch>x86_64</arch>
+                        </environment>
+                        <environment>
+                            <os>macosx</os>
+                            <ws>cocoa</ws>
+                            <arch>aarch64</arch>
                         </environment>
                     </environments>
                 </configuration>
