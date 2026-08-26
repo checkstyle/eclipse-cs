@@ -674,6 +674,7 @@
 
         <!-- Javadoc Comments -->
         <module name="AtclauseOrder"/>
+        <module name="InvalidJavadocPosition"/>
         <module name="JavadocBlockTagLocation">
             <!-- default tags -->
             <property name="tags" value="author, deprecated, exception, hidden, param, provides"/>

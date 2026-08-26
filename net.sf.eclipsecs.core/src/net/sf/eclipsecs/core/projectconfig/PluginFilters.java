@@ -67,7 +67,7 @@ public final class PluginFilters {
     /** The filter prototypes configured to the extension point. */
     private static final IFilter[] FILTER_PROTOTYPES;
 
-    /**
+    /*
      * Initialize the configured to the filter extension point.
      */
     static {

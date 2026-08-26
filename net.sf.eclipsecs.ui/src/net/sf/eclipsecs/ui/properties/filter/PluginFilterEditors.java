@@ -50,7 +50,7 @@ public final class PluginFilterEditors {
     /** The filter prototypes configured to the extension point. */
     private static Map<String, Class<? extends IFilterEditor>> sFilterEditorClasses;
 
-    /**
+    /*
      * Initialize the configured to the filter extension point.
      */
     static {

@@ -65,7 +65,7 @@ public final class ConfigurationTypes {
     /** The configuration types configured to the extension point. */
     private static final Map<String, IConfigurationType> CONFIGURATION_TYPES;
 
-    /**
+    /*
      * Initialize the configured to the filter extension point.
      */
     static {

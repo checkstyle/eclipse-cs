@@ -48,7 +48,7 @@ public final class SaveFilters {
     /** The filter prototypes configured to the extension point. */
     private static final ISaveFilter[] SAVE_FILTERS;
 
-    /**
+    /*
      * Initialize the configured to the filter extension point.
      */
     static {

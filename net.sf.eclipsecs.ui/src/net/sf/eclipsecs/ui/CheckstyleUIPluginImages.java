@@ -80,7 +80,6 @@ public enum CheckstyleUIPluginImages {
     /** Image descriptor for the checked overlay icon. */
     CHECKED_OVERLAY(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
         "icons/ovr/checked.png")),
-    /** Image descriptor for the ticked module group icon. */
     /** Image descriptor for the module group icon. */
     MODULEGROUP_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
         "icons/modulegroup.gif")),
