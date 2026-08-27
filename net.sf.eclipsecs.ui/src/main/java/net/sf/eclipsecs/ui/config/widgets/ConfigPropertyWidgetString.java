@@ -54,6 +54,15 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
         super(parent, prop);
     }
 
+    /**
+     * Creates a new string property widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     * @return the created widget
+     */
     public static ConfigPropertyWidgetString create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetString(parent, prop);
     }
@@ -87,6 +96,13 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
         return escape(result);
     }
 
+    /**
+     * Replaces escaped apostrophes with plain apostrophes for message properties.
+     *
+     * @param text
+     *            the text to unescape
+     * @return the unescaped text
+     */
     private String unescape(String text) {
         String escapedText = text;
         // custom messages use MessageFormat, single quote is escaped as 2 single quotes there
@@ -96,6 +112,13 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
         return escapedText;
     }
 
+    /**
+     * Replaces plain apostrophes with escaped apostrophes for message properties.
+     *
+     * @param text
+     *            the text to escape
+     * @return the escaped text
+     */
     private String escape(String text) {
         String escapedText = text;
         if (XMLTags.MESSAGE_TAG.equals(getConfigProperty().getName())) {

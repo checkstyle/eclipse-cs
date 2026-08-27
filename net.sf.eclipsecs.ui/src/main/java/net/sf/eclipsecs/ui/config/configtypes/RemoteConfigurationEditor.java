@@ -136,6 +136,12 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         return contents;
     }
 
+    /**
+     * Creates the credentials group of the editor.
+     *
+     * @param parent
+     *            the parent composite
+     */
     private void createCredentialsGroup(Composite parent) {
         final Group credentialsGroup = new Group(parent, SWT.NULL);
         credentialsGroup.setText(Messages.RemoteConfigurationEditor_titleCredentialsGroup);
@@ -157,6 +163,12 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         GridDataFactory.fillDefaults().grab(true, false).applyTo(mPassword);
     }
 
+    /**
+     * Initializes the editor contents from the working copy.
+     *
+     * @param shell
+     *            the parent shell
+     */
     private void init(Shell shell) {
         if (mWorkingCopy.getName() != null) {
             mConfigName.setText(mWorkingCopy.getName());
@@ -231,6 +243,17 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         return mWorkingCopy;
     }
 
+    /**
+     * Creates a cache file name for the given configuration name, time and extension.
+     *
+     * @param configName
+     *            the configuration name
+     * @param time
+     *            the current time in milliseconds
+     * @param extension
+     *            the file extension
+     * @return the cache file name
+     */
     private static String makeCacheFileName(String configName, long time, String extension) {
         return String.join("_", configName, String.valueOf(time), "cache.") + extension;
     }

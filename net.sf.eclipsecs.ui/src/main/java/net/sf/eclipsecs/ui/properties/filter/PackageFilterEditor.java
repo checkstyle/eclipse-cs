@@ -207,6 +207,13 @@ public class PackageFilterEditor implements IFilterEditor {
             return children.toArray();
         }
 
+        /**
+         * Returns the immediate children of the given project.
+         *
+         * @param project
+         *            the project
+         * @return the children of the project
+         */
         private List<IResource> handleProject(IProject project) {
             final List<IResource> children = new ArrayList<>();
             if (project.isAccessible()) {
@@ -241,6 +248,13 @@ public class PackageFilterEditor implements IFilterEditor {
             return children;
         }
 
+        /**
+         * Returns the immediate children of the given container.
+         *
+         * @param container
+         *            the container
+         * @return the children of the container
+         */
         private List<IResource> handleContainer(IContainer container) {
             final List<IResource> children = new ArrayList<>();
             if (container.isAccessible()) {
@@ -421,6 +435,9 @@ public class PackageFilterEditor implements IFilterEditor {
             return composite;
         }
 
+        /**
+         * Adapts the checked state of the elements to the recursive exclude mode.
+         */
         private void adaptRecurseBehaviour() {
 
             if (isRecursivelyExcludeSubTree()) {
@@ -438,12 +455,27 @@ public class PackageFilterEditor implements IFilterEditor {
             }
         }
 
+        /**
+         * Returns whether the given element is grayed.
+         *
+         * @param element
+         *            the element
+         * @return whether the element is grayed
+         */
         private boolean isGrayed(Object element) {
 
             final Object[] grayed = mViewer.getGrayedElements();
             return Arrays.asList(grayed).contains(element);
         }
 
+        /**
+         * Gray checks the sub containers of the given container.
+         *
+         * @param container
+         *            the container
+         * @param checked
+         *            whether the sub elements should be checked
+         */
         private void setSubElementsGrayedChecked(final IContainer container,
             final boolean checked) {
 

@@ -53,6 +53,18 @@ public final class FileSetEditDialogCommonArea extends Composite {
     /** The combo viewer for check configuration selection. */
     private final ComboViewer mComboViewer;
 
+    /**
+     * Creates the common area of the file set edit dialog.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param selectionChanged
+     *            the consumer invoked when the check configuration selection changes
+     * @param configureFileSetConfig
+     *            the runnable to configure the file set configuration
+     */
     public FileSetEditDialogCommonArea(Composite parent, int style,
         Consumer<ICheckConfiguration> selectionChanged, Runnable configureFileSetConfig) {
         super(parent, style);
@@ -89,18 +101,41 @@ public final class FileSetEditDialogCommonArea extends Composite {
         GridDataFactory.swtDefaults().applyTo(mConfigureButton);
     }
 
+    /**
+     * Returns the file set name entered in the text field.
+     *
+     * @return the file set name
+     */
     public String getText() {
         return this.mFileSetNameText.getText();
     }
 
+    /**
+     * Sets the input for the check configuration combo viewer.
+     *
+     * @param configuration
+     *            the project configuration working copy
+     */
     public void setInput(ProjectConfigurationWorkingCopy configuration) {
         this.mComboViewer.setInput(configuration);
     }
 
+    /**
+     * Sets the text of the file set name text field.
+     *
+     * @param text
+     *            the file set name
+     */
     public void setText(String text) {
         this.mFileSetNameText.setText(text);
     }
 
+    /**
+     * Selects the given check configuration in the combo viewer.
+     *
+     * @param iCheckConfiguration
+     *            the check configuration to select
+     */
     public void setSelection(ICheckConfiguration iCheckConfiguration) {
         this.mComboViewer.setSelection(new StructuredSelection(iCheckConfiguration));
     }

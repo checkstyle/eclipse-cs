@@ -29,6 +29,9 @@ import org.dom4j.Element;
  */
 public final class CheckConfigurationXmlWriter {
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private CheckConfigurationXmlWriter() {
     }
 

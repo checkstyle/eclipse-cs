@@ -60,6 +60,20 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
     /** The configured modules panel. */
     private final ConfiguredModules configuredModules;
 
+    /**
+     * Creates the module configuration dialog view.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the SWT style bits
+     * @param callbacks
+     *            the callbacks used by the dialog view
+     * @param mModules
+     *            the list of configured modules
+     * @param configurable
+     *            whether the configuration is editable
+     */
     public CheckConfigurationConfigureDialogView(Composite parent, int style,
         CheckConfigurationConfigureDialogViewCallbacks callbacks, List<Module> mModules,
         boolean configurable) {
@@ -99,26 +113,51 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         });
     }
 
+    /**
+     * Sets the text shown in the module description browser.
+     *
+     * @param description
+     *            the description to display
+     */
     public void setBrowserDescription(String description) {
         mBrowserDescription.setText(description);
     }
 
+    /**
+     * Refreshes the display of the configured modules.
+     */
     public void refreshConfiguredModules() {
         configuredModules.refresh();
     }
 
+    /**
+     * Refreshes the display of the available modules.
+     */
     public void refreshAvailableModules() {
         availableModulesViewer.refresh();
     }
 
+    /**
+     * Selects the first group in the available modules tree.
+     */
     public void selectFirstAvailableGroup() {
         availableModulesViewer.selectFirstGroup();
     }
 
+    /**
+     * Sets focus to the available modules viewer.
+     */
     public void focusAvailableModules() {
         availableModulesViewer.focus();
     }
 
+    /**
+     * Updates the browser description and configured group when the available module selection
+     * changes.
+     *
+     * @param selection
+     *            the newly selected module element
+     */
     private void changeAvailableModuleSelection(Object selection) {
         String description = null;
         if (selection instanceof RuleGroupMetadata group) {

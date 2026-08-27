@@ -42,6 +42,14 @@ public class CheckstylePreferencePageHeader extends Composite {
     private static final String CHECKSTYLE_VERSION =
         Main.class.getPackage().getImplementationVersion();
 
+    /**
+     * Creates the preference page header.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     */
     public CheckstylePreferencePageHeader(Composite parent, int style) {
         super(parent, style);
         RowLayoutFactory.fillDefaults().applyTo(this);
@@ -54,6 +62,12 @@ public class CheckstylePreferencePageHeader extends Composite {
         link.addListener(SWT.Selection, this::linkClicked);
     }
 
+    /**
+     * Handles the selection of a link.
+     *
+     * @param event
+     *            the selection event
+     */
     private void linkClicked(Event event) {
         String url = "https://checkstyle.org";
         if (Character.isDigit(event.text.charAt(0))) {

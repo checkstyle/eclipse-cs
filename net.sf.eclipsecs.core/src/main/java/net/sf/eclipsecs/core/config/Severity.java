@@ -47,6 +47,12 @@ public enum Severity {
     /** String used to serialize the Severity in XML files. */
     private final String xmlValue;
 
+    /**
+     * Creates a severity with the given XML value.
+     *
+     * @param xmlValue
+     *            the XML value
+     */
     Severity(String xmlValue) {
         this.xmlValue = xmlValue;
     }
@@ -60,6 +66,13 @@ public enum Severity {
         return xmlValue;
     }
 
+    /**
+     * Converts an XML value to the corresponding severity.
+     *
+     * @param xmlValue
+     *            the XML value
+     * @return the matching severity
+     */
     public static Severity fromXmlValue(String xmlValue) {
         return Arrays.stream(Severity.values())
             .filter(severity -> severity.getXmlValue().equals(xmlValue)).findFirst()

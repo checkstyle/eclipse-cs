@@ -39,10 +39,26 @@ import net.sf.eclipsecs.core.config.ICheckConfiguration;
  */
 public final class PropertyResolverFactory {
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private PropertyResolverFactory() {
 
     }
 
+    /**
+     * Creates the property resolver for the given configuration.
+     *
+     * @param config
+     *            the check configuration
+     * @param configFile
+     *            the configuration file
+     * @return the assembled property resolver
+     * @throws IOException
+     *             the configuration file could not be read
+     * @throws URISyntaxException
+     *             the configuration file URL is malformed
+     */
     public static PropertyResolver getPropertyResolver(ICheckConfiguration config,
         CheckstyleConfigurationFile configFile) throws IOException, URISyntaxException {
         final MultiPropertyResolver multiResolver = new MultiPropertyResolver();

@@ -55,6 +55,13 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
         };
     }
 
+    /**
+     * Moves the default case of the given switch case node, along with its statements, to the end
+     * of the switch statement.
+     *
+     * @param node
+     *            the default switch case node to move
+     */
     @SuppressWarnings("unchecked")
     private static void visitSwitchCase(SwitchCase node) {
         if (node.isDefault() && !isLastSwitchCase(node)) {
@@ -83,6 +90,13 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
         }
     }
 
+    /**
+     * Determines whether the given switch case is the last case of its switch statement.
+     *
+     * @param switchCase
+     *            the switch case to test
+     * @return true if the case is the last one, false otherwise
+     */
     private static boolean isLastSwitchCase(SwitchCase switchCase) {
         boolean isLastSwitchCase = true;
         final SwitchStatement switchStatement = (SwitchStatement) switchCase.getParent();

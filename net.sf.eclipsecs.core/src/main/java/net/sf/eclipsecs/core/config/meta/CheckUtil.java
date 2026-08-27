@@ -41,9 +41,21 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
  *
  */
 public final class CheckUtil {
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private CheckUtil() {
     }
 
+    /**
+     * Determines the modifiable tokens of the given check.
+     *
+     * @param checkName
+     *            the name of the check
+     * @return the comma separated list of modifiable token names
+     * @throws IllegalStateException
+     *             if the check has an unexpected class hierarchy
+     */
     public static String getModifiableTokens(String checkName) {
         final Object checkResult = getCheck(checkName);
         String result = null;
@@ -66,6 +78,15 @@ public final class CheckUtil {
         return result;
     }
 
+    /**
+     * Creates an instance of the given check.
+     *
+     * @param checkName
+     *            the name of the check
+     * @return the created check instance
+     * @throws IllegalStateException
+     *             if the check could not be loaded
+     */
     private static AbstractCheck getCheck(String checkName) {
         final ClassLoader classLoader =
             CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
@@ -79,6 +100,15 @@ public final class CheckUtil {
         }
     }
 
+    /**
+     * Removes the required tokens from the given tokens.
+     *
+     * @param tokens
+     *            the tokens
+     * @param requiredTokens
+     *            the tokens to remove
+     * @return the list of remaining tokens
+     */
     private static List<Integer> subtractTokens(int[] tokens, int... requiredTokens) {
         final Set<Integer> requiredTokensSet =
             new HashSet<>(Arrays.stream(requiredTokens).boxed().collect(Collectors.toList()));
@@ -86,6 +116,15 @@ public final class CheckUtil {
             .collect(Collectors.toList());
     }
 
+    /**
+     * Converts the given token ids into their names.
+     *
+     * @param function
+     *            the function mapping a token id to its name
+     * @param modifiableTokens
+     *            the token ids to convert
+     * @return the comma separated list of token names
+     */
     private static String getTokens(Function<Integer, String> function,
         List<Integer> modifiableTokens) {
         return modifiableTokens.stream().map(function::apply).collect(Collectors.joining(","));

@@ -155,6 +155,13 @@ public final class ConfigurationReader {
         return rules;
     }
 
+    /**
+     * Extracts the modules declared in the given document.
+     *
+     * @param document
+     *            the document to read
+     * @return the list of modules
+     */
     private static List<Module> getModules(final Document document) {
 
         final List<Module> modules = new ArrayList<>();
@@ -170,6 +177,13 @@ public final class ConfigurationReader {
         return modules;
     }
 
+    /**
+     * Creates a module from the given XML element.
+     *
+     * @param node
+     *            the module element
+     * @return the created module
+     */
     private static Module createModule(final Element node) {
         final String name = node.attributeValue(XMLTags.NAME_TAG);
         final RuleMetadata metadata = MetadataFactory.getRuleMetadata(name);
@@ -190,6 +204,14 @@ public final class ConfigurationReader {
         return module;
     }
 
+    /**
+     * Adds the property elements of the module element to the module.
+     *
+     * @param moduleEl
+     *            the module element
+     * @param module
+     *            the module to fill
+     */
     private static void addProperties(final Element moduleEl, final Module module) {
 
         final List<Element> propertyEls = moduleEl.elements(XMLTags.PROPERTY_TAG);
@@ -233,6 +255,14 @@ public final class ConfigurationReader {
         }
     }
 
+    /**
+     * Adds the message elements of the module element to the module.
+     *
+     * @param moduleEl
+     *            the module element
+     * @param module
+     *            the module to fill
+     */
     private static void addMessages(final Element moduleEl, final Module module) {
 
         final List<Element> messageEls = moduleEl.elements(XMLTags.MESSAGE_TAG);
@@ -246,6 +276,14 @@ public final class ConfigurationReader {
         }
     }
 
+    /**
+     * Adds the metadata elements of the module element to the module.
+     *
+     * @param moduleEl
+     *            the module element
+     * @param module
+     *            the module to fill
+     */
     private static void addMetadata(final Element moduleEl, final Module module) {
 
         final List<Element> metaEls = moduleEl.elements(XMLTags.METADATA_TAG);

@@ -42,10 +42,21 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public final class WorkspaceFileSelector {
 
+    /**
+     * Utility class, cannot be instantiated.
+     */
     private WorkspaceFileSelector() {
 
     }
 
+    /**
+     * Opens the selection dialog and returns the path of the selected Checkstyle configuration
+     * file.
+     *
+     * @param shell
+     *            the parent shell
+     * @return the path of the selected file or an empty optional if nothing was selected
+     */
     public static Optional<String> select(Shell shell) {
         final ElementTreeSelectionDialog dialog = new ElementTreeSelectionDialog(shell,
             new WorkbenchLabelProvider(), new WorkbenchContentProvider());

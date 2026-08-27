@@ -88,6 +88,16 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     /** The checkbox for running in background on full builds. */
     private final Button mBackgroundFullBuild;
 
+    /**
+     * Creates the general settings section of the Checkstyle preference page.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param setRebuildAll
+     *            the runnable to trigger a full rebuild
+     */
     public CheckstylePreferencePageGeneralSettings(Composite parent, int style,
         Runnable setRebuildAll) {
         super(parent, style);
@@ -153,6 +163,15 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD));
     }
 
+    /**
+     * Creates the rebuild section with the rebuild selection combo and the cache purge button.
+     *
+     * @param group
+     *            the parent group
+     * @param setRebuildAll
+     *            the runnable to trigger a full rebuild
+     * @return the rebuild preference combo
+     */
     private static Combo createRebuildSection(Group group, Runnable setRebuildAll) {
         final Composite rebuildComposite = new Composite(group, SWT.NULL);
         GridLayoutFactory.swtDefaults().numColumns(REBUILD_SECTION_NUM_COLUMNS).margins(0, 0)
@@ -187,6 +206,13 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         return mRebuildIfNeeded;
     }
 
+    /**
+     * Creates the language selection combo.
+     *
+     * @param group
+     *            the parent group
+     * @return the language selection combo
+     */
     private static Combo createLanguageSetting(Group group) {
         final Composite langComposite = new Composite(group, SWT.NULL);
         RowLayoutFactory.fillDefaults().applyTo(langComposite);
@@ -212,6 +238,17 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         return languageIf;
     }
 
+    /**
+     * Creates a checkbox with a rebuild note label.
+     *
+     * @param group
+     *            the parent group
+     * @param text
+     *            the checkbox label text
+     * @param selection
+     *            the initial selection state
+     * @return the created checkbox button
+     */
     private static Button makeCheckboxWithRebuildNoteLabel(Group group, String text,
         boolean selection) {
         final Composite composite = new Composite(group, SWT.NULL);
@@ -221,6 +258,19 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         return button;
     }
 
+    /**
+     * Creates a button with the given label and selection state.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the button style
+     * @param text
+     *            the button label text
+     * @param selection
+     *            the initial selection state
+     * @return the created button
+     */
     private static Button makeButton(Composite parent, int style, String text, boolean selection) {
         final Button button = new Button(parent, style);
         button.setText(text);
@@ -228,6 +278,12 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         return button;
     }
 
+    /**
+     * Adds a label with a rebuild hint tooltip to the given parent.
+     *
+     * @param parent
+     *            the parent composite
+     */
     private static void addRebuildNoteLabel(Composite parent) {
         final Label lblRebuildNote = new Label(parent, SWT.NULL);
         lblRebuildNote.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
@@ -235,34 +291,74 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         SWTUtil.addTooltipOnPressSupport(lblRebuildNote);
     }
 
+    /**
+     * Returns the selected language.
+     *
+     * @return the selected language
+     */
     public String getLanguageIf() {
         return SUPPORTED_LANGUAGES.get(languageIf.getSelectionIndex());
     }
 
+    /**
+     * Returns the selected rebuild preference.
+     *
+     * @return the selected rebuild preference
+     */
     public String getRebuildIfNeeded() {
         return mRebuildIfNeeded.getItem(mRebuildIfNeeded.getSelectionIndex());
     }
 
+    /**
+     * Returns whether to warn before losing filesets.
+     *
+     * @return true if the warning is enabled, false otherwise
+     */
     public boolean getWarnBeforeLosingFilesets() {
         return mWarnBeforeLosingFilesets.getSelection();
     }
 
+    /**
+     * Returns whether rule names are included in the report.
+     *
+     * @return true if rule names are included, false otherwise
+     */
     public boolean getIncludeRuleNames() {
         return mIncludeRuleNamesButton.getSelection();
     }
 
+    /**
+     * Returns whether module IDs are included in the report.
+     *
+     * @return true if module IDs are included, false otherwise
+     */
     public boolean getIncludeModuleIdButton() {
         return mIncludeModuleIdButton.getSelection();
     }
 
+    /**
+     * Returns whether the number of Checkstyle markers is limited.
+     *
+     * @return true if markers are limited, false otherwise
+     */
     public boolean getLimitCheckstyleMarkers() {
         return mLimitCheckstyleMarkers.getSelection();
     }
 
+    /**
+     * Returns the configured marker limit.
+     *
+     * @return the marker limit as text
+     */
     public String getTxtMarkerLimit() {
         return mTxtMarkerLimit.getText();
     }
 
+    /**
+     * Returns whether Checkstyle runs in the background on full builds.
+     *
+     * @return true if Checkstyle runs in the background, false otherwise
+     */
     public boolean getBackgroundFullBuild() {
         return mBackgroundFullBuild.getSelection();
     }

@@ -52,6 +52,15 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
         super(parent, prop);
     }
 
+    /**
+     * Creates a single select property widget for the given parent and property.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property to edit
+     * @return the created single select property widget
+     */
     public static ConfigPropertyWidgetSingleSelect create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetSingleSelect(parent, prop);
     }

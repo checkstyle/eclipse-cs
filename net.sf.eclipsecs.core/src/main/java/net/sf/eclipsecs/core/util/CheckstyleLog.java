@@ -36,6 +36,9 @@ public final class CheckstyleLog {
     /** The platform log. */
     private static ILog log;
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private CheckstyleLog() {
     }
 

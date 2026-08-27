@@ -76,6 +76,12 @@ public class ActivateProjectsAction implements IObjectActionDelegate {
         /** The projects to activate Checkstyle on. */
         private Collection<IProject> mProjectsToActivate;
 
+        /**
+         * Creates the job to activate Checkstyle on the given projects.
+         *
+         * @param projectsToActivate
+         *            the projects to activate Checkstyle on
+         */
         BulkCheckstyleActivateJob(Collection<IProject> projectsToActivate) {
             super(Messages.ActivateProjectsPrintAction_msgActivateSelectedProjects);
             this.mProjectsToActivate = projectsToActivate;

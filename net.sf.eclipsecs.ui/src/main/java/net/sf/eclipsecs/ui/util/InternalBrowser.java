@@ -35,6 +35,9 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public final class InternalBrowser {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private InternalBrowser() {
         // utility class
     }

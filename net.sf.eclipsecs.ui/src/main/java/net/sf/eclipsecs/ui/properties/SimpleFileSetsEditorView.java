@@ -49,6 +49,20 @@ public final class SimpleFileSetsEditorView extends Composite {
     /** The combo viewer for check configuration selection. */
     private final ComboViewer mComboViewer;
 
+    /**
+     * Creates the simple file sets editor view.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the style of the composite
+     * @param manageConfig
+     *            the runnable to manage configurations
+     * @param mDefaultFileSet
+     *            the default file set
+     * @param propertyPageContext
+     *            the property page context
+     */
     public SimpleFileSetsEditorView(Composite parent, int style, Runnable manageConfig,
         FileSet mDefaultFileSet, PropertyPageContext propertyPageContext) {
         super(parent, style);
@@ -98,6 +112,13 @@ public final class SimpleFileSetsEditorView extends Composite {
         }
     }
 
+    /**
+     * Returns the description of the given check configuration, or an empty string if none is set.
+     *
+     * @param config
+     *            the check configuration
+     * @return the configuration description
+     */
     private static String getDescription(ICheckConfiguration config) {
         final String description;
         if (config.getDescription() != null) {
@@ -109,6 +130,9 @@ public final class SimpleFileSetsEditorView extends Composite {
         return description;
     }
 
+    /**
+     * Refreshes the combo viewer.
+     */
     public void refresh() {
         mComboViewer.refresh();
     }

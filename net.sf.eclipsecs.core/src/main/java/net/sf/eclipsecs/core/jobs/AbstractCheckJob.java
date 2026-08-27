@@ -33,6 +33,12 @@ public abstract class AbstractCheckJob extends WorkspaceJob implements IScheduli
      */
     public static final Object CHECKSTYLE_JOB_FAMILY = new Object();
 
+    /**
+     * Creates a check job with the given name.
+     *
+     * @param name
+     *            the job name
+     */
     public AbstractCheckJob(String name) {
         super(name);
     }

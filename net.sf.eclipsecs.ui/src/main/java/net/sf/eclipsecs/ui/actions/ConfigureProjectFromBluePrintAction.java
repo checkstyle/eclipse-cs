@@ -117,6 +117,14 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
         /** The projects to configure from the blueprint. */
         private final Collection<IProject> mProjectsToConfigure;
 
+        /**
+         * Creates the job configuring the given projects from the blueprint project.
+         *
+         * @param blueprint
+         *            the blueprint project to copy configuration from
+         * @param projectsToConfigure
+         *            the projects to configure
+         */
         BulkConfigureJob(IProject blueprint, Collection<IProject> projectsToConfigure) {
             super(Messages.ConfigureProjectFromBluePrintAction_msgConfiguringFromBluePrint);
             this.mBlueprint = blueprint;

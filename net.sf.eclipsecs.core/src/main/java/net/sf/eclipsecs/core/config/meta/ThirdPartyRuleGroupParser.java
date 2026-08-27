@@ -32,6 +32,9 @@ import org.yaml.snakeyaml.Yaml;
  */
 final class ThirdPartyRuleGroupParser {
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private ThirdPartyRuleGroupParser() {
     }
 

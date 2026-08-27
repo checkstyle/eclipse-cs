@@ -156,6 +156,14 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
         return composite;
     }
 
+    /**
+     * Recreates the configuration editor when the configuration type selection changed.
+     *
+     * @param type
+     *            the new configuration type
+     * @param isComboEnabled
+     *            whether the type combo is enabled
+     */
     private void changeSelectedConfigurationType(IConfigurationType type, boolean isComboEnabled) {
         if (isComboEnabled) {
             final String oldName = mCheckConfig.getName();

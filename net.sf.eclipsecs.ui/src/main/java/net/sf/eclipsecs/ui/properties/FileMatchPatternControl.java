@@ -44,6 +44,17 @@ public final class FileMatchPatternControl extends Composite {
     /** The file match pattern table. */
     private final FileMatchPatternTable table;
 
+    /**
+     * Constructor building the group with the file match pattern table and the buttons to edit
+     * them.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the SWT style bits to apply to this composite
+     * @param callbacks
+     *            the callbacks invoked on user actions
+     */
     public FileMatchPatternControl(Composite parent, int style,
         FileMatchPatternControlCallbacks callbacks) {
         super(parent, style);
@@ -72,16 +83,33 @@ public final class FileMatchPatternControl extends Composite {
             toRunnable(callbacks.downFileMatchPattern));
     }
 
+    /**
+     * Wraps the given callback into a runnable that consumes the currently selected file match
+     * pattern.
+     *
+     * @param callback
+     *            the callback to wrap
+     * @return a runnable performing the callback with the selected pattern
+     */
     private Runnable toRunnable(Consumer<FileMatchPattern> callback) {
         return () -> {
             callback.accept(table.getSelectedPattern());
         };
     }
 
+    /**
+     * Refreshes the file match pattern table.
+     */
     public void refresh() {
         table.refresh();
     }
 
+    /**
+     * Sets the file match patterns to be shown in the table.
+     *
+     * @param fileMatchPatterns
+     *            the file match patterns to show
+     */
     public void setInput(List<FileMatchPattern> fileMatchPatterns) {
         table.setInput(fileMatchPatterns);
     }

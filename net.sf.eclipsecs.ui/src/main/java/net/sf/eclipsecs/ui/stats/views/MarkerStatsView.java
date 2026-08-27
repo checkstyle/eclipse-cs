@@ -215,6 +215,9 @@ public class MarkerStatsView extends AbstractStatsView {
             .setEnabled(mIsDrilledDown && !mMainSection.getSelectedMarker().isEmpty());
     }
 
+    /**
+     * Drills back from the detail view to the master view.
+     */
     private void drillBack() {
         mIsDrilledDown = false;
         detailContentProvider.setCurrentDetailCategory(null);

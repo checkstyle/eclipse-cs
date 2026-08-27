@@ -71,6 +71,12 @@ public class FinalLocalVariableQuickfix extends AbstractASTResolution {
         /** The actual offset where the problem marker starts. */
         private final int markerStartOffset;
 
+        /**
+         * Creates the AST visitor for the given marker offset.
+         *
+         * @param markerStartOffset
+         *            the offset where the problem marker starts
+         */
         private FinalLocalVariableQuickfixAstVisitor(int markerStartOffset) {
             this.markerStartOffset = markerStartOffset;
         }
@@ -87,6 +93,17 @@ public class FinalLocalVariableQuickfix extends AbstractASTResolution {
             return visit(node, node.getModifiers(), node.modifiers());
         }
 
+        /**
+         * Adds the final modifier to the visited node if it contains the marker offset.
+         *
+         * @param node
+         *            the visited node
+         * @param bitModifiers
+         *            the bitwise modifiers of the node
+         * @param modifiers
+         *            the extended modifiers list to add the final modifier to
+         * @return true to continue visiting child nodes
+         */
         private boolean visit(ASTNode node, int bitModifiers,
             List<IExtendedModifier> modifiers) {
             if (containsPosition(node, markerStartOffset) && !Modifier.isFinal(bitModifiers)) {

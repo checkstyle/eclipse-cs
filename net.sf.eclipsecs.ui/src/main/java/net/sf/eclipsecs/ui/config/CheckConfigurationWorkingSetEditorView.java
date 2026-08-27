@@ -59,6 +59,18 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
     /** The model for this view. */
     private final CheckConfigurationWorkingSetEditorModel model;
 
+    /**
+     * Creates the working set editor view.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the composite style bits
+     * @param model
+     *            the model for this view
+     * @param buttonBarActions
+     *            the button bar actions
+     */
     public CheckConfigurationWorkingSetEditorView(Composite parent, int style,
         CheckConfigurationWorkingSetEditorModel model, ButtonBarActions buttonBarActions) {
         super(parent, style);
@@ -102,22 +114,51 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
         handleSelectionChanged(null);
     }
 
+    /**
+     * Returns the currently selected configuration.
+     *
+     * @return the selected configuration
+     */
     public CheckConfigurationWorkingCopy getSelectedConfig() {
         return configTable.getSelection();
     }
 
+    /**
+     * Sets the configurations displayed in the config table.
+     *
+     * @param configs
+     *            the configurations to display
+     */
     public void setConfigs(CheckConfigurationWorkingCopy[] configs) {
         configTable.setConfigs(configs);
     }
 
+    /**
+     * Sets the selected configuration in the config table.
+     *
+     * @param config
+     *            the configuration to select
+     */
     public void setSelection(CheckConfigurationWorkingCopy config) {
         configTable.setSelection(config);
     }
 
+    /**
+     * Refreshes the config table.
+     */
     public void refresh() {
         configTable.refresh();
     }
 
+    /**
+     * Creates the table viewer showing the projects using the configuration.
+     *
+     * @param parent
+     *            the parent composite
+     * @param global
+     *            whether the viewer applies to a global configuration
+     * @return the usage table viewer, or empty if not global
+     */
     private static Optional<TableViewer> makeUsageView(Composite parent, boolean global) {
         TableViewer usageView = null;
         if (global) {
@@ -138,6 +179,12 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
         return Optional.ofNullable(usageView);
     }
 
+    /**
+     * Handles the selection change in the config table.
+     *
+     * @param config
+     *            the newly selected configuration
+     */
     private void handleSelectionChanged(CheckConfigurationWorkingCopy config) {
         final boolean configSelected = config != null;
         if (configSelected) {

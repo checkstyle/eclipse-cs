@@ -55,6 +55,20 @@ public final class ConfiguredModules extends Composite {
     /** The currently selected rule group. */
     private RuleGroupMetadata currentGroup;
 
+    /**
+     * Creates the configured modules composite.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param configurable
+     *            whether the modules are configurable
+     * @param modules
+     *            the modules to display
+     * @param callbacks
+     *            the callbacks used by the composite
+     */
     public ConfiguredModules(Composite parent, int style, boolean configurable,
         List<Module> modules, ConfiguredModulesCallbacks callbacks) {
         super(parent, style);
@@ -83,10 +97,19 @@ public final class ConfiguredModules extends Composite {
         GridDataFactory.swtDefaults().applyTo(buttons);
     }
 
+    /**
+     * Refreshes the table of configured modules.
+     */
     public void refresh() {
         table.refresh();
     }
 
+    /**
+     * Sets the currently selected rule group and refreshes the displayed modules.
+     *
+     * @param currentGroup
+     *            the current rule group
+     */
     public void setCurrentGroup(RuleGroupMetadata currentGroup) {
         this.currentGroup = currentGroup;
         this.configuredModulesGroup
@@ -138,6 +161,12 @@ public final class ConfiguredModules extends Composite {
         /** Whether the table is configurable. */
         private final boolean configurable;
 
+        /**
+         * Creates the check state provider.
+         *
+         * @param configurable
+         *            whether the table is configurable
+         */
         private TableCheckStateProvider(boolean configurable) {
             this.configurable = configurable;
         }

@@ -46,6 +46,12 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
     /** Section tag for detail view settings. */
     private static final String TAG_SECTION_DETAIL = "detailView";
 
+    /**
+     * Constructs a data providers record based on the given dialog settings.
+     *
+     * @param dialogSettings
+     *            the dialog settings used to initialize the master and detail providers
+     */
     public MarkerStatsViewDataProviders(IDialogSettings dialogSettings) {
         this(new MarkerStatsViewMasterDataProviders(dialogSettings),
             new MarkerStatsViewDetailDataProviders(dialogSettings));
@@ -62,10 +68,22 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
     public record MarkerStatsViewMasterDataProviders(MasterContentProvider contentProvider,
         IDialogSettings dialogSettings) {
 
+        /**
+         * Constructs the master data provider record based on the given dialog settings.
+         *
+         * @param dialogSettings
+         *            the dialog settings used to persist the master table layout
+         */
         public MarkerStatsViewMasterDataProviders(IDialogSettings dialogSettings) {
             this(new MasterContentProvider(), dialogSettings);
         }
 
+        /**
+         * Returns the dialog settings section used to persist the master table layout, creating it
+         * if it does not yet exist.
+         *
+         * @return the dialog settings section for the master view
+         */
         public IDialogSettings getTableSettings() {
             IDialogSettings settings = dialogSettings.getSection(TAG_SECTION_MASTER);
             if (settings == null) {
@@ -86,10 +104,22 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
     public record MarkerStatsViewDetailDataProviders(DetailContentProvider contentProvider,
         IDialogSettings dialogSettings) {
 
+        /**
+         * Constructs the detail data provider record based on the given dialog settings.
+         *
+         * @param dialogSettings
+         *            the dialog settings used to persist the detail table layout
+         */
         public MarkerStatsViewDetailDataProviders(IDialogSettings dialogSettings) {
             this(new DetailContentProvider(), dialogSettings);
         }
 
+        /**
+         * Returns the dialog settings section used to persist the detail table layout, creating it
+         * if it does not yet exist.
+         *
+         * @return the dialog settings section for the detail view
+         */
         public IDialogSettings getTableSettings() {
             IDialogSettings settings = dialogSettings.getSection(TAG_SECTION_DETAIL);
             if (settings == null) {
@@ -108,6 +138,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
         /** The current marker stats. */
         private Object[] mCurrentMarkerStats;
 
+        /** Creates the master content provider. */
         private MasterContentProvider() {
 
         }
@@ -146,6 +177,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
         /** The current detail category. */
         private String currentDetailCategory;
 
+        /** Creates the detail content provider. */
         private DetailContentProvider() {
 
         }
@@ -183,6 +215,11 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
             mCurrentDetails = null;
         }
 
+        /**
+         * Returns the number of markers currently loaded for the selected detail category.
+         *
+         * @return the number of markers, or zero if none are loaded
+         */
         public int getMarkerCount() {
             int count = 0;
             if (mCurrentDetails != null) {
@@ -191,10 +228,21 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
             return count;
         }
 
+        /**
+         * Returns the currently selected detail category.
+         *
+         * @return the current detail category
+         */
         public String getCurrentDetailCategory() {
             return currentDetailCategory;
         }
 
+        /**
+         * Sets the current detail category, invalidating the cached details so they are reloaded.
+         *
+         * @param currentDetailCategory
+         *            the detail category to select
+         */
         public void setCurrentDetailCategory(String currentDetailCategory) {
             this.currentDetailCategory = currentDetailCategory;
             this.mCurrentDetails = null;

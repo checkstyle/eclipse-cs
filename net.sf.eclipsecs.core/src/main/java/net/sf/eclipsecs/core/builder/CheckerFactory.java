@@ -250,6 +250,12 @@ public final class CheckerFactory {
         return checker;
     }
 
+    /**
+     * Sets the locale on the given checker if it changed.
+     *
+     * @param checker
+     *            the checker to update
+     */
     private static void setLocaleIfChanged(final Checker checker) {
         final String lc = getLocale();
         if (lc != null && !lc.equals(CheckstylePlugin.getPlatformLocale().getLanguage())) {
@@ -257,6 +263,14 @@ public final class CheckerFactory {
         }
     }
 
+    /**
+     * Sets the locale on the given checker.
+     *
+     * @param checker
+     *            the checker to update
+     * @param lang
+     *            the language to apply
+     */
     private static void setLocale(final Checker checker, final String lang) {
         final String lastLocale;
         if (lang != null) {
@@ -277,6 +291,11 @@ public final class CheckerFactory {
         }
     }
 
+    /**
+     * Returns the configured locale language.
+     *
+     * @return the configured language or <code>null</code> if the default should be used
+     */
     private static String getLocale() {
         String lang = CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);
         if (lang != null && (lang.isEmpty() || "default".equals(lang))) {

@@ -111,6 +111,9 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         return editorView;
     }
 
+    /**
+     * Opens a dialog to configure the check configuration of the default file set.
+     */
     private void manageConfig() {
         final ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
         if (config != null) {

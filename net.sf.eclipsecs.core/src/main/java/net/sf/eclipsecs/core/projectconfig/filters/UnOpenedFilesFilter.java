@@ -34,6 +34,9 @@ public class UnOpenedFilesFilter extends AbstractFilter {
     /** The list of opened files. */
     private static final List<IFile> OPENED_FILES = new ArrayList<>();
 
+    /**
+     * Creates a filter that filters files that are not opened.
+     */
     public UnOpenedFilesFilter() {
     }
 

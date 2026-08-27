@@ -49,6 +49,15 @@ public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWid
         super(parent, prop);
     }
 
+    /**
+     * Creates a boolean widget for the given property.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     * @return the created widget
+     */
     public static ConfigPropertyWidgetBoolean create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetBoolean(parent, prop);
     }

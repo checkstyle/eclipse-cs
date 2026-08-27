@@ -34,6 +34,9 @@ public final class CheckConfigurationViewerSorter extends ViewerComparator {
     public static final CheckConfigurationViewerSorter INSTANCE =
         new CheckConfigurationViewerSorter();
 
+    /**
+     * Private constructor to enforce the singleton pattern.
+     */
     private CheckConfigurationViewerSorter() {
 
     }

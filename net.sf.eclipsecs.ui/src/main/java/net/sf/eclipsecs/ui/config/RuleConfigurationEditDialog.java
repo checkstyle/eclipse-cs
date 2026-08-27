@@ -185,6 +185,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         createButton(parent, IDialogConstants.CANCEL_ID, IDialogConstants.CANCEL_LABEL, false);
     }
 
+    /**
+     * Initializes the dialog title, message and image.
+     */
     private void initialize() {
 
         this.setTitle(

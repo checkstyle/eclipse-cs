@@ -69,6 +69,15 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
         super(parent, prop);
     }
 
+    /**
+     * Creates a file property widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     * @return the created widget
+     */
     public static ConfigPropertyWidgetFile create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetFile(parent, prop);
     }

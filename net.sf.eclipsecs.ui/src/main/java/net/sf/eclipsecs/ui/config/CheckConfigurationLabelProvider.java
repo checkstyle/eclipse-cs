@@ -36,6 +36,9 @@ public class CheckConfigurationLabelProvider extends LabelProvider {
     public static final CheckConfigurationLabelProvider INSTANCE =
         new CheckConfigurationLabelProvider();
 
+    /**
+     * Creates the label provider singleton.
+     */
     protected CheckConfigurationLabelProvider() {
 
     }

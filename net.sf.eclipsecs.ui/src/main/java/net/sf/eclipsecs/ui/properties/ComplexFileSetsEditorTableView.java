@@ -50,6 +50,20 @@ public final class ComplexFileSetsEditorTableView extends Composite {
     /** The checkbox table viewer. */
     private final CheckboxTableViewer mViewer;
 
+    /**
+     * Creates the checkbox table view of file sets.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the style of the composite
+     * @param changeEnabledState
+     *            the listener for checkbox state changes
+     * @param editFileSet
+     *            the callback for editing a file set
+     * @param mFileSets
+     *            the file sets to display
+     */
     public ComplexFileSetsEditorTableView(Composite parent, int style,
         ICheckStateListener changeEnabledState, Consumer<FileSet> editFileSet,
         List<FileSet> mFileSets) {
@@ -70,18 +84,41 @@ public final class ComplexFileSetsEditorTableView extends Composite {
         mViewer.addCheckStateListener(changeEnabledState);
     }
 
+    /**
+     * Refreshes the table viewer.
+     */
     public void refresh() {
         mViewer.refresh();
     }
 
+    /**
+     * Sets the checked state of the given file set.
+     *
+     * @param fileSet
+     *            the file set to change
+     * @param enabled
+     *            the enabled state to set
+     */
     public void setChecked(FileSet fileSet, boolean enabled) {
         mViewer.setChecked(fileSet, enabled);
     }
 
+    /**
+     * Returns the currently selected file set.
+     *
+     * @return the selected file set
+     */
     public FileSet getSelectedFileSet() {
         return (FileSet) mViewer.getStructuredSelection().getFirstElement();
     }
 
+    /**
+     * Creates the table for the file set viewer.
+     *
+     * @param parent
+     *            the parent composite
+     * @return the created table
+     */
     private static Table createTable(Composite parent) {
         final Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(table);

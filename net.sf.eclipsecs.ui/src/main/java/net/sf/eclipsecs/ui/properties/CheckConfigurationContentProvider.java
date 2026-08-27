@@ -41,6 +41,9 @@ public final class CheckConfigurationContentProvider implements IStructuredConte
     public static final CheckConfigurationContentProvider INSTANCE =
         new CheckConfigurationContentProvider();
 
+    /**
+     * Utility class, cannot be instantiated.
+     */
     private CheckConfigurationContentProvider() {
 
     }

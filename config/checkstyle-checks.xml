@@ -747,6 +747,9 @@
             <property name="allowUnknownTags" value="true"/>
         </module>
         <module name="JavadocVariable"/>
+        <module name="MissingJavadocMethod">
+            <property name="scope" value="private"/>
+        </module>
         <module name="MissingJavadocPackage"/>
         <module name="MissingJavadocType">
             <property name="scope" value="private"/>

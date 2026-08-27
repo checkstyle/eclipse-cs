@@ -47,6 +47,9 @@ public abstract class AbstractFilter implements IFilter {
     /** Flags, if the filter is readonly. */
     private boolean mReadonly;
 
+    /**
+     * Creates a new abstract filter.
+     */
     protected AbstractFilter() {
 
     }

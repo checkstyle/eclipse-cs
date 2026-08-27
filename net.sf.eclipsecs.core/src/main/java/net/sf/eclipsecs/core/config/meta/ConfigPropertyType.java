@@ -52,6 +52,15 @@ public enum ConfigPropertyType {
     /** A value that contains a regular expression. */
     REGEX;
 
+    /**
+     * Converts an XML value to the corresponding property type.
+     *
+     * @param xmlValue
+     *            the XML value
+     * @return the property type
+     * @throws IllegalArgumentException
+     *             if the XML value is unexpected
+     */
     static ConfigPropertyType fromXmlValue(String xmlValue) {
         return switch (xmlValue) {
             case "String" -> STRING;

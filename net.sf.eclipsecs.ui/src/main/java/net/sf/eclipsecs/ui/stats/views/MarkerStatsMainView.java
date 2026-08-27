@@ -69,6 +69,22 @@ public final class MarkerStatsMainView extends Composite {
     /** The detail table viewer. */
     private final DetailTableViewer mDetailViewer;
 
+    /**
+     * Creates the marker statistics main view.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param providers
+     *            the data providers
+     * @param site
+     *            the workbench part site
+     * @param updateActions
+     *            keeps the actions updated
+     * @param actions
+     *            the marker statistics view actions
+     */
     public MarkerStatsMainView(Composite parent, int style, MarkerStatsViewDataProviders providers,
         IWorkbenchPartSite site, Runnable updateActions, MarkerStatsViewActions actions) {
         super(parent, style);
@@ -89,33 +105,64 @@ public final class MarkerStatsMainView extends Composite {
         mStackLayout.topControl = mMasterViewer;
     }
 
+    /**
+     * Sets the statistics shown by the view.
+     *
+     * @param stats
+     *            the statistics
+     */
     public void setStats(Stats stats) {
         mMasterViewer.setStats(stats);
         mDetailViewer.setStats(stats);
     }
 
+    /**
+     * Shows the master table as the top control.
+     */
     public void setMasterAsTopControl() {
         toggleTopControl(mMasterViewer);
     }
 
+    /**
+     * Shows the detail table as the top control.
+     */
     public void setDetailAsTopControl() {
         toggleTopControl(mDetailViewer);
     }
 
+    /**
+     * Sets the given control as the top control of the stack layout and refreshes it.
+     *
+     * @param control
+     *            the control to show
+     */
     private void toggleTopControl(AbstractStatTableViewer<?> control) {
         mStackLayout.topControl = control;
         layout();
         control.refresh();
     }
 
+    /**
+     * Focuses the top control of the stack layout.
+     */
     public void focusTopControl() {
         mStackLayout.topControl.setFocus();
     }
 
+    /**
+     * Returns the currently selected marker.
+     *
+     * @return the selected marker or an empty optional
+     */
     public Optional<IMarker> getSelectedMarker() {
         return mDetailViewer.getSelection();
     }
 
+    /**
+     * Returns the currently selected marker category.
+     *
+     * @return the selected marker category or an empty optional
+     */
     public Optional<MarkerStat> getSelectedMarkerCategory() {
         return mMasterViewer.getSelection();
     }
@@ -139,6 +186,14 @@ public final class MarkerStatsMainView extends Composite {
         site.registerContextMenu(menuMgr, viewer);
     }
 
+    /**
+     * Fills the given context menu with the provided actions.
+     *
+     * @param manager
+     *            the menu manager
+     * @param actions
+     *            the actions to add
+     */
     private static void fillContextMenu(IMenuManager manager, Collection<Object> actions) {
         for (Object item : actions) {
             if (item instanceof IContributionItem contrib) {
@@ -160,6 +215,22 @@ public final class MarkerStatsMainView extends Composite {
         /** The table viewer. */
         private final TableViewer tableViewer;
 
+        /**
+         * Creates the master table viewer.
+         *
+         * @param parent
+         *            the parent composite
+         * @param style
+         *            the widget style
+         * @param providers
+         *            the master data providers
+         * @param site
+         *            the workbench part site
+         * @param updateActions
+         *            keeps the actions updated
+         * @param drillDownAction
+         *            the action executed on double click
+         */
         private MainTableViewer(Composite parent, int style,
             MarkerStatsViewMasterDataProviders providers, IWorkbenchPartSite site,
             Runnable updateActions, IAction drillDownAction) {
@@ -190,6 +261,12 @@ public final class MarkerStatsMainView extends Composite {
             hookContextMenu(actionList, tableViewer, site);
         }
 
+        /**
+         * Creates the columns of the master table.
+         *
+         * @param tableColumnLayout
+         *            the table column layout to configure
+         */
         private void createColumns(TableColumnLayout tableColumnLayout) {
             final TableViewerColumn severityCol = new TableViewerColumn(tableViewer, SWT.CENTER);
             severityCol.setLabelProvider(ColumnLabelProvider.createImageProvider(element -> {
@@ -243,6 +320,24 @@ public final class MarkerStatsMainView extends Composite {
         /** The table viewer. */
         private final TableViewer tableViewer;
 
+        /**
+         * Creates the detail table viewer.
+         *
+         * @param parent
+         *            the parent composite
+         * @param style
+         *            the widget style
+         * @param providers
+         *            the detail data providers
+         * @param site
+         *            the workbench part site
+         * @param updateActions
+         *            keeps the actions updated
+         * @param drillBackAction
+         *            the action executed on double click
+         * @param showErrorAction
+         *            the action opening the selected marker
+         */
         private DetailTableViewer(Composite parent, int style,
             MarkerStatsViewDetailDataProviders providers, IWorkbenchPartSite site,
             Runnable updateActions, IAction drillBackAction, IAction showErrorAction) {
@@ -275,6 +370,12 @@ public final class MarkerStatsMainView extends Composite {
             hookContextMenu(List.of(drillBackAction, showErrorAction), tableViewer, site);
         }
 
+        /**
+         * Creates the columns of the detail table.
+         *
+         * @param tableColumnLayout
+         *            the table column layout to configure
+         */
         private void createColumns(TableColumnLayout tableColumnLayout) {
             final TableViewerColumn severityCol = new TableViewerColumn(tableViewer, SWT.CENTER);
             severityCol.setLabelProvider(ColumnLabelProvider.createImageProvider(element -> {
@@ -347,6 +448,16 @@ public final class MarkerStatsMainView extends Composite {
         /** The selection class type. */
         private final Class<T> selectionClass;
 
+        /**
+         * Creates the base table viewer.
+         *
+         * @param parent
+         *            the parent composite
+         * @param style
+         *            the widget style
+         * @param selectionClass
+         *            the type of selection handled by this viewer
+         */
         private AbstractStatTableViewer(Composite parent, int style, Class<T> selectionClass) {
             super(parent, style);
             this.selectionClass = selectionClass;
@@ -354,12 +465,28 @@ public final class MarkerStatsMainView extends Composite {
             setLayout(new FillLayout());
         }
 
+        /**
+         * Returns the underlying table viewer.
+         *
+         * @return the table viewer
+         */
         protected abstract TableViewer getTableViewer();
 
+        /**
+         * Sets the statistics shown by this viewer.
+         *
+         * @param stats
+         *            the statistics
+         */
         public void setStats(Stats stats) {
             getTableViewer().setInput(stats);
         }
 
+        /**
+         * Returns the current selection of this viewer.
+         *
+         * @return the selected element or an empty optional
+         */
         public Optional<T> getSelection() {
             Optional<T> selection = Optional.empty();
             if (getTableViewer().getSelection() instanceof StructuredSelection structuredSelection
@@ -369,6 +496,9 @@ public final class MarkerStatsMainView extends Composite {
             return selection;
         }
 
+        /**
+         * Refreshes this viewer.
+         */
         public void refresh() {
             getTableViewer().refresh();
         }

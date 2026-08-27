@@ -97,6 +97,12 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
         return editorView;
     }
 
+    /**
+     * Imports a configuration from a file selected by the user.
+     *
+     * @param shell
+     *            the shell to open the file dialog on
+     */
     private void importConfig(Shell shell) {
         promptImportConfigFile(shell).ifPresent(configFileString -> {
             final ICheckConfiguration tmpSourceConfig = new CheckConfiguration("dummy",
@@ -110,6 +116,13 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
         });
     }
 
+    /**
+     * Prompts the user to select a configuration file to import.
+     *
+     * @param shell
+     *            the shell to open the file dialog on
+     * @return the selected configuration file, or empty if none was chosen
+     */
     private static Optional<String> promptImportConfigFile(Shell shell) {
         final FileDialog fileDialog = new FileDialog(shell);
         fileDialog.setText(Messages.InternalConfigurationEditor_titleImportDialog);

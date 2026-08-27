@@ -73,6 +73,12 @@ public class FinalClassQuickfix extends AbstractASTResolution {
         /** The line info region. */
         private final IRegion lineInfo;
 
+        /**
+         * Creates the AST visitor.
+         *
+         * @param lineInfo
+         *            the line info region
+         */
         private FinalClassQuickfixAstVisitor(IRegion lineInfo) {
             this.lineInfo = lineInfo;
         }

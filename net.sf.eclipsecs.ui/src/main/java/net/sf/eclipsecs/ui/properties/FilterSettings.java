@@ -58,6 +58,20 @@ public class FilterSettings extends Composite {
     /** Height in pixels of the filter list. */
     private static final int FILTER_LIST_HEIGHT = 100;
 
+    /**
+     * Creates the filter settings composite.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param project
+     *            the project
+     * @param filters
+     *            the filters to configure
+     * @param markDirty
+     *            callback to mark the property page as dirty
+     */
     public FilterSettings(Composite parent, int style, IProject project, List<IFilter> filters,
         Runnable markDirty) {
         super(parent, style);
@@ -104,6 +118,15 @@ public class FilterSettings extends Composite {
         btnEditFilter.setEnabled(false);
     }
 
+    /**
+     * Creates the check list of the filters.
+     *
+     * @param group
+     *            the parent group
+     * @param project
+     *            the project
+     * @return the created filter list
+     */
     private CheckboxTableViewer createFilterList(Group group, IProject project) {
         final CheckboxTableViewer filterList = CheckboxTableViewer.newCheckList(group, SWT.BORDER);
         filterList.setLabelProvider(new FilterListLabelProvider());

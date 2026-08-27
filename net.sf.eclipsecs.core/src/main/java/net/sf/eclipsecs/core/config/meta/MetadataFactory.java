@@ -168,6 +168,12 @@ public final class MetadataFactory {
         return ruleMeta;
     }
 
+    /**
+     * Registers the alternative names of the given rule metadata.
+     *
+     * @param ruleMetadata
+     *            the rule metadata
+     */
     private static void registerAlternativeNames(RuleMetadata ruleMetadata) {
         ruleMetadata.identity().alternativeNames()
             .forEach(alternativeName -> alternativeNamesMap.put(alternativeName, ruleMetadata));
@@ -381,6 +387,13 @@ public final class MetadataFactory {
         loadRuleMetadata();
     }
 
+    /**
+     * Determines the group id of the given metadata file.
+     *
+     * @param metadataFile
+     *            the metadata file name
+     * @return the group id
+     */
     private static String groupId(String metadataFile) {
         String res = StringUtils.substringBetween(metadataFile, "/checks/", FILE_NAME_SEPARATOR);
         res = StringUtils.defaultString(res, metadataFile);
@@ -458,6 +471,20 @@ public final class MetadataFactory {
         return resourceBundle;
     }
 
+    /**
+     * Parses the metadata from the given stream and registers it.
+     *
+     * @param metadataStream
+     *            the stream containing the metadata
+     * @param metadataBundle
+     *            the resource bundle for localization
+     * @param groupId
+     *            the id of the rule group
+     * @throws DocumentException
+     *             the metadata document could not be read
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
     private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle,
         String groupId) throws DocumentException, CheckstylePluginException {
         final Collection<RuleGroupMetadata> groups = MetadataXmlReader.parseMetadata(metadataStream,

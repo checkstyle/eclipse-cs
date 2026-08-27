@@ -203,6 +203,9 @@ public final class CheckstyleTokens {
     /** Type that refers to all types ({@code "?"}). */
     public static final String WILDCARD_TYPE = "WILDCARD_TYPE";
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private CheckstyleTokens() {
     }
 }

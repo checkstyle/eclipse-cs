@@ -58,6 +58,24 @@ public final class ConfiguredModulesTable extends Composite {
     /** The checkbox table viewer for configured modules. */
     private final CheckboxTableViewer tableViewer;
 
+    /**
+     * Creates the table of configured modules and wires it to the given callbacks.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the style bits
+     * @param ruleGroupModuleFilter
+     *            the viewer filter applied to the module table
+     * @param configurable
+     *            whether the modules can be removed and their check state changed
+     * @param checkStateProvider
+     *            the check state provider for the table
+     * @param callbacks
+     *            the callbacks notified on user interaction with the table
+     * @param modules
+     *            the modules to display in the table
+     */
     public ConfiguredModulesTable(Composite parent, int style, ViewerFilter ruleGroupModuleFilter,
         boolean configurable, ICheckStateProvider checkStateProvider,
         ConfiguredModulesCallbacks callbacks, List<Module> modules) {
@@ -114,6 +132,14 @@ public final class ConfiguredModulesTable extends Composite {
         TableViewerEnhancer.enhance(tableViewer, getTableSettings(), tableColumnLayout);
     }
 
+    /**
+     * Creates the table columns for module name, severity and comment.
+     *
+     * @param layout
+     *            the table column layout to which the column data is added
+     * @param table
+     *            the table whose columns are created
+     */
     private void createColumns(TableColumnLayout layout, Table table) {
         final TableViewerColumn col1 = new TableViewerColumn(tableViewer, SWT.NONE);
         col1.getColumn().setAlignment(SWT.CENTER);
@@ -154,15 +180,29 @@ public final class ConfiguredModulesTable extends Composite {
         table.setSortColumn(col2.getColumn());
     }
 
+    /**
+     * Refreshes the table viewer to reflect the current module data.
+     */
     public void refresh() {
         tableViewer.refresh();
     }
 
+    /**
+     * Returns the modules currently selected in the table.
+     *
+     * @return the list of selected modules
+     */
     @SuppressWarnings("unchecked")
     public List<Module> getSelectedModules() {
         return tableViewer.getStructuredSelection().toList();
     }
 
+    /**
+     * Returns the dialog settings section for the configure dialog, creating it if it does not yet
+     * exist.
+     *
+     * @return the dialog settings section for the table
+     */
     private static IDialogSettings getTableSettings() {
         final String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
 
@@ -177,6 +217,13 @@ public final class ConfiguredModulesTable extends Composite {
         return settings;
     }
 
+    /**
+     * Returns the given value or an empty string if it is null.
+     *
+     * @param value
+     *            the value to convert, may be null
+     * @return the value, or an empty string if it was null
+     */
     private static String nullSafeText(String value) {
         final String text;
         if (value != null) {

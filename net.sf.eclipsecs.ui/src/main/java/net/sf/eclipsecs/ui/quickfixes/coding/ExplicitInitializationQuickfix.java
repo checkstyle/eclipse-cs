@@ -58,6 +58,12 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
         return fixed;
     }
 
+    /**
+     * Retrieves the field name from the marker.
+     *
+     * @param marker
+     *            the marker
+     */
     private void retrieveFieldName(final IMarker marker) {
         try {
             final Map<String, Object> attributes = marker.getAttributes();
@@ -78,6 +84,12 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
         }
     }
 
+    /**
+     * Logs an error that occurred while retrieving the field name.
+     *
+     * @param error
+     *            the exception
+     */
     private void handleRetrieveFieldNameException(final Exception error) {
         CheckstyleLog.log(error, Messages.ExplicitInitializationQuickfix_errorMessageFieldName);
     }

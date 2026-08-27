@@ -58,6 +58,9 @@ public final class CheckstyleFileWriter {
         this.file = file;
     }
 
+    /**
+     * Writes the configured checkstyle settings to an XML file.
+     */
     public void writeXmlFile() {
         try (FileOutputStream fw = new FileOutputStream(file)) {
             writeXMLFile(fw);

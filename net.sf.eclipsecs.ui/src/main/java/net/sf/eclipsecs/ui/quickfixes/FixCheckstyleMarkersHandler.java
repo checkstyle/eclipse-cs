@@ -57,6 +57,11 @@ public class FixCheckstyleMarkersHandler extends AbstractHandler {
         return null;
     }
 
+    /**
+     * Returns the active text editor or <code>null</code> if none is active.
+     *
+     * @return the active text editor
+     */
     private ITextEditor getActiveEditor() {
         ITextEditor activeEditor = null;
         final IWorkbenchWindow window = PlatformUI.getWorkbench().getActiveWorkbenchWindow();

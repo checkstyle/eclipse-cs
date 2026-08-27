@@ -66,6 +66,9 @@ public final class ProjectConfigurationFactory {
     private static final List<String> SUPPORTED_VERSIONS = Arrays.asList("1.0.0",
         "1.1.0", CURRENT_FILE_FORMAT_VERSION);
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private ProjectConfigurationFactory() {
     }
 
@@ -189,6 +192,19 @@ public final class ProjectConfigurationFactory {
         return configuration;
     }
 
+    /**
+     * Reads the project configuration from the given input stream.
+     *
+     * @param input
+     *            the input stream
+     * @param project
+     *            the project
+     * @return the project configuration
+     * @throws DocumentException
+     *             the configuration document could not be read
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
     private static IProjectConfiguration getProjectConfiguration(InputStream input,
         IProject project) throws DocumentException, CheckstylePluginException {
 
@@ -215,6 +231,15 @@ public final class ProjectConfigurationFactory {
             syncFormatter);
     }
 
+    /**
+     * Reads the local check configurations from the given root element.
+     *
+     * @param root
+     *            the root element
+     * @param project
+     *            the project
+     * @return the list of check configurations
+     */
     private static List<ICheckConfiguration> getLocalCheckConfigs(Element root, IProject project) {
 
         final List<ICheckConfiguration> configurations = new ArrayList<>();
@@ -268,6 +293,17 @@ public final class ProjectConfigurationFactory {
         return configurations;
     }
 
+    /**
+     * Reads the file sets from the given root element.
+     *
+     * @param root
+     *            the root element
+     * @param localCheckConfigs
+     *            the local check configurations
+     * @return the list of file sets
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
     private static List<FileSet> getFileSets(Element root,
         List<ICheckConfiguration> localCheckConfigs) throws CheckstylePluginException {
 
@@ -318,6 +354,13 @@ public final class ProjectConfigurationFactory {
         return fileSets;
     }
 
+    /**
+     * Reads the filters from the given root element.
+     *
+     * @param root
+     *            the root element
+     * @return the list of filters
+     */
     private static List<IFilter> getFilters(Element root) {
 
         final List<IFilter> filters = new ArrayList<>();

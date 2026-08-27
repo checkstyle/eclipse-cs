@@ -228,6 +228,17 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         return true;
     }
 
+    /**
+     * Updates the boolean preference with the given selection.
+     *
+     * @param selection
+     *            the new value of the preference
+     * @param preference
+     *            the key of the preference to update
+     * @return true if the preference value changed, false otherwise
+     * @throws BackingStoreException
+     *             if the preference could not be stored
+     */
     private static boolean updateBooleanPreference(boolean selection, String preference)
             throws BackingStoreException {
         final boolean original = CheckstylePluginPrefs.getBoolean(preference);
@@ -235,6 +246,19 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         return selection != original;
     }
 
+    /**
+     * Determines whether all projects need to be rebuilt after the preference change.
+     *
+     * @param includeRuleNamesHasChanged
+     *            whether the {@code includeRuleNames} preference changed
+     * @param includeModuleIdHasChanged
+     *            whether the {@code includeModuleId} preference changed
+     * @param limitMarkersHasChanged
+     *            whether the {@code limitMarkers} preference changed
+     * @param markerLimitHasChanged
+     *            whether the {@code markerLimit} preference changed
+     * @return true if any relevant preference changed or a full rebuild is required
+     */
     private boolean needRebuildAllProjects(boolean includeRuleNamesHasChanged,
         boolean includeModuleIdHasChanged, boolean limitMarkersHasChanged,
         boolean markerLimitHasChanged) {

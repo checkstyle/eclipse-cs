@@ -125,6 +125,12 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
         /** The marker start offset. */
         private final int markerStartOffset;
 
+        /**
+         * Creates the modifier order quickfix AST visitor.
+         *
+         * @param markerStartOffset
+         *            the start offset of the problem marker
+         */
         private ModifierOrderQuickfixAstVisitor(int markerStartOffset) {
             this.markerStartOffset = markerStartOffset;
         }
@@ -149,6 +155,13 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
             return visitBodyDecl(node);
         }
 
+        /**
+         * Reorders the modifiers of the given body declaration if the marker lies within them.
+         *
+         * @param node
+         *            the body declaration to process
+         * @return whether the visitor should continue visiting child nodes
+         */
         @SuppressWarnings("unchecked")
         private boolean visitBodyDecl(BodyDeclaration node) {
             final List<Modifier> modifiers =

@@ -28,6 +28,9 @@ import org.eclipse.core.resources.IResource;
  */
 public class DerivedFilesFilter extends AbstractFilter {
 
+    /**
+     * Creates a filter that filters all derived resources.
+     */
     public DerivedFilesFilter() {
     }
 

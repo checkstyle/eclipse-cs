@@ -91,6 +91,9 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         // NOOP
     }
 
+    /**
+     * Opens a dialog to create a new file set and adds it to the list.
+     */
     private void addFileSet() {
         try {
             final FileSetEditDialog dialog =
@@ -110,6 +113,12 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         }
     }
 
+    /**
+     * Opens a dialog to edit the given file set and updates it in the list.
+     *
+     * @param fileSet
+     *            the file set to edit
+     */
     private void editFileSet(FileSet fileSet) {
         if (fileSet != null) {
             try {
@@ -132,6 +141,12 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         }
     }
 
+    /**
+     * Removes the given file set from the list.
+     *
+     * @param fileSet
+     *            the file set to remove
+     */
     private void removeFileSet(FileSet fileSet) {
         if (fileSet != null) {
             mFileSets.remove(fileSet);
@@ -140,6 +155,12 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         }
     }
 
+    /**
+     * Updates the enabled state of the file set whose checked state changed.
+     *
+     * @param event
+     *            the check state change event
+     */
     private void changeEnabledState(CheckStateChangedEvent event) {
         if (event.getElement() instanceof FileSet) {
             final FileSet fileSet = (FileSet) event.getElement();
@@ -157,6 +178,9 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         /** The singleton instance. */
         public static final FileSetLabelProvider INSTANCE = new FileSetLabelProvider();
 
+        /**
+         * Creates the singleton file set label provider.
+         */
         private FileSetLabelProvider() {
 
         }
@@ -202,6 +226,9 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         /** The singleton instance. */
         public static final FileSetViewerSorter INSTANCE = new FileSetViewerSorter();
 
+        /**
+         * Creates the singleton file set viewer sorter.
+         */
         private FileSetViewerSorter() {
 
         }

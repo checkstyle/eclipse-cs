@@ -32,6 +32,9 @@ import org.eclipse.ui.texteditor.ITextEditorActionDefinitionIds;
  */
 public final class RegexCompletionProposalFactory {
 
+    /**
+     * Creates the proposal factory.
+     */
     private RegexCompletionProposalFactory() {
         // factory
     }

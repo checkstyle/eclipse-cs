@@ -69,6 +69,7 @@ public final class TableViewerEnhancer {
     /** Integer constant for the reverse sort direction value. */
     private static final int DIRECTION_REVERSE = -1;
 
+    /** Prevents instantiation of this utility class. */
     private TableViewerEnhancer() {
 
     }
@@ -88,6 +89,17 @@ public final class TableViewerEnhancer {
         column.setData(WIDGET_DATA_COLUMN_COMPARATOR, comparator);
     }
 
+    /**
+     * Enhances the given table viewer with sortable columns, column width persistence and state
+     * restoration.
+     *
+     * @param tableViewer
+     *            the table viewer to enhance
+     * @param tableSettings
+     *            the dialog settings used to persist the table state
+     * @param tableColumnLayout
+     *            the table column layout used to restore the column widths
+     */
     public static void enhance(TableViewer tableViewer, IDialogSettings tableSettings,
         TableColumnLayout tableColumnLayout) {
         final Table table = tableViewer.getTable();
@@ -138,6 +150,16 @@ public final class TableViewerEnhancer {
         }
     }
 
+    /**
+     * Toggles or applies the sort column and direction when a column is selected for sorting.
+     *
+     * @param columns
+     *            the table columns
+     * @param colIndex
+     *            the index of the selected column
+     * @param table
+     *            the table
+     */
     private static void handleSortColumn(TableColumn[] columns, int colIndex, Table table) {
         if (columns[colIndex] == table.getSortColumn()) {
             setSortDirection(table, getSortDirection(table) * -1);
@@ -148,6 +170,18 @@ public final class TableViewerEnhancer {
         }
     }
 
+    /**
+     * Returns the integer value stored for the given setting, falling back to the default when it
+     * cannot be parsed.
+     *
+     * @param tableSettings
+     *            the dialog settings
+     * @param setting
+     *            the key of the setting to read
+     * @param def
+     *            the default value to return when the setting is missing or invalid
+     * @return the stored integer value or the default
+     */
     private static int getIntSetting(IDialogSettings tableSettings, String setting, int def) {
         int value;
         try {
@@ -185,6 +219,13 @@ public final class TableViewerEnhancer {
         tableSettings.put(TAG_CURRENT_SELECTION, table.getSelectionIndex());
     }
 
+    /**
+     * Returns the direction of the current table sort as a constant.
+     *
+     * @param table
+     *            the table
+     * @return the sort direction constant
+     */
     private static int getSortDirection(Table table) {
         final int direction;
         if (table.getSortDirection() == SWT.DOWN) {
@@ -196,6 +237,14 @@ public final class TableViewerEnhancer {
         return direction;
     }
 
+    /**
+     * Sets the direction of the table sort based on the given sort direction constant.
+     *
+     * @param table
+     *            the table
+     * @param sortDirection
+     *            the sort direction constant to apply
+     */
     private static void setSortDirection(Table table, int sortDirection) {
         final int direction;
         if (sortDirection == DIRECTION_FORWARD) {

@@ -50,6 +50,16 @@ public final class FileMatchPatternTable extends Composite {
     /** The checkbox table viewer for patterns. */
     private final CheckboxTableViewer mPatternViewer;
 
+    /**
+     * Creates the file match pattern table.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the SWT style bits
+     * @param callbacks
+     *            the callbacks used to interact with the table
+     */
     public FileMatchPatternTable(Composite parent, int style,
         FileMatchPatternControlCallbacks callbacks) {
         super(parent, style);
@@ -78,18 +88,39 @@ public final class FileMatchPatternTable extends Composite {
         mPatternViewer.setCheckStateProvider(FileMatchPatternTableCheckStateProvider.INSTANCE);
     }
 
+    /**
+     * Returns the file match pattern currently selected in the table.
+     *
+     * @return the selected file match pattern
+     */
     public FileMatchPattern getSelectedPattern() {
         return (FileMatchPattern) mPatternViewer.getStructuredSelection().getFirstElement();
     }
 
+    /**
+     * Refreshes the displayed file match patterns.
+     */
     public void refresh() {
         mPatternViewer.refresh();
     }
 
+    /**
+     * Sets the file match patterns to be shown in the table.
+     *
+     * @param fileMatchPatterns
+     *            the file match patterns to display
+     */
     public void setInput(List<FileMatchPattern> fileMatchPatterns) {
         mPatternViewer.setInput(fileMatchPatterns);
     }
 
+    /**
+     * Creates the table widget used to display the file match patterns.
+     *
+     * @param parent
+     *            the parent composite
+     * @return the created table
+     */
     private static Table createTable(Composite parent) {
         final Table table = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.FULL_SELECTION);
         table.setHeaderVisible(true);
@@ -147,6 +178,9 @@ public final class FileMatchPatternTable extends Composite {
         private static final FileMatchPatternTableCheckStateProvider INSTANCE =
             new FileMatchPatternTableCheckStateProvider();
 
+        /**
+         * Hidden constructor of the singleton instance.
+         */
         private FileMatchPatternTableCheckStateProvider() {
 
         }

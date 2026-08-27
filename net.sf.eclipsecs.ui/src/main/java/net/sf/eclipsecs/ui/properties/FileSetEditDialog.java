@@ -198,6 +198,9 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Opens a dialog to create a new file match pattern and adds it to the file set.
+     */
     private void addFileMatchPattern() {
         final FileMatchPatternEditDialog dialog = new FileMatchPatternEditDialog(getShell(), null);
         if (Window.OK == dialog.open()) {
@@ -209,6 +212,12 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Opens a dialog to edit the given file match pattern and replaces it in the file set.
+     *
+     * @param pattern
+     *            the file match pattern to edit
+     */
     private void editFileMatchPattern(FileMatchPattern pattern) {
         if (pattern != null) {
             final FileMatchPatternEditDialog dialog =
@@ -224,6 +233,12 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Removes the given file match pattern from the file set.
+     *
+     * @param pattern
+     *            the file match pattern to remove
+     */
     private void removeFileMatchPattern(FileMatchPattern pattern) {
         if (pattern != null) {
             mFileSet.getFileMatchPatterns().remove(pattern);
@@ -231,6 +246,12 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Moves the given file match pattern one position up in the file set.
+     *
+     * @param pattern
+     *            the file match pattern to move up
+     */
     private void upFileMatchPattern(FileMatchPattern pattern) {
         if (pattern != null) {
             final int index = mFileSet.getFileMatchPatterns().indexOf(pattern);
@@ -242,6 +263,12 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Moves the given file match pattern one position down in the file set.
+     *
+     * @param pattern
+     *            the file match pattern to move down
+     */
     private void downFileMatchPattern(FileMatchPattern pattern) {
         if (pattern != null) {
             final int index = mFileSet.getFileMatchPatterns().indexOf(pattern);
@@ -259,10 +286,16 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Refreshes the match area displaying the files matched by the current patterns.
+     */
     private void refreshMatchArea() {
         dialogView.refreshMatchArea();
     }
 
+    /**
+     * Opens a dialog to configure the check configuration of the file set.
+     */
     private void configureFileSetConfig() {
         final CheckConfigurationWorkingCopy config =
             (CheckConfigurationWorkingCopy) mFileSet.getCheckConfig();
@@ -285,6 +318,15 @@ public final class FileSetEditDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Recursively collects all files contained in the given container.
+     *
+     * @param container
+     *            the container to collect files from
+     * @return the list of files found in the container
+     * @throws CoreException
+     *             an error occurred while accessing the container members
+     */
     private static List<IFile> getFiles(IContainer container) throws CoreException {
         final LinkedList<IFile> files = new LinkedList<>();
         final LinkedList<IFolder> folders = new LinkedList<>();

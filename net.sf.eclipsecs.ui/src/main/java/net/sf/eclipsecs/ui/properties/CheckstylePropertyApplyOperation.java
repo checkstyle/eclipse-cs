@@ -44,10 +44,26 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public final class CheckstylePropertyApplyOperation {
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private CheckstylePropertyApplyOperation() {
 
     }
 
+    /**
+     * Applies the changes made in the Checkstyle project property page.
+     *
+     * @param shell
+     *            the shell for error dialogs
+     * @param projectConfig
+     *            the project configuration to apply
+     * @param checkstyleEnabled
+     *            whether Checkstyle is enabled
+     * @param checkstyleInitiallyEnabled
+     *            whether Checkstyle was initially enabled
+     * @return true if the changes were applied
+     */
     public static boolean apply(Shell shell, ProjectConfigurationWorkingCopy projectConfig,
         boolean checkstyleEnabled, boolean checkstyleInitiallyEnabled) {
         try {

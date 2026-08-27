@@ -92,6 +92,14 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         GridDataFactory.fillDefaults().grab(true, true).applyTo(editorView);
     }
 
+    /**
+     * Determines whether the given check configuration is the default configuration of the working
+     * set.
+     *
+     * @param config
+     *            the check configuration to test
+     * @return true if the configuration is the default, false otherwise
+     */
     private boolean isDefaultConfig(CheckConfigurationWorkingCopy config) {
         boolean configDefault = false;
         if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet) {
@@ -134,6 +142,10 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         }
     }
 
+    /**
+     * Opens the configure dialog for the selected check configuration, showing a warning if its
+     * location cannot be resolved.
+     */
     private void configureCheckConfig() {
         final CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
 
@@ -218,6 +230,9 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         }
     }
 
+    /**
+     * Sets the selected check configuration as the default configuration of the working set.
+     */
     private void setDefaultCheckConfig() {
         final CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
         if (checkConfig != null) {
@@ -253,6 +268,12 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         }
     }
 
+    /**
+     * Returns the dialog settings section for this working set, creating it if it does not yet
+     * exist.
+     *
+     * @return the dialog settings section for the working set
+     */
     private IDialogSettings getTableSettings() {
         final String concreteViewId = mWorkingSet.getClass().getName();
 

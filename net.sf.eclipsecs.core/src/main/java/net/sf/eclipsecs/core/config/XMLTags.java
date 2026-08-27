@@ -219,6 +219,9 @@ public final class XMLTags {
     /** Default weight of a builtin configuration. */
     public static final String DEFAULT_WEIGHT = "default-weight";
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private XMLTags() {
         // NOOP
     }
