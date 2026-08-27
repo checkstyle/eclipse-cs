@@ -134,6 +134,13 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
     // methods
     //
 
+    /**
+     * Creates a copy of this filter focusing on the given resources.
+     *
+     * @param resources
+     *            the focused resources
+     * @return the new filter
+     */
     public CheckstyleMarkerFilter withFocusResources(IResource[] resources) {
         return new CheckstyleMarkerFilter(enabled, onResource, workingSet, selectBySeverity,
             severity, filterByRegex, filterRegex, resources);
@@ -218,6 +225,13 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
             mSeverity, filterByRegex, filterRegex, focusResource);
     }
 
+    /**
+     * Parses the given setting as an integer.
+     *
+     * @param setting
+     *            the setting to parse
+     * @return the parsed value or an empty optional
+     */
     private static Optional<Integer> tryParseInt(String setting) {
         Optional<Integer> parsed;
         try {
@@ -229,6 +243,15 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
         return parsed;
     }
 
+    /**
+     * Finds a setting with the given key in the dialog settings.
+     *
+     * @param dialogSettings
+     *            the dialog settings
+     * @param key
+     *            the key to look up
+     * @return the setting value or an empty optional
+     */
     private static Optional<String> findSetting(IDialogSettings dialogSettings, String key) {
         return Optional.ofNullable(dialogSettings)
             .flatMap(settings -> Optional.ofNullable(settings.get(key)));

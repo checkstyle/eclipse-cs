@@ -112,6 +112,13 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
         return Status.OK_STATUS;
     }
 
+    /**
+     * Groups the given files by their project.
+     *
+     * @param filesToCheck
+     *            the files to check
+     * @return the files grouped by project
+     */
     private static Map<IProject, List<IFile>>
         getFilesSortedToProject(final List<IFile> filesToCheck) {
 
@@ -132,6 +139,14 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
         return projectFilesMap;
     }
 
+    /**
+     * Removes files that are filtered by the given project configuration.
+     *
+     * @param files
+     *            the files to filter
+     * @param projectConfig
+     *            the project configuration providing the filters
+     */
     private static void filter(final List<IFile> files, final IProjectConfiguration projectConfig) {
 
         final List<IFilter> filters = projectConfig.getFilters();

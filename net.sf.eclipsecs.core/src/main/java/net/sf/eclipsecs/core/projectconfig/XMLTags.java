@@ -88,6 +88,9 @@ public final class XMLTags {
     /** Sync formatter flag tag. */
     static final String SYNC_FORMATTER_TAG = "sync-formatter";
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private XMLTags() {
         // NOOP
     }

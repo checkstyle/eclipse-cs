@@ -116,6 +116,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
         return composite;
     }
 
+    /**
+     * Opens the dialog to edit the regular expressions used for filtering.
+     */
     private void editRegularExpressions() {
         final List<String> regex = new ArrayList<>(mRegularExpressions);
         final CheckstyleMarkerFilterRegexDialog regexDialog =
@@ -217,6 +220,9 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
         dialogView.setRegexLabel(buf.toString());
     }
 
+    /**
+     * Opens the working set selection dialog and updates the selected working set.
+     */
     private void selectWorkingSet() {
         final IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
             .createWorkingSetSelectionDialog(getShell(), false);

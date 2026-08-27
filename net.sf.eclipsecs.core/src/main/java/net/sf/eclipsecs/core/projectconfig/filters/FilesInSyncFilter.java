@@ -37,6 +37,9 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public class FilesInSyncFilter extends AbstractFilter {
 
+    /**
+     * Creates a filter that filters files in sync with the source repository.
+     */
     public FilesInSyncFilter() {
     }
 
@@ -73,6 +76,15 @@ public class FilesInSyncFilter extends AbstractFilter {
         return accept;
     }
 
+    /**
+     * Determines whether the given file has changed according to the subscriber.
+     *
+     * @param file
+     *            the file to check
+     * @param subscriber
+     *            the repository subscriber
+     * @return <code>true</code> if the file has changes
+     */
     private boolean hasChanges(IFile file, Subscriber subscriber) {
         boolean hasChanges = false;
         try {

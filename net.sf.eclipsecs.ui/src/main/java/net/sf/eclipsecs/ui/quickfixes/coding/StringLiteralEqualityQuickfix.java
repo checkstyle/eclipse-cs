@@ -65,6 +65,15 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
         };
     }
 
+    /**
+     * Computes the equals() based replacement expression for the given infix expression comparing a
+     * string literal.
+     *
+     * @param node
+     *            the infix expression to replace
+     * @return an optional containing the replacement expression, or empty if no string literal
+     *         operand is present
+     */
     @SuppressWarnings("unchecked")
     private static Optional<Expression> computeReplacement(InfixExpression node) {
         Optional<Expression> replacement = Optional.empty();

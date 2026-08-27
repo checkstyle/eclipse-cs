@@ -82,8 +82,20 @@ public abstract class AbstractStatsView extends ViewPart {
     // methods
     //
 
+    /**
+     * Initializes the view's menu.
+     *
+     * @param menu
+     *            the menu manager
+     */
     protected abstract void initMenu(IMenuManager menu);
 
+    /**
+     * Initializes the view's tool bar.
+     *
+     * @param tbm
+     *            the tool bar manager
+     */
     protected abstract void initToolBar(IToolBarManager tbm);
 
     /**

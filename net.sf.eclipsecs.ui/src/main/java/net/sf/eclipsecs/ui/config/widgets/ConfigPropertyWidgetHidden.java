@@ -45,6 +45,15 @@ public final class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidg
         super(parent, prop);
     }
 
+    /**
+     * Creates a hidden property widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     * @return the created widget
+     */
     public static ConfigPropertyWidgetHidden create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetHidden(parent, prop);
     }

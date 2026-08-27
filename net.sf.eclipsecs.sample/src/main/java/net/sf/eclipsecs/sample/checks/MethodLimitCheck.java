@@ -56,6 +56,13 @@ public final class MethodLimitCheck extends AbstractCheck {
         };
     }
 
+    /**
+     * Sets the maximum number of methods.
+     *
+     * @param limit
+     *            the maximum number of methods
+     * @since 6.0
+     */
     public void setMax(int limit) {
         max = limit;
     }

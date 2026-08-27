@@ -52,6 +52,17 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
     /** The placeholder composite for the configuration editor. */
     private final Composite mEditorPlaceHolder;
 
+    /**
+     * Constructor building the configuration type selector and the placeholder for the matching
+     * editor.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the SWT style bits to apply to this composite
+     * @param changeSelectedConfigurationType
+     *            the callback invoked when the selected configuration type changes
+     */
     public CheckConfigurationPropertiesDialogView(Composite parent, int style,
         BiConsumer<IConfigurationType, Boolean> changeSelectedConfigurationType) {
         super(parent, style);
@@ -90,15 +101,31 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mEditorPlaceHolder);
     }
 
+    /**
+     * Initializes the configuration type combo with the given types and selects the first one.
+     *
+     * @param types
+     *            the configuration types to show
+     */
     public void initConfigType(IConfigurationType[] types) {
         mConfigType.setInput(types);
         mConfigType.setSelection(new StructuredSelection(types[0]), true);
     }
 
+    /**
+     * Disables the configuration type combo box.
+     */
     public void disable() {
         mConfigType.getCombo().setEnabled(false);
     }
 
+    /**
+     * Binds the given configuration editor into the editor placeholder, removing any previously
+     * bound editor.
+     *
+     * @param mConfigurationEditor
+     *            the configuration editor to bind
+     */
     public void bindEditor(ICheckConfigurationEditor mConfigurationEditor) {
         // remove old editor
         final Control[] controls = mEditorPlaceHolder.getChildren();

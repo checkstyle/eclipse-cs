@@ -104,6 +104,16 @@ public class FormatterConfigWriter {
         }
     }
 
+    /**
+     * Creates or updates the given settings file with the supplied stream.
+     *
+     * @param settingsFile
+     *            the settings file to update
+     * @param stream
+     *            the stream with the new content
+     * @throws CoreException
+     *             the file could not be updated
+     */
     private static void createOrUpdateFile(IFile settingsFile, InputStream stream)
             throws CoreException {
         if (settingsFile.exists()) {

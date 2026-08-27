@@ -60,10 +60,22 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public final class AstQuickfixExecutor {
 
+    /**
+     * Hidden constructor of the utility class.
+     */
     private AstQuickfixExecutor() {
 
     }
 
+    /**
+     * Applies the correcting AST visitor of the quickfix to the compilation unit of the given
+     * problem marker and writes the changes back to the document.
+     *
+     * @param marker
+     *            the problem marker to handle
+     * @param handleGetCorrectingASTVisitor
+     *            function creating the correcting AST visitor for a line and offset
+     */
     public static void run(IMarker marker,
         BiFunction<IRegion, Integer, ASTVisitor> handleGetCorrectingASTVisitor) {
         if (marker.getResource() instanceof IFile) {
@@ -119,6 +131,13 @@ public final class AstQuickfixExecutor {
         }
     }
 
+    /**
+     * Returns the compilation unit that owns the resource of the given marker.
+     *
+     * @param marker
+     *            the problem marker
+     * @return the compilation unit or {@code null} if not resolvable
+     */
     private static ICompilationUnit getCompilationUnit(IMarker marker) {
         ICompilationUnit compilationUnit = null;
         if (marker.getResource() instanceof IFile file && file.isAccessible()
@@ -128,12 +147,31 @@ public final class AstQuickfixExecutor {
         return compilationUnit;
     }
 
+    /**
+     * Returns the character offset of the given marker within the text file buffer.
+     *
+     * @param textFileBuffer
+     *            the text file buffer of the edited file
+     * @param marker
+     *            the problem marker
+     * @return the offset of the marker or an empty optional if not found
+     */
     private static Optional<Integer> getOffset(ITextFileBuffer textFileBuffer, IMarker marker) {
         final IAnnotationModel annotationModel = textFileBuffer.getAnnotationModel();
         return getMarkerAnnotation(annotationModel, marker).map(annotationModel::getPosition)
             .map(Position::getOffset);
     }
 
+    /**
+     * Finds the marker annotation corresponding to the given problem marker in the annotation
+     * model.
+     *
+     * @param annotationModel
+     *            the annotation model to search
+     * @param marker
+     *            the problem marker
+     * @return the marker annotation or an empty optional if not found
+     */
     private static Optional<MarkerAnnotation> getMarkerAnnotation(IAnnotationModel annotationModel,
         IMarker marker) {
         Optional<MarkerAnnotation> result = Optional.empty();

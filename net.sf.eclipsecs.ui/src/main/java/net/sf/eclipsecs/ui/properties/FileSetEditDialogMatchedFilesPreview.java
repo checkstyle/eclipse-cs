@@ -58,6 +58,18 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
     /** The total number of project files. */
     private int totalFileCount;
 
+    /**
+     * Creates the matched files preview composite.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the style bits
+     * @param viewerFilter
+     *            the filter selecting the files matched by the file set
+     * @param projectName
+     *            the name of the project whose files are previewed
+     */
     public FileSetEditDialogMatchedFilesPreview(Composite parent, int style,
         ViewerFilter viewerFilter, String projectName) {
         super(parent, style);
@@ -93,14 +105,22 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
         matchesViewer.getControl().setLayoutData(new GridData(GridData.FILL_BOTH));
     }
 
+    /**
+     * Refreshes the preview and updates the match result summary.
+     */
     public void refresh() {
-        matchesViewer.refresh();
         matchGroup.setText(NLS.bind(Messages.FileSetEditDialog_titleTestResult, new String[] {
             projectName, Integer.toString(matchesViewer.getTable().getItemCount()),
             Integer.toString(totalFileCount),
         }));
     }
 
+    /**
+     * Sets the project files to be previewed and records the total file count.
+     *
+     * @param projectFiles
+     *            the project files to display in the preview
+     */
     public void setInput(List<IFile> projectFiles) {
         matchesViewer.setInput(projectFiles);
         totalFileCount = projectFiles.size();
@@ -115,6 +135,12 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
         /** The file set to preview. */
         private final FileSet fileSet;
 
+        /**
+         * Creates the preview filter for the given file set.
+         *
+         * @param fileSet
+         *            the file set whose matches are previewed
+         */
         public FileSetEditDialogMatchedFilesPreviewFilter(FileSet fileSet) {
             this.fileSet = fileSet;
         }

@@ -28,10 +28,24 @@ import org.eclipse.swt.widgets.Shell;
  */
 public final class FileSetsEditorFactory {
 
+    /**
+     * Creates the factory. Private to prevent instantiation.
+     */
     private FileSetsEditorFactory() {
 
     }
 
+    /**
+     * Creates the file sets editor matching the given configuration mode.
+     *
+     * @param shell
+     *            the parent shell
+     * @param propertyPageContext
+     *            the property page context
+     * @param useSimpleConfig
+     *            whether to use the simple configuration mode
+     * @return the created file sets editor
+     */
     public static IFileSetsEditor createEditor(Shell shell, PropertyPageContext propertyPageContext,
         boolean useSimpleConfig) {
         final IFileSetsEditor editor;

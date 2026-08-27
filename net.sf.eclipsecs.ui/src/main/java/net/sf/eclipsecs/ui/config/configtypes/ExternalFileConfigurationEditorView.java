@@ -51,6 +51,14 @@ public final class ExternalFileConfigurationEditorView extends Composite {
     /** The protect config check box. */
     private final Button mChkProtectConfig;
 
+    /**
+     * Constructor building the editor form for external file check configurations.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the SWT style bits to apply to this composite
+     */
     public ExternalFileConfigurationEditorView(Composite parent, int style) {
         super(parent, style);
         GridLayoutFactory.swtDefaults().numColumns(2).equalWidth(false).margins(0, 0).applyTo(this);
@@ -85,38 +93,92 @@ public final class ExternalFileConfigurationEditorView extends Composite {
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkProtectConfig);
     }
 
+    /**
+     * Returns the configuration name entered in the name text field.
+     *
+     * @return the configuration name
+     */
     public String getConfigName() {
         return mConfigName.getText();
     }
 
+    /**
+     * Returns the description entered in the description text field.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return mDescription.getText();
     }
 
+    /**
+     * Returns the config file location entered in the location text field.
+     *
+     * @return the config file location
+     */
     public String getConfigLocation() {
         return location.getText();
     }
 
+    /**
+     * Returns whether the protect-config option is selected.
+     *
+     * @return true if the protect-config check box is selected, false otherwise
+     */
     public boolean getProtectConfig() {
         return mChkProtectConfig.getSelection();
     }
 
+    /**
+     * Sets the configuration name in the name text field.
+     *
+     * @param configName
+     *            the configuration name to set
+     */
     public void setConfigName(String configName) {
         mConfigName.setText(configName);
     }
 
+    /**
+     * Sets the description in the description text field.
+     *
+     * @param description
+     *            the description to set
+     */
     public void setDescription(String description) {
         mDescription.setText(description);
     }
 
+    /**
+     * Sets the config file location in the location text field.
+     *
+     * @param strLocation
+     *            the config file location to set
+     */
     public void setConfigLocation(String strLocation) {
         location.setText(strLocation);
     }
 
+    /**
+     * Sets the protect-config option in the check box.
+     *
+     * @param protectConfig
+     *            true to select the protect-config check box, false otherwise
+     */
     public void setProtectConfig(boolean protectConfig) {
         mChkProtectConfig.setSelection(protectConfig);
     }
 
+    /**
+     * Creates the location composite with a text field and a browse button that opens a file
+     * dialog.
+     *
+     * @param parent
+     *            the parent composite
+     * @param shell
+     *            the shell used as the parent of the file dialog
+     * @return the location text field
+     */
     private static Text createLocationSection(Composite parent, Shell shell) {
         final Label lblConfigLocation = new Label(parent, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);

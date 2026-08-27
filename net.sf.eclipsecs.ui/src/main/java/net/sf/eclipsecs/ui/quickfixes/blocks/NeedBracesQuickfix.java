@@ -72,6 +72,12 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
         /** The line info region. */
         private final IRegion lineInfo;
 
+        /**
+         * Constructor storing the line info region.
+         *
+         * @param lineInfo
+         *            the line info region
+         */
         private NeedBracesQuickfixAstVisitor(IRegion lineInfo) {
             this.lineInfo = lineInfo;
         }
@@ -161,6 +167,15 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
             }
         }
 
+        /**
+         * Creates a new block containing a copy of the given body statement.
+         *
+         * @param ast
+         *            the AST used to create the block
+         * @param body
+         *            the statement to copy into the block
+         * @return the bracified block
+         */
         @SuppressWarnings("unchecked")
         private Block createBracifiedCopy(AST ast, Statement body) {
             final Block block = ast.newBlock();

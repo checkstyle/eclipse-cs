@@ -113,6 +113,12 @@ public class CheckstylePlugin extends Plugin {
         return platformLocale;
     }
 
+    /**
+     * Sets the platform locale.
+     *
+     * @param locale
+     *            the locale to set
+     */
     public static void setPlatformLocale(final Locale locale) {
         platformLocale = locale;
     }

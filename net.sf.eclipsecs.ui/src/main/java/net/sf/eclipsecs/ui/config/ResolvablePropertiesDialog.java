@@ -205,6 +205,12 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         dialogView.setResolvableProperties(mResolvableProperties);
     }
 
+    /**
+     * Opens the editor for the given property or creates a new property when it is null.
+     *
+     * @param prop
+     *            the property to edit or null to create a new one
+     */
     private void openPropertyItemEditor(ResolvableProperty prop) {
 
         if (prop == null) {
@@ -226,6 +232,12 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Removes the given resolvable properties after confirmation.
+     *
+     * @param resolvableProperties
+     *            the resolvable properties to remove
+     */
     private void removePropertyItems(List<ResolvableProperty> resolvableProperties) {
         final boolean confirm = MessageDialog.openQuestion(getShell(),
             Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
@@ -236,6 +248,9 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Searches for unresolved properties and offers to add them to the dialog.
+     */
     private void findPropertyItems() {
         final CheckConfigurationWorkingCopy clone = new CheckConfigurationWorkingCopy(mCheckConfig);
         clone.getResolvableProperties().clear();
@@ -289,6 +304,11 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Returns the dialog settings section for the properties table.
+     *
+     * @return the dialog settings
+     */
     private static IDialogSettings getTableSettings() {
         final String concreteViewId = ResolvablePropertiesDialog.class.getName();
 

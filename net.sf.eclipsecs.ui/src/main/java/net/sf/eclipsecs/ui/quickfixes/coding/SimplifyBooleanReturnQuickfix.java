@@ -94,6 +94,13 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
         };
     }
 
+    /**
+     * Computes the replacement return statement for the given if statement.
+     *
+     * @param node
+     *            the if statement to simplify
+     * @return the replacement statement or an empty optional if the structure is not as expected
+     */
     private Optional<ReturnStatement> computeReplacement(final IfStatement node) {
         final Optional<Boolean> isThenStatementTrue =
             isReturnStatementTrue(node.getThenStatement());
@@ -134,6 +141,13 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
         return optionalReplacement;
     }
 
+    /**
+     * Determines whether the given statement is a return of the boolean literal {@code true}.
+     *
+     * @param node
+     *            the statement to inspect
+     * @return whether the statement returns {@code true}, or an empty optional if it does not
+     */
     private static Optional<Boolean> isReturnStatementTrue(final Statement node) {
         Optional<Boolean> isReturnStatementTrue = Optional.empty();
         if (node instanceof ReturnStatement returnStatement) {
@@ -153,6 +167,13 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
         return isReturnStatementTrue;
     }
 
+    /**
+     * Removes a leading 'not' operator from the given condition if present.
+     *
+     * @param condition
+     *            the condition expression
+     * @return the condition without a leading 'not', or the same expression otherwise
+     */
     private static Expression removeNotFromCondition(final Expression condition) {
         Expression fixedCondition = condition;
         if (condition instanceof PrefixExpression prefix
@@ -162,6 +183,13 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
         return fixedCondition;
     }
 
+    /**
+     * Determines whether parentheses can be omitted when negating the given condition.
+     *
+     * @param condition
+     *            the condition expression
+     * @return whether the parentheses are not required for this expression type
+     */
     private static boolean omitParantheses(final Expression condition) {
         return OMIT_PARANETHESES_CLASSES.contains(condition.getClass());
     }

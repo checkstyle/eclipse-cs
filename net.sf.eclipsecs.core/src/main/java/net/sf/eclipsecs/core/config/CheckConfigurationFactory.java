@@ -88,6 +88,9 @@ public final class CheckConfigurationFactory {
         refresh();
     }
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private CheckConfigurationFactory() {
     }
 
@@ -213,6 +216,13 @@ public final class CheckConfigurationFactory {
         }
     }
 
+    /**
+     * Calculates the state location within the given workspace root.
+     *
+     * @param newWorkspaceRoot
+     *            the new workspace root
+     * @return the target state location
+     */
     private static IPath getTargetStateLocation(IPath newWorkspaceRoot) {
         final IPath currentWorkspaceRoot = Platform.getLocation();
         IPath currentStateLocation = CheckstylePlugin.getDefault().getStateLocation();
@@ -277,6 +287,11 @@ public final class CheckConfigurationFactory {
         }
     }
 
+    /**
+     * Returns the file used to store the check configurations in the state location.
+     *
+     * @return the internal configuration file
+     */
     private static File getInternalConfigurationFile() {
         IPath configPath = CheckstylePlugin.getDefault().getStateLocation();
         configPath = configPath.append(CHECKSTYLE_CONFIG_FILE);

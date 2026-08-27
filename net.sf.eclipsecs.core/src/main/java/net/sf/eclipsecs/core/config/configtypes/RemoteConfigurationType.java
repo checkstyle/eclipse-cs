@@ -169,6 +169,19 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         return data;
     }
 
+    /**
+     * Loads the addition properties bundle for the given configuration.
+     *
+     * @param originalFileSuccess
+     *            whether the original file was resolved successfully
+     * @param useCacheFile
+     *            whether a cached file should be used
+     * @param data
+     *            the configuration file data
+     * @param checkConfiguration
+     *            the check configuration
+     * @return the bundle bytes if available
+     */
     private Optional<byte[]> getPropertiesBundle(boolean originalFileSuccess, boolean useCacheFile,
         CheckstyleConfigurationFile data, ICheckConfiguration checkConfiguration) {
         Optional<byte[]> bundle = Optional.empty();
@@ -268,6 +281,16 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         return bytes;
     }
 
+    /**
+     * Writes the configuration bytes into the cache file of the given configuration.
+     *
+     * @param checkConfig
+     *            the check configuration
+     * @param configFileBytes
+     *            the configuration file bytes
+     * @param bundleBytes
+     *            the addition properties bundle bytes
+     */
     private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,
         byte[] bundleBytes) {
 
@@ -458,6 +481,15 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
             }
         }
 
+        /**
+         * Converts the given configuration URL into a secure storage path.
+         *
+         * @param resolvedCheckConfigurationURL
+         *            the resolved configuration URL
+         * @return the secure storage path
+         * @throws CheckstylePluginException
+         *             an unexpected exception occurred
+         */
         private static String getSecureStoragePath(URL resolvedCheckConfigurationURL)
                 throws CheckstylePluginException {
 
@@ -482,10 +514,20 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
             return "eclipse-cs/" + urlHash;
         }
 
+        /**
+         * Returns the stored username.
+         *
+         * @return the username
+         */
         public String getUsername() {
             return username;
         }
 
+        /**
+         * Returns the stored password.
+         *
+         * @return the password
+         */
         public String getPassword() {
             return password;
         }

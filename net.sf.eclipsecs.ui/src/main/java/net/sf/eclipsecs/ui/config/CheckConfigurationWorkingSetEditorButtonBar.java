@@ -51,6 +51,18 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
     /** The export button. */
     private final Button mExportButton;
 
+    /**
+     * Creates the button bar for the working set editor.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the composite style bits
+     * @param useDefaultButton
+     *            whether to show the default button
+     * @param actions
+     *            the actions triggered by the buttons
+     */
     public CheckConfigurationWorkingSetEditorButtonBar(Composite parent, int style,
         boolean useDefaultButton, ButtonBarActions actions) {
         super(parent, style);
@@ -95,6 +107,17 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
             .applyTo(mExportButton);
     }
 
+    /**
+     * Creates a button with the given text and action.
+     *
+     * @param parent
+     *            the parent composite
+     * @param text
+     *            the button text
+     * @param action
+     *            the action to run when the button is clicked
+     * @return the created button
+     */
     private Button createButton(Composite parent, String text, Runnable action) {
         final Button button = new Button(parent, SWT.PUSH);
         button.setText(text);
@@ -102,6 +125,16 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
         return button;
     }
 
+    /**
+     * Sets the enabled state of the buttons based on the selection state.
+     *
+     * @param configSelected
+     *            whether a configuration is selected
+     * @param configEditable
+     *            whether the selected configuration is editable
+     * @param configDefault
+     *            whether the selected configuration is the default
+     */
     public void setSelectionState(boolean configSelected, boolean configEditable,
         boolean configDefault) {
         mEditButton.setEnabled(configSelected);

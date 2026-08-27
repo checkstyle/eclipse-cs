@@ -46,6 +46,16 @@ public final class InternalConfigurationEditorView extends Composite {
     /** The description text field. */
     private final Text mDescription;
 
+    /**
+     * Creates the internal configuration editor view.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the style of the composite
+     * @param importConfig
+     *            the runnable executed on import
+     */
     public InternalConfigurationEditorView(Composite parent, int style, Runnable importConfig) {
         super(parent, style);
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(this);
@@ -86,22 +96,50 @@ public final class InternalConfigurationEditorView extends Composite {
             SelectionListener.widgetSelectedAdapter(event -> importConfig.run()));
     }
 
+    /**
+     * Returns the entered configuration name.
+     *
+     * @return the configuration name
+     */
     public String getConfigName() {
         return mConfigName.getText();
     }
 
+    /**
+     * Returns the entered description.
+     *
+     * @return the description
+     */
     public String getDescription() {
         return mDescription.getText();
     }
 
+    /**
+     * Sets the configuration name.
+     *
+     * @param configName
+     *            the configuration name to set
+     */
     public void setConfigName(String configName) {
         mConfigName.setText(configName);
     }
 
+    /**
+     * Sets the description.
+     *
+     * @param description
+     *            the description to set
+     */
     public void setDescription(String description) {
         mDescription.setText(description);
     }
 
+    /**
+     * Sets the configuration location.
+     *
+     * @param location
+     *            the location to set
+     */
     public void setConfigLocation(String location) {
         mLocation.setText(location);
     }

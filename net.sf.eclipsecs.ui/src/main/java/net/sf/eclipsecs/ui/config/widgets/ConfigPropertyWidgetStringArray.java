@@ -32,10 +32,27 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
  */
 public final class ConfigPropertyWidgetStringArray extends ConfigPropertyWidgetString {
 
+    /**
+     * Constructor creating the string array property widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the configuration property
+     */
     private ConfigPropertyWidgetStringArray(Composite parent, ConfigProperty prop) {
         super(parent, prop);
     }
 
+    /**
+     * Creates a new string array property widget for the given property.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the configuration property
+     * @return the newly-created widget
+     */
     public static ConfigPropertyWidgetStringArray create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetStringArray(parent, prop);
     }

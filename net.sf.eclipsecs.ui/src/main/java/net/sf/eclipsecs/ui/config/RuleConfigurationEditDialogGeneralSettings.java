@@ -60,6 +60,18 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
     /** The list of configuration property widgets. */
     private final List<IConfigPropertyWidget> mConfigPropertyWidgets;
 
+    /**
+     * Creates the general settings composite.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param rule
+     *            the rule to edit
+     * @param readonly
+     *            whether the settings are read-only
+     */
     public RuleConfigurationEditDialogGeneralSettings(Composite parent, int style, Module rule,
         boolean readonly) {
         super(parent, style);
@@ -99,18 +111,37 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
         }
     }
 
+    /**
+     * Returns the selected severity.
+     *
+     * @return the selected severity
+     */
     public Severity getSeverity() {
         return (Severity) mSeverityCombo.getStructuredSelection().getFirstElement();
     }
 
+    /**
+     * Sets the selected severity.
+     *
+     * @param severity
+     *            the severity to select
+     */
     public void setSeverity(Severity severity) {
         mSeverityCombo.setSelection(new StructuredSelection(severity));
     }
 
+    /**
+     * Restores the default values of all property widgets.
+     */
     public void restoreProperties() {
         mConfigPropertyWidgets.forEach(IConfigPropertyWidget::restorePropertyDefault);
     }
 
+    /**
+     * Validates the property widgets and applies the values of the valid widgets.
+     *
+     * @return an error message if validation failed or an empty optional
+     */
     public Optional<String> validatePropertyWidgets() {
         Optional<String> errorMessage = Optional.empty();
         for (IConfigPropertyWidget widget : mConfigPropertyWidgets) {

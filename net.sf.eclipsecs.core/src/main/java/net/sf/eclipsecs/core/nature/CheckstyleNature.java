@@ -82,6 +82,12 @@ public class CheckstyleNature implements IProjectNature {
         }
     }
 
+    /**
+     * Ensures the .project file of the project is writable.
+     *
+     * @throws CoreException
+     *             the file could not be updated
+     */
     private void ensureProjectFileWritable() throws CoreException {
         final IFile projectFile = mProject.getFile(".project");
         if (projectFile.isReadOnly()) {

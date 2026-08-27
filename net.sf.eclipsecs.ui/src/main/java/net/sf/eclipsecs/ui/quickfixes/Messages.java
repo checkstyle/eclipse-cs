@@ -113,6 +113,9 @@ public final class Messages extends NLS {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
+    /**
+     * Private constructor to prevent instantiation.
+     */
     private Messages() {
     }
 

@@ -41,10 +41,20 @@ import org.eclipse.ui.ide.ResourceUtil;
  */
 public final class SelectionTool {
 
+    /** Prevents instantiation of this utility class. */
     private SelectionTool() {
 
     }
 
+    /**
+     * Resolves the given workbench selection into the list of resources it affects.
+     *
+     * @param part
+     *            the active workbench part providing the selection
+     * @param selection
+     *            the current selection
+     * @return the list of resources affected by the selection
+     */
     public static List<IResource> resolveSelection(IWorkbenchPart part, ISelection selection) {
         List<IResource> resources = Collections.emptyList();
         if (part instanceof IEditorPart editor) {
@@ -70,6 +80,13 @@ public final class SelectionTool {
         return resources;
     }
 
+    /**
+     * Returns the resource adapted from the given adaptable object, if any.
+     *
+     * @param adaptable
+     *            the object to adapt
+     * @return the adapted resource, or an empty optional if none could be adapted
+     */
     private static Optional<IResource> considerAdaptable(IAdaptable adaptable) {
         IResource resource = adaptable.getAdapter(IResource.class);
         if (resource == null) {

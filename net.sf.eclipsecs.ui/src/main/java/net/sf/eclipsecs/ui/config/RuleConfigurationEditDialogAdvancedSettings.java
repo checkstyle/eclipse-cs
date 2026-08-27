@@ -55,6 +55,18 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
     /** The map of custom message key to text field. */
     private final Map<String, Text> mCustomMessages;
 
+    /**
+     * Creates the advanced settings composite.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param rule
+     *            the rule to edit
+     * @param readonly
+     *            whether the settings are read-only
+     */
     public RuleConfigurationEditDialogAdvancedSettings(Composite parent, int style, Module rule,
         boolean readonly) {
         super(parent, style);
@@ -111,23 +123,50 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
         mCommentText.setEnabled(!readonly);
     }
 
+    /**
+     * Returns the module comment.
+     *
+     * @return the module comment
+     */
     public String getComment() {
         return mCommentText.getText();
     }
 
+    /**
+     * Returns the module id.
+     *
+     * @return the module id
+     */
     public String getId() {
         return mIdText.getText();
     }
 
+    /**
+     * Returns the map of custom message keys to their values.
+     *
+     * @return the custom messages
+     */
     public Map<String, String> getCustomMessages() {
         return mCustomMessages.entrySet().stream()
             .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().getText()));
     }
 
+    /**
+     * Resets the module comment.
+     */
     public void resetComment() {
         mCommentText.setText("");
     }
 
+    /**
+     * Creates a text field with the given label.
+     *
+     * @param parent
+     *            the parent composite
+     * @param label
+     *            the label text
+     * @return the created text field
+     */
     private static Text createLabeledText(Composite parent, String label) {
         final Label commentLabel = new Label(parent, SWT.NULL);
         commentLabel.setText(label);

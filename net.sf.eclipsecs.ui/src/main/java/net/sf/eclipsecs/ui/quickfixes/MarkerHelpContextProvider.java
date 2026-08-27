@@ -61,6 +61,13 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
         return helpContext;
     }
 
+    /**
+     * Returns the module name stored in the given marker.
+     *
+     * @param marker
+     *            the checkstyle marker
+     * @return the module name
+     */
     private String getModule(IMarker marker) {
         return marker.getAttribute(CheckstyleMarker.MODULE_NAME, StringUtils.EMPTY);
     }
@@ -142,6 +149,12 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
         /** The module name. */
         private final String moduleName;
 
+        /**
+         * Creates a help context for the given module name.
+         *
+         * @param moduleName
+         *            the module name
+         */
         private CheckstyleHelpContext(String moduleName) {
             this.moduleName = moduleName;
         }

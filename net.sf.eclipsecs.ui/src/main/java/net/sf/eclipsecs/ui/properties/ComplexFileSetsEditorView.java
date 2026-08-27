@@ -46,6 +46,24 @@ public final class ComplexFileSetsEditorView extends Composite {
     /** The table viewer for file sets. */
     private final ComplexFileSetsEditorTableView mViewer;
 
+    /**
+     * Creates the file sets editor view.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param changeEnabledState
+     *            the listener notified when the enabled state of a file set changes
+     * @param editFileSet
+     *            the consumer invoked to edit a file set
+     * @param addFileSet
+     *            the runnable invoked to add a file set
+     * @param removeFileSet
+     *            the consumer invoked to remove a file set
+     * @param mFileSets
+     *            the list of file sets to display
+     */
     public ComplexFileSetsEditorView(Composite parent, int style,
         ICheckStateListener changeEnabledState, Consumer<FileSet> editFileSet, Runnable addFileSet,
         Consumer<FileSet> removeFileSet, List<FileSet> mFileSets) {
@@ -81,14 +99,34 @@ public final class ComplexFileSetsEditorView extends Composite {
             event -> removeFileSet.accept(mViewer.getSelectedFileSet()));
     }
 
+    /**
+     * Refreshes the file sets table.
+     */
     public void refresh() {
         mViewer.refresh();
     }
 
+    /**
+     * Sets the checked state of the given file set.
+     *
+     * @param fileSet
+     *            the file set to check
+     * @param enabled
+     *            true if the file set is enabled, false otherwise
+     */
     public void setChecked(FileSet fileSet, boolean enabled) {
         mViewer.setChecked(fileSet, enabled);
     }
 
+    /**
+     * Creates a push button with the given label.
+     *
+     * @param parent
+     *            the parent composite
+     * @param label
+     *            the button label
+     * @return the created button
+     */
     private static Button createPushButton(Composite parent, String label) {
         final Button button = new Button(parent, SWT.PUSH);
         button.setText(label);

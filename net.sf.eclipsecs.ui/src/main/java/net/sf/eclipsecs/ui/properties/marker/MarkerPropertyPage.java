@@ -54,6 +54,11 @@ public class MarkerPropertyPage extends PropertyPage {
     /** Message and description width in pixels. */
     private static final int WIDTH = 300;
 
+    /**
+     * Returns the marker this property page is showing.
+     *
+     * @return the issue marker
+     */
     private IMarker getIssue() {
         return (IMarker) getElement();
     }
@@ -78,6 +83,14 @@ public class MarkerPropertyPage extends PropertyPage {
         return composite;
     }
 
+    /**
+     * Creates the row showing the marker severity.
+     *
+     * @param composite
+     *            the parent composite
+     * @throws CoreException
+     *             if the marker attribute cannot be read
+     */
     private void createSeverityText(final Composite composite) throws CoreException {
         new Label(composite, SWT.NONE)
             .setImage(getSeverityImage(getIssue().getAttribute(IMarker.SEVERITY, -1)));
@@ -88,6 +101,15 @@ public class MarkerPropertyPage extends PropertyPage {
         GridDataFactory.fillDefaults().hint(WIDTH, SWT.DEFAULT).applyTo(labelMessage);
     }
 
+    /**
+     * Creates the row showing the marker group.
+     *
+     * @param composite
+     *            the parent composite
+     * @return the rule identity of the marker's module
+     * @throws CoreException
+     *             if the marker attribute cannot be read
+     */
     private RuleIdentity createGroupText(final Composite composite) throws CoreException {
         new Label(composite, SWT.NONE)
             .setImage(CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage());
@@ -100,6 +122,14 @@ public class MarkerPropertyPage extends PropertyPage {
         return ruleIdentity;
     }
 
+    /**
+     * Creates the row showing the marker rule name.
+     *
+     * @param composite
+     *            the parent composite
+     * @param ruleIdentity
+     *            the rule identity to display
+     */
     private void createRuleText(final Composite composite, RuleIdentity ruleIdentity) {
         new Label(composite, SWT.NONE).setImage(CheckstyleUIPluginImages.MODULE_ICON.getImage());
         new Label(composite, SWT.NONE).setText(Messages.MarkerPropertyPage_Module);
@@ -108,6 +138,12 @@ public class MarkerPropertyPage extends PropertyPage {
         labelRuleName.setText(ruleIdentity.ruleName());
     }
 
+    /**
+     * Creates the row showing the marker id if present.
+     *
+     * @param composite
+     *            the parent composite
+     */
     private void createIdText(final Composite composite) {
         final var id = getIssue().getAttribute(CheckstyleMarker.MODULE_ID, null);
         if (!StringUtils.isEmpty(id)) {
@@ -120,6 +156,14 @@ public class MarkerPropertyPage extends PropertyPage {
         }
     }
 
+    /**
+     * Creates the row showing the marker description.
+     *
+     * @param composite
+     *            the parent composite
+     * @param ruleIdentity
+     *            the rule identity to display the description of
+     */
     private void createDescriptionText(final Composite composite, RuleIdentity ruleIdentity) {
         final Label descriptionLabel = new Label(composite, SWT.NONE);
         descriptionLabel.setText(Messages.MarkerPropertyPage_Description);

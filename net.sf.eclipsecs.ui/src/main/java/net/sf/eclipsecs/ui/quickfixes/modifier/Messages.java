@@ -43,6 +43,9 @@ public final class Messages extends NLS {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
+    /**
+     * Hidden constructor of the message bundle class.
+     */
     private Messages() {
     }
 }

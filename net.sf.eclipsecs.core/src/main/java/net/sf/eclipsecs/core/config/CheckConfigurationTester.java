@@ -45,6 +45,9 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  */
 public final class CheckConfigurationTester {
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private CheckConfigurationTester() {
 
     }

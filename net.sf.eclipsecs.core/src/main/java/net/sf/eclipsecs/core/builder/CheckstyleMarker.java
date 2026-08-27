@@ -56,10 +56,20 @@ public final class CheckstyleMarker {
      */
     public static final int CATEGORY_ID = 999;
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private CheckstyleMarker() {
         // utility class
     }
 
+    /**
+     * Determines whether the given marker is a checkstyle marker.
+     *
+     * @param marker
+     *            the marker to check
+     * @return <code>true</code> if the marker is a checkstyle marker
+     */
     public static boolean isCheckstyleMarker(IMarker marker) {
         boolean isCheckstyleMarker;
         try {
