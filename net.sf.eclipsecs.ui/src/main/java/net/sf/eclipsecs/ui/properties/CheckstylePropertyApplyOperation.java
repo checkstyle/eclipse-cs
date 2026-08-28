@@ -132,4 +132,5 @@ public final class CheckstylePropertyApplyOperation {
         }
         return true;
     }
+
 }

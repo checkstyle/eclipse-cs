@@ -31,6 +31,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class FinalLocalVariableTransformer extends AbstractCTransformationClass {
+
     @Override
     public FormatterConfiguration transformRule() {
         String val = getAttribute("tokens");
@@ -53,4 +54,5 @@ public class FinalLocalVariableTransformer extends AbstractCTransformationClass 
         useCleanupSetting("make_variable_declarations_final", true);
         return getFormatterSetting();
     }
+
 }

@@ -139,4 +139,5 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
         }
         return null;
     }
+
 }

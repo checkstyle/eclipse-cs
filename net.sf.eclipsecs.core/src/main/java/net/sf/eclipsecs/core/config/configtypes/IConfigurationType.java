@@ -127,4 +127,5 @@ public interface IConfigurationType {
      */
     CheckstyleConfigurationFile getCheckstyleConfiguration(ICheckConfiguration checkConfiguration)
             throws CheckstylePluginException;
+
 }

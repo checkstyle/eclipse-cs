@@ -165,4 +165,5 @@ public abstract class AbstractFilter implements IFilter {
             .add("internalName", mInternalName).add("filterDescription", mFilterDescription)
             .add("selected", mSelected).add("readonly", mReadonly).toString();
     }
+
 }

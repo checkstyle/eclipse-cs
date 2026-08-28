@@ -68,4 +68,5 @@ public final class HtmlUtil {
     private static String convertInlineCodeTags(String html) {
         return PATTERN_INLINE_CODE.matcher(html).replaceAll("<code>$1</code>");
     }
+
 }

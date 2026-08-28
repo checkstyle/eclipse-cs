@@ -48,6 +48,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  *
  */
 public final class XmlProfileWriter {
+
     private static final String XML_NODE_ROOT = "profiles";
     private static final String XML_NODE_PROFILE = "profile";
     private static final String XML_NODE_SETTING = "setting";

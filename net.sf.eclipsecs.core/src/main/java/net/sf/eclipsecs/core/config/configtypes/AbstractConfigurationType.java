@@ -258,4 +258,5 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
     public int hashCode() {
         return Objects.hash(mName, mInternalName, mIsCreatable, mIsEditable, mIsConfigurable);
     }
+
 }

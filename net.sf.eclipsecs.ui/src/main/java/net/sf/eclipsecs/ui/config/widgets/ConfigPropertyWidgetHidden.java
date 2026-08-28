@@ -72,4 +72,5 @@ public final class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidg
     public void restorePropertyDefault() {
         // NOOP
     }
+
 }

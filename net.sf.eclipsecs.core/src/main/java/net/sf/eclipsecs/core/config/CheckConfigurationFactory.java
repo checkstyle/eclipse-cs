@@ -402,4 +402,5 @@ public final class CheckConfigurationFactory {
         }
         return configs;
     }
+
 }

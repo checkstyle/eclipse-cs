@@ -33,4 +33,5 @@ public class SystemPropertyResolver implements PropertyResolver {
         // get the system property
         return System.getProperty(property);
     }
+
 }

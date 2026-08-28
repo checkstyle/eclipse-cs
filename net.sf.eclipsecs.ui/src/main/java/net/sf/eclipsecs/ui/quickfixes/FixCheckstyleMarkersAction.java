@@ -61,4 +61,5 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
             }
         }
     }
+
 }

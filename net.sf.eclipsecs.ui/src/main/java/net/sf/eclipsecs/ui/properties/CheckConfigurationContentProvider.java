@@ -81,4 +81,5 @@ public final class CheckConfigurationContentProvider implements IStructuredConte
     public void dispose() {
         // do nothing.
     }
+
 }

@@ -32,6 +32,7 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
  *
  */
 public abstract class AbstractCTransformationClass {
+
     /** The eclipse-configuration for this rule. */
     private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
 
@@ -126,4 +127,5 @@ public abstract class AbstractCTransformationClass {
     public FormatterConfiguration getFormatterSetting() {
         return mFormatterSetting;
     }
+
 }

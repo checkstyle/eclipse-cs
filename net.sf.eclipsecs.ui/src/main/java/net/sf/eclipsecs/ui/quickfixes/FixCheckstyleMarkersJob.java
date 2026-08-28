@@ -80,4 +80,5 @@ public class FixCheckstyleMarkersJob extends UIJob {
 
         return status;
     }
+
 }

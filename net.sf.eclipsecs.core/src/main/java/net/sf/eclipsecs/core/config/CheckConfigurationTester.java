@@ -139,4 +139,5 @@ public final class CheckConfigurationTester {
             return mUnresolvedProperties;
         }
     }
+
 }

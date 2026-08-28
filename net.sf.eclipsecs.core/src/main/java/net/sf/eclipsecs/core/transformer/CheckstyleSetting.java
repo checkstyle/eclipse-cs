@@ -30,6 +30,7 @@ import java.util.Map;
  *
  */
 public class CheckstyleSetting {
+
     /** Map which holds all checker-modules of the configuration. */
     private final Map<String, Map<String, String>> mCheckerModules = new HashMap<>();
 
@@ -126,4 +127,5 @@ public class CheckstyleSetting {
             }
         }
     }
+
 }

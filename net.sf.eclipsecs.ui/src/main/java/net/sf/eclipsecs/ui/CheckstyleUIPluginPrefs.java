@@ -198,4 +198,5 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
         prefs.putInt(prefId, value);
         prefs.flush();
     }
+
 }

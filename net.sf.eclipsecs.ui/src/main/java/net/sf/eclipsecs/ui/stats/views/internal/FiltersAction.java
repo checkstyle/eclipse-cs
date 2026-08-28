@@ -68,4 +68,5 @@ public class FiltersAction extends Action {
     public void run() {
         mStatsView.openFiltersDialog();
     }
+
 }

@@ -30,4 +30,5 @@ class FinalParametersTest extends AbstractQuickfixTestCase {
     void finalParameters() throws Exception {
         testQuickfix("FinalParametersInput.xml", new FinalParametersQuickfix());
     }
+
 }

@@ -30,4 +30,5 @@ class UpperEllTest extends AbstractQuickfixTestCase {
     void upperEll() throws Exception {
         testQuickfix("UpperEllInput.xml", new UpperEllQuickfix());
     }
+
 }

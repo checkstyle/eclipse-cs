@@ -131,4 +131,5 @@ public class CheckstylePlugin extends Plugin {
     public ClassLoader getAddonExtensionClassLoader() {
         return mAddonExtensionClassLoader;
     }
+
 }

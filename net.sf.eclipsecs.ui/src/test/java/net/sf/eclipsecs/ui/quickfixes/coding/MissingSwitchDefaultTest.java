@@ -35,4 +35,5 @@ class MissingSwitchDefaultTest extends AbstractQuickfixTestCase {
     void missingSwitchDefaultInner() throws Exception {
         testQuickfix("MissingSwitchDefaultInputInner.xml", new MissingSwitchDefaultQuickfix());
     }
+
 }

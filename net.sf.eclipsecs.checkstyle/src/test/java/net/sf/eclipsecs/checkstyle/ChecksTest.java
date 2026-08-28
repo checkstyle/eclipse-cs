@@ -122,4 +122,5 @@ class ChecksTest {
             "../net.sf.eclipsecs.checkstyle/metadata/" + packageName.replace(".", "/") + fileName)
                 .getCanonicalPath();
     }
+
 }

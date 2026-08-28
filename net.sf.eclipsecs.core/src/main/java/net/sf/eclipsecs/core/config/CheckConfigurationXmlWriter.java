@@ -67,4 +67,5 @@ public final class CheckConfigurationXmlWriter {
             addEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
         }
     }
+
 }

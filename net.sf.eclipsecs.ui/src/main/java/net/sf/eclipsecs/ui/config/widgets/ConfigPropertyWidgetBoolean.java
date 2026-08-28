@@ -97,4 +97,5 @@ public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWid
         }
         mCheckbox.setSelection(Boolean.parseBoolean(defaultValue));
     }
+
 }

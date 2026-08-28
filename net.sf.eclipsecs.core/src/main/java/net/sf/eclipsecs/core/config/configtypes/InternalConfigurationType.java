@@ -79,4 +79,5 @@ public class InternalConfigurationType extends AbstractConfigurationType {
             }
         }
     }
+
 }

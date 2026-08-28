@@ -54,4 +54,5 @@ public final class RegexCompletionProposalFactory {
                 ITextEditorActionDefinitionIds.CONTENT_ASSIST_PROPOSALS, new char[0], true);
         contentAssist.setEnabled(true);
     }
+
 }

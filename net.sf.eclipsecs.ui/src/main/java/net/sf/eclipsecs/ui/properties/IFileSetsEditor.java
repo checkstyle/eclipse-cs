@@ -33,6 +33,7 @@ import net.sf.eclipsecs.core.projectconfig.FileSet;
  *
  */
 public interface IFileSetsEditor {
+
     /**
      * Creates the contents of the file set editor.
      *
@@ -61,4 +62,5 @@ public interface IFileSetsEditor {
      * Refreshes the view.
      */
     void refresh();
+
 }

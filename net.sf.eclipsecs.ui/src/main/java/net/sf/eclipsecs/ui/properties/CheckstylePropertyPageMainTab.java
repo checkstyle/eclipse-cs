@@ -194,4 +194,5 @@ public final class CheckstylePropertyPageMainTab extends Composite {
             mFileSetsContainer.layout();
         }
     }
+
 }

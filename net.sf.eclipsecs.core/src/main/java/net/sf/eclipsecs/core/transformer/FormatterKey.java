@@ -31,10 +31,12 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface FormatterKey {
+
     /**
      * The Eclipse Formatter setting key.
      *
      * @return the key
      */
     String value();
+
 }

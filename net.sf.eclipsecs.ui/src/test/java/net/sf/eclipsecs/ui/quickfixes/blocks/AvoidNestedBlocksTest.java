@@ -30,4 +30,5 @@ class AvoidNestedBlocksTest extends AbstractQuickfixTestCase {
     void avoidNestedBlocks() throws Exception {
         testQuickfix("AvoidNestedBlocksInput.xml", new AvoidNestedBlocksQuickfix());
     }
+
 }

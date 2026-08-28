@@ -68,4 +68,5 @@ public interface IConfigPropertyWidget {
      *             thrown if the data is invalid
      */
     void validate() throws CheckstylePluginException;
+
 }

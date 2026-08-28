@@ -79,4 +79,5 @@ public class BuiltInConfigurationType extends AbstractConfigurationType {
 
         return resolver;
     }
+
 }

@@ -533,4 +533,5 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         }
 
     }
+
 }

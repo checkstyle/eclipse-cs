@@ -66,4 +66,5 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration 
             CheckstylePluginException.rethrow(ex);
         }
     }
+
 }

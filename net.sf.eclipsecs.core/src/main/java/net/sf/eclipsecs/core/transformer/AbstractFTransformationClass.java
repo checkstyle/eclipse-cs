@@ -28,6 +28,7 @@ import java.util.Map;
  *
  */
 public abstract class AbstractFTransformationClass {
+
     /** The checkstyle-configuration for this rule. */
     private final CheckstyleSetting mCheckstyleSetting = new CheckstyleSetting();
 
@@ -98,4 +99,5 @@ public abstract class AbstractFTransformationClass {
     public CheckstyleSetting getCheckstyleSetting() {
         return mCheckstyleSetting;
     }
+
 }

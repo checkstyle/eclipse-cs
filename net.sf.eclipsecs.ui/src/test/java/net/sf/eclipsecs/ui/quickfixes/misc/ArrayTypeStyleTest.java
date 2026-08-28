@@ -40,4 +40,5 @@ class ArrayTypeStyleTest extends AbstractQuickfixTestCase {
     void arrayTypeStyleVariable() throws Exception {
         testQuickfix("ArrayTypeStyleInputVariable.xml", new ArrayTypeStyleQuickfix());
     }
+
 }

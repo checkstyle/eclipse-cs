@@ -90,4 +90,5 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
 
         return value;
     }
+
 }

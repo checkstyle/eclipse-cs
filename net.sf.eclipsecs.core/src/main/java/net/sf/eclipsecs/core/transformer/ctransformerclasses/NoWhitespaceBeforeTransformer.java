@@ -30,6 +30,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  */
 public class NoWhitespaceBeforeTransformer extends AbstractCTransformationClass {
+
     @Override
     public FormatterConfiguration transformRule() {
         String val = getAttribute("tokens");

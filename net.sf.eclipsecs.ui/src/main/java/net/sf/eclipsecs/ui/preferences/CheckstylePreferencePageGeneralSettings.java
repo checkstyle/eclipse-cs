@@ -362,4 +362,5 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     public boolean getBackgroundFullBuild() {
         return mBackgroundFullBuild.getSelection();
     }
+
 }

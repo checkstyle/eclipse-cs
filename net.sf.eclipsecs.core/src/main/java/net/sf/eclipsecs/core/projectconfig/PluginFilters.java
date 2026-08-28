@@ -159,4 +159,5 @@ public final class PluginFilters {
 
         return filter;
     }
+
 }

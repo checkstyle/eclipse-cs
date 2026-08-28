@@ -68,4 +68,5 @@ public interface ICheckConfigurationEditor {
      *             a validation error occurred when setting the editor data to the working copy
      */
     CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException;
+
 }

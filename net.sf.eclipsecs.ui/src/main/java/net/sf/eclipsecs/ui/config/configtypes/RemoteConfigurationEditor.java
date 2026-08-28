@@ -257,4 +257,5 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     private static String makeCacheFileName(String configName, long time, String extension) {
         return String.join("_", configName, String.valueOf(time), "cache.") + extension;
     }
+
 }

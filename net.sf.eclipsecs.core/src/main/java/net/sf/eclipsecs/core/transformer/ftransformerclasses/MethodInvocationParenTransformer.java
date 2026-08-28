@@ -34,6 +34,7 @@ import net.sf.eclipsecs.core.transformer.FormatterKey;
  */
 @FormatterKey("insert_space_before_opening_paren_in_method_invocation")
 public class MethodInvocationParenTransformer extends AbstractFTransformationClass {
+
     @Override
     public CheckstyleSetting transformRule() {
         final Map<String, String> properties = new HashMap<>();
@@ -41,4 +42,5 @@ public class MethodInvocationParenTransformer extends AbstractFTransformationCla
         useTreeWalkerModule("MethodParamPad", properties);
         return getCheckstyleSetting();
     }
+
 }

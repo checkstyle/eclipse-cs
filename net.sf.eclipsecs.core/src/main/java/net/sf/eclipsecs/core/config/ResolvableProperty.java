@@ -120,4 +120,5 @@ public class ResolvableProperty {
         return MoreObjects.toStringHelper(this).add("propertyName", propertyName)
             .add("value", value).toString();
     }
+
 }

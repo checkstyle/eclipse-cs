@@ -119,4 +119,5 @@ public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWid
             CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
         }
     }
+
 }
