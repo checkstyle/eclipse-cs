@@ -174,4 +174,5 @@ public final class ConfigurationTypes {
         }
         return result;
     }
+
 }

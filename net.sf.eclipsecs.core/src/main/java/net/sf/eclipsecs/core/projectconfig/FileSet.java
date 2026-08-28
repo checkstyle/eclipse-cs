@@ -211,4 +211,5 @@ public class FileSet {
         return MoreObjects.toStringHelper(this).add("enabled", enabled).add("name", name)
             .add("fileMatchPatterns", fileMatchPatterns).add("checkConfig", checkConfig).toString();
     }
+
 }

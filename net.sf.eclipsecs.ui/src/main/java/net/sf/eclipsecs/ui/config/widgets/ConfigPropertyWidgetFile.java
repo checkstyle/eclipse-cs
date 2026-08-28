@@ -166,4 +166,5 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
 
         return contentAssistant;
     }
+
 }

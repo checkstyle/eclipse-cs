@@ -390,4 +390,5 @@ public final class ProjectConfigurationFactory {
 
         return filters;
     }
+
 }

@@ -70,4 +70,5 @@ public class IndentationTransformer extends AbstractCTransformationClass {
 
         return getFormatterSetting();
     }
+
 }

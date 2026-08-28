@@ -139,4 +139,5 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
         mEditorPlaceHolder.update();
         mEditorPlaceHolder.layout();
     }
+
 }

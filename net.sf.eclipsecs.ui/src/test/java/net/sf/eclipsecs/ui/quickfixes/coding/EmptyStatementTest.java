@@ -35,4 +35,5 @@ class EmptyStatementTest extends AbstractQuickfixTestCase {
     void emptyStatementNeg() throws Exception {
         testQuickfix("EmptyStatementInputNeg.xml", new EmptyStatementQuickfix());
     }
+
 }

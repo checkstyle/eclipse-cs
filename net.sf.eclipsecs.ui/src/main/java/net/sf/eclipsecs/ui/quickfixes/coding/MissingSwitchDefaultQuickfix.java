@@ -71,4 +71,5 @@ public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
     public Image getImage() {
         return CheckstyleUIPluginImages.CORRECTION_ADD.getImage();
     }
+
 }

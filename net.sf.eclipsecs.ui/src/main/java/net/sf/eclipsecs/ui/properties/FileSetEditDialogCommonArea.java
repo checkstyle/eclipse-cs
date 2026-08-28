@@ -139,4 +139,5 @@ public final class FileSetEditDialogCommonArea extends Composite {
     public void setSelection(ICheckConfiguration iCheckConfiguration) {
         this.mComboViewer.setSelection(new StructuredSelection(iCheckConfiguration));
     }
+
 }

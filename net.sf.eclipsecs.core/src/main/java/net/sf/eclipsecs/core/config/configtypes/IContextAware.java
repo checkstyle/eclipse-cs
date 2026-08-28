@@ -35,4 +35,5 @@ public interface IContextAware {
      *            the project context
      */
     void setProjectContext(IProject project);
+
 }

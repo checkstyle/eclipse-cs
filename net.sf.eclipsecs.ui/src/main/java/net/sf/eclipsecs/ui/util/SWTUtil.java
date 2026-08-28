@@ -370,4 +370,5 @@ public final class SWTUtil {
             bounds.put(MINIMIZED, mMinimized);
         }
     }
+
 }

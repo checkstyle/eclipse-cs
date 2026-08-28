@@ -219,4 +219,5 @@ public class FilterSettings extends Composite {
         }
 
     }
+
 }

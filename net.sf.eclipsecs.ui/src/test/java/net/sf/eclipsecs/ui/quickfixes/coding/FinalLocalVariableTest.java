@@ -30,4 +30,5 @@ class FinalLocalVariableTest extends AbstractQuickfixTestCase {
     void finalLocalVariable() throws Exception {
         testQuickfix("FinalLocalVariableInput.xml", new FinalLocalVariableQuickfix());
     }
+
 }

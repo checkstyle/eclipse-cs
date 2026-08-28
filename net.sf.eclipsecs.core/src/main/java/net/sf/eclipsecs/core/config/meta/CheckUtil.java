@@ -41,6 +41,7 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
  *
  */
 public final class CheckUtil {
+
     /**
      * Utility class, not intended to be instantiated.
      */
@@ -129,4 +130,5 @@ public final class CheckUtil {
         List<Integer> modifiableTokens) {
         return modifiableTokens.stream().map(function::apply).collect(Collectors.joining(","));
     }
+
 }

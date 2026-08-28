@@ -134,4 +134,5 @@ public final class CheckstyleFileWriter {
             propertyElement.addAttribute(XMLTags.VALUE_TAG, property.getValue());
         }
     }
+
 }

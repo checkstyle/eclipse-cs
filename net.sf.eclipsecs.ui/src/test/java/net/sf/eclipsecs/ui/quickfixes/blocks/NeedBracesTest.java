@@ -55,4 +55,5 @@ class NeedBracesTest extends AbstractQuickfixTestCase {
     void needBracesDoWhile() throws Exception {
         testQuickfix("NeedBracesInputDoWhile.xml", new NeedBracesQuickfix());
     }
+
 }

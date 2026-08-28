@@ -418,4 +418,5 @@ public final class AvailableModulesViewer extends Composite {
         }
 
     }
+
 }

@@ -103,4 +103,5 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
             return Status.OK_STATUS;
         }
     }
+
 }

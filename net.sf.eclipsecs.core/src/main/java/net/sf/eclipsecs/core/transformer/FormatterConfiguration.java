@@ -30,6 +30,7 @@ import java.util.Map;
  *
  */
 public class FormatterConfiguration {
+
     /** Map containing all eclipse editor-settings. */
     private final Map<String, String> mCleanupSettings = new HashMap<>();
 
@@ -117,4 +118,5 @@ public class FormatterConfiguration {
             addCleanupSetting(global, settings.getCleanupSettings().get(global));
         }
     }
+
 }

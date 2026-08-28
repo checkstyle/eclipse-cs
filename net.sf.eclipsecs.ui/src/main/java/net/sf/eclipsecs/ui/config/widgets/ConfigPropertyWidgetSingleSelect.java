@@ -115,4 +115,5 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
             mComboItem.select(mComboItem.indexOf(defaultValue));
         }
     }
+
 }

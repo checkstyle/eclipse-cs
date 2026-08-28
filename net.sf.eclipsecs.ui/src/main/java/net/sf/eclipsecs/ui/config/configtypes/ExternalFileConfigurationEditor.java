@@ -161,4 +161,5 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         }
         return exists;
     }
+
 }

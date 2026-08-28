@@ -308,4 +308,5 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         shell.setText(mTitle);
     }
+
 }

@@ -43,4 +43,5 @@ public class ClasspathVariableResolver implements PropertyResolver {
         }
         return resolvedPath;
     }
+
 }

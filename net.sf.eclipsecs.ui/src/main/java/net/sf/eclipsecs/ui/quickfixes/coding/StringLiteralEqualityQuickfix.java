@@ -177,4 +177,5 @@ public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
     public Image getImage() {
         return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
     }
+
 }

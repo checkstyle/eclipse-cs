@@ -163,4 +163,5 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
             }
         }
     }
+
 }

@@ -62,4 +62,5 @@ public class WriteProtectedFilter extends AbstractFilter {
         }
         return goesThrough;
     }
+
 }

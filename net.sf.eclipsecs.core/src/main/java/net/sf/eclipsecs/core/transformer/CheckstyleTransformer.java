@@ -36,6 +36,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  *
  */
 public class CheckstyleTransformer {
+
     /** An object containing all settings for the eclipse-formatter. */
     private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
 
@@ -139,4 +140,5 @@ public class CheckstyleTransformer {
             mFormatterSetting.addConfiguration(settings);
         }
     }
+
 }

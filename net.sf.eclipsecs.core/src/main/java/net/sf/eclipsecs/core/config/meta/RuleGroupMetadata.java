@@ -124,4 +124,5 @@ public class RuleGroupMetadata {
     public String getGroupId() {
         return mGroupId;
     }
+
 }

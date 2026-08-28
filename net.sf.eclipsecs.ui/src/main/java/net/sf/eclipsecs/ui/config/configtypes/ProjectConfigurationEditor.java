@@ -285,4 +285,5 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         }
         return exists;
     }
+
 }

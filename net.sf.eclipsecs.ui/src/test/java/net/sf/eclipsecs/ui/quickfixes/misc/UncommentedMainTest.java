@@ -30,4 +30,5 @@ class UncommentedMainTest extends AbstractQuickfixTestCase {
     void uncommentedMain() throws Exception {
         testQuickfix("UncommentedMainInput.xml", new UncommentedMainQuickfix());
     }
+
 }

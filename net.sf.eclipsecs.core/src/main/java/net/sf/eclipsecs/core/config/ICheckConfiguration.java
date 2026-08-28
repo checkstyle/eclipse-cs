@@ -139,4 +139,5 @@ public interface ICheckConfiguration {
      *             Error copying the configuration
      */
     void copyConfiguration(ICheckConfiguration target) throws CheckstylePluginException;
+
 }

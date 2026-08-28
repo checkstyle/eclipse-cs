@@ -30,4 +30,5 @@ class DesignForExtensionTest extends AbstractQuickfixTestCase {
     void designForExtension() throws Exception {
         testQuickfix("DesignForExtensionInput.xml", new DesignForExtensionQuickfix());
     }
+
 }

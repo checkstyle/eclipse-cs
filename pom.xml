@@ -42,7 +42,7 @@
         <versions-maven-plugin-version>2.22.0</versions-maven-plugin-version>
 
         <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
-        <sevntu-checkstyle-plugin-checkstyle-version>13.4.0</sevntu-checkstyle-plugin-checkstyle-version>
+        <sevntu-checkstyle-plugin-checkstyle-version>13.9.0</sevntu-checkstyle-plugin-checkstyle-version>
         <sevntu-checkstyle-plugin-version>1.44.1</sevntu-checkstyle-plugin-version>
 
         <tycho.scmUrl>scm:git:git://github.com:checkstyle/eclipse-cs.git</tycho.scmUrl>

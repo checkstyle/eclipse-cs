@@ -66,4 +66,5 @@ public class TreeWalkerModuleSaveFilter implements ISaveFilter {
             configuredModules.remove(configuredTreeWalker);
         }
     }
+
 }

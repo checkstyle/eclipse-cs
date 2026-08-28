@@ -265,4 +265,5 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         return includeRuleNamesHasChanged || includeModuleIdHasChanged || limitMarkersHasChanged
             || markerLimitHasChanged || mRebuildAll;
     }
+
 }

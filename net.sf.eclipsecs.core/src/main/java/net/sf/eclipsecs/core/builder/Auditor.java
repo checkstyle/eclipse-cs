@@ -610,4 +610,5 @@ public final class Auditor {
             return ruleName;
         }
     }
+
 }

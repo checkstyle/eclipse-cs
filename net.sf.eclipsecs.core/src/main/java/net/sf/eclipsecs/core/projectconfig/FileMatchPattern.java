@@ -157,4 +157,5 @@ public class FileMatchPattern {
         return MoreObjects.toStringHelper(this).add("patternString", patternString)
             .add("isIncludePattern", isIncludePattern).toString();
     }
+
 }

@@ -129,4 +129,5 @@ public abstract class AbstractQuickfixTestCase {
     private record QuickfixTestData(String input, String result, int line, int position) {
 
     }
+
 }

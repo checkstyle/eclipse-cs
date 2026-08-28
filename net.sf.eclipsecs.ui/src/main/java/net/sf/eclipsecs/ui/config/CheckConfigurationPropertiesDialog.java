@@ -353,4 +353,5 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             }
         }
     }
+
 }

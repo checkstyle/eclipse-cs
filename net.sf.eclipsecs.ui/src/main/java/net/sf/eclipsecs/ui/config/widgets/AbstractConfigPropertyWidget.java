@@ -140,4 +140,5 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
     public void validate() throws CheckstylePluginException {
         // Nothing to to for most properties
     }
+
 }

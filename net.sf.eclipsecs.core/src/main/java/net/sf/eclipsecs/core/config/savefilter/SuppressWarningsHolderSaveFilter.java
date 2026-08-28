@@ -68,4 +68,5 @@ public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
             configuredModules.remove(configuredSuppressWarningsHolder);
         }
     }
+
 }

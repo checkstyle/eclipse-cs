@@ -351,4 +351,5 @@ public final class FileSetEditDialog extends TitleAreaDialog {
 
         return files;
     }
+
 }

@@ -57,4 +57,5 @@ public final class CheckConfigurationViewerSorter extends ViewerComparator {
 
         return result;
     }
+
 }

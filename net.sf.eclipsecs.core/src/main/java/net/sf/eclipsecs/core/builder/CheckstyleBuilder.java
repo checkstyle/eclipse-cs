@@ -413,4 +413,5 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     public ISchedulingRule getRule(int kind, Map<String, String> args) {
         return getProject();
     }
+
 }

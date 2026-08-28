@@ -62,4 +62,5 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
         }
         return isCheckstyleMarker;
     }
+
 }

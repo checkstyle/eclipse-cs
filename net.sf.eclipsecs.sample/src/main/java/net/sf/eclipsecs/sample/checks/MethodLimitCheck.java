@@ -79,4 +79,5 @@ public final class MethodLimitCheck extends AbstractCheck {
             log(ast.getLineNo(), "methodlimit", max);
         }
     }
+
 }

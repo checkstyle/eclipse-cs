@@ -234,4 +234,5 @@ public final class ConfiguredModulesTable extends Composite {
         }
         return text;
     }
+
 }

@@ -187,4 +187,5 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
             return status;
         }
     }
+
 }

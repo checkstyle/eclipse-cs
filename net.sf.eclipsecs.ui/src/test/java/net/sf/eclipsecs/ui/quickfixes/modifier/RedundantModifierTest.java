@@ -30,4 +30,5 @@ class RedundantModifierTest extends AbstractQuickfixTestCase {
     void redundantModifier() throws Exception {
         testQuickfix("RedundantModifierInput.xml", new RedundantModifierQuickfix());
     }
+
 }
