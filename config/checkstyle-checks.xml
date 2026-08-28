@@ -682,6 +682,16 @@
         <!-- Imports -->
         <module name="AvoidStarImport"/>
         <module name="AvoidStaticImport"/>
+        <module name="ImportControl">
+            <property name="id" value="ImportControlMain"/>
+            <property name="file" value="${checkstyle.importcontrol.file}"/>
+            <property name="path" value="^.*[\\/]src[\\/]main[\\/].*$"/>
+        </module>
+        <module name="ImportControl">
+            <property name="id" value="ImportControlTest"/>
+            <property name="file" value="${checkstyle.importcontroltest.file}"/>
+            <property name="path" value="^.*[\\/]src[\\/](test|it)[\\/].*$"/>
+        </module>
         <module name="IllegalImport">
             <property name="illegalClasses"
                       value="org.junit.jupiter.api.Assertions"/>
