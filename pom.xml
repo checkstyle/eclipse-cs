@@ -176,6 +176,17 @@
                         </configuration>
                     </execution>
                     <execution>
+                        <id>eclipse-cs-check</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                        <configuration>
+                            <configLocation>config/eclipse-cs-checks.xml</configLocation>
+                            <propertiesLocation>config/checkstyle.properties</propertiesLocation>
+                        </configuration>
+                    </execution>
+                    <execution>
                         <id>sevntu-checkstyle-check</id>
                         <phase>verify</phase>
                         <goals>
