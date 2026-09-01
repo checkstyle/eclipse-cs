@@ -29,6 +29,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class NewlineAtEndOfFileTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public NewlineAtEndOfFileTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         userFormatterSetting("insert_new_line_at_end_of_file_if_missing", "insert");

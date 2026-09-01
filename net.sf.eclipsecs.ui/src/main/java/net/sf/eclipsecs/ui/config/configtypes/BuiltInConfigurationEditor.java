@@ -62,6 +62,12 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
     // methods
     //
 
+    /**
+     * Creates a new instance.
+     */
+    public BuiltInConfigurationEditor() {
+    }
+
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {

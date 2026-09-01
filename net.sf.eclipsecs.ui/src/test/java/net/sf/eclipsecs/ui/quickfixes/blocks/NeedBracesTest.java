@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class NeedBracesTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    NeedBracesTest() {
+    }
+
     @Test
     void needBracesIf() throws Exception {
         testQuickfix("NeedBracesInputIf.xml", new NeedBracesQuickfix());

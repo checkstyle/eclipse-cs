@@ -30,6 +30,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class UnusedImportsTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public UnusedImportsTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         useCleanupSetting("organize_imports", true);

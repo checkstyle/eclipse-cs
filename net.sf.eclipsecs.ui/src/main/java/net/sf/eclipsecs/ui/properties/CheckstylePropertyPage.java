@@ -76,6 +76,12 @@ public class CheckstylePropertyPage extends PropertyPage {
     // methods
     //
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckstylePropertyPage() {
+    }
+
     @Override
     public void setElement(IAdaptable element) {
         super.setElement(element);

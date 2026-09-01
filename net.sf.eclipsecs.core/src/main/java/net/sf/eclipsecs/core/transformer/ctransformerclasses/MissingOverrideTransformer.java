@@ -30,6 +30,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class MissingOverrideTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public MissingOverrideTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         useCleanupSetting("add_missing_annotations", true);

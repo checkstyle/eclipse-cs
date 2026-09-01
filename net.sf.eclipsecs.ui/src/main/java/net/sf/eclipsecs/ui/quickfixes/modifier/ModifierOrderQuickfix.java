@@ -62,6 +62,12 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
             ModifierKeyword.STRICTFP_KEYWORD, ModifierKeyword.DEFAULT_KEYWORD);
 
     /**
+     * Creates a new instance.
+     */
+    public ModifierOrderQuickfix() {
+    }
+
+    /**
      * Reorders the given list of <code>Modifier</code> nodes into their suggested order by the JLS.
      *
      * @param modifiers

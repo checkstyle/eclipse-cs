@@ -47,6 +47,12 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class StringLiteralEqualityQuickfix extends AbstractASTResolution {
 
+    /**
+     * Creates a new instance.
+     */
+    public StringLiteralEqualityQuickfix() {
+    }
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartPosition) {

@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class UncommentedMainTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    UncommentedMainTest() {
+    }
+
     @Test
     void uncommentedMain() throws Exception {
         testQuickfix("UncommentedMainInput.xml", new UncommentedMainQuickfix());

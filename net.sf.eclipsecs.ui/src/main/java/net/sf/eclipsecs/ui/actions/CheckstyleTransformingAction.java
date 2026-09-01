@@ -37,6 +37,12 @@ public class CheckstyleTransformingAction implements IActionDelegate {
     /** Selection in workspace. */
     private ISelection mSelection;
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckstyleTransformingAction() {
+    }
+
     @Override
     public void run(final IAction arg0) {
         final TransformCheckstyleRulesJob job = new TransformCheckstyleRulesJob(

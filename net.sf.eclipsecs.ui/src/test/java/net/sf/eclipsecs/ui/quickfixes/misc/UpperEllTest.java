@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class UpperEllTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    UpperEllTest() {
+    }
+
     @Test
     void upperEll() throws Exception {
         testQuickfix("UpperEllInput.xml", new UpperEllQuickfix());

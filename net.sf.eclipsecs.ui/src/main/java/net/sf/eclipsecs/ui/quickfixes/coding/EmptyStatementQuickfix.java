@@ -37,6 +37,12 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class EmptyStatementQuickfix extends AbstractASTResolution {
 
+    /**
+     * Creates a new instance.
+     */
+    public EmptyStatementQuickfix() {
+    }
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartPosition) {

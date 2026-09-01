@@ -32,6 +32,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class MethodParamPadTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public MethodParamPadTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         final String option = getAttribute("option");

@@ -30,6 +30,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class FinalParametersTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public FinalParametersTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         String tokens = getAttribute("tokens");

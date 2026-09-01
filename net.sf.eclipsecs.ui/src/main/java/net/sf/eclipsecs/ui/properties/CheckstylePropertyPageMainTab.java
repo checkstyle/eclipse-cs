@@ -157,6 +157,12 @@ public final class CheckstylePropertyPageMainTab extends Composite {
      */
     private final class ChkSimpleConfigController extends SelectionAdapter {
 
+        /**
+         * Creates a new instance.
+         */
+        private ChkSimpleConfigController() {
+        }
+
         @Override
         public void widgetSelected(SelectionEvent e) {
             propertyPageContext.configuration().setUseSimpleConfig(mChkSimpleConfig.getSelection());

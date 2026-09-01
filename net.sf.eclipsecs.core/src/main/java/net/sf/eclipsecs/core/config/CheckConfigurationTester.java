@@ -114,6 +114,12 @@ public final class CheckConfigurationTester {
         /** The list of unresolved properties. */
         private List<ResolvableProperty> mUnresolvedProperties = new ArrayList<>();
 
+        /**
+         * Creates a new instance.
+         */
+        private MissingPropertyCollector() {
+        }
+
         @Override
         public String resolve(String aName) {
 

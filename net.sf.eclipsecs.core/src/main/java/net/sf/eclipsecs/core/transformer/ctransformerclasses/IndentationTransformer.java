@@ -33,6 +33,12 @@ public class IndentationTransformer extends AbstractCTransformationClass {
     /** Default offset. */
     private static final String DEFAULT_OFFSET = "4";
 
+    /**
+     * Creates a new instance.
+     */
+    public IndentationTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         // basicOffset -> indentation.size, tabulation.size

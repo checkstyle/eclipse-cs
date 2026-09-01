@@ -142,6 +142,12 @@ public final class ConfiguredModules extends Composite {
      */
     private final class RuleGroupModuleFilter extends ViewerFilter {
 
+        /**
+         * Creates a new instance.
+         */
+        private RuleGroupModuleFilter() {
+        }
+
         @Override
         public boolean select(Viewer viewer, Object parentElement, Object element) {
             final RuleMetadata rule = ((Module) element).getMetaData();

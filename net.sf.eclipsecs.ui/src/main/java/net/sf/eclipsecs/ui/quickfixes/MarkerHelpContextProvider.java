@@ -50,6 +50,12 @@ public class MarkerHelpContextProvider extends AbstractContextProvider
      */
     private static final String PLUGIN_PREFIX = "net.sf.eclipsecs.ui.";
 
+    /**
+     * Creates a new instance.
+     */
+    public MarkerHelpContextProvider() {
+    }
+
     @Override
     public String getHelpContextForMarker(IMarker marker) {
         String helpContext = null;

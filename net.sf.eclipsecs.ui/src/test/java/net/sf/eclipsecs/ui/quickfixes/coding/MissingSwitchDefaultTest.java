@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class MissingSwitchDefaultTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    MissingSwitchDefaultTest() {
+    }
+
     @Test
     void missingSwitchDefault() throws Exception {
         testQuickfix("MissingSwitchDefaultInput.xml", new MissingSwitchDefaultQuickfix());

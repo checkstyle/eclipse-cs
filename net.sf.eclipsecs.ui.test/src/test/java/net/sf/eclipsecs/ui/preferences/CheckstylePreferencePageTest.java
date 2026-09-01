@@ -31,6 +31,12 @@ import org.junit.jupiter.api.Test;
  */
 class CheckstylePreferencePageTest {
 
+    /**
+     * Creates a new instance.
+     */
+    CheckstylePreferencePageTest() {
+    }
+
     @Test
     void preferencePageOpens() throws Exception {
         final var display = Display.getDefault();

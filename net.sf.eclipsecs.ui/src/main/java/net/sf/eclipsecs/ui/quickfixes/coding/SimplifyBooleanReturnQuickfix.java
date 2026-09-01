@@ -80,6 +80,12 @@ public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
             QualifiedName.class, SimpleName.class, ParenthesizedExpression.class,
             SuperFieldAccess.class, SuperMethodInvocation.class, ThisExpression.class);
 
+    /**
+     * Creates a new instance.
+     */
+    public SimplifyBooleanReturnQuickfix() {
+    }
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartOffset) {

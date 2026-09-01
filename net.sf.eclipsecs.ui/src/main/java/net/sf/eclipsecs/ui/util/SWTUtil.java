@@ -58,7 +58,6 @@ public final class SWTUtil {
      * Hidden default constructor.
      */
     private SWTUtil() {
-        // NOOP
     }
 
     /**
@@ -110,6 +109,12 @@ public final class SWTUtil {
     private static final class TooltipOnPressListener extends MouseAdapter
         implements MouseTrackListener {
 
+        /**
+         * Creates a new instance.
+         */
+        private TooltipOnPressListener() {
+        }
+
         @Override
         public void mouseDown(MouseEvent e) {
             final Control theControl = (Control) e.widget;
@@ -158,6 +163,12 @@ public final class SWTUtil {
      *
      */
     private static final class OnlyDigitsVerifyListener implements VerifyListener {
+
+        /**
+         * Creates a new instance.
+         */
+        private OnlyDigitsVerifyListener() {
+        }
 
         @Override
         public void verifyText(VerifyEvent e) {

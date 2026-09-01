@@ -37,6 +37,12 @@ public class FormatterTransformingAction implements IActionDelegate {
     /** The selected project. */
     private IProject project;
 
+    /**
+     * Creates a new instance.
+     */
+    public FormatterTransformingAction() {
+    }
+
     @Override
     public void run(final IAction arg0) {
         final TransformFormatterRulesJob job = new TransformFormatterRulesJob(project);

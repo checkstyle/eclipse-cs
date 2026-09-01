@@ -47,6 +47,12 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
     /** The selected projects to deactivate Checkstyle on. */
     private Collection<IProject> mSelectedProjects;
 
+    /**
+     * Creates a new instance.
+     */
+    public DeactivateProjectsAction() {
+    }
+
     @Override
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
     }

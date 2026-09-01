@@ -190,6 +190,12 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
      */
     private final class RegexTestListener implements KeyListener {
 
+        /**
+         * Creates a new instance.
+         */
+        private RegexTestListener() {
+        }
+
         @Override
         public void keyPressed(KeyEvent e) {
             // NOOP

@@ -56,6 +56,12 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
     /** The structured selection. */
     private IStructuredSelection mSelection;
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckSelectedFilesAction() {
+    }
+
     @Override
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
         mPart = targetPart;

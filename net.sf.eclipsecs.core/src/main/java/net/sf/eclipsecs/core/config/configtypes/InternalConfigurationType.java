@@ -41,6 +41,12 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class InternalConfigurationType extends AbstractConfigurationType {
 
     /**
+     * Creates a new instance.
+     */
+    public InternalConfigurationType() {
+    }
+
+    /**
      * Resolves the location inside the plugins workspace state location.
      *
      * @param location

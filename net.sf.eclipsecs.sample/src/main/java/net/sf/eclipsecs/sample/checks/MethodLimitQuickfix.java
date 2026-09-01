@@ -40,6 +40,12 @@ public class MethodLimitQuickfix extends AbstractASTResolution {
     /** Label & description for this quick fix. */
     private static final String LABEL = "Sample MethodLimit Quickfix";
 
+    /**
+     * Creates a new instance.
+     */
+    public MethodLimitQuickfix() {
+    }
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartOffset) {

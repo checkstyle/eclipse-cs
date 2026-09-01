@@ -64,6 +64,12 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
         .of(DefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_SWITCH);
 
     /**
+     * Creates a new instance.
+     */
+    public LeftCurlyTransformer() {
+    }
+
+    /**
      * Returns the formatter settings for the given token.
      *
      * @param token

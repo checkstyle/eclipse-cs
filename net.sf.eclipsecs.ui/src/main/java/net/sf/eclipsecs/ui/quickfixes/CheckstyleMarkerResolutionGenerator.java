@@ -33,6 +33,12 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
  */
 public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGenerator2 {
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckstyleMarkerResolutionGenerator() {
+    }
+
     @Override
     public IMarkerResolution[] getResolutions(IMarker marker) {
         return CheckstyleQuickfixes.getInstance().getQuickfixes().stream()

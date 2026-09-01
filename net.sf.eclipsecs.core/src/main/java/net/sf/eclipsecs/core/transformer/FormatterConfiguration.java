@@ -38,6 +38,12 @@ public class FormatterConfiguration {
     private final Map<String, String> mFormatterSettings = new HashMap<>();
 
     /**
+     * Creates a new instance.
+     */
+    public FormatterConfiguration() {
+    }
+
+    /**
      * Method for adding a new global setting.
      *
      * @param setting

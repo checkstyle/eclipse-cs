@@ -44,6 +44,12 @@ import net.sf.eclipsecs.checkstyle.utils.XmlUtil;
 
 class ChecksTest {
 
+    /**
+     * Creates a new instance.
+     */
+    ChecksTest() {
+    }
+
     @Test
     void metadataFiles() throws Exception {
         final Set<Class<?>> modules = new HashSet<>(CheckUtil.getCheckstyleModules());

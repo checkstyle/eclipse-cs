@@ -30,6 +30,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class LineLengthTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public LineLengthTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         String val = getAttribute("max");

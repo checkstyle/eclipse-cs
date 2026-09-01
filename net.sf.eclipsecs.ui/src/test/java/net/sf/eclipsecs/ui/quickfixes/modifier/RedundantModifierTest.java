@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class RedundantModifierTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    RedundantModifierTest() {
+    }
+
     @Test
     void redundantModifier() throws Exception {
         testQuickfix("RedundantModifierInput.xml", new RedundantModifierQuickfix());

@@ -263,6 +263,12 @@ public final class TableViewerEnhancer {
      */
     private static final class TableViewerTextLabelComparator extends ViewerComparator {
 
+        /**
+         * Creates a new instance.
+         */
+        private TableViewerTextLabelComparator() {
+        }
+
         @Override
         public int compare(Viewer viewer, Object e1, Object e2) {
             final Table table = ((TableViewer) viewer).getTable();

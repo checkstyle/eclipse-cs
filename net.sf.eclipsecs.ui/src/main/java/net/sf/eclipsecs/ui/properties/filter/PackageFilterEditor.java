@@ -73,6 +73,12 @@ public class PackageFilterEditor implements IFilterEditor {
     /** The filter data. */
     private List<String> mFilterData;
 
+    /**
+     * Creates a new instance.
+     */
+    public PackageFilterEditor() {
+    }
+
     @Override
     public int openEditor(Shell parent) {
 
@@ -185,6 +191,12 @@ public class PackageFilterEditor implements IFilterEditor {
      *
      */
     private static final class SourceFolderContentProvider implements ITreeContentProvider {
+
+        /**
+         * Creates a new instance.
+         */
+        private SourceFolderContentProvider() {
+        }
 
         @Override
         public Object[] getChildren(Object parentElement) {

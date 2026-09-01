@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class FinalParametersTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    FinalParametersTest() {
+    }
+
     @Test
     void finalParameters() throws Exception {
         testQuickfix("FinalParametersInput.xml", new FinalParametersQuickfix());

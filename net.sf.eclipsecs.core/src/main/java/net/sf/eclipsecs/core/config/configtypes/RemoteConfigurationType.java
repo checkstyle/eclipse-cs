@@ -83,6 +83,12 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     /** URLs that have failed with HTTP 401. */
     private static final Set<String> FAILED_WITH_401_URLS = new HashSet<>();
 
+    /**
+     * Creates a new instance.
+     */
+    public RemoteConfigurationType() {
+    }
+
     @Override
     public CheckstyleConfigurationFile getCheckstyleConfiguration(
         ICheckConfiguration checkConfiguration) throws CheckstylePluginException {

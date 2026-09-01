@@ -45,6 +45,12 @@ public class BuiltInConfigurationType extends AbstractConfigurationType {
      */
     public static final String CONTRIBUTOR_KEY = "contributor";
 
+    /**
+     * Creates a new instance.
+     */
+    public BuiltInConfigurationType() {
+    }
+
     @Override
     protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
 

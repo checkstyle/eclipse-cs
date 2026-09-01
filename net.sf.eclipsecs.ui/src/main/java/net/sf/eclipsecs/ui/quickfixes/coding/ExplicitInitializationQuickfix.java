@@ -48,6 +48,12 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
     /** The field name to be used in descriptions. */
     private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
 
+    /**
+     * Creates a new instance.
+     */
+    public ExplicitInitializationQuickfix() {
+    }
+
     @Override
     public boolean canFix(final IMarker marker) {
         boolean fixed = false;
