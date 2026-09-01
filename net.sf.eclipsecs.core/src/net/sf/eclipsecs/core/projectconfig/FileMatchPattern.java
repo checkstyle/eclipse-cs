@@ -32,7 +32,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 /**
  * A file match pattern is a pattern used in a regular express to check for matching file names.
  */
-public class FileMatchPattern implements Cloneable {
+public class FileMatchPattern {
 
     /** Whether this is an include pattern. */
     private boolean isIncludePattern = true;
@@ -42,6 +42,18 @@ public class FileMatchPattern implements Cloneable {
 
     /** The pattern string. */
     private String patternString;
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the pattern to copy
+     */
+    public FileMatchPattern(FileMatchPattern other) {
+        this.isIncludePattern = other.isIncludePattern;
+        this.regexPattern = other.regexPattern;
+        this.patternString = other.patternString;
+    }
 
     /**
      * Construct a new <code>FileMatchPattern</code>.
@@ -118,21 +130,6 @@ public class FileMatchPattern implements Cloneable {
      */
     public void setIsIncludePattern(boolean isIncludePattern) {
         this.isIncludePattern = isIncludePattern;
-    }
-
-    /**
-     * Clone the object.
-     *
-     * @return The clone
-     */
-    @Override
-    public FileMatchPattern clone() {
-        try {
-            return (FileMatchPattern) super.clone();
-        } catch (CloneNotSupportedException ex) {
-            // should never happen
-            throw new InternalError(ex);
-        }
     }
 
     @Override

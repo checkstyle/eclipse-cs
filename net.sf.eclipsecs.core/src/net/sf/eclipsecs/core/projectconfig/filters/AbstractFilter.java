@@ -47,6 +47,24 @@ public abstract class AbstractFilter implements IFilter {
     /** Flags, if the filter is readonly. */
     private boolean mReadonly;
 
+    protected AbstractFilter() {
+
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    protected AbstractFilter(AbstractFilter other) {
+        this.mFilterName = other.mFilterName;
+        this.mInternalName = other.mInternalName;
+        this.mFilterDescription = other.mFilterDescription;
+        this.mSelected = other.mSelected;
+        this.mReadonly = other.mReadonly;
+    }
+
     @Override
     public void initialize(String name, String internalName, String desc, boolean readonly) {
 
@@ -115,17 +133,6 @@ public abstract class AbstractFilter implements IFilter {
     @Override
     public String getPresentableFilterData() {
         return null;
-    }
-
-    @Override
-    public IFilter clone() {
-        try {
-            return (IFilter) super.clone();
-        }
-        catch (CloneNotSupportedException cnse) {
-            // this shouldn't happen, since we are Cloneable
-            throw new IllegalStateException(cnse);
-        }
     }
 
     @Override

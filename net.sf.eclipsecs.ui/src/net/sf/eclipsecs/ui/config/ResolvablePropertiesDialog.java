@@ -200,7 +200,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         // the configuration
         mResolvableProperties = new ArrayList<>();
         for (ResolvableProperty prop : mCheckConfig.getResolvableProperties()) {
-            mResolvableProperties.add(prop.clone());
+            mResolvableProperties.add(new ResolvableProperty(prop));
         }
         dialogView.setResolvableProperties(mResolvableProperties);
     }
@@ -237,7 +237,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     }
 
     private void findPropertyItems() {
-        final CheckConfigurationWorkingCopy clone = mCheckConfig.clone();
+        final CheckConfigurationWorkingCopy clone = new CheckConfigurationWorkingCopy(mCheckConfig);
         clone.getResolvableProperties().clear();
         clone.getResolvableProperties().addAll(mResolvableProperties);
 

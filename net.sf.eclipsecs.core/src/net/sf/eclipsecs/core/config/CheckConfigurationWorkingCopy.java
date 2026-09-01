@@ -53,7 +53,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
  * configurations by themself are not editable.
  *
  */
-public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration implements Cloneable {
+public final class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration {
 
     /** The source check configuration of the working copy. */
     private final ICheckConfiguration mCheckConfiguration;
@@ -80,6 +80,26 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
     private boolean mHasConfigChanged;
 
     /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the working copy to copy
+     */
+    public CheckConfigurationWorkingCopy(CheckConfigurationWorkingCopy other) {
+        mCheckConfiguration = other.mCheckConfiguration;
+        mWorkingSet = other.mWorkingSet;
+        mEditedName = other.mEditedName;
+        mEditedLocation = other.mEditedLocation;
+        mEditedDescription = other.mEditedDescription;
+        mProperties = new ArrayList<>();
+        for (ResolvableProperty prop : other.mProperties) {
+            mProperties.add(new ResolvableProperty(prop));
+        }
+        mAdditionalData = new HashMap<>(other.mAdditionalData);
+        mHasConfigChanged = other.mHasConfigChanged;
+    }
+
+    /**
      * Creates a new working copy from an existing check configuration.
      *
      * @param checkConfigToEdit
@@ -96,7 +116,7 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
 
         final List<ResolvableProperty> props = checkConfigToEdit.getResolvableProperties();
         for (ResolvableProperty prop : props) {
-            mProperties.add(prop.clone());
+            mProperties.add(new ResolvableProperty(prop));
         }
     }
 
@@ -375,27 +395,4 @@ public class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration im
             getResolvableProperties(), getAdditionalData());
     }
 
-    @Override
-    public CheckConfigurationWorkingCopy clone() {
-
-        CheckConfigurationWorkingCopy clone = null;
-
-        try {
-            clone = (CheckConfigurationWorkingCopy) super.clone();
-
-            clone.mAdditionalData = new HashMap<>();
-            clone.mAdditionalData.putAll(this.mAdditionalData);
-
-            clone.mProperties = new ArrayList<>();
-
-            for (ResolvableProperty prop : mProperties) {
-                clone.mProperties.add(prop.clone());
-            }
-        }
-        catch (CloneNotSupportedException ex) {
-            // this should never happen
-            throw new InternalError(ex);
-        }
-        return clone;
-    }
 }

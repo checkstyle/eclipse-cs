@@ -27,6 +27,24 @@ public class FilesOlderThanOneDayFilter extends AbstractFilter {
     /** Milliseconds in 24 hours. */
     private static final long MILLIS_IN_24_HOURS = 1000 * 60 * 60 * 24;
 
+    public FilesOlderThanOneDayFilter() {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    public FilesOlderThanOneDayFilter(FilesOlderThanOneDayFilter other) {
+        super(other);
+    }
+
+    @Override
+    public IFilter copy() {
+        return new FilesOlderThanOneDayFilter(this);
+    }
+
     @Override
     public boolean accept(Object o) {
         boolean goesThrough = true;

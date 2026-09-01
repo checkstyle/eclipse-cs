@@ -45,6 +45,24 @@ public class NonSrcDirsFilter extends AbstractFilter {
     /** The list of source paths of the current project. */
     private List<IPath> mCurrentSourcePaths;
 
+    public NonSrcDirsFilter() {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    public NonSrcDirsFilter(NonSrcDirsFilter other) {
+        super(other);
+    }
+
+    @Override
+    public IFilter copy() {
+        return new NonSrcDirsFilter(this);
+    }
+
     @Override
     public boolean accept(Object element) {
 

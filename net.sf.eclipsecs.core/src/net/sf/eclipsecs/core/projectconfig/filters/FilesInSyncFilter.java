@@ -37,6 +37,24 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public class FilesInSyncFilter extends AbstractFilter {
 
+    public FilesInSyncFilter() {
+    }
+
+    /**
+     * Copy constructor.
+     *
+     * @param other
+     *            the filter to copy
+     */
+    public FilesInSyncFilter(FilesInSyncFilter other) {
+        super(other);
+    }
+
+    @Override
+    public IFilter copy() {
+        return new FilesInSyncFilter(this);
+    }
+
     @Override
     public boolean accept(Object element) {
         boolean accept = true;
