@@ -76,6 +76,12 @@ public class MarkerStatsView extends AbstractStatsView {
     // methods
     //
 
+    /**
+     * Creates a new instance.
+     */
+    public MarkerStatsView() {
+    }
+
     @Override
     public void createPartControl(Composite parent) {
         super.createPartControl(parent);

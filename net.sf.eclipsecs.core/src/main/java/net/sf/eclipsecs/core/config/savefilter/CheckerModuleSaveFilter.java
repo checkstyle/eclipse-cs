@@ -32,6 +32,12 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
  */
 public class CheckerModuleSaveFilter implements ISaveFilter {
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckerModuleSaveFilter() {
+    }
+
     @Override
     public void postProcessConfiguredModules(List<Module> configuredModules) {
 

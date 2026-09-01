@@ -47,6 +47,12 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
     /** The structured selection. */
     private IStructuredSelection mSelection;
 
+    /**
+     * Creates a new instance.
+     */
+    public ClearSelectedFilesAction() {
+    }
+
     @Override
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
         // NOOP

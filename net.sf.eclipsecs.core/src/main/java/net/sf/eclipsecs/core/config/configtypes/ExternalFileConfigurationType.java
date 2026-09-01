@@ -50,6 +50,12 @@ public class ExternalFileConfigurationType extends AbstractConfigurationType {
     }
 
     /**
+     * Creates a new instance.
+     */
+    public ExternalFileConfigurationType() {
+    }
+
+    /**
      * Tries to resolve a dynamic location into the real file path.
      *
      * @param location

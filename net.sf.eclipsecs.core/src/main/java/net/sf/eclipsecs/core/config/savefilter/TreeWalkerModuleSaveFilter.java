@@ -32,6 +32,12 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
  */
 public class TreeWalkerModuleSaveFilter implements ISaveFilter {
 
+    /**
+     * Creates a new instance.
+     */
+    public TreeWalkerModuleSaveFilter() {
+    }
+
     @Override
     public void postProcessConfiguredModules(List<Module> configuredModules) {
 

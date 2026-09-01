@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class DefaultComesLastTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    DefaultComesLastTest() {
+    }
+
     @Test
     void defaultComesLast() throws Exception {
         testQuickfix("DefaultComesLastInput.xml", new DefaultComesLastQuickfix());

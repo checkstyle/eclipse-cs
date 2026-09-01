@@ -28,6 +28,12 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class SystemPropertyResolver implements PropertyResolver {
 
+    /**
+     * Creates a new instance.
+     */
+    public SystemPropertyResolver() {
+    }
+
     @Override
     public String resolve(String property) {
         // get the system property

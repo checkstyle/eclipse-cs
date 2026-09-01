@@ -61,6 +61,12 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class CheckFileOnOpenPartListener implements IPartListener2 {
 
     /**
+     * Creates a new instance.
+     */
+    public CheckFileOnOpenPartListener() {
+    }
+
+    /**
      * Register multiple parts as opened at once. Used during workspace startup.
      *
      * @param parts

@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class FinalClassTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    FinalClassTest() {
+    }
+
     @Test
     void finalClass() throws Exception {
         testQuickfix("FinalClassInput.xml", new FinalClassQuickfix());

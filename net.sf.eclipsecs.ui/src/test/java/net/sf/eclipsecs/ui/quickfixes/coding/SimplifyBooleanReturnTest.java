@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class SimplifyBooleanReturnTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    SimplifyBooleanReturnTest() {
+    }
+
     @Test
     void simplifyBooleanReturnWithoutCurlyBraces() throws Exception {
         testQuickfix("SimplifyBooleanReturnWithoutCurlyBraces.xml",

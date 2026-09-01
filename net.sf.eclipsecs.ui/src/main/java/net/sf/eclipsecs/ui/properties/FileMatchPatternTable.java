@@ -145,6 +145,12 @@ public final class FileMatchPatternTable extends Composite {
     private static final class FileMatchPatternLabelProvider extends LabelProvider
         implements ITableLabelProvider {
 
+        /**
+         * Creates a new instance.
+         */
+        private FileMatchPatternLabelProvider() {
+        }
+
         @Override
         public String getColumnText(Object element, int columnIndex) {
             final String columnText;

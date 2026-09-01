@@ -508,6 +508,13 @@ public final class MetadataFactory {
      *
      */
     private static final class Utf8Control extends Control {
+
+        /**
+         * Creates a new instance.
+         */
+        private Utf8Control() {
+        }
+
         @Override
         public ResourceBundle newBundle(String aBaseName, Locale aLocale, String aFormat,
             ClassLoader aLoader, boolean aReload) throws IOException {
@@ -544,6 +551,7 @@ public final class MetadataFactory {
             }
             return bundle;
         }
+
     }
 
 }

@@ -50,6 +50,12 @@ public class CheckstyleConfigurationFile {
     private PropertyResolver mPropertyResolver;
 
     /**
+     * Creates a new instance.
+     */
+    public CheckstyleConfigurationFile() {
+    }
+
+    /**
      * Returns an input stream containing the contents of the Checkstyle configuration file.
      *
      * @return the input stream containing the Checkstyle configuration file

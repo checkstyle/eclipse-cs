@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class DesignForExtensionTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    DesignForExtensionTest() {
+    }
+
     @Test
     void designForExtension() throws Exception {
         testQuickfix("DesignForExtensionInput.xml", new DesignForExtensionQuickfix());

@@ -69,6 +69,12 @@ public final class ApplicationStartedHandler implements EventHandler {
         }
     };
 
+    /**
+     * Creates a new instance.
+     */
+    public ApplicationStartedHandler() {
+    }
+
     @Override
     public void handleEvent(org.osgi.service.event.Event event) {
         if (UIEvents.UILifeCycle.APP_STARTUP_COMPLETE.equals(event.getTopic())) {

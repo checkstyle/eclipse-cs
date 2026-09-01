@@ -81,6 +81,12 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     // methods
     //
 
+    /**
+     * Creates a new instance.
+     */
+    public RemoteConfigurationEditor() {
+    }
+
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {

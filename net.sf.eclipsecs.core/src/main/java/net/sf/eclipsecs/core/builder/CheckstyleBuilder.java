@@ -68,6 +68,12 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     public static final String BUILDER_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleBuilder";
 
     /**
+     * Creates a new instance.
+     */
+    public CheckstyleBuilder() {
+    }
+
+    /**
      * Run the Checkstyle builder on all open projects in the workspace.
      *
      * @throws CheckstylePluginException

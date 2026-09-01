@@ -133,6 +133,13 @@ public final class CheckstyleQuickfixes {
     private static final class LazyHolder {
         /** The singleton instance. */
         static final CheckstyleQuickfixes INSTANCE = new CheckstyleQuickfixes();
+
+        /**
+         * Creates a new instance.
+         */
+        private LazyHolder() {
+        }
+
     }
 
 }

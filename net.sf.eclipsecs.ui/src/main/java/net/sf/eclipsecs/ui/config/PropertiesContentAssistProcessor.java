@@ -44,6 +44,12 @@ public class PropertiesContentAssistProcessor implements ISubjectControlContentA
     private IContextInformationValidator mValidator =
         new SubjectControlContextInformationValidator(this);
 
+    /**
+     * Creates a new instance.
+     */
+    public PropertiesContentAssistProcessor() {
+    }
+
     @Override
     public IContextInformation[] computeContextInformation(ITextViewer viewer, int offset) {
         return new IContextInformation[0];

@@ -30,6 +30,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class RequireThisTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public RequireThisTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         useCleanupSetting("always_use_this_for_non_static_field_access", true);

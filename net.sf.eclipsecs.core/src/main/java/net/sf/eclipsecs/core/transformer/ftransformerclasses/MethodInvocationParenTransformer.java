@@ -35,6 +35,12 @@ import net.sf.eclipsecs.core.transformer.FormatterKey;
 @FormatterKey("insert_space_before_opening_paren_in_method_invocation")
 public class MethodInvocationParenTransformer extends AbstractFTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public MethodInvocationParenTransformer() {
+    }
+
     @Override
     public CheckstyleSetting transformRule() {
         final Map<String, String> properties = new HashMap<>();

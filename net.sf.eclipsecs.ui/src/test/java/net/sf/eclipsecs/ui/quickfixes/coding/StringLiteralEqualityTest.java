@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class StringLiteralEqualityTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    StringLiteralEqualityTest() {
+    }
+
     @Test
     void stringLiteralEquality() throws Exception {
         testQuickfix("StringLiteralEqualityInput.xml", new StringLiteralEqualityQuickfix());

@@ -41,6 +41,12 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
     private List<PropertyResolver> mChildResolver = new ArrayList<>();
 
     /**
+     * Creates a new instance.
+     */
+    public MultiPropertyResolver() {
+    }
+
+    /**
      * Adds a PropertyResolver to this aggregation property resolver.
      *
      * @param resolver

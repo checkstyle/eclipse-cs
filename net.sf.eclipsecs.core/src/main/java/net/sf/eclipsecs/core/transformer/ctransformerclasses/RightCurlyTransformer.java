@@ -35,6 +35,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class RightCurlyTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public RightCurlyTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         String tokens = getAttribute("tokens");

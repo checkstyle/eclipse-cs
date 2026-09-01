@@ -38,6 +38,12 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
     /** The selection that occured in the workspace. */
     private ISelection mSelection;
 
+    /**
+     * Creates a new instance.
+     */
+    public FixCheckstyleMarkersAction() {
+    }
+
     @Override
     public void selectionChanged(IAction action, ISelection selection) {
         mSelection = selection;

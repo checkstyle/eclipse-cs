@@ -33,6 +33,12 @@ import net.sf.eclipsecs.core.builder.CheckstyleMarker;
  */
 public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckstyleMarkerImageProvider() {
+    }
+
     @Override
     public Image getManagedImage(Annotation annotation) {
         Image image = null;

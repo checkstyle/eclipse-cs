@@ -36,6 +36,12 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class MissingSwitchDefaultQuickfix extends AbstractASTResolution {
 
+    /**
+     * Creates a new instance.
+     */
+    public MissingSwitchDefaultQuickfix() {
+    }
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartOffset) {

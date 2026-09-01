@@ -32,6 +32,12 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
  */
 public class CheckstyleMarkerPropertyTester extends PropertyTester {
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckstyleMarkerPropertyTester() {
+    }
+
     @Override
     public boolean test(Object receiver, String property, Object[] args, Object expectedValue) {
         boolean result = false;

@@ -48,6 +48,12 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class RequireThisQuickfix extends AbstractASTResolution {
 
+    /**
+     * Creates a new instance.
+     */
+    public RequireThisQuickfix() {
+    }
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartOffset) {

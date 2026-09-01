@@ -39,6 +39,12 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  */
 public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
 
+    /**
+     * Creates a new instance.
+     */
+    public AvoidNestedBlocksQuickfix() {
+    }
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartOffset) {

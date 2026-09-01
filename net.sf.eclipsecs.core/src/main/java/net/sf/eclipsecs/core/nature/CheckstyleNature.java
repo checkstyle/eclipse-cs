@@ -49,6 +49,12 @@ public class CheckstyleNature implements IProjectNature {
     /** The project. */
     private IProject mProject;
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckstyleNature() {
+    }
+
     @Override
     public void configure() throws CoreException {
 

@@ -66,6 +66,12 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     // methods
     //
 
+    /**
+     * Creates a new instance.
+     */
+    public ExternalFileConfigurationEditor() {
+    }
+
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {

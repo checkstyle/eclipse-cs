@@ -36,6 +36,12 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class CheckstyleSettingsTransfer extends SettingsTransfer {
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckstyleSettingsTransfer() {
+    }
+
     @Override
     public String getName() {
         return Messages.CheckstylePreferenceTransfer_name;

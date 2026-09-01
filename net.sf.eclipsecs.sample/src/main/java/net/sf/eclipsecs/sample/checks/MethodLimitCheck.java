@@ -37,6 +37,12 @@ public final class MethodLimitCheck extends AbstractCheck {
     /** The maximum number of methods. */
     private int max = DEFAULT_MAX;
 
+    /**
+     * Creates a new instance.
+     */
+    public MethodLimitCheck() {
+    }
+
     @Override
     public int[] getAcceptableTokens() {
         return new int[] {

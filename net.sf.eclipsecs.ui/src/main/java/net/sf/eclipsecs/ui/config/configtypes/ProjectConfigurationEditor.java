@@ -95,6 +95,12 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     // methods
     //
 
+    /**
+     * Creates a new instance.
+     */
+    public ProjectConfigurationEditor() {
+    }
+
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {

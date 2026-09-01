@@ -223,6 +223,12 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
      */
     private final class TokenLabelProvider extends LabelProvider {
 
+        /**
+         * Creates a new instance.
+         */
+        private TokenLabelProvider() {
+        }
+
         @Override
         public String getText(Object element) {
             String translation = null;

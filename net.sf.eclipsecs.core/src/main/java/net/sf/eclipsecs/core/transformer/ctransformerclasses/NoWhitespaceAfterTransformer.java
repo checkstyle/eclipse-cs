@@ -32,6 +32,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class NoWhitespaceAfterTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public NoWhitespaceAfterTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         String val = getAttribute("tokens");

@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class EmptyStatementTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    EmptyStatementTest() {
+    }
+
     @Test
     void emptyStatement() throws Exception {
         testQuickfix("EmptyStatementInput.xml", new EmptyStatementQuickfix());

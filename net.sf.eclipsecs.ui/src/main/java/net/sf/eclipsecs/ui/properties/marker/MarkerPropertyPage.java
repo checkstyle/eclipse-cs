@@ -55,6 +55,12 @@ public class MarkerPropertyPage extends PropertyPage {
     private static final int WIDTH = 300;
 
     /**
+     * Creates a new instance.
+     */
+    public MarkerPropertyPage() {
+    }
+
+    /**
      * Returns the marker this property page is showing.
      *
      * @return the issue marker

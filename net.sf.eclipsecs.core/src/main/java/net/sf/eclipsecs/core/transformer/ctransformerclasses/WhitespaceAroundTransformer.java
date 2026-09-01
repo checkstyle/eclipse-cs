@@ -138,6 +138,12 @@ public class WhitespaceAroundTransformer extends AbstractCTransformationClass {
         DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_BEFORE_QUESTION_IN_WILDCARD,
         DefaultCodeFormatterConstants.FORMATTER_INSERT_SPACE_AFTER_QUESTION_IN_WILDCARD);
 
+    /**
+     * Creates a new instance.
+     */
+    public WhitespaceAroundTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         String tokens = getAttribute("tokens");

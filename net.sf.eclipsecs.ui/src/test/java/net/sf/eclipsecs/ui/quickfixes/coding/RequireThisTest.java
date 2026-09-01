@@ -26,6 +26,12 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractQuickfixTestCase;
 
 class RequireThisTest extends AbstractQuickfixTestCase {
 
+    /**
+     * Creates a new instance.
+     */
+    RequireThisTest() {
+    }
+
     @Test
     void requireThisFieldAccessAssignmentLHS() throws Exception {
         testQuickfix("RequireThisFieldAccessAssignmentLHS.xml", new RequireThisQuickfix());

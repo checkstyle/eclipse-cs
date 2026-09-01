@@ -31,6 +31,12 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  */
 public class ClasspathVariableResolver implements PropertyResolver {
 
+    /**
+     * Creates a new instance.
+     */
+    public ClasspathVariableResolver() {
+    }
+
     @Override
     public String resolve(String name) {
         final IPath path = JavaCore.getClasspathVariable(name);

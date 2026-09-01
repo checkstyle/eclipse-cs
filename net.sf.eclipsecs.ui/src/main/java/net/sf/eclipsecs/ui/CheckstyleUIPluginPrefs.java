@@ -81,6 +81,12 @@ public class CheckstyleUIPluginPrefs extends AbstractPreferenceInitializer {
      */
     public static final String PREF_STATS_SHOW_ALL_CATEGORIES = "show_all_categories";
 
+    /**
+     * Creates a new instance.
+     */
+    public CheckstyleUIPluginPrefs() {
+    }
+
     @Override
     public void initializeDefaultPreferences() {
 

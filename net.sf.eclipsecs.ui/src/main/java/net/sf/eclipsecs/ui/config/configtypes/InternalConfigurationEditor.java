@@ -71,6 +71,12 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     // methods
     //
 
+    /**
+     * Creates a new instance.
+     */
+    public InternalConfigurationEditor() {
+    }
+
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {

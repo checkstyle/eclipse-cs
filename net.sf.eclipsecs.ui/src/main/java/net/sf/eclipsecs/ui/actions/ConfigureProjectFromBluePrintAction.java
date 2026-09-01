@@ -62,6 +62,12 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
     /** The selected projects to configure. */
     private Collection<IProject> mSelectedProjects;
 
+    /**
+     * Creates a new instance.
+     */
+    public ConfigureProjectFromBluePrintAction() {
+    }
+
     @Override
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
         mPart = targetPart;

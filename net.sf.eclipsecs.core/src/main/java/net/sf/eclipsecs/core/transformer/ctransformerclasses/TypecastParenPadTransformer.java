@@ -30,6 +30,12 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  */
 public class TypecastParenPadTransformer extends AbstractCTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public TypecastParenPadTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         String option = getAttribute("option");

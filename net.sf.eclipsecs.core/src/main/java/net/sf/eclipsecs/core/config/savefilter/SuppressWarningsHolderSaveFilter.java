@@ -32,6 +32,12 @@ import net.sf.eclipsecs.core.config.meta.MetadataFactory;
  */
 public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
 
+    /**
+     * Creates a new instance.
+     */
+    public SuppressWarningsHolderSaveFilter() {
+    }
+
     @Override
     public void postProcessConfiguredModules(List<Module> configuredModules) {
 

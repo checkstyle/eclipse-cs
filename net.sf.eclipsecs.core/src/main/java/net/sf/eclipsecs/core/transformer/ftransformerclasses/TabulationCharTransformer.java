@@ -32,6 +32,12 @@ import net.sf.eclipsecs.core.transformer.FormatterKey;
 @FormatterKey("tabulation.char")
 public class TabulationCharTransformer extends AbstractFTransformationClass {
 
+    /**
+     * Creates a new instance.
+     */
+    public TabulationCharTransformer() {
+    }
+
     @Override
     public CheckstyleSetting transformRule() {
         useCheckerModule("FileTabCharacter", null);

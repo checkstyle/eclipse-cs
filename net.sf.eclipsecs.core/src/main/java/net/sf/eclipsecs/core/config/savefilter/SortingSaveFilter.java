@@ -33,6 +33,12 @@ import net.sf.eclipsecs.core.config.XMLTags;
  */
 public class SortingSaveFilter implements ISaveFilter {
 
+    /**
+     * Creates a new instance.
+     */
+    public SortingSaveFilter() {
+    }
+
     @Override
     public void postProcessConfiguredModules(List<Module> configuredModules) {
         // Sort modules because of
@@ -46,6 +52,12 @@ public class SortingSaveFilter implements ISaveFilter {
      *
      */
     private static final class ModuleComparator implements Comparator<Module> {
+
+        /**
+         * Creates a new instance.
+         */
+        private ModuleComparator() {
+        }
 
         @Override
         public int compare(Module o1, Module o2) {

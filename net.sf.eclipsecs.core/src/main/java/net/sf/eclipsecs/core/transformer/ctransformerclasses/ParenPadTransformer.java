@@ -81,6 +81,12 @@ public class ParenPadTransformer extends AbstractCTransformationClass {
         DefaultCodeFormatterConstants
             .FORMATTER_INSERT_SPACE_AFTER_OPENING_PAREN_IN_METHOD_INVOCATION);
 
+    /**
+     * Creates a new instance.
+     */
+    public ParenPadTransformer() {
+    }
+
     @Override
     public FormatterConfiguration transformRule() {
         String tokens = getAttribute("tokens");

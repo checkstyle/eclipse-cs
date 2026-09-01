@@ -45,6 +45,12 @@ public class ProjectConfigurationType extends AbstractConfigurationType {
     /** Key to access the information if the configuration is protected. */
     public static final String KEY_PROTECT_CONFIG = "protect-config-file";
 
+    /**
+     * Creates a new instance.
+     */
+    public ProjectConfigurationType() {
+    }
+
     @Override
     protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
         final IResource configFileResource =

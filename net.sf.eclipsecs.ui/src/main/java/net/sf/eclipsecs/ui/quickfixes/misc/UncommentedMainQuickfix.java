@@ -39,6 +39,12 @@ public class UncommentedMainQuickfix extends AbstractASTResolution {
     /** The length of the javadoc comment declaration. */
     private static final int JAVADOC_COMMENT_LENGTH = 6;
 
+    /**
+     * Creates a new instance.
+     */
+    public UncommentedMainQuickfix() {
+    }
+
     @Override
     protected ASTVisitor handleGetCorrectingASTVisitor(final IRegion lineInfo,
         final int markerStartOffset) {
