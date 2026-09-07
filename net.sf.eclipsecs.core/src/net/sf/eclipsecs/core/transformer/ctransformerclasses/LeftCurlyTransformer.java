@@ -35,7 +35,7 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
     public FormatterConfiguration transformRule() {
         String tokens = getAttribute("tokens");
         if (tokens == null) {
-            tokens = "CLASS_DEF, CTOR_DEF, INTERFACE_DEF, METHOD_DEF, LITERAL_CATCH, LITERAL_DO, "
+            tokens = "CLASS_DEF, CTOR_DEF, INTERFACE_DEF, METHOD_DEF, LAMBDA, LITERAL_CATCH, LITERAL_DO, "
                 + "LITERAL_ELSE, LITERAL_FINALLY, LITERAL_FOR, LITERAL_IF, LITERAL_SYNCHRONIZED, "
                 + "LITERAL_TRY, LITERAL_WHILE";
         }
@@ -61,6 +61,7 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
                     "LITERAL_CATCH", "LITERAL_FINALLY", "LITERAL_TRY",
                     "LITERAL_SYNCHRONIZED" -> List.of("brace_position_for_block");
                 case "LITERAL_SWITCH" -> List.of("brace_position_for_switch");
+                case "LAMBDA" -> List.of("brace_position_for_lambda_body");
                 default -> Collections.emptyList();
             };
             settings.forEach(setting -> userFormatterSetting(setting, option));
