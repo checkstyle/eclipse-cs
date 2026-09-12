@@ -127,7 +127,7 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         setBrowserDescription(HtmlUtil.getDescriptionHtml(description));
     }
 
-    public static final record CheckConfigurationConfigureDialogViewCallbacks(
+    public record CheckConfigurationConfigureDialogViewCallbacks(
         Consumer<List<RuleMetadata>> newModule, Consumer<Module> openModule,
         Consumer<List<Module>> removeModule, BiConsumer<Module, Boolean> checkStateChanged) {
 
