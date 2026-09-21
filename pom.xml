@@ -39,7 +39,7 @@
         <maven-site-plugin-version>3.22.0</maven-site-plugin-version>
         <maven-version>3.9.0</maven-version>
         <tycho-version>5.0.4</tycho-version>
-        <versions-maven-plugin-version>2.21.0</versions-maven-plugin-version>
+        <versions-maven-plugin-version>2.22.0</versions-maven-plugin-version>
 
         <!-- sevntu and patch-filters need to use a compatible/compiled version with checkstyle -->
         <sevntu-checkstyle-plugin-checkstyle-version>13.4.0</sevntu-checkstyle-plugin-checkstyle-version>
