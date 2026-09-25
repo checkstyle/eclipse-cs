@@ -77,6 +77,15 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
         super(parent, prop);
     }
 
+    /**
+     * Creates a regex property widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     * @return the created widget
+     */
     public static ConfigPropertyWidgetRegex create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetRegex(parent, prop);
     }
@@ -154,6 +163,9 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
         }
     }
 
+    /**
+     * Tests the regular expression against the test string and updates the background colors.
+     */
     private void testRegex() {
         try {
             final Pattern pattern = Pattern.compile(mTextWidget.getText());

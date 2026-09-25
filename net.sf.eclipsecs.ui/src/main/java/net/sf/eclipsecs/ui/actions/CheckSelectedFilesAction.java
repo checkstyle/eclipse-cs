@@ -74,6 +74,12 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
         checkSelection(mSelection);
     }
 
+    /**
+     * Checks the files contained in the given selection.
+     *
+     * @param selection
+     *            the selection of resources
+     */
     private void checkSelection(IStructuredSelection selection) {
         final Set<IResource> resources = new HashSet<>();
         for (Object object : selection.toList()) {

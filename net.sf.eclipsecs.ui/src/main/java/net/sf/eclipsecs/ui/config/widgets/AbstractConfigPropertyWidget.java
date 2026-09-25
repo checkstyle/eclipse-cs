@@ -45,6 +45,14 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
     /** The parent composite. */
     private Composite mParent;
 
+    /**
+     * Creates the widget for the given property.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the config property
+     */
     protected AbstractConfigPropertyWidget(Composite parent, ConfigProperty prop) {
         mParent = parent;
         mProp = prop;

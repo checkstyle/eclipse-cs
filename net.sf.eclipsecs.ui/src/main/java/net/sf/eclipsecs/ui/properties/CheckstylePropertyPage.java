@@ -102,6 +102,15 @@ public class CheckstylePropertyPage extends PropertyPage {
         }
     }
 
+    /**
+     * Handles an error that occurred while opening the project configuration by logging it and
+     * resetting to a default configuration.
+     *
+     * @param error
+     *            the error that occurred
+     * @param project
+     *            the project being edited
+     */
     private void handleConfigFileError(Exception error, IProject project) {
 
         CheckstyleLog.log(error, Messages.errorOpeningPropertiesPage);
@@ -190,6 +199,16 @@ public class CheckstylePropertyPage extends PropertyPage {
      */
     private static final class LocalConfig extends Composite {
 
+        /**
+         * Creates the local configurations composite.
+         *
+         * @param parent
+         *            the parent composite
+         * @param style
+         *            the SWT style bits
+         * @param workingSet
+         *            the working set of local check configurations
+         */
         private LocalConfig(Composite parent, int style, ICheckConfigurationWorkingSet workingSet) {
             super(parent, style);
             setLayout(new FillLayout());

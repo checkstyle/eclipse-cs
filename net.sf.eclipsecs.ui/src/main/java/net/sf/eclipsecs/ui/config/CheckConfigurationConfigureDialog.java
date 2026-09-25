@@ -215,6 +215,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         this.dialogView.selectFirstAvailableGroup();
     }
 
+    /**
+     * Loads the modules of the configuration into the dialog.
+     */
     private void loadModules() {
         try {
             mModules = mConfiguration.getModules();
@@ -330,6 +333,14 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         }
     }
 
+    /**
+     * Updates the severity of the given module when its checked state changes.
+     *
+     * @param module
+     *            the module whose checked state changed
+     * @param checked
+     *            whether the module is now checked
+     */
     private void checkStateChanged(Module module, boolean checked) {
         if (checked) {
             // restore last severity before setting to ignore

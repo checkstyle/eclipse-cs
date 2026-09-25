@@ -51,6 +51,15 @@ public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWid
         super(parent, prop);
     }
 
+    /**
+     * Creates a new integer property widget for the given property.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the configuration property
+     * @return the newly-created widget
+     */
     public static ConfigPropertyWidgetInteger create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetInteger(parent, prop);
     }

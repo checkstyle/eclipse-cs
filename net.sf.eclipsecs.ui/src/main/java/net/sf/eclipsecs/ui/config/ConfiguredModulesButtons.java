@@ -35,6 +35,20 @@ import net.sf.eclipsecs.ui.Messages;
  */
 public class ConfiguredModulesButtons extends Composite {
 
+    /**
+     * Creates the Remove and Open buttons and wires them to the given actions.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the style bits
+     * @param configurable
+     *            whether the Remove button should be enabled
+     * @param removeModule
+     *            the action run when the Remove button is selected
+     * @param editModule
+     *            the action run when the Open button is selected
+     */
     public ConfiguredModulesButtons(Composite parent, int style, boolean configurable,
         Runnable removeModule, Runnable editModule) {
         super(parent, style);

@@ -109,6 +109,11 @@ public class FormatterTransformer {
         return targetTransformers;
     }
 
+    /**
+     * Discovers the formatter transformation classes.
+     *
+     * @return the discovered transformations by their formatter key
+     */
     @SuppressWarnings("unchecked")
     private static Map<String, Class<? extends AbstractFTransformationClass>>
         discoverTransformers() {

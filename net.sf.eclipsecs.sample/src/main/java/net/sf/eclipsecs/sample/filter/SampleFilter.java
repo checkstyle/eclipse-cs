@@ -30,6 +30,9 @@ import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
 @ThreadSafe
 public class SampleFilter extends AbstractFilter {
 
+    /**
+     * Creates a filter that rejects all files.
+     */
     public SampleFilter() {
     }
 

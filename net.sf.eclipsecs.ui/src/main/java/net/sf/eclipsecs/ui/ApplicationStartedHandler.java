@@ -77,6 +77,9 @@ public final class ApplicationStartedHandler implements EventHandler {
         }
     }
 
+    /**
+     * Registers the listeners needed for the check-on-open support on the workbench windows.
+     */
     private void registerListener() {
         // add listeners for the Check-On-Open support
         final IWorkbench workbench = PlatformUI.getWorkbench();
@@ -100,6 +103,9 @@ public final class ApplicationStartedHandler implements EventHandler {
         });
     }
 
+    /**
+     * Registers the checkstyle icon for the checkstyle job family in the progress service.
+     */
     protected void registerProgressIcon() {
         final IProgressService service = PlatformUI.getWorkbench().getProgressService();
         if (service != null) {

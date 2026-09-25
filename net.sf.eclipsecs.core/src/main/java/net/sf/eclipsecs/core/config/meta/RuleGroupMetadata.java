@@ -48,6 +48,20 @@ public class RuleGroupMetadata {
     /** The list of modules belonging to the group. */
     private List<RuleMetadata> mRuleMetadata = new LinkedList<>();
 
+    /**
+     * Creates the metadata for a rule group.
+     *
+     * @param groupId
+     *            the group id
+     * @param groupName
+     *            the group name
+     * @param groupDesc
+     *            the group description
+     * @param hidden
+     *            whether the group is hidden
+     * @param priority
+     *            the priority of the group
+     */
     RuleGroupMetadata(String groupId, String groupName, String groupDesc, boolean hidden,
         int priority) {
         mGroupId = groupId;

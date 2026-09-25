@@ -67,6 +67,22 @@ public final class AvailableModulesViewer extends Composite {
     /** The callback for adding new modules. */
     private final Consumer<List<RuleMetadata>> newModule;
 
+    /**
+     * Creates the available modules viewer.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the style of the composite
+     * @param labelProvider
+     *            the label provider for the tree viewer
+     * @param configurable
+     *            whether the add button is enabled
+     * @param newModule
+     *            the callback for adding new modules
+     * @param selectionChanged
+     *            the callback for selection changes
+     */
     public AvailableModulesViewer(Composite parent, int style,
         AvailableModulesViewerLabelProvider labelProvider, boolean configurable,
         Consumer<List<RuleMetadata>> newModule, Consumer<Object> selectionChanged) {
@@ -125,6 +141,12 @@ public final class AvailableModulesViewer extends Composite {
         treeViewer.getViewer().setInput(MetadataFactory.getRuleGroupMetadata());
     }
 
+    /**
+     * Adds all selected modules to the new module callback.
+     *
+     * @param selection
+     *            the structured selection of rule groups or rules
+     */
     private void newModule(IStructuredSelection selection) {
         final List<RuleMetadata> rules = new ArrayList<>();
         for (Object element : selection) {
@@ -140,18 +162,33 @@ public final class AvailableModulesViewer extends Composite {
         newModule.accept(rules);
     }
 
+    /**
+     * Refreshes the tree viewer.
+     */
     public void refresh() {
         treeViewer.getViewer().refresh();
     }
 
+    /**
+     * Forces the focus to the tree viewer.
+     */
     public void focus() {
         treeViewer.getViewer().getTree().forceFocus();
     }
 
+    /**
+     * Sets the selection of the tree viewer.
+     *
+     * @param selection
+     *            the selection to set
+     */
     public void setSelection(ISelection selection) {
         treeViewer.getViewer().setSelection(selection);
     }
 
+    /**
+     * Selects the first rule group if any groups exist.
+     */
     public void selectFirstGroup() {
         final List<RuleGroupMetadata> groups = MetadataFactory.getRuleGroupMetadata();
         if (!groups.isEmpty()) {
@@ -166,6 +203,9 @@ public final class AvailableModulesViewer extends Composite {
      */
     private static final class ModulePatternFilter extends PatternFilter {
 
+        /**
+         * Creates the module pattern filter.
+         */
         private ModulePatternFilter() {
             setIncludeLeadingWildcard(true);
         }
@@ -187,6 +227,9 @@ public final class AvailableModulesViewer extends Composite {
         /** Singleton instance. */
         private static final MetaDataContentProvider INSTANCE = new MetaDataContentProvider();
 
+        /**
+         * Creates the metadata content provider.
+         */
         private MetaDataContentProvider() {
 
         }
@@ -255,6 +298,12 @@ public final class AvailableModulesViewer extends Composite {
         /** The list of configured modules. */
         private final List<Module> modules;
 
+        /**
+         * Creates the label provider for the available modules.
+         *
+         * @param modules
+         *            the list of configured modules
+         */
         public AvailableModulesViewerLabelProvider(List<Module> modules) {
             this.modules = modules;
         }
@@ -295,6 +344,13 @@ public final class AvailableModulesViewer extends Composite {
             return image;
         }
 
+        /**
+         * Determines whether all modules of the group are in use.
+         *
+         * @param group
+         *            the rule group metadata
+         * @return <code>true</code> if all modules of the group are used
+         */
         private boolean isGroupUsed(RuleGroupMetadata group) {
             boolean used = true;
 
@@ -308,6 +364,13 @@ public final class AvailableModulesViewer extends Composite {
             return used;
         }
 
+        /**
+         * Determines whether the given rule metadata is used by a configured module.
+         *
+         * @param metadata
+         *            the rule metadata
+         * @return <code>true</code> if a configured module matches the metadata
+         */
         private boolean isMetadataUsed(RuleMetadata metadata) {
             boolean used = false;
             if (modules != null) {
@@ -335,6 +398,9 @@ public final class AvailableModulesViewer extends Composite {
         private static final AvailableModulesViewerFilter INSTANCE =
             new AvailableModulesViewerFilter();
 
+        /**
+         * Creates the available modules viewer filter.
+         */
         private AvailableModulesViewerFilter() {
 
         }

@@ -130,6 +130,14 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
         return status;
     }
 
+    /**
+     * Adds the given module and all its children to the flat list.
+     *
+     * @param module
+     *            the module to visit
+     * @param flatModules
+     *            the list collecting the modules
+     */
     private static void recurseConfiguration(Configuration module,
         List<Configuration> flatModules) {
 

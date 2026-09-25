@@ -76,6 +76,13 @@ public class ConfigProperty implements Comparable<ConfigProperty> {
         this.value = value;
     }
 
+    /**
+     * Determines the initial value for a property from its metadata.
+     *
+     * @param metaData
+     *            the property metadata
+     * @return the initial value
+     */
     private static String determineInitialValue(ConfigPropertyMetadata metaData) {
         final String value;
         if (metaData.getOverrideDefault() != null) {

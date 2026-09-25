@@ -56,10 +56,18 @@ public final class CheckstyleQuickfixes {
     /** The registered quickfixes. */
     private final Collection<ICheckstyleMarkerResolution> quickfixes;
 
+    /**
+     * Constructor reading the registered quickfixes from the registry.
+     */
     private CheckstyleQuickfixes() {
         quickfixes = readRegistry();
     }
 
+    /**
+     * Returns the singleton instance of the registered quickfixes.
+     *
+     * @return the quickfixes instance
+     */
     public static CheckstyleQuickfixes getInstance() {
         return LazyHolder.INSTANCE;
     }
@@ -97,6 +105,13 @@ public final class CheckstyleQuickfixes {
         return result;
     }
 
+    /**
+     * Instantiates the quickfix class registered for the given configuration element.
+     *
+     * @param element
+     *            the configuration element describing the quickfix
+     * @return the quickfix resolution, or null if it could not be created
+     */
     private ICheckstyleMarkerResolution toClass(IConfigurationElement element) {
         ICheckstyleMarkerResolution resolution = null;
         try {

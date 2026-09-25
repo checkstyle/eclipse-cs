@@ -74,6 +74,12 @@ public class DesignForExtensionQuickfix extends AbstractASTResolution {
         /** The line info region. */
         private final IRegion lineInfo;
 
+        /**
+         * Creates the AST visitor for the given line info region.
+         *
+         * @param lineInfo
+         *            the line info region of the correction
+         */
         private DesignForExtensionQuickfixAstVisitor(IRegion lineInfo) {
             this.lineInfo = lineInfo;
         }

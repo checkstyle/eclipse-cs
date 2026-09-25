@@ -89,6 +89,15 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
         mTokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
     }
 
+    /**
+     * Creates a multi check property widget.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     * @return the created widget
+     */
     public static ConfigPropertyWidgetMultiCheck create(Composite parent, ConfigProperty prop) {
         return new ConfigPropertyWidgetMultiCheck(parent, prop);
     }
@@ -141,6 +150,12 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
             .collect(Collectors.joining(", "));
     }
 
+    /**
+     * Installs or removes the sorter of the token table.
+     *
+     * @param sort
+     *            true to sort the tokens, false otherwise
+     */
     private void installSorter(boolean sort) {
         if (sort) {
             final Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
@@ -174,6 +189,13 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
         mTable.setCheckedElements(result.toArray());
     }
 
+    /**
+     * Splits the given value into comma separated tokens.
+     *
+     * @param value
+     *            the value to tokenize
+     * @return the list of tokens
+     */
     private static List<String> tokenize(String value) {
         final List<String> result = new LinkedList<>();
         final StringTokenizer tokenizer = new StringTokenizer(value, ",");

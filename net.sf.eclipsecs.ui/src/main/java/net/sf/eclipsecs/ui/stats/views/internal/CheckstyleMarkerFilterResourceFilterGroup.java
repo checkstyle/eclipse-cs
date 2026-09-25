@@ -70,6 +70,18 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
     /** The severity info checkbox. */
     private final Button mChkSeverityInfo;
 
+    /**
+     * Creates the marker filter resource filter group.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the composite style bits
+     * @param updateControlState
+     *            runnable invoked when the control state should be updated
+     * @param selectWorkingSet
+     *            runnable invoked to select a working set
+     */
     public CheckstyleMarkerFilterResourceFilterGroup(Composite parent, int style,
         Runnable updateControlState, Runnable selectWorkingSet) {
         super(parent, style);
@@ -133,6 +145,16 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
             Messages.CheckstyleMarkerFilterDialog_btnSeverityInfo, GridDataFactory.swtDefaults());
     }
 
+    /**
+     * Sets the filter fields to reflect the given filter settings.
+     *
+     * @param onResource
+     *            the resource restriction flag
+     * @param selectBySeverity
+     *            whether to restrict filter by severity
+     * @param severity
+     *            the severity bit mask
+     */
     public void setFromFilter(int onResource, boolean selectBySeverity, int severity) {
         mRadioOnAnyResource.setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
         mRadioAnyResourceInSameProject
@@ -150,6 +172,12 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
         mChkSeverityInfo.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
     }
 
+    /**
+     * Enables or disables the filter widgets.
+     *
+     * @param enabled
+     *            true to enable, false to disable
+     */
     public void propagateEnabled(boolean enabled) {
         mFilterComposite.setEnabled(enabled);
         mRadioOnAnyResource.setEnabled(enabled);
@@ -166,10 +194,21 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
         mChkSeverityInfo.setEnabled(enabled && mChkSeverityEnabled.getSelection());
     }
 
+    /**
+     * Sets the text of the selected working set label.
+     *
+     * @param text
+     *            the text to display
+     */
     public void setWorkingSetLabel(String text) {
         mLblSelectedWorkingSet.setText(text);
     }
 
+    /**
+     * Returns the selected resource restriction.
+     *
+     * @return the selected resource restriction
+     */
     public int getOnResource() {
         final int onResource;
         if (mRadioSelectedResource.getSelection()) {
@@ -190,6 +229,11 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
         return onResource;
     }
 
+    /**
+     * Returns the selected marker severities as a bit mask.
+     *
+     * @return the selected marker severities bit mask
+     */
     public int getSeverity() {
         int severity = 0;
         if (mChkSeverityError.getSelection()) {
@@ -204,10 +248,28 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
         return severity;
     }
 
+    /**
+     * Returns whether filtering is restricted by severity.
+     *
+     * @return true if filtering is restricted by severity
+     */
     public boolean getSelectBySeverity() {
         return mChkSeverityEnabled.getSelection();
     }
 
+    /**
+     * Creates a button with the given text and applies the layout data.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the button style bits
+     * @param text
+     *            the button text
+     * @param gridDataFactory
+     *            the layout data factory to apply
+     * @return the created button
+     */
     private static Button createButton(Composite parent, int style, String text,
         GridDataFactory gridDataFactory) {
         final Button button = new Button(parent, style);

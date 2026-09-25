@@ -48,6 +48,9 @@ public class PackageFilter extends AbstractFilter {
     /** Whether to exclude sub-packages. */
     private boolean mExcludeSubPackages = true;
 
+    /**
+     * Creates a filter that filters files by package.
+     */
     public PackageFilter() {
     }
 

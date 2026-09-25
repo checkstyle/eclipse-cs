@@ -45,6 +45,9 @@ public class NonSrcDirsFilter extends AbstractFilter {
     /** The list of source paths of the current project. */
     private List<IPath> mCurrentSourcePaths;
 
+    /**
+     * Creates a filter that filters files outside the source directories.
+     */
     public NonSrcDirsFilter() {
     }
 

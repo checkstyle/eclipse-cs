@@ -72,6 +72,17 @@ public class RequireThisQuickfix extends AbstractASTResolution {
         };
     }
 
+    /**
+     * Finds a field access replacement for the given name.
+     *
+     * @param name
+     *            the name to replace
+     * @param node
+     *            the AST node to search in
+     * @param typeLevel
+     *            the current type level
+     * @return the replacement expression or <code>null</code>
+     */
     private Expression findFieldReplacement(final SimpleName name, final ASTNode node,
         int typeLevel) {
         Expression replacement = null;
@@ -105,6 +116,15 @@ public class RequireThisQuickfix extends AbstractASTResolution {
         return replacement;
     }
 
+    /**
+     * Creates a field access replacement qualified with <code>this</code>.
+     *
+     * @param type
+     *            the type to qualify with or <code>null</code>
+     * @param name
+     *            the name of the field
+     * @return the created field access
+     */
     private FieldAccess createFieldAccessReplacement(final TypeDeclaration type,
         final SimpleName name) {
         final AST ast = name.getAST();
@@ -118,6 +138,19 @@ public class RequireThisQuickfix extends AbstractASTResolution {
         return fieldAccess;
     }
 
+    /**
+     * Finds a method invocation replacement for the given name.
+     *
+     * @param name
+     *            the name to replace
+     * @param contextNode
+     *            the AST node to search in
+     * @param node
+     *            the original method invocation
+     * @param typeLevel
+     *            the current type level
+     * @return the replacement expression or <code>null</code>
+     */
     private Expression findMethodReplacement(final SimpleName name, ASTNode contextNode,
         final MethodInvocation node, int typeLevel) {
         Expression replacement = null;
@@ -144,6 +177,15 @@ public class RequireThisQuickfix extends AbstractASTResolution {
         return replacement;
     }
 
+    /**
+     * Creates a method invocation replacement qualified with <code>this</code>.
+     *
+     * @param type
+     *            the type to qualify with or <code>null</code>
+     * @param origMethodInvocation
+     *            the original method invocation
+     * @return the created method invocation
+     */
     private Expression createMethodInvocationReplacement(final TypeDeclaration type,
         MethodInvocation origMethodInvocation) {
         final AST ast = origMethodInvocation.getAST();

@@ -63,6 +63,13 @@ public class LeftCurlyTransformer extends AbstractCTransformationClass {
     private static final List<String> SWITCH_SETTINGS = List
         .of(DefaultCodeFormatterConstants.FORMATTER_BRACE_POSITION_FOR_SWITCH);
 
+    /**
+     * Returns the formatter settings for the given token.
+     *
+     * @param token
+     *            the token to look up
+     * @return the formatter settings for the token
+     */
     private static List<String> getSettingsForToken(String token) {
         return switch (token) {
             case null -> Collections.emptyList();

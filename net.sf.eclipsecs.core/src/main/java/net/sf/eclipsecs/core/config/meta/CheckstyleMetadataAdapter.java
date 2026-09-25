@@ -57,6 +57,9 @@ public class CheckstyleMetadataAdapter {
      */
     private final Map<String, ConfigPropertyType> propertyTypes;
 
+    /**
+     * Creates the metadata adapter and initializes the internal mappings.
+     */
     public CheckstyleMetadataAdapter() {
         this.packageToGroupName = createPackageToGroupNameMapping();
         this.propertyTypes = createPropertyTypeMapping();

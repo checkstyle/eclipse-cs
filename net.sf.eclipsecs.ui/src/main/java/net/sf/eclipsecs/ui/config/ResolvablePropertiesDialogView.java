@@ -53,6 +53,21 @@ public final class ResolvablePropertiesDialogView extends Composite {
     /** The table viewer for resolvable properties. */
     private final TableViewer mTableViewer;
 
+    /**
+     * Constructor building the table and the Add/Edit/Remove controls to manage resolvable
+     * properties.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the SWT style bits to apply to this composite
+     * @param tableSettings
+     *            the dialog settings used to persist the table layout
+     * @param openPropertyItemEditor
+     *            the callback invoked to open the property item editor
+     * @param removePropertyItems
+     *            the callback invoked to remove the selected property items
+     */
     public ResolvablePropertiesDialogView(Composite parent, int style,
         IDialogSettings tableSettings,
         Consumer<ResolvableProperty> openPropertyItemEditor,
@@ -116,19 +131,42 @@ public final class ResolvablePropertiesDialogView extends Composite {
             .widgetSelectedAdapter(event -> removePropertyItems.accept(getSelectedProperties())));
     }
 
+    /**
+     * Returns the resolvable properties currently selected in the table.
+     *
+     * @return the list of selected resolvable properties
+     */
     @SuppressWarnings("unchecked")
     public List<ResolvableProperty> getSelectedProperties() {
         return mTableViewer.getStructuredSelection().toList();
     }
 
+    /**
+     * Sets the resolvable properties to be shown in the table.
+     *
+     * @param resolvableProperties
+     *            the resolvable properties to show
+     */
     public void setResolvableProperties(List<ResolvableProperty> resolvableProperties) {
         mTableViewer.setInput(resolvableProperties);
     }
 
+    /**
+     * Refreshes the table viewer.
+     */
     public void refresh() {
         mTableViewer.refresh();
     }
 
+    /**
+     * Creates a push button with the given text and default layout data.
+     *
+     * @param parent
+     *            the parent composite
+     * @param text
+     *            the button text
+     * @return the newly-created button
+     */
     private static Button createButton(Composite parent, String text) {
         final Button button = new Button(parent, SWT.PUSH);
         button.setText(text);

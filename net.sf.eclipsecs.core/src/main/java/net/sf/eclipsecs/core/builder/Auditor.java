@@ -163,6 +163,16 @@ public final class Auditor {
         }
     }
 
+    /**
+     * Handles a failure that occurred during the checkstyle run.
+     *
+     * @param project
+     *            the project being audited
+     * @param error
+     *            the thrown checkstyle exception
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
     private void handleCheckstyleFailure(IProject project, CheckstyleException error)
             throws CheckstylePluginException {
         try {
@@ -196,6 +206,11 @@ public final class Auditor {
         mFiles.put(file.getLocation().toString(), file);
     }
 
+    /**
+     * Determines whether files have been added to the audit.
+     *
+     * @return <code>true</code> if at least one file has been added, <code>false</code> otherwise
+     */
     public boolean hasFiles() {
         return !mFiles.isEmpty();
     }
@@ -260,6 +275,12 @@ public final class Auditor {
          */
         private Set<IPath> mConnectedFileBufferPaths = new HashSet<>();
 
+        /**
+         * Creates a listener for the checkstyle audit.
+         *
+         * @param project
+         *            the project to audit
+         */
         CheckstyleAuditListener(IProject project) {
             mProject = project;
 
@@ -395,6 +416,9 @@ public final class Auditor {
         public void auditStarted(AuditEvent event) {
         }
 
+        /**
+         * Cleans up the state of the listener.
+         */
         public void cleanup() {
 
             mDocument = null;
@@ -446,6 +470,13 @@ public final class Auditor {
             }
         }
 
+        /**
+         * Connects the file buffer for the given resource.
+         *
+         * @param resource
+         *            the resource to connect
+         * @return the connected document or <code>null</code>
+         */
         private IDocument connectFileBuffer(IResource resource) {
             IDocument document = null;
             if (resource instanceof IFile) {
@@ -463,6 +494,12 @@ public final class Auditor {
             return document;
         }
 
+        /**
+         * Disconnects the file buffer for the given resource.
+         *
+         * @param resource
+         *            the resource to disconnect
+         */
         private void disconnectFileBuffer(IResource resource) {
             if (resource instanceof IFile) {
                 final IPath path = resource.getFullPath();
@@ -470,6 +507,12 @@ public final class Auditor {
             }
         }
 
+        /**
+         * Disconnects the file buffer for the given path.
+         *
+         * @param path
+         *            the path to disconnect
+         */
         private void disconnectFileBuffer(IPath path) {
 
             try {
@@ -484,6 +527,13 @@ public final class Auditor {
             }
         }
 
+        /**
+         * Converts a severity level into the corresponding marker severity value.
+         *
+         * @param severity
+         *            the severity level
+         * @return the marker severity value
+         */
         private int getSeverityValue(SeverityLevel severity) {
             int result = IMarker.SEVERITY_WARNING;
 
@@ -500,6 +550,13 @@ public final class Auditor {
             return result;
         }
 
+        /**
+         * Builds the message shown for the given audit event.
+         *
+         * @param error
+         *            the audit event
+         * @return the assembled message
+         */
         private String getMessage(AuditEvent error) {
 
             String moduleId = error.getModuleId();
@@ -534,6 +591,13 @@ public final class Auditor {
             return buf.toString();
         }
 
+        /**
+         * Determines the rule name for the given audit event.
+         *
+         * @param error
+         *            the audit event
+         * @return the rule name
+         */
         private String getRuleName(AuditEvent error) {
             final String ruleName;
             final RuleMetadata metaData = MetadataFactory.getRuleMetadata(error.getSourceName());

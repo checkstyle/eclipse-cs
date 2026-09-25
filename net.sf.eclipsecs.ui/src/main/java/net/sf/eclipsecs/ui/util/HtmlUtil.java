@@ -33,6 +33,7 @@ public final class HtmlUtil {
     private static final Pattern PATTERN_INLINE_CODE =
         Pattern.compile(Pattern.quote("{@code ") + "([^}]*?)" + Pattern.quote("}"));
 
+    /** Prevents instantiation of this utility class. */
     private HtmlUtil() {
     }
 
@@ -57,6 +58,13 @@ public final class HtmlUtil {
         return buf.toString();
     }
 
+    /**
+     * Converts inline code tags in the given HTML text to {@code <code>} elements.
+     *
+     * @param html
+     *            the HTML text to convert
+     * @return the converted HTML text
+     */
     private static String convertInlineCodeTags(String html) {
         return PATTERN_INLINE_CODE.matcher(html).replaceAll("<code>$1</code>");
     }

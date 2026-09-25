@@ -118,6 +118,13 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
         return main;
     }
 
+    /**
+     * Creates the add and remove buttons for the dialog.
+     *
+     * @param parent
+     *            the parent composite
+     * @return the composite holding the buttons
+     */
     private Composite createButtons(Composite parent) {
         final Composite buttons = new Composite(parent, SWT.NONE);
         final GridLayout layout = new GridLayout(1, false);
@@ -167,6 +174,14 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
         shell.setText(Messages.CheckstyleMarkerFilterDialog_titleRegexEditor);
     }
 
+    /**
+     * Checks whether the given text is a valid regular expression, showing an error message when it
+     * is not.
+     *
+     * @param text
+     *            the text to validate
+     * @return true if the text is a valid pattern, false otherwise
+     */
     private boolean checkPatternValidity(String text) {
         boolean valid;
         try {

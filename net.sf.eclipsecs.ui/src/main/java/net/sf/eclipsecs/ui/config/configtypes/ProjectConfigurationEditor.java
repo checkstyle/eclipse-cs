@@ -155,6 +155,15 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         return contents;
     }
 
+    /**
+     * Creates the location section with a text field and a browse button.
+     *
+     * @param parent
+     *            the parent composite
+     * @param shell
+     *            the shell used for the file selection dialog
+     * @return the text field displaying the selected location
+     */
     private static Text createLocationSection(Composite parent, Shell shell) {
         final Label lblConfigLocation = new Label(parent, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);

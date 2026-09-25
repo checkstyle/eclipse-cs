@@ -129,6 +129,18 @@ public final class ConfigurationWriter {
         }
     }
 
+    /**
+     * Writes the given module and its remaining children into the result tree.
+     *
+     * @param module
+     *            the module to write
+     * @param parent
+     *            the parent branch in the result tree
+     * @param parentSeverity
+     *            the severity inherited from the parent module
+     * @param remainingModules
+     *            the list of modules that still need to be written
+     */
     private static void writeModules(Module module, Branch parent, Severity parentSeverity,
         List<Module> remainingModules) {
         final Element moduleEl = writeModule(module, parent);

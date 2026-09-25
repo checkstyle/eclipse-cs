@@ -491,6 +491,9 @@ public final class Messages extends NLS {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
+    /**
+     * Utility class, cannot be instantiated.
+     */
     private Messages() {
     }
 

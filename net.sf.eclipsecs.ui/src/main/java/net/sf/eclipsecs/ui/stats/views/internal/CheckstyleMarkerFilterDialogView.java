@@ -54,6 +54,18 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
     /** The edit regex button. */
     private final Button mBtnEditRegex;
 
+    /**
+     * Creates the checkstyle marker filter dialog view.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param selectWorkingSet
+     *            callback to select a working set
+     * @param editRegularExpressions
+     *            callback to edit the regular expressions
+     */
     public CheckstyleMarkerFilterDialogView(Composite parent, int style, Runnable selectWorkingSet,
         Runnable editRegularExpressions) {
         super(parent, style);
@@ -87,6 +99,19 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
             SelectionListener.widgetSelectedAdapter(event -> editRegularExpressions.run()));
     }
 
+    /**
+     * Creates a button applying the given grid data factory.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the button style
+     * @param text
+     *            the button text
+     * @param gridDataFactory
+     *            the grid data factory to apply
+     * @return the created button
+     */
     private static Button createButton(Composite parent, int style, String text,
         GridDataFactory gridDataFactory) {
         final Button button = new Button(parent, style);
@@ -106,6 +131,20 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
         mBtnEditRegex.setEnabled(mChkFilterEnabled.getSelection());
     }
 
+    /**
+     * Sets the filter state of the view.
+     *
+     * @param enabled
+     *            whether the filter is enabled
+     * @param onResource
+     *            the resource filter type
+     * @param selectBySeverity
+     *            whether to filter by severity
+     * @param severity
+     *            the severity
+     * @param filterByRegex
+     *            whether to filter by regular expression
+     */
     public void set(boolean enabled, int onResource, boolean selectBySeverity, int severity,
         boolean filterByRegex) {
         mChkFilterEnabled.setSelection(enabled);
@@ -114,30 +153,67 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
         updateControlState();
     }
 
+    /**
+     * Sets the working set label.
+     *
+     * @param label
+     *            the working set label
+     */
     public void setWorkingSetLabel(String label) {
         resourceFilterGroup.setWorkingSetLabel(label);
     }
 
+    /**
+     * Sets the regular expression label.
+     *
+     * @param label
+     *            the regular expression label
+     */
     public void setRegexLabel(String label) {
         mLblRegexFilter.setText(label);
     }
 
+    /**
+     * Returns whether the filter is enabled.
+     *
+     * @return whether the filter is enabled
+     */
     public boolean getFilterEnabled() {
         return mChkFilterEnabled.getSelection();
     }
 
+    /**
+     * Returns the resource filter type.
+     *
+     * @return the resource filter type
+     */
     public int getOnResource() {
         return resourceFilterGroup.getOnResource();
     }
 
+    /**
+     * Returns the selected severity.
+     *
+     * @return the selected severity
+     */
     public int getSeverity() {
         return resourceFilterGroup.getSeverity();
     }
 
+    /**
+     * Returns whether to filter by severity.
+     *
+     * @return whether to filter by severity
+     */
     public boolean getSelectBySeverity() {
         return resourceFilterGroup.getSelectBySeverity();
     }
 
+    /**
+     * Returns whether to filter by regular expression.
+     *
+     * @return whether to filter by regular expression
+     */
     public boolean getSelectByRegex() {
         return mChkSelectByRegex.getSelection();
     }

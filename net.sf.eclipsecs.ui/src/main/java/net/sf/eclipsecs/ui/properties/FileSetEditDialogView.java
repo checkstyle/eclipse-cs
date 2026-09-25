@@ -51,6 +51,25 @@ public final class FileSetEditDialogView extends Composite {
     /** The matched files preview area. */
     private final FileSetEditDialogMatchedFilesPreview matchArea;
 
+    /**
+     * Constructor building the file set edit dialog view, laying out the common area, the file
+     * match pattern editor and the matched files preview.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the SWT style bits to apply to this composite
+     * @param fileMatchPatternTableCallbacks
+     *            the callbacks for the file match pattern table
+     * @param previewFilter
+     *            the filter used by the matched files preview
+     * @param projectName
+     *            the name of the project
+     * @param checkConfigSelectionChanged
+     *            the callback invoked when the check config selection changes
+     * @param configureFileSetConfig
+     *            the callback invoked to configure the file set config
+     */
     public FileSetEditDialogView(Composite parent, int style,
         FileMatchPatternControlCallbacks fileMatchPatternTableCallbacks,
         FileSetEditDialogMatchedFilesPreviewFilter previewFilter, String projectName,
@@ -80,23 +99,48 @@ public final class FileSetEditDialogView extends Composite {
         });
     }
 
+    /**
+     * Refreshes the matched files preview area.
+     */
     public void refreshMatchArea() {
         matchArea.refresh();
     }
 
+    /**
+     * Sets the project files to be shown in the matched files preview.
+     *
+     * @param projectFiles
+     *            the project files to show
+     */
     public void setProjectFiles(List<IFile> projectFiles) {
         matchArea.setInput(projectFiles);
     }
 
+    /**
+     * Refreshes the file match pattern table and the matched files preview.
+     */
     public void refreshFileMatchPatternTable() {
         fileMatchPatternTable.refresh();
         matchArea.refresh();
     }
 
+    /**
+     * Sets the project configuration to be shown in the common area.
+     *
+     * @param configuration
+     *            the project configuration to show
+     */
     public void setProjectConfiguration(ProjectConfigurationWorkingCopy configuration) {
         commonArea.setInput(configuration);
     }
 
+    /**
+     * Sets the given file set, initializing the name, the check configuration selection and the
+     * file match patterns.
+     *
+     * @param fileSet
+     *            the file set to display
+     */
     public void setFileSet(FileSet fileSet) {
         // intitialize the name
         final String name;
@@ -117,6 +161,11 @@ public final class FileSetEditDialogView extends Composite {
         fileMatchPatternTable.setInput(fileSet.getFileMatchPatterns());
     }
 
+    /**
+     * Returns the file set name entered in the common area.
+     *
+     * @return the file set name
+     */
     public String getFileSetName() {
         return commonArea.getText();
     }

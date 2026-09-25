@@ -116,10 +116,21 @@ public enum CheckstyleUIPluginImages {
      */
     private Image image;
 
+    /**
+     * Creates an image descriptor entry.
+     *
+     * @param factory
+     *            the lazy creation factory
+     */
     CheckstyleUIPluginImages(Supplier<ImageDescriptor> factory) {
         this.factory = factory;
     }
 
+    /**
+     * Returns the image descriptor, lazily creating it on first access.
+     *
+     * @return the image descriptor
+     */
     public ImageDescriptor getImageDescriptor() {
         if (imageDescriptor == null) {
             imageDescriptor = factory.get();

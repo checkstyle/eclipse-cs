@@ -53,6 +53,20 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
     /** The table viewer for check configurations. */
     private final TableViewer tableViewer;
 
+    /**
+     * Creates the configuration table.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param model
+     *            the working set editor model
+     * @param configureCheckConfig
+     *            callback to configure a check configuration
+     * @param handleSelectionChanged
+     *            callback invoked when the selection changes
+     */
     public CheckConfigurationWorkingSetEditorConfigTable(Composite parent, int style,
         CheckConfigurationWorkingSetEditorModel model,
         Runnable configureCheckConfig,
@@ -118,20 +132,40 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
         TableViewerEnhancer.enhance(tableViewer, model.tableSettings(), tableColumnLayout);
     }
 
+    /**
+     * Refreshes the table.
+     */
     public void refresh() {
         tableViewer.refresh(true);
     }
 
+    /**
+     * Returns the selected configuration.
+     *
+     * @return the selected configuration
+     */
     public CheckConfigurationWorkingCopy getSelection() {
         return (CheckConfigurationWorkingCopy) tableViewer.getStructuredSelection()
             .getFirstElement();
     }
 
+    /**
+     * Sets the configurations shown by the table.
+     *
+     * @param configs
+     *            the configurations to show
+     */
     public void setConfigs(CheckConfigurationWorkingCopy[] configs) {
         this.tableViewer.setInput(configs);
         this.tableViewer.refresh();
     }
 
+    /**
+     * Sets the selected configuration.
+     *
+     * @param config
+     *            the configuration to select
+     */
     public void setSelection(CheckConfigurationWorkingCopy config) {
         this.tableViewer.setSelection(new StructuredSelection(config));
     }

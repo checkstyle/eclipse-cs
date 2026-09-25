@@ -74,6 +74,12 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
         /** The marker start offset. */
         private final int markerStartOffset;
 
+        /**
+         * Creates the AST visitor.
+         *
+         * @param markerStartOffset
+         *            the marker start offset
+         */
         private ArrayTypeStyleQuickfixAstVisitor(int markerStartOffset) {
             this.markerStartOffset = markerStartOffset;
         }
@@ -184,14 +190,36 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
             return true;
         }
 
+        /**
+         * Checks whether the given type is of Java array style.
+         *
+         * @param type
+         *            the type to check
+         * @return true if the type is an array type
+         */
         private boolean isJavaStyle(Type type) {
             return type instanceof ArrayType;
         }
 
+        /**
+         * Checks whether the given variable declaration uses C-style array brackets.
+         *
+         * @param decl
+         *            the variable declaration to check
+         * @return true if the declaration uses C-style array brackets
+         */
         private boolean isCStyle(VariableDeclaration decl) {
             return decl.getExtraDimensions() > 0;
         }
 
+        /**
+         * Checks whether any of the given variable declarations uses C-style array
+         * brackets.
+         *
+         * @param fragments
+         *            the variable declarations to check
+         * @return true if any declaration uses C-style array brackets
+         */
         private boolean isCStyle(List<?> fragments) {
             boolean isCStyle = false;
             final Iterator<?> iter = fragments.iterator();
@@ -205,6 +233,15 @@ public class ArrayTypeStyleQuickfix extends AbstractASTResolution {
             return isCStyle;
         }
 
+        /**
+         * Creates a new array type with the given component type and dimensions.
+         *
+         * @param componentType
+         *            the component type of the array
+         * @param dimensions
+         *            the number of array dimensions
+         * @return the created array type
+         */
         private ArrayType createArrayType(Type componentType, int dimensions) {
             final Type type = (Type) ASTNode.copySubtree(componentType.getAST(), componentType);
             return componentType.getAST().newArrayType(type, dimensions);

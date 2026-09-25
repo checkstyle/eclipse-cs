@@ -55,10 +55,28 @@ public final class MetadataXmlReader {
             "-//eclipse-cs//DTD Check Metadata 1.1//EN",
             "/com/puppycrawl/tools/checkstyle/checkstyle-metadata_1_1.dtd");
 
+    /**
+     * Utility class, not intended to be instantiated.
+     */
     private MetadataXmlReader() {
 
     }
 
+    /**
+     * Parses the metadata from the given stream.
+     *
+     * @param metadataStream
+     *            the stream containing the metadata
+     * @param metadataBundle
+     *            the resource bundle for localization
+     * @param groupId
+     *            the id of the rule group
+     * @return the parsed rule groups
+     * @throws DocumentException
+     *             the metadata document could not be read
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
     public static Collection<RuleGroupMetadata> parseMetadata(InputStream metadataStream,
         ResourceBundle metadataBundle, String groupId)
             throws DocumentException, CheckstylePluginException {
@@ -105,6 +123,19 @@ public final class MetadataXmlReader {
         return groups.values();
     }
 
+    /**
+     * Processes the modules declared in the given group element.
+     *
+     * @param groupElement
+     *            the group element
+     * @param groupMetadata
+     *            the group metadata
+     * @param metadataBundle
+     *            the resource bundle for localization
+     * @return the list of rule metadata
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
     private static List<RuleMetadata> processModules(Element groupElement,
         RuleGroupMetadata groupMetadata, ResourceBundle metadataBundle)
             throws CheckstylePluginException {
@@ -181,6 +212,15 @@ public final class MetadataXmlReader {
         return !"false".equals(element.attributeValue(attributeName));
     }
 
+    /**
+     * Localizes the given candidate using the supplied resource bundle.
+     *
+     * @param localizationCandidate
+     *            the candidate to localize
+     * @param metadataBundle
+     *            the resource bundle for localization
+     * @return the localized value or the candidate if it could not be localized
+     */
     private static String localize(String localizationCandidate, ResourceBundle metadataBundle) {
         String localized = localizationCandidate;
         if (metadataBundle != null && localizationCandidate != null
@@ -195,6 +235,17 @@ public final class MetadataXmlReader {
         return localized;
     }
 
+    /**
+     * Processes the properties declared in the given module element.
+     *
+     * @param moduleElement
+     *            the module element
+     * @param metadataBundle
+     *            the resource bundle for localization
+     * @return the list of property metadata
+     * @throws CheckstylePluginException
+     *             an unexpected exception occurred
+     */
     private static List<ConfigPropertyMetadata> processProperties(Element moduleElement,
         ResourceBundle metadataBundle) throws CheckstylePluginException {
         final List<ConfigPropertyMetadata> properties = new ArrayList<>();

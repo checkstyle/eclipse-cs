@@ -57,6 +57,18 @@ public final class CheckstylePropertyPageMainTab extends Composite {
     /** The file sets editor. */
     private IFileSetsEditor mFileSetsEditor;
 
+    /**
+     * Creates the main tab of the checkstyle property page.
+     *
+     * @param parent
+     *            the parent composite
+     * @param style
+     *            the widget style
+     * @param propertyPageContext
+     *            the property page context
+     * @param mCheckstyleInitiallyActivated
+     *            whether checkstyle is initially activated
+     */
     public CheckstylePropertyPageMainTab(Composite parent, int style,
         PropertyPageContext propertyPageContext, boolean mCheckstyleInitiallyActivated) {
         super(parent, style);
@@ -98,10 +110,18 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         GridDataFactory.fillDefaults().grab(true, true).span(2, 1).applyTo(filterArea);
     }
 
+    /**
+     * Returns whether checkstyle is enabled on the property page.
+     *
+     * @return whether checkstyle is enabled
+     */
     public boolean isCheckstyleEnabled() {
         return mChkEnable.getSelection();
     }
 
+    /**
+     * Refreshes the file sets editor.
+     */
     public void refreshFileSetEditor() {
         mFileSetsEditor.refresh();
     }

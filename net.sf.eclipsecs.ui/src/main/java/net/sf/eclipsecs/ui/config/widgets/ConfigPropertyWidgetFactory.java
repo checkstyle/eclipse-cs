@@ -45,6 +45,9 @@ public final class ConfigPropertyWidgetFactory {
             ConfigPropertyWidgetFile::create, ConfigPropertyType.REGEX,
             ConfigPropertyWidgetRegex::create);
 
+    /**
+     * Creates the widget factory.
+     */
     private ConfigPropertyWidgetFactory() {
     }
 
@@ -76,6 +79,17 @@ public final class ConfigPropertyWidgetFactory {
         return widget;
     }
 
+    /**
+     * Returns the widget for the given configuration property type.
+     *
+     * @param parent
+     *            the parent composite
+     * @param prop
+     *            the property
+     * @param type
+     *            the configuration property type
+     * @return the built widget
+     */
     private static IConfigPropertyWidget getWidgetForConfigPropertyType(Composite parent,
         ConfigProperty prop, ConfigPropertyType type) {
         return REGISTRY.getOrDefault(type, ConfigPropertyWidgetString::create).create(parent, prop);
@@ -86,6 +100,15 @@ public final class ConfigPropertyWidgetFactory {
      *
      */
     public interface ConfigPropertyWidgetBuilder {
+        /**
+         * Creates a configuration property widget for the given property.
+         *
+         * @param parent
+         *            the parent composite
+         * @param prop
+         *            the property
+         * @return the created widget
+         */
         IConfigPropertyWidget create(Composite parent, ConfigProperty prop);
     }
 }

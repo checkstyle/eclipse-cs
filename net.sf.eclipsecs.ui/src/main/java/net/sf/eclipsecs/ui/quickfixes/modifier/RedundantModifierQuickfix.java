@@ -82,6 +82,14 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
         /** The marker start offset. */
         private final int markerStartOffset;
 
+        /**
+         * Creates the AST visitor.
+         *
+         * @param lineInfo
+         *            the line info region
+         * @param markerStartOffset
+         *            the marker start offset
+         */
         private RedundantModifierQuickfixAstVisitor(IRegion lineInfo, int markerStartOffset) {
             this.lineInfo = lineInfo;
             this.markerStartOffset = markerStartOffset;
@@ -173,6 +181,14 @@ public class RedundantModifierQuickfix extends AbstractASTResolution {
             return true;
         }
 
+        /**
+         * Removes the redundant modifiers from the given modifier list.
+         *
+         * @param modifiers
+         *            the modifier nodes to process
+         * @param redundantModifierKeywords
+         *            the modifier keywords to remove
+         */
         private void deleteRedundantModifiers(List<ASTNode> modifiers,
             List<ModifierKeyword> redundantModifierKeywords) {
 
