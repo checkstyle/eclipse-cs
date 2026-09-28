@@ -111,4 +111,5 @@ public final class ConfigPropertyWidgetFactory {
          */
         IConfigPropertyWidget create(Composite parent, ConfigProperty prop);
     }
+
 }

@@ -200,4 +200,5 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
             testRegex();
         }
     }
+
 }

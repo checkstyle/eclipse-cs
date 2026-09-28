@@ -346,4 +346,5 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
         }
         return doc;
     }
+
 }

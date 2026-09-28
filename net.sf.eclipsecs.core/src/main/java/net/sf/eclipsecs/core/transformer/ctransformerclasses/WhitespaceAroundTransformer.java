@@ -205,4 +205,5 @@ public class WhitespaceAroundTransformer extends AbstractCTransformationClass {
         }
         return getFormatterSetting();
     }
+
 }

@@ -183,4 +183,5 @@ public class NeedBracesQuickfix extends AbstractASTResolution {
             return block;
         }
     }
+
 }

@@ -76,4 +76,5 @@ public class UncommentedMainQuickfix extends AbstractASTResolution {
     public Image getImage() {
         return CheckstyleUIPluginImages.CORRECTION_REMOVE.getImage();
     }
+
 }

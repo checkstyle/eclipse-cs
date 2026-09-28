@@ -195,4 +195,5 @@ public class CheckConfiguration extends AbstractCheckConfiguration {
         return Objects.hash(getName(), getLocation(), getDescription(), getType(), isGlobal(),
             getResolvableProperties(), getAdditionalData());
     }
+
 }

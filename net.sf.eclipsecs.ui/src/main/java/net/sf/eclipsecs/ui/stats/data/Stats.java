@@ -82,4 +82,5 @@ public class Stats {
     public int getMarkerCountAll() {
         return mMarkerCountWhole;
     }
+
 }

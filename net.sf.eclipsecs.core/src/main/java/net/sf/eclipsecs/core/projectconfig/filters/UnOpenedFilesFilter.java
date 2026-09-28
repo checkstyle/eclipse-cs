@@ -83,4 +83,5 @@ public class UnOpenedFilesFilter extends AbstractFilter {
         }
         return accept;
     }
+
 }

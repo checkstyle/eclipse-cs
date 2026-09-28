@@ -114,4 +114,5 @@ public interface ICheckConfigurationWorkingSet {
      *             unexprected error
      */
     Collection<IProject> getAffectedProjects() throws CheckstylePluginException;
+
 }

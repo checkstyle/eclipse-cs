@@ -38,4 +38,5 @@ public interface ITableComparableProvider {
      * @return the comparable value for this columns
      */
     Comparable<?> getComparableValue(Object element, int col);
+
 }

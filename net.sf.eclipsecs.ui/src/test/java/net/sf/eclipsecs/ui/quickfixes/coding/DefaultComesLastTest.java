@@ -35,4 +35,5 @@ class DefaultComesLastTest extends AbstractQuickfixTestCase {
     void defaultComesLastInner() throws Exception {
         testQuickfix("DefaultComesLastInputInner.xml", new DefaultComesLastQuickfix());
     }
+
 }

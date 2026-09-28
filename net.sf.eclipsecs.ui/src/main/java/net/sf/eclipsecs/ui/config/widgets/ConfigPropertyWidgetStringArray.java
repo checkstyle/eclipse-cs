@@ -78,4 +78,5 @@ public final class ConfigPropertyWidgetStringArray extends ConfigPropertyWidgetS
     private String normalizeSeparator(String text) {
         return Arrays.stream(text.split(",")).map(String::strip).collect(Collectors.joining(", "));
     }
+
 }

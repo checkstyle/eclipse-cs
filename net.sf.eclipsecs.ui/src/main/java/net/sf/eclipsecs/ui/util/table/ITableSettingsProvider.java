@@ -35,4 +35,5 @@ public interface ITableSettingsProvider {
      * @return the settings
      */
     IDialogSettings getTableSettings();
+
 }

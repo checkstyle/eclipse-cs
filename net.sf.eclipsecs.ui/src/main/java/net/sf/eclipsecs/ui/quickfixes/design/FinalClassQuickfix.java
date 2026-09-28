@@ -106,4 +106,5 @@ public class FinalClassQuickfix extends AbstractASTResolution {
             return true;
         }
     }
+
 }

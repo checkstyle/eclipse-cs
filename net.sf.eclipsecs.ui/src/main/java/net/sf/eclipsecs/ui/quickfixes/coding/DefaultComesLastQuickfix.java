@@ -129,4 +129,5 @@ public class DefaultComesLastQuickfix extends AbstractASTResolution {
     public Image getImage() {
         return CheckstyleUIPluginImages.CORRECTION_CHANGE.getImage();
     }
+
 }

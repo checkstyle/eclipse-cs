@@ -496,4 +496,5 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
             }
         }
     }
+
 }

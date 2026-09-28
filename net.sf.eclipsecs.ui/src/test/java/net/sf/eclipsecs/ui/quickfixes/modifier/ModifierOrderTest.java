@@ -30,4 +30,5 @@ class ModifierOrderTest extends AbstractQuickfixTestCase {
     void modifierOrder() throws Exception {
         testQuickfix("ModifierOrderInput.xml", new ModifierOrderQuickfix());
     }
+
 }

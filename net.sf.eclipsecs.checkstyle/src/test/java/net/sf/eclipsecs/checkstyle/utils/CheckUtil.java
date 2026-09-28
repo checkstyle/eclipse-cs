@@ -27,6 +27,7 @@ import com.puppycrawl.tools.checkstyle.PackageNamesLoader;
 import com.puppycrawl.tools.checkstyle.utils.ModuleReflectionUtil;
 
 public final class CheckUtil {
+
     private CheckUtil() {
     }
 
@@ -57,4 +58,5 @@ public final class CheckUtil {
 
         return result;
     }
+
 }

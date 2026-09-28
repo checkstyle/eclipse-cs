@@ -183,4 +183,5 @@ public final class ConfiguredModules extends Composite {
                 || !module.getMetaData().hasSeverity();
         }
     }
+
 }

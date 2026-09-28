@@ -118,4 +118,5 @@ public class NonSrcDirsFilter extends AbstractFilter {
 
         return sourceDirs;
     }
+
 }

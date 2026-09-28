@@ -203,4 +203,5 @@ public class ProjectConfiguration implements IProjectConfiguration {
             .add("syncFormatter", syncFormatter).add("fileSets", fileSets).add("filters", filters)
             .toString();
     }
+
 }

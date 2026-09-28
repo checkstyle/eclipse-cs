@@ -306,4 +306,5 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         Predicate<CheckConfigurationWorkingCopy> isDefaultConfig,
         IDialogSettings tableSettings) {
     }
+
 }

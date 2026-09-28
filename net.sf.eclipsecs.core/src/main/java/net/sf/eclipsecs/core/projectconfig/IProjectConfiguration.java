@@ -87,4 +87,5 @@ public interface IProjectConfiguration {
      * @return <code>true</code> if checkstyle settings are synched into formatter settings.
      */
     boolean isSyncFormatter();
+
 }

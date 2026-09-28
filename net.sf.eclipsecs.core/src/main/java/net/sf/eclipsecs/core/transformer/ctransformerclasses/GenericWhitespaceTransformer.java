@@ -31,6 +31,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class GenericWhitespaceTransformer extends AbstractCTransformationClass {
+
     @Override
     public FormatterConfiguration transformRule() {
         userFormatterSetting("insert_space_before_question_in_wildcard", JavaCore.DO_NOT_INSERT);

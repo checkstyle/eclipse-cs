@@ -52,4 +52,5 @@ public class CheckerModuleSaveFilter implements ISaveFilter {
             configuredModules.add(0, checker);
         }
     }
+
 }

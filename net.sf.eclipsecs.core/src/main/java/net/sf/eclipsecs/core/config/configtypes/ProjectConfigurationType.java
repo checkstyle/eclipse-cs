@@ -85,4 +85,5 @@ public class ProjectConfigurationType extends AbstractConfigurationType {
         }
         return isConfigurable;
     }
+
 }

@@ -60,4 +60,5 @@ class ResourceBundlePropertyResolver implements PropertyResolver {
 
         return value;
     }
+
 }

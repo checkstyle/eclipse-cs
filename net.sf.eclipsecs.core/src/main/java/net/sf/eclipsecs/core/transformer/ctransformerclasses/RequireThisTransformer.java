@@ -29,6 +29,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class RequireThisTransformer extends AbstractCTransformationClass {
+
     @Override
     public FormatterConfiguration transformRule() {
         useCleanupSetting("always_use_this_for_non_static_field_access", true);
@@ -39,4 +40,5 @@ public class RequireThisTransformer extends AbstractCTransformationClass {
         useCleanupSetting("use_this_for_non_static_field_access_only_if_necessary", false);
         return getFormatterSetting();
     }
+
 }

@@ -104,4 +104,5 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
             return Status.OK_STATUS;
         }
     }
+
 }

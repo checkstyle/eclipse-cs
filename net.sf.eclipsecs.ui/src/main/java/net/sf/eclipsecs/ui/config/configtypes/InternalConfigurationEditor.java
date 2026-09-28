@@ -192,4 +192,5 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
         return true;
     }
+
 }

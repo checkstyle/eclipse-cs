@@ -59,4 +59,5 @@ public class DerivedFilesFilter extends AbstractFilter {
         }
         return goesThrough;
     }
+
 }

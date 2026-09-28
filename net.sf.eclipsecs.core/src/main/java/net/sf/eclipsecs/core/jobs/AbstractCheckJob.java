@@ -28,6 +28,7 @@ import org.eclipse.core.runtime.jobs.ISchedulingRule;
  * progress UI.
  */
 public abstract class AbstractCheckJob extends WorkspaceJob implements ISchedulingRule {
+
     /**
      * The job family marker is used by the progress service to provide different icons.
      */

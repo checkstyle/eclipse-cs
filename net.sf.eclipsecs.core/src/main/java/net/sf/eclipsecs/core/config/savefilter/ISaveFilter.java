@@ -39,4 +39,5 @@ public interface ISaveFilter {
      *            the configured modules in from this configuration
      */
     void postProcessConfiguredModules(List<Module> configuredModules);
+
 }

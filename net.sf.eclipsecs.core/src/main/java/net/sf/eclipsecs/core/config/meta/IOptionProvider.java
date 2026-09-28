@@ -36,4 +36,5 @@ public interface IOptionProvider {
      * @return the options
      */
     List<String> getOptions();
+
 }

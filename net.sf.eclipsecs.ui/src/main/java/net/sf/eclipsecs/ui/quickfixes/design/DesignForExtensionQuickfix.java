@@ -107,4 +107,5 @@ public class DesignForExtensionQuickfix extends AbstractASTResolution {
             return true;
         }
     }
+
 }

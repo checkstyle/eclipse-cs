@@ -81,4 +81,5 @@ public class CheckstylePluginException extends Exception {
     public static void rethrow(Throwable throwable) throws CheckstylePluginException {
         rethrow(throwable, throwable.getMessage());
     }
+
 }

@@ -29,6 +29,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  *
  */
 public class LineLengthTransformer extends AbstractCTransformationClass {
+
     @Override
     public FormatterConfiguration transformRule() {
         String val = getAttribute("max");
@@ -39,4 +40,5 @@ public class LineLengthTransformer extends AbstractCTransformationClass {
         userFormatterSetting("comment.line_length", val);
         return getFormatterSetting();
     }
+
 }

@@ -738,9 +738,6 @@
         <module name="JavadocMissingWhitespaceAfterAsterisk"/>
         <module name="JavadocLeadingAsteriskAlign"/>
         <module name="JavadocParagraph"/>
-        <module name="JavadocStyle">
-            <property name="scope" value="public"/>
-        </module>
         <module name="JavadocTagContinuationIndentation"/>
         <module name="JavadocType">
             <!-- avoid errors on tag '@noinspection' -->
@@ -1009,6 +1006,7 @@
         <module name="SingleSpaceSeparator">
           <property name="validateComments" value="false"/>
         </module>
+        <module name="TypeBodyPadding"/>
         <module name="TypecastParenPad"/>
         <module name="WhitespaceAfter">
             <property name="tokens"

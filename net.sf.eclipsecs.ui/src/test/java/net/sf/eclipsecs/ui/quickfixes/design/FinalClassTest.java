@@ -30,4 +30,5 @@ class FinalClassTest extends AbstractQuickfixTestCase {
     void finalClass() throws Exception {
         testQuickfix("FinalClassInput.xml", new FinalClassQuickfix());
     }
+
 }

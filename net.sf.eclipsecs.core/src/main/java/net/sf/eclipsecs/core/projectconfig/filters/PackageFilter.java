@@ -155,4 +155,5 @@ public class PackageFilter extends AbstractFilter {
     public int hashCode() {
         return Objects.hash(super.hashCode(), mData);
     }
+
 }

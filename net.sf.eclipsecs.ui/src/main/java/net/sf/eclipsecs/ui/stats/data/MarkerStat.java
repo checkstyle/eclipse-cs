@@ -114,4 +114,5 @@ public class MarkerStat implements Comparable<MarkerStat> {
     public String getIdentifiant() {
         return mIdentifiant;
     }
+
 }

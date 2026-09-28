@@ -243,4 +243,5 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
             initWorkingSetLabel();
         }
     }
+
 }

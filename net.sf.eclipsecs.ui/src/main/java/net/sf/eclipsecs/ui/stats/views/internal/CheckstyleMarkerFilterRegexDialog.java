@@ -195,4 +195,5 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
         }
         return valid;
     }
+
 }

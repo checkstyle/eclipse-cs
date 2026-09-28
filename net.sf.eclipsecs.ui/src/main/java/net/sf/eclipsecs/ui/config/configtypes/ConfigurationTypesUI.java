@@ -157,4 +157,5 @@ public final class ConfigurationTypesUI {
         }
         return image;
     }
+
 }

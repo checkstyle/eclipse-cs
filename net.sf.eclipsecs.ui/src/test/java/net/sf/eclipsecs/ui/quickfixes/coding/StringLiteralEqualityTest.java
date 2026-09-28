@@ -30,4 +30,5 @@ class StringLiteralEqualityTest extends AbstractQuickfixTestCase {
     void stringLiteralEquality() throws Exception {
         testQuickfix("StringLiteralEqualityInput.xml", new StringLiteralEqualityQuickfix());
     }
+
 }

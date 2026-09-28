@@ -76,4 +76,5 @@ public enum ConfigPropertyType {
             default -> throw new IllegalArgumentException("Unexpected value: " + xmlValue);
         };
     }
+
 }

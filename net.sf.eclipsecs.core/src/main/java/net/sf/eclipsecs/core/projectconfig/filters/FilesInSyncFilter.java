@@ -104,4 +104,5 @@ public class FilesInSyncFilter extends AbstractFilter {
         }
         return hasChanges;
     }
+
 }

@@ -59,4 +59,5 @@ public class CheckstyleMarkerImageProvider implements IAnnotationImageProvider {
     public ImageDescriptor getImageDescriptor(String imageDescritporId) {
         return null;
     }
+
 }

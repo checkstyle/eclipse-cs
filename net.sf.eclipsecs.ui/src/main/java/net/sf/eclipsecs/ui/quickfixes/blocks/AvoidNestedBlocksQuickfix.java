@@ -102,4 +102,5 @@ public class AvoidNestedBlocksQuickfix extends AbstractASTResolution {
             return true;
         }
     }
+
 }

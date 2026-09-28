@@ -139,4 +139,5 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
         }
         mTextWidget.setText(defaultValue);
     }
+
 }

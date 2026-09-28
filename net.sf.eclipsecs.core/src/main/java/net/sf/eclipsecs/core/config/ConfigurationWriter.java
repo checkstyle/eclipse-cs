@@ -271,4 +271,5 @@ public final class ConfigurationWriter {
 
         return childModules;
     }
+
 }
