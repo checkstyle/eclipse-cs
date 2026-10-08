@@ -41,7 +41,7 @@ import org.osgi.framework.Bundle;
 public class ExtensionClassLoader extends ClassLoader {
 
     /** The bundles contributing to this classloader. */
-    private List<Bundle> mBundles;
+    private List<Bundle> bundles;
 
     /**
      * Creates the extension classloader.
@@ -53,9 +53,9 @@ public class ExtensionClassLoader extends ClassLoader {
      */
     public ExtensionClassLoader(Bundle sourceBundle, String extensionPointId) {
 
-        mBundles = new ArrayList<>();
+        bundles = new ArrayList<>();
 
-        mBundles.add(sourceBundle);
+        bundles.add(sourceBundle);
 
         final IExtensionRegistry pluginRegistry = Platform.getExtensionRegistry();
         final IExtensionPoint extPt = pluginRegistry.getExtensionPoint(extensionPointId);
@@ -67,7 +67,7 @@ public class ExtensionClassLoader extends ClassLoader {
             final Bundle extensionBundle = Platform.getBundle(contributorId);
 
             if (extensionBundle != null) {
-                mBundles.add(extensionBundle);
+                bundles.add(extensionBundle);
             }
         }
     }
@@ -77,7 +77,7 @@ public class ExtensionClassLoader extends ClassLoader {
 
         Class<?> clazz = null;
 
-        for (Bundle bundle : mBundles) {
+        for (Bundle bundle : bundles) {
 
             try {
                 clazz = bundle.loadClass(name);
@@ -102,7 +102,7 @@ public class ExtensionClassLoader extends ClassLoader {
 
         URL resource = null;
 
-        for (Bundle bundle : mBundles) {
+        for (Bundle bundle : bundles) {
             resource = bundle.getResource(name);
             if (resource != null) {
                 break;
@@ -116,7 +116,7 @@ public class ExtensionClassLoader extends ClassLoader {
 
         final List<URL> resources = new ArrayList<>();
 
-        for (Bundle bundle : mBundles) {
+        for (Bundle bundle : bundles) {
             final Enumeration<URL> bundleResources = bundle.getResources(name);
             if (bundleResources != null) {
                 resources.addAll(Collections.list(bundleResources));

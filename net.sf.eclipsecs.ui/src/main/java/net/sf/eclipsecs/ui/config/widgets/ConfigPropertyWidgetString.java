@@ -40,7 +40,7 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
     /** Escaped apostrophe constant. */
     private static final String APOSTROPHE_ESCAPED = "''";
     /** The text widget. */
-    private Text mTextWidget;
+    private Text textWidget;
 
     /**
      * Creates the widget.
@@ -70,26 +70,26 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
     @Override
     protected Control getValueWidget(Composite parent) {
 
-        if (mTextWidget == null) {
+        if (textWidget == null) {
 
             //
             // Create a text entry field.
             //
-            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
-            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            textWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+            textWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
             final String initValue = getInitValue();
             if (initValue != null) {
-                mTextWidget.setText(unescape(initValue));
+                textWidget.setText(unescape(initValue));
             }
         }
 
-        return mTextWidget;
+        return textWidget;
     }
 
     @Override
     public String getValue() {
-        String result = mTextWidget.getText();
+        String result = textWidget.getText();
         if (result == null) {
             result = "";
         }
@@ -137,7 +137,7 @@ public class ConfigPropertyWidgetString extends AbstractConfigPropertyWidget {
         if (defaultValue == null) {
             defaultValue = "";
         }
-        mTextWidget.setText(defaultValue);
+        textWidget.setText(defaultValue);
     }
 
 }

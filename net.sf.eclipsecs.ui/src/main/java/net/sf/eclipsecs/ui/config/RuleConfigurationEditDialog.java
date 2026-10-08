@@ -60,11 +60,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     private static final int BUTTON_BAR_NUM_COLUMNS = 3;
 
     /** The rule being edited. */
-    private final Module mRule;
+    private final Module rule;
     /** The dialog title. */
-    private final String mTitle;
+    private final String title;
     /** Whether the dialog is read-only. */
-    private final boolean mReadonly;
+    private final boolean readonly;
 
     /** The general settings tab. */
     private RuleConfigurationEditDialogGeneralSettings generalSettings;
@@ -87,9 +87,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         super(parent);
         setShellStyle(getShellStyle() | SWT.RESIZE);
         setHelpAvailable(false);
-        mRule = rule;
-        mReadonly = readonly;
-        mTitle = title;
+        this.rule = rule;
+        this.readonly = readonly;
+        this.title = title;
     }
 
     @Override
@@ -100,11 +100,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(mMainTab);
 
         generalSettings =
-            new RuleConfigurationEditDialogGeneralSettings(mMainTab, SWT.NULL, mRule, mReadonly);
+            new RuleConfigurationEditDialogGeneralSettings(mMainTab, SWT.NULL, rule, readonly);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(generalSettings);
 
         advancedSettings =
-            new RuleConfigurationEditDialogAdvancedSettings(mMainTab, SWT.NULL, mRule, mReadonly);
+            new RuleConfigurationEditDialogAdvancedSettings(mMainTab, SWT.NULL, rule, readonly);
         GridDataFactory.create(GridData.FILL_BOTH).applyTo(advancedSettings);
 
         final TabItem mainItem = new TabItem(mMainTab, SWT.NULL);
@@ -178,7 +178,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         final Button defautlt = createButton(parent, IDialogConstants.BACK_ID,
             Messages.RuleConfigurationEditDialog_btnDefaul, false);
-        defautlt.setEnabled(!mReadonly);
+        defautlt.setEnabled(!readonly);
 
         // create OK and Cancel buttons by default
         createButton(parent, IDialogConstants.OK_ID, IDialogConstants.OK_LABEL, true);
@@ -191,8 +191,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     private void initialize() {
 
         this.setTitle(
-            NLS.bind(Messages.RuleConfigurationEditDialog_titleRuleConfigEditor, mRule.getName()));
-        if (mReadonly) {
+            NLS.bind(Messages.RuleConfigurationEditDialog_titleRuleConfigEditor, rule.getName()));
+        if (readonly) {
             this.setMessage(Messages.RuleConfigurationEditDialog_msgReadonlyModule);
         }
         else {
@@ -211,8 +211,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 Messages.RuleConfigurationEditDialog_titleRestoreDefault,
                 Messages.RuleConfigurationEditDialog_msgRestoreDefault)) {
 
-                if (mRule.getMetaData().hasSeverity()) {
-                    generalSettings.setSeverity(mRule.getMetaData().defaultSeverity());
+                if (rule.getMetaData().hasSeverity()) {
+                    generalSettings.setSeverity(rule.getMetaData().defaultSeverity());
                     advancedSettings.resetComment();
                 }
 
@@ -233,7 +233,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         //
         // Get the selected severity level.
         //
-        Severity severity = mRule.getSeverity();
+        Severity severity = rule.getSeverity();
         try {
             severity = generalSettings.getSeverity();
         }
@@ -253,17 +253,17 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             final String msgKey = entry.getKey();
 
             String standardMessage = MetadataFactory.getStandardMessage(msgKey,
-                mRule.getMetaData().identity().internalName());
+                rule.getMetaData().identity().internalName());
             if (standardMessage == null) {
                 standardMessage = "";
             }
 
             final String message = StringUtils.trimToNull(entry.getValue());
             if (message != null && !message.equals(standardMessage)) {
-                mRule.getCustomMessages().put(msgKey, message);
+                rule.getCustomMessages().put(msgKey, message);
             }
             else {
-                mRule.getCustomMessages().remove(msgKey);
+                rule.getCustomMessages().remove(msgKey);
             }
         }
 
@@ -281,9 +281,9 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
             // If we made it this far then all of the user input validated and we
             // can
             // update the final rule with the values the user entered.
-            mRule.setSeverity(severity);
-            mRule.setComment(comment);
-            mRule.setId(id);
+            rule.setSeverity(severity);
+            rule.setComment(comment);
+            rule.setId(id);
             super.okPressed();
         }
     }
@@ -296,7 +296,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         // stored separately
         SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
             RuleConfigurationEditDialog.class.getName() + "#"
-                + mRule.getMetaData().identity().internalName());
+                + rule.getMetaData().identity().internalName());
     }
 
     /**
@@ -306,7 +306,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
     protected void configureShell(Shell shell) {
         super.configureShell(shell);
 
-        shell.setText(mTitle);
+        shell.setText(title);
     }
 
 }

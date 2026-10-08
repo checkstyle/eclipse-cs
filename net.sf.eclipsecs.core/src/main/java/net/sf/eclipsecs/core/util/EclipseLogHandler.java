@@ -41,10 +41,10 @@ import net.sf.eclipsecs.core.Messages;
 public class EclipseLogHandler extends Handler {
 
     /** The plugin Id. */
-    private final String mPluginID;
+    private final String pluginID;
 
     /** The eclipse log to log into. */
-    private final ILog mPluginLog;
+    private final ILog pluginLog;
 
     /**
      * Creates an handler that passes java.util.logging messages to the eclipse log of a certain
@@ -54,8 +54,8 @@ public class EclipseLogHandler extends Handler {
      *            the plugin for which should be logged
      */
     public EclipseLogHandler(Plugin loggingPlugin) {
-        mPluginLog = loggingPlugin.getLog();
-        mPluginID = loggingPlugin.getBundle().getSymbolicName();
+        pluginLog = loggingPlugin.getLog();
+        pluginID = loggingPlugin.getBundle().getSymbolicName();
     }
 
     @Override
@@ -81,9 +81,9 @@ public class EclipseLogHandler extends Handler {
         // get throwable
         final Throwable thrown = record.getThrown();
 
-        final Status status = new Status(severity, mPluginID, IStatus.OK,
+        final Status status = new Status(severity, pluginID, IStatus.OK,
             NLS.bind(Messages.CheckstyleLog_msgStatusPrefix, message), thrown);
-        mPluginLog.log(status);
+        pluginLog.log(status);
     }
 
     @Override

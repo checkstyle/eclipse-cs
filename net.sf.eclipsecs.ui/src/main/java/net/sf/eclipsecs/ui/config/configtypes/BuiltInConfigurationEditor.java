@@ -47,16 +47,16 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
     //
 
     /** The working copy this editor edits. */
-    private CheckConfigurationWorkingCopy mWorkingCopy;
+    private CheckConfigurationWorkingCopy workingCopy;
 
     /** The text field containing the config name. */
-    private Text mConfigName;
+    private Text configName;
 
     /** Text field containing the location. */
-    private Text mLocation;
+    private Text location;
 
     /** The text containing the description. */
-    private Text mDescription;
+    private Text description;
 
     //
     // methods
@@ -71,7 +71,7 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {
-        mWorkingCopy = checkConfiguration;
+        workingCopy = checkConfiguration;
     }
 
     @Override
@@ -84,39 +84,39 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         lblConfigName.setLayoutData(new GridData());
 
-        mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        mConfigName.setEditable(false);
-        mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        mConfigName.setFocus();
+        configName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        configName.setEditable(false);
+        configName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        configName.setFocus();
 
         final Label lblConfigLocation = new Label(contents, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
             .applyTo(lblConfigLocation);
 
-        mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        mLocation.setEditable(false);
+        location = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        location.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        location.setEditable(false);
 
         final Label lblDescription = new Label(contents, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
-        mDescription =
+        description =
             new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
-        mDescription.setEditable(false);
+        description.setEditable(false);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
             .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE).grab(true, true)
-            .applyTo(mDescription);
+            .applyTo(description);
 
-        if (mWorkingCopy.getName() != null) {
-            mConfigName.setText(mWorkingCopy.getName());
+        if (workingCopy.getName() != null) {
+            configName.setText(workingCopy.getName());
         }
-        if (mWorkingCopy.getLocation() != null) {
-            mLocation.setText(mWorkingCopy.getLocation());
+        if (workingCopy.getLocation() != null) {
+            location.setText(workingCopy.getLocation());
         }
-        if (mWorkingCopy.getDescription() != null) {
-            mDescription.setText(mWorkingCopy.getDescription());
+        if (workingCopy.getDescription() != null) {
+            description.setText(workingCopy.getDescription());
         }
 
         return contents;
@@ -124,7 +124,7 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
 
     @Override
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-        return mWorkingCopy;
+        return workingCopy;
     }
 
 }

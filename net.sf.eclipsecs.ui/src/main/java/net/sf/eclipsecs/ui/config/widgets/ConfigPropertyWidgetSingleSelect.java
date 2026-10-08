@@ -38,7 +38,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigPropertyWidget {
 
     /** The combo item. */
-    private Combo mComboItem;
+    private Combo comboItem;
 
     /**
      * Creates the widget.
@@ -67,7 +67,7 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
 
     @Override
     protected Control getValueWidget(Composite parent) {
-        if (mComboItem == null) {
+        if (comboItem == null) {
             //
             // Create a combo box for selecting a value from the enumeration.
             //
@@ -84,18 +84,18 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
                     initialIndex = index;
                 }
             }
-            mComboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
-            mComboItem.setLayoutData(new GridData());
-            mComboItem.setItems(valueLabels);
-            mComboItem.select(initialIndex);
+            comboItem = new Combo(parent, SWT.NONE | SWT.DROP_DOWN | SWT.READ_ONLY);
+            comboItem.setLayoutData(new GridData());
+            comboItem.setItems(valueLabels);
+            comboItem.select(initialIndex);
         }
 
-        return mComboItem;
+        return comboItem;
     }
 
     @Override
     public String getValue() {
-        return mComboItem.getItem(mComboItem.getSelectionIndex());
+        return comboItem.getItem(comboItem.getSelectionIndex());
     }
 
     @Override
@@ -109,10 +109,10 @@ public final class ConfigPropertyWidgetSingleSelect extends AbstractConfigProper
             defaultValue = metadata.getDefaultValue();
         }
         if (defaultValue == null) {
-            mComboItem.select(0);
+            comboItem.select(0);
         }
         else {
-            mComboItem.select(mComboItem.indexOf(defaultValue));
+            comboItem.select(comboItem.indexOf(defaultValue));
         }
     }
 

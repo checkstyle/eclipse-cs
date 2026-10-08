@@ -40,10 +40,10 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 public class NonSrcDirsFilter extends AbstractFilter {
 
     /** The current project. */
-    private IProject mCurrentProject;
+    private IProject currentProject;
 
     /** The list of source paths of the current project. */
-    private List<IPath> mCurrentSourcePaths;
+    private List<IPath> currentSourcePaths;
 
     /**
      * Creates a filter that filters files outside the source directories.
@@ -75,12 +75,12 @@ public class NonSrcDirsFilter extends AbstractFilter {
             final IResource resource = (IResource) element;
 
             final IProject project = resource.getProject();
-            if (mCurrentProject != project) {
-                mCurrentSourcePaths = getSourceDirPaths(project);
-                mCurrentProject = project;
+            if (currentProject != project) {
+                currentSourcePaths = getSourceDirPaths(project);
+                currentProject = project;
             }
 
-            for (IPath sourcePath : mCurrentSourcePaths) {
+            for (IPath sourcePath : currentSourcePaths) {
                 if (sourcePath.isPrefixOf(resource.getFullPath())) {
                     goesThrough = true;
                     break;

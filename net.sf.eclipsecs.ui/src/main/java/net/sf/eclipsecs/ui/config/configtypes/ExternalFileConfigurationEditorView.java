@@ -43,13 +43,13 @@ import net.sf.eclipsecs.ui.Messages;
 public final class ExternalFileConfigurationEditorView extends Composite {
 
     /** The config name text field. */
-    private final Text mConfigName;
+    private final Text configName;
     /** The location text field. */
     private final Text location;
     /** The description text field. */
-    private final Text mDescription;
+    private final Text description;
     /** The protect config check box. */
-    private final Button mChkProtectConfig;
+    private final Button chkProtectConfig;
 
     /**
      * Constructor building the editor form for external file check configurations.
@@ -67,9 +67,9 @@ public final class ExternalFileConfigurationEditorView extends Composite {
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         GridDataFactory.swtDefaults().applyTo(lblConfigName);
 
-        mConfigName = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mConfigName);
-        mConfigName.setFocus();
+        configName = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(configName);
+        configName.setFocus();
 
         location = createLocationSection(this, parent.getShell());
 
@@ -77,20 +77,20 @@ public final class ExternalFileConfigurationEditorView extends Composite {
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
-        mDescription = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
+        description = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
             .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
             .grab(true, true)
-            .applyTo(mDescription);
+            .applyTo(description);
 
         final Group advancedGroup = new Group(this, SWT.NULL);
         advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(advancedGroup);
 
-        mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
-        mChkProtectConfig.setText(Messages.ExternalFileConfigurationEditor_btnProtectConfigFile);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkProtectConfig);
+        chkProtectConfig = new Button(advancedGroup, SWT.CHECK);
+        chkProtectConfig.setText(Messages.ExternalFileConfigurationEditor_btnProtectConfigFile);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(chkProtectConfig);
     }
 
     /**
@@ -99,7 +99,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
      * @return the configuration name
      */
     public String getConfigName() {
-        return mConfigName.getText();
+        return configName.getText();
     }
 
     /**
@@ -108,7 +108,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
      * @return the description
      */
     public String getDescription() {
-        return mDescription.getText();
+        return description.getText();
     }
 
     /**
@@ -126,7 +126,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
      * @return true if the protect-config check box is selected, false otherwise
      */
     public boolean getProtectConfig() {
-        return mChkProtectConfig.getSelection();
+        return chkProtectConfig.getSelection();
     }
 
     /**
@@ -136,7 +136,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
      *            the configuration name to set
      */
     public void setConfigName(String configName) {
-        mConfigName.setText(configName);
+        this.configName.setText(configName);
     }
 
     /**
@@ -146,7 +146,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
      *            the description to set
      */
     public void setDescription(String description) {
-        mDescription.setText(description);
+        this.description.setText(description);
     }
 
     /**
@@ -166,7 +166,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
      *            true to select the protect-config check box, false otherwise
      */
     public void setProtectConfig(boolean protectConfig) {
-        mChkProtectConfig.setSelection(protectConfig);
+        chkProtectConfig.setSelection(protectConfig);
     }
 
     /**

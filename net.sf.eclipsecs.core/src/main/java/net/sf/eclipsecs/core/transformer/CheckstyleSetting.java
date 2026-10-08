@@ -32,10 +32,10 @@ import java.util.Map;
 public class CheckstyleSetting {
 
     /** Map which holds all checker-modules of the configuration. */
-    private final Map<String, Map<String, String>> mCheckerModules = new HashMap<>();
+    private final Map<String, Map<String, String>> checkerModules = new HashMap<>();
 
     /** Map which holds all treewalker-modules of the configuration. */
-    private final Map<String, Map<String, String>> mTreeWalkerModules = new HashMap<>();
+    private final Map<String, Map<String, String>> treeWalkerModules = new HashMap<>();
 
     /**
      * Creates a new instance.
@@ -53,7 +53,7 @@ public class CheckstyleSetting {
      */
     public void addTreeWalkerModule(final String name, final Map<String, String> properties) {
 
-        mTreeWalkerModules.put(name, properties);
+        treeWalkerModules.put(name, properties);
     }
 
     /**
@@ -66,7 +66,7 @@ public class CheckstyleSetting {
      */
     public void addCheckerModule(final String name, final Map<String, String> properties) {
 
-        mCheckerModules.put(name, properties);
+        checkerModules.put(name, properties);
     }
 
     /**
@@ -75,7 +75,7 @@ public class CheckstyleSetting {
      * @return A hashmap containing all checker-modules.
      */
     public Map<String, Map<String, String>> getmCheckerModules() {
-        return mCheckerModules;
+        return checkerModules;
     }
 
     /**
@@ -84,7 +84,7 @@ public class CheckstyleSetting {
      * @return A hashmap containing all treewalker-modules.
      */
     public Map<String, Map<String, String>> getmTreeWalkerModules() {
-        return mTreeWalkerModules;
+        return treeWalkerModules;
     }
 
     /**
@@ -99,18 +99,18 @@ public class CheckstyleSetting {
         String module;
         while (modit.hasNext()) {
             module = modit.next();
-            if (mCheckerModules.keySet().contains(module)) {
+            if (checkerModules.keySet().contains(module)) {
                 final Iterator<String> propit =
                     setting.getmCheckerModules().get(module).keySet().iterator();
                 String property;
                 while (propit.hasNext()) {
                     property = propit.next();
-                    mCheckerModules.get(module).putIfAbsent(property,
+                    checkerModules.get(module).putIfAbsent(property,
                         setting.getmCheckerModules().get(module).get(property));
                 }
             }
             else {
-                mCheckerModules.put(module, setting.getmCheckerModules().get(module));
+                checkerModules.put(module, setting.getmCheckerModules().get(module));
             }
         }
 
@@ -118,18 +118,18 @@ public class CheckstyleSetting {
         modit = setting.getmTreeWalkerModules().keySet().iterator();
         while (modit.hasNext()) {
             module = modit.next();
-            if (mTreeWalkerModules.keySet().contains(module)) {
+            if (treeWalkerModules.keySet().contains(module)) {
                 final Iterator<String> propit =
                     setting.getmTreeWalkerModules().get(module).keySet().iterator();
                 String property;
                 while (propit.hasNext()) {
                     property = propit.next();
-                    mTreeWalkerModules.get(module).putIfAbsent(property,
+                    treeWalkerModules.get(module).putIfAbsent(property,
                         setting.getmTreeWalkerModules().get(module).get(property));
                 }
             }
             else {
-                mTreeWalkerModules.put(module, setting.getmTreeWalkerModules().get(module));
+                treeWalkerModules.put(module, setting.getmTreeWalkerModules().get(module));
             }
         }
     }

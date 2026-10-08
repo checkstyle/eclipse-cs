@@ -233,25 +233,25 @@ public final class SWTUtil {
         //
 
         /** The current bounds of the dialog shell. */
-        private Rectangle mNewBounds;
+        private Rectangle newBounds;
 
         /** The maximized state of the shell. */
-        private boolean mMaximized;
+        private boolean maximized;
 
         /** The minmized state of the shell. */
-        private boolean mMinimized;
+        private boolean minimized;
 
         /** The dialog. */
-        private Dialog mDialog;
+        private Dialog dialog;
 
         /** The plugins dialog settings instance. */
-        private IDialogSettings mSettings;
+        private IDialogSettings settings;
 
         /** The dialogs unique key. */
-        private String mDialogKey;
+        private String dialogKey;
 
         /** Flag that indicates if the dialog was already initally activated. */
-        private boolean mInitialyActivated;
+        private boolean initialyActivated;
 
         //
         // constructors
@@ -269,9 +269,9 @@ public final class SWTUtil {
          */
         ShellResizeSupportListener(Dialog dialog, IDialogSettings settings,
             String dialogKey) {
-            mDialog = dialog;
-            mSettings = settings;
-            mDialogKey = dialogKey;
+            this.dialog = dialog;
+            this.settings = settings;
+            this.dialogKey = dialogKey;
         }
 
         //
@@ -287,21 +287,21 @@ public final class SWTUtil {
         public void controlResized(ControlEvent e) {
             // update the internal bounds
             final Shell shell = (Shell) e.getSource();
-            mMaximized = shell.getMaximized();
-            mMinimized = shell.getMinimized();
+            maximized = shell.getMaximized();
+            minimized = shell.getMinimized();
 
             // only store new bounds if the shell is not minimized or maximized.
             // This way the original size (before minimizing/maximizing will be
             // remembered.
-            if (!mMinimized && !mMaximized) {
-                mNewBounds = shell.getBounds();
+            if (!minimized && !maximized) {
+                newBounds = shell.getBounds();
             }
         }
 
         @Override
         public void shellActivated(ShellEvent event) {
             // do only on initial activation (aka when the dialog is opened)
-            if (!mInitialyActivated) {
+            if (!initialyActivated) {
 
                 Point initialSize = null;
 
@@ -310,7 +310,7 @@ public final class SWTUtil {
                     final Method getInitialSizeMethod =
                         Window.class.getDeclaredMethod("getInitialSize", (Class<?>) null);
                     getInitialSizeMethod.setAccessible(true);
-                    initialSize = (Point) getInitialSizeMethod.invoke(mDialog, (Object) null);
+                    initialSize = (Point) getInitialSizeMethod.invoke(dialog, (Object) null);
                 }
                 catch (NoSuchMethodException | IllegalAccessException
                     | InvocationTargetException ex) {
@@ -321,64 +321,64 @@ public final class SWTUtil {
                 // this is only supported in Eclipse 3.1 and greater
                 // shell.setMinimumSize(initialSize);
 
-                final IDialogSettings bounds = mSettings.getSection(mDialogKey);
+                final IDialogSettings bounds = settings.getSection(dialogKey);
                 if (bounds != null) {
 
-                    mMaximized = bounds.getBoolean(MAXIMIZED);
-                    mMinimized = bounds.getBoolean(MINIMIZED);
+                    maximized = bounds.getBoolean(MAXIMIZED);
+                    minimized = bounds.getBoolean(MINIMIZED);
 
                     // restore the size from the dialog settings
                     try {
-                        mNewBounds = new Rectangle(bounds.getInt(X), bounds.getInt(Y),
+                        newBounds = new Rectangle(bounds.getInt(X), bounds.getInt(Y),
                             bounds.getInt(WIDTH), bounds.getInt(HEIGHT));
                     }
                     catch (NumberFormatException ex) {
-                        mNewBounds = shell.getBounds();
+                        newBounds = shell.getBounds();
                     }
 
                     shell.removeControlListener(this);
 
-                    if (mNewBounds.width < initialSize.x) {
-                        mNewBounds.width = initialSize.x;
+                    if (newBounds.width < initialSize.x) {
+                        newBounds.width = initialSize.x;
                     }
-                    if (mNewBounds.height < initialSize.y) {
-                        mNewBounds.height = initialSize.y;
+                    if (newBounds.height < initialSize.y) {
+                        newBounds.height = initialSize.y;
                     }
 
-                    shell.setBounds(mNewBounds);
+                    shell.setBounds(newBounds);
 
-                    if (mMaximized) {
+                    if (maximized) {
                         shell.setMaximized(true);
                     }
-                    else if (mMinimized) {
+                    else if (minimized) {
                         shell.setMinimized(true);
                     }
                     shell.addControlListener(this);
 
                 }
 
-                mInitialyActivated = true;
+                initialyActivated = true;
             }
         }
 
         @Override
         public void widgetDisposed(DisposeEvent e) {
             // store the dialog size and location to the settings
-            IDialogSettings bounds = mSettings.getSection(mDialogKey);
+            IDialogSettings bounds = settings.getSection(dialogKey);
             if (bounds == null) {
-                bounds = new DialogSettings(mDialogKey);
-                mSettings.addSection(bounds);
+                bounds = new DialogSettings(dialogKey);
+                settings.addSection(bounds);
             }
 
-            if (mNewBounds != null) {
-                bounds.put(WIDTH, mNewBounds.width);
-                bounds.put(HEIGHT, mNewBounds.height);
-                bounds.put(X, mNewBounds.x);
-                bounds.put(Y, mNewBounds.y);
+            if (newBounds != null) {
+                bounds.put(WIDTH, newBounds.width);
+                bounds.put(HEIGHT, newBounds.height);
+                bounds.put(X, newBounds.x);
+                bounds.put(Y, newBounds.y);
             }
 
-            bounds.put(MAXIMIZED, mMaximized);
-            bounds.put(MINIMIZED, mMinimized);
+            bounds.put(MAXIMIZED, maximized);
+            bounds.put(MINIMIZED, minimized);
         }
     }
 

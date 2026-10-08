@@ -42,19 +42,19 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public abstract class AbstractConfigurationType implements IConfigurationType {
 
     /** The name. */
-    private String mName;
+    private String name;
 
     /** The internal name. */
-    private String mInternalName;
+    private String internalName;
 
     /** Flag if creatable. */
-    private boolean mIsCreatable;
+    private boolean isCreatable;
 
     /** Flag if properties are editable. */
-    private boolean mIsEditable;
+    private boolean isEditable;
 
     /** Flag if configuration file is configurable. */
-    private boolean mIsConfigurable;
+    private boolean isConfigurable;
 
     /**
      * Returns the URL of the checkstyle configuration file. Implementors are not expected to open
@@ -70,38 +70,38 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
             throws IOException;
 
     @Override
-    public void initialize(String name, String internalName, String definingPluginId,
-        boolean creatable, boolean editable, boolean configurable) {
-        mName = name;
-        mInternalName = internalName;
-        mIsCreatable = creatable;
-        mIsEditable = editable;
-        mIsConfigurable = configurable;
+    public void initialize(String initName, String initInternalName, String initDefiningPluginId,
+        boolean initCreatable, boolean initEditable, boolean initConfigurable) {
+        this.name = initName;
+        this.internalName = initInternalName;
+        this.isCreatable = initCreatable;
+        this.isEditable = initEditable;
+        this.isConfigurable = initConfigurable;
     }
 
     @Override
     public String getName() {
-        return mName;
+        return name;
     }
 
     @Override
     public String getInternalName() {
-        return mInternalName;
+        return internalName;
     }
 
     @Override
     public boolean isCreatable() {
-        return mIsCreatable;
+        return isCreatable;
     }
 
     @Override
     public boolean isEditable() {
-        return mIsEditable;
+        return isEditable;
     }
 
     @Override
     public boolean isConfigurable(ICheckConfiguration checkConfiguration) {
-        return mIsConfigurable;
+        return isConfigurable;
     }
 
     @Override
@@ -249,14 +249,14 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
             return true;
         }
         final AbstractConfigurationType rhs = (AbstractConfigurationType) obj;
-        return mIsCreatable == rhs.mIsCreatable && mIsEditable == rhs.mIsEditable
-            && mIsConfigurable == rhs.mIsConfigurable && Objects.equals(mName, rhs.mName)
-            && Objects.equals(mInternalName, rhs.mInternalName);
+        return isCreatable == rhs.isCreatable && isEditable == rhs.isEditable
+            && isConfigurable == rhs.isConfigurable && Objects.equals(name, rhs.name)
+            && Objects.equals(internalName, rhs.internalName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mName, mInternalName, mIsCreatable, mIsEditable, mIsConfigurable);
+        return Objects.hash(name, internalName, isCreatable, isEditable, isConfigurable);
     }
 
 }

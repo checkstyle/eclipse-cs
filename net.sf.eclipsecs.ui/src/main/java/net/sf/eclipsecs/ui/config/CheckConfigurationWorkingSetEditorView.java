@@ -53,9 +53,9 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
     /** The button bar. */
     private final CheckConfigurationWorkingSetEditorButtonBar buttonBar;
     /** The text field for the configuration description. */
-    private final Text mConfigurationDescription;
+    private final Text configurationDescription;
     /** The table viewer for project usage. */
-    private final TableViewer mUsageView;
+    private final TableViewer usageView;
     /** The model for this view. */
     private final CheckConfigurationWorkingSetEditorModel model;
 
@@ -105,11 +105,11 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
         lblDescription.setText(Messages.CheckstylePreferencePage_lblDescription);
         GridDataFactory.fillDefaults().applyTo(lblDescription);
 
-        mConfigurationDescription = new Text(descArea,
+        configurationDescription = new Text(descArea,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.VERTICAL);
-        GridDataFactory.fillDefaults().grab(true, true).applyTo(mConfigurationDescription);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(configurationDescription);
 
-        mUsageView = makeUsageView(descAndUsageArea, model.global()).orElse(null);
+        usageView = makeUsageView(descAndUsageArea, model.global()).orElse(null);
 
         handleSelectionChanged(null);
     }
@@ -195,11 +195,11 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
             else {
                 description = "";
             }
-            mConfigurationDescription.setText(description);
+            configurationDescription.setText(description);
 
             if (model.global()) {
                 try {
-                    mUsageView.setInput(ProjectConfigurationFactory
+                    usageView.setInput(ProjectConfigurationFactory
                         .getProjectsUsingConfig(config.getSourceCheckConfiguration()));
                 }
                 catch (CheckstylePluginException ex) {
@@ -208,9 +208,9 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
             }
         }
         else {
-            mConfigurationDescription.setText("");
+            configurationDescription.setText("");
             if (model.global()) {
-                mUsageView.setInput(new ArrayList<>());
+                usageView.setInput(new ArrayList<>());
             }
         }
         final boolean configDefault = model.isDefaultConfig().test(config);

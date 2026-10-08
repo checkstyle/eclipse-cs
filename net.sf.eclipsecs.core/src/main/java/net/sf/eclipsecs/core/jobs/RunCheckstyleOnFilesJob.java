@@ -51,7 +51,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
 
     /** The files to check. */
-    private List<IFile> mFilesToCheck;
+    private List<IFile> filesToCheck;
 
     /**
      * Creates the job for a list of <code>IFile</code> objects.
@@ -61,7 +61,7 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
      */
     public RunCheckstyleOnFilesJob(final List<IFile> files) {
         super(Messages.RunCheckstyleOnFilesJob_title);
-        mFilesToCheck = new ArrayList<>(files);
+        filesToCheck = new ArrayList<>(files);
 
         setRule(this);
     }
@@ -87,7 +87,7 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
         try {
 
             final Map<IProject, List<IFile>> projectFilesMap =
-                getFilesSortedToProject(mFilesToCheck);
+                getFilesSortedToProject(filesToCheck);
 
             for (Map.Entry<IProject, List<IFile>> entry : projectFilesMap.entrySet()) {
 

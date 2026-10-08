@@ -42,10 +42,10 @@ public class FormatterConfigWriter {
     /** Constant for show generated code. */
     private static final String CS_GENERATED = "CheckStyle-Generated ";
     /** A eclipse-configuration. */
-    private final FormatterConfiguration mConfiguration;
+    private final FormatterConfiguration configuration;
 
     /** The project. */
-    private IProject mProject;
+    private IProject project;
 
     /**
      * Constructor to create a new instance of class FormatterConfigWriter.
@@ -56,16 +56,16 @@ public class FormatterConfigWriter {
      *            A eclipse-configuration.
      */
     public FormatterConfigWriter(IProject project, final FormatterConfiguration settings) {
-        mConfiguration = settings;
-        mProject = project;
+        configuration = settings;
+        this.project = project;
     }
 
     /**
      * Method for persisting all settings to files.
      */
     public void writeSettings() {
-        writeCleanupSettings(mConfiguration.getCleanupSettings());
-        writeFormatterSettings(mConfiguration.getFormatterSettings());
+        writeCleanupSettings(configuration.getCleanupSettings());
+        writeFormatterSettings(configuration.getFormatterSettings());
     }
 
     /**
@@ -75,10 +75,10 @@ public class FormatterConfigWriter {
      *            All the settings.
      */
     private void writeCleanupSettings(final Map<String, String> settings) {
-        final IFile settingsFile = mProject.getFile(mProject.getName() + "-cs-cleanup.xml");
+        final IFile settingsFile = project.getFile(project.getName() + "-cs-cleanup.xml");
         try {
             final InputStream stream = XmlProfileWriter
-                .writeCleanupProfileToStream(CS_GENERATED + mProject.getName(), settings);
+                .writeCleanupProfileToStream(CS_GENERATED + project.getName(), settings);
             createOrUpdateFile(settingsFile, stream);
         }
         catch (CoreException | TransformerException | ParserConfigurationException exc) {
@@ -93,10 +93,10 @@ public class FormatterConfigWriter {
      *            All the settings.
      */
     private void writeFormatterSettings(final Map<String, String> settings) {
-        final IFile settingsFile = mProject.getFile(mProject.getName() + "-cs-formatter.xml");
+        final IFile settingsFile = project.getFile(project.getName() + "-cs-formatter.xml");
         try {
             final InputStream stream = XmlProfileWriter
-                .writeFormatterProfileToStream(CS_GENERATED + mProject.getName(), settings);
+                .writeFormatterProfileToStream(CS_GENERATED + project.getName(), settings);
             createOrUpdateFile(settingsFile, stream);
         }
         catch (CoreException | TransformerException | ParserConfigurationException exc) {

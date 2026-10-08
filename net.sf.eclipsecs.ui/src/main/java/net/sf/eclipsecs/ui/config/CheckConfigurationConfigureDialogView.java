@@ -54,7 +54,7 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
     private static final int MAX_HEIGHT = 400;
 
     /** The browser displaying module descriptions. */
-    private final Browser mBrowserDescription;
+    private final Browser browserDescription;
     /** The available modules viewer. */
     private final AvailableModulesViewer availableModulesViewer;
     /** The configured modules panel. */
@@ -88,9 +88,9 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         lblDescription.setText(Messages.CheckConfigurationConfigureDialog_lblDescription);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(lblDescription);
 
-        mBrowserDescription = new Browser(this, SWT.BORDER);
-        GridDataFactory.fillDefaults().grab(true, true).applyTo(mBrowserDescription);
-        mBrowserDescription.addLocationListener(LocationListener.changingAdapter(event -> {
+        browserDescription = new Browser(this, SWT.BORDER);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(browserDescription);
+        browserDescription.addLocationListener(LocationListener.changingAdapter(event -> {
             final String url = event.location;
             if (url != null && url.startsWith("http")) {
                 InternalBrowser.openLinkInExternalBrowser(url);
@@ -120,7 +120,7 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
      *            the description to display
      */
     public void setBrowserDescription(String description) {
-        mBrowserDescription.setText(description);
+        browserDescription.setText(description);
     }
 
     /**

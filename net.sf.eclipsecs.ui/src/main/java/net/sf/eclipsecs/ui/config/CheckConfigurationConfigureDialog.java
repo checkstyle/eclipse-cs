@@ -62,13 +62,13 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
     /** The current check configuration. */
-    private final CheckConfigurationWorkingCopy mConfiguration;
+    private final CheckConfigurationWorkingCopy configuration;
 
     /** The list of modules. */
-    private List<Module> mModules;
+    private List<Module> modules;
 
     /** Flags if the check configuration was changed. */
-    private boolean mIsDirty;
+    private boolean isDirty;
 
     /** The dialog view managing the UI components. */
     private CheckConfigurationConfigureDialogView dialogView;
@@ -90,7 +90,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         super(parentShell);
         setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
         setHelpAvailable(false);
-        mConfiguration = config;
+        configuration = config;
     }
 
     //
@@ -121,7 +121,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         dialogView = new CheckConfigurationConfigureDialogView(composite, SWT.NULL,
             new CheckConfigurationConfigureDialogViewCallbacks(this::newModule, this::openModule,
                 this::removeModule, this::checkStateChanged),
-            mModules, mConfiguration.isConfigurable());
+            modules, configuration.isConfigurable());
         GridDataFactory.fillDefaults().grab(true, true).applyTo(dialogView);
 
         // initialize the data
@@ -150,8 +150,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         try {
             // only write the modules back if the config is configurable
             // and was actually changed
-            if (mConfiguration.isConfigurable() && mIsDirty) {
-                mConfiguration.setModules(mModules);
+            if (configuration.isConfigurable() && isDirty) {
+                configuration.setModules(modules);
             }
         }
         catch (CheckstylePluginException ex) {
@@ -200,9 +200,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     private void initialize() {
         this.setTitle(NLS.bind(Messages.CheckConfigurationConfigureDialog_titleMessageArea,
-            mConfiguration.getType().getName(), mConfiguration.getName()));
+            configuration.getType().getName(), configuration.getName()));
 
-        if (mConfiguration.isConfigurable()) {
+        if (configuration.isConfigurable()) {
             this.setMessage(Messages.CheckConfigurationConfigureDialog_msgEditConfig);
         }
         else {
@@ -220,10 +220,10 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      */
     private void loadModules() {
         try {
-            mModules = mConfiguration.getModules();
+            modules = configuration.getModules();
         }
         catch (CheckstylePluginException ex) {
-            mModules = new ArrayList<>();
+            modules = new ArrayList<>();
             CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
         }
     }
@@ -235,7 +235,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
      *            the rules to configure
      */
     private void newModule(List<RuleMetadata> rules) {
-        if (mConfiguration.isConfigurable()) {
+        if (configuration.isConfigurable()) {
             final boolean openOnAdd =
                 CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
 
@@ -244,12 +244,12 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                     final Module workingCopy = new Module(rule, false);
                     if (openOnAdd) {
                         final RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(
-                            getShell(), workingCopy, !mConfiguration.isConfigurable(),
+                            getShell(), workingCopy, !configuration.isConfigurable(),
                             Messages.CheckConfigurationConfigureDialog_titleNewModule);
                         final int dialogResult = dialog.open();
                         if (Window.OK == dialogResult) {
-                            mModules.add(workingCopy);
-                            mIsDirty = true;
+                            modules.add(workingCopy);
+                            isDirty = true;
                             dialogView.refreshConfiguredModules();
                             dialogView.refreshAvailableModules();
                             dialogView.focusAvailableModules();
@@ -260,8 +260,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                         }
                     }
                     else {
-                        mModules.add(workingCopy);
-                        mIsDirty = true;
+                        modules.add(workingCopy);
+                        isDirty = true;
                         dialogView.refreshConfiguredModules();
                         dialogView.refreshAvailableModules();
                     }
@@ -280,7 +280,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     private boolean isAlreadyConfigured(RuleMetadata metadata) {
         final String internalName = metadata.identity().internalName();
         boolean containsModule = false;
-        for (Module module : mModules) {
+        for (Module module : modules) {
             if (internalName.equals(module.getMetaData().identity().internalName())) {
                 containsModule = true;
                 break;
@@ -300,11 +300,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         if (module != null) {
             final Module workingCopy = new Module(module);
             final RuleConfigurationEditDialog dialog = new RuleConfigurationEditDialog(getShell(),
-                workingCopy, !mConfiguration.isConfigurable(),
+                workingCopy, !configuration.isConfigurable(),
                 Messages.CheckConfigurationConfigureDialog_titleModuleConfigEditor);
-            if (Window.OK == dialog.open() && mConfiguration.isConfigurable()) {
-                mModules.set(mModules.indexOf(module), workingCopy);
-                mIsDirty = true;
+            if (Window.OK == dialog.open() && configuration.isConfigurable()) {
+                modules.set(modules.indexOf(module), workingCopy);
+                isDirty = true;
                 dialogView.refreshConfiguredModules();
             }
         }
@@ -313,18 +313,18 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     /**
      * Creates a module editor for the current selection.
      *
-     * @param modules
+     * @param modulesToRemove
      *            the modules to remove
      */
-    private void removeModule(List<Module> modules) {
-        if (mConfiguration.isConfigurable() && !modules.isEmpty()) {
+    private void removeModule(List<Module> modulesToRemove) {
+        if (configuration.isConfigurable() && !modulesToRemove.isEmpty()) {
             if (MessageDialog.openConfirm(getShell(),
                 Messages.CheckConfigurationConfigureDialog_titleRemoveModules,
                 Messages.CheckConfigurationConfigureDialog_msgRemoveModules)) {
-                for (Module module : modules) {
+                for (Module module : modulesToRemove) {
                     if (module.getMetaData().deletable()) {
-                        mModules.remove(module);
-                        mIsDirty = true;
+                        modules.remove(module);
+                        isDirty = true;
                         dialogView.refreshConfiguredModules();
                         dialogView.refreshAvailableModules();
                     }
@@ -355,7 +355,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         else {
             module.setSeverity(Severity.IGNORE);
         }
-        mIsDirty = true;
+        isDirty = true;
         dialogView.refreshConfiguredModules();
     }
 

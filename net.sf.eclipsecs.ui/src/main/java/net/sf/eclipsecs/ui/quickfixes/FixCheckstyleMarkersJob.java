@@ -40,7 +40,7 @@ import net.sf.eclipsecs.ui.Messages;
 public class FixCheckstyleMarkersJob extends UIJob {
 
     /** The file to fix markers in. */
-    private IFile mFile;
+    private IFile file;
 
     /**
      * Creates the job.
@@ -50,7 +50,7 @@ public class FixCheckstyleMarkersJob extends UIJob {
      */
     public FixCheckstyleMarkersJob(IFile file) {
         super(Messages.FixCheckstyleMarkersJob_title);
-        this.mFile = file;
+        this.file = file;
     }
 
     @Override
@@ -60,7 +60,7 @@ public class FixCheckstyleMarkersJob extends UIJob {
             new CheckstyleMarkerResolutionGenerator();
         try {
             final IMarker[] markers =
-                mFile.findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
+                file.findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
 
             for (IMarker marker : markers) {
                 final var resolutions = generator.getResolutions(marker);

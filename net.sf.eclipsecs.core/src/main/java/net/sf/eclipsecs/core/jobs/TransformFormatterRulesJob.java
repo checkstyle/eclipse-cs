@@ -46,7 +46,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class TransformFormatterRulesJob extends WorkspaceJob {
 
     /** Selected project in workspace. */
-    private final IProject mProject;
+    private final IProject project;
 
     /**
      * Job for transforming formatter-rules to checkstyle-settings.
@@ -57,7 +57,7 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
     public TransformFormatterRulesJob(final IProject project) {
         super(Messages.TransformFormatterRulesJob_name);
 
-        this.mProject = project;
+        this.project = project;
     }
 
     @Override
@@ -66,9 +66,9 @@ public class TransformFormatterRulesJob extends WorkspaceJob {
         final SubMonitor subMonitor = SubMonitor.convert(monitor);
         subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
 
-        final IJavaProject javaProject = JavaCore.create(mProject);
+        final IJavaProject javaProject = JavaCore.create(project);
         if (javaProject != null) {
-            final String projectPath = mProject.getLocation().toString();
+            final String projectPath = project.getLocation().toString();
 
             final Map<String, String> formatterSettings =
                 javaProject.getOptions(true).entrySet().stream()

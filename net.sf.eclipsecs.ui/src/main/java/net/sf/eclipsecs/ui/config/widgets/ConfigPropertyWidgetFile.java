@@ -49,13 +49,13 @@ import net.sf.eclipsecs.ui.config.PropertiesContentAssistProcessor;
 public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget {
 
     /** The contents composite. */
-    private Composite mContents;
+    private Composite contents;
 
     /** The text widget. */
-    private Text mTextWidget;
+    private Text textWidget;
 
     /** The browse button. */
-    private Button mBtnBrowse;
+    private Button btnBrowse;
 
     /**
      * Creates the widget.
@@ -84,42 +84,42 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
 
     @Override
     protected Control getValueWidget(Composite parent) {
-        if (mContents == null) {
-            mContents = new Composite(parent, SWT.NULL);
-            GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mContents);
-            GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(mContents);
+        if (contents == null) {
+            contents = new Composite(parent, SWT.NULL);
+            GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(contents);
+            GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(contents);
 
-            mTextWidget = new Text(mContents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-            GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mTextWidget);
+            textWidget = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+            GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(textWidget);
 
             // integrate content assist
-            ContentAssistHandler.createHandlerForText(mTextWidget, createContentAssistant());
+            ContentAssistHandler.createHandlerForText(textWidget, createContentAssistant());
 
-            mBtnBrowse = new Button(mContents, SWT.PUSH);
-            mBtnBrowse.setText(Messages.ConfigPropertyWidgetFile_btnBrowse0);
-            GridDataFactory.swtDefaults().applyTo(mBtnBrowse);
+            btnBrowse = new Button(contents, SWT.PUSH);
+            btnBrowse.setText(Messages.ConfigPropertyWidgetFile_btnBrowse0);
+            GridDataFactory.swtDefaults().applyTo(btnBrowse);
 
-            mBtnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-                final FileDialog fileDialog = new FileDialog(mTextWidget.getShell());
-                fileDialog.setFileName(mTextWidget.getText());
+            btnBrowse.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+                final FileDialog fileDialog = new FileDialog(textWidget.getShell());
+                fileDialog.setFileName(textWidget.getText());
                 final String file = fileDialog.open();
                 if (file != null) {
-                    mTextWidget.setText(file);
+                    textWidget.setText(file);
                 }
             }));
 
             final String initValue = getInitValue();
             if (initValue != null) {
-                mTextWidget.setText(initValue);
+                textWidget.setText(initValue);
             }
         }
 
-        return mContents;
+        return contents;
     }
 
     @Override
     public String getValue() {
-        String result = mTextWidget.getText();
+        String result = textWidget.getText();
         if (result == null) {
             result = "";
         }
@@ -128,8 +128,8 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
 
     @Override
     public void setEnabled(boolean enabled) {
-        mTextWidget.setEnabled(enabled);
-        mBtnBrowse.setEnabled(enabled);
+        textWidget.setEnabled(enabled);
+        btnBrowse.setEnabled(enabled);
     }
 
     @Override
@@ -142,7 +142,7 @@ public final class ConfigPropertyWidgetFile extends AbstractConfigPropertyWidget
         if (defaultValue == null) {
             defaultValue = "";
         }
-        mTextWidget.setText(defaultValue);
+        textWidget.setText(defaultValue);
     }
 
     /**

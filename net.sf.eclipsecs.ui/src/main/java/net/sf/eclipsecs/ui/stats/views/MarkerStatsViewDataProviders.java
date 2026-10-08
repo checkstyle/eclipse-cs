@@ -136,7 +136,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
      */
     public static final class MasterContentProvider implements IStructuredContentProvider {
         /** The current marker stats. */
-        private Object[] mCurrentMarkerStats;
+        private Object[] currentMarkerStats;
 
         /** Creates the master content provider. */
         private MasterContentProvider() {
@@ -145,23 +145,23 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
 
         @Override
         public Object[] getElements(Object inputElement) {
-            if (mCurrentMarkerStats == null) {
+            if (currentMarkerStats == null) {
                 // find the marker statistics for the current category
                 final Stats currentStats = (Stats) inputElement;
-                mCurrentMarkerStats = currentStats.getMarkerStats().toArray();
+                currentMarkerStats = currentStats.getMarkerStats().toArray();
             }
 
-            return mCurrentMarkerStats;
+            return currentMarkerStats;
         }
 
         @Override
         public void dispose() {
-            mCurrentMarkerStats = null;
+            currentMarkerStats = null;
         }
 
         @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-            mCurrentMarkerStats = null;
+            currentMarkerStats = null;
         }
     }
 
@@ -173,7 +173,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
     public static final class DetailContentProvider implements IStructuredContentProvider {
 
         /** The current detail markers. */
-        private Object[] mCurrentDetails;
+        private Object[] currentDetails;
         /** The current detail category. */
         private String currentDetailCategory;
 
@@ -184,7 +184,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
 
         @Override
         public Object[] getElements(Object inputElement) {
-            if (mCurrentDetails == null) {
+            if (currentDetails == null) {
                 // find the marker statistics for the current category
                 final Stats currentStats = (Stats) inputElement;
                 final Collection<MarkerStat> markerStats = currentStats.getMarkerStats();
@@ -192,13 +192,13 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
                 while (iter.hasNext()) {
                     final MarkerStat markerStat = iter.next();
                     if (markerStat.getIdentifiant().equals(currentDetailCategory)) {
-                        mCurrentDetails = markerStat.getMarkers().toArray();
+                        currentDetails = markerStat.getMarkers().toArray();
                         break;
                     }
                 }
             }
 
-            Object[] details = mCurrentDetails;
+            Object[] details = currentDetails;
             if (details == null) {
                 details = new Object[0];
             }
@@ -207,12 +207,12 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
 
         @Override
         public void dispose() {
-            mCurrentDetails = null;
+            currentDetails = null;
         }
 
         @Override
         public void inputChanged(Viewer viewer, Object oldInput, Object newInput) {
-            mCurrentDetails = null;
+            currentDetails = null;
         }
 
         /**
@@ -222,8 +222,8 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
          */
         public int getMarkerCount() {
             int count = 0;
-            if (mCurrentDetails != null) {
-                count = mCurrentDetails.length;
+            if (currentDetails != null) {
+                count = currentDetails.length;
             }
             return count;
         }
@@ -245,7 +245,7 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
          */
         public void setCurrentDetailCategory(String currentDetailCategory) {
             this.currentDetailCategory = currentDetailCategory;
-            this.mCurrentDetails = null;
+            this.currentDetails = null;
         }
 
     }

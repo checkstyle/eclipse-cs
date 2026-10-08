@@ -35,7 +35,7 @@ import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWidget {
 
     /** The checkbox. */
-    private Button mCheckbox;
+    private Button checkbox;
 
     /**
      * Creates the widget.
@@ -64,25 +64,25 @@ public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWid
 
     @Override
     protected Control getValueWidget(Composite parent) {
-        if (mCheckbox == null) {
+        if (checkbox == null) {
 
             //
             // Create a check box for selecting true or false.
             //
 
-            mCheckbox = new Button(parent, SWT.CHECK);
-            mCheckbox.setLayoutData(new GridData());
+            checkbox = new Button(parent, SWT.CHECK);
+            checkbox.setLayoutData(new GridData());
 
             final String initValue = getInitValue();
-            mCheckbox.setSelection(Boolean.parseBoolean(initValue));
+            checkbox.setSelection(Boolean.parseBoolean(initValue));
 
         }
-        return mCheckbox;
+        return checkbox;
     }
 
     @Override
     public String getValue() {
-        return Boolean.toString(mCheckbox.getSelection());
+        return Boolean.toString(checkbox.getSelection());
     }
 
     @Override
@@ -95,7 +95,7 @@ public final class ConfigPropertyWidgetBoolean extends AbstractConfigPropertyWid
         else {
             defaultValue = metadata.getDefaultValue();
         }
-        mCheckbox.setSelection(Boolean.parseBoolean(defaultValue));
+        checkbox.setSelection(Boolean.parseBoolean(defaultValue));
     }
 
 }

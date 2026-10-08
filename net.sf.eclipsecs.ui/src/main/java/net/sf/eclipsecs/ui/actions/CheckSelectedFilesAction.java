@@ -51,10 +51,10 @@ import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
 public class CheckSelectedFilesAction extends AbstractHandler implements IObjectActionDelegate {
 
     /** The workbench part. */
-    private IWorkbenchPart mPart;
+    private IWorkbenchPart part;
 
     /** The structured selection. */
-    private IStructuredSelection mSelection;
+    private IStructuredSelection structuredSelection;
 
     /**
      * Creates a new instance.
@@ -64,20 +64,20 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
 
     @Override
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        mPart = targetPart;
+        part = targetPart;
     }
 
     @Override
     public void selectionChanged(IAction action, ISelection selection) {
 
         if (selection instanceof IStructuredSelection) {
-            mSelection = (IStructuredSelection) selection;
+            this.structuredSelection = (IStructuredSelection) selection;
         }
     }
 
     @Override
     public void run(IAction action) {
-        checkSelection(mSelection);
+        checkSelection(structuredSelection);
     }
 
     /**
@@ -106,7 +106,7 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
             }
         }
         catch (CoreException ex) {
-            CheckstyleUIPlugin.errorDialog(mPart.getSite().getShell(), ex, true);
+            CheckstyleUIPlugin.errorDialog(part.getSite().getShell(), ex, true);
         }
     }
 
@@ -139,9 +139,8 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
 
     @Override
     public Object execute(ExecutionEvent event) throws ExecutionException {
-        final var selection = HandlerUtil.getCurrentSelection(event);
-        if (selection instanceof IStructuredSelection structuredSelection) {
-            checkSelection(structuredSelection);
+        if (HandlerUtil.getCurrentSelection(event) instanceof IStructuredSelection selection) {
+            checkSelection(selection);
         }
         return null;
     }

@@ -44,7 +44,7 @@ import net.sf.eclipsecs.ui.Messages;
 public final class ComplexFileSetsEditorView extends Composite {
 
     /** The table viewer for file sets. */
-    private final ComplexFileSetsEditorTableView mViewer;
+    private final ComplexFileSetsEditorTableView viewer;
 
     /**
      * Creates the file sets editor view.
@@ -74,9 +74,9 @@ public final class ComplexFileSetsEditorView extends Composite {
         composite.setText(Messages.ComplexFileSetsEditor_titleAdvancedFilesetEditor);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
 
-        mViewer = new ComplexFileSetsEditorTableView(composite, SWT.NONE, changeEnabledState,
+        viewer = new ComplexFileSetsEditorTableView(composite, SWT.NONE, changeEnabledState,
             editFileSet, mFileSets);
-        GridDataFactory.fillDefaults().grab(true, true).applyTo(mViewer);
+        GridDataFactory.fillDefaults().grab(true, true).applyTo(viewer);
 
         //
         // Build the buttons.
@@ -91,19 +91,19 @@ public final class ComplexFileSetsEditorView extends Composite {
         final Button mEditButton =
             createPushButton(buttons, Messages.ComplexFileSetsEditor_btnEdit);
         mEditButton.addListener(SWT.Selection,
-            event -> editFileSet.accept(mViewer.getSelectedFileSet()));
+            event -> editFileSet.accept(viewer.getSelectedFileSet()));
 
         final Button mRemoveButton =
             createPushButton(buttons, Messages.ComplexFileSetsEditor_btnRemove);
         mRemoveButton.addListener(SWT.Selection,
-            event -> removeFileSet.accept(mViewer.getSelectedFileSet()));
+            event -> removeFileSet.accept(viewer.getSelectedFileSet()));
     }
 
     /**
      * Refreshes the file sets table.
      */
     public void refresh() {
-        mViewer.refresh();
+        viewer.refresh();
     }
 
     /**
@@ -115,7 +115,7 @@ public final class ComplexFileSetsEditorView extends Composite {
      *            true if the file set is enabled, false otherwise
      */
     public void setChecked(FileSet fileSet, boolean enabled) {
-        mViewer.setChecked(fileSet, enabled);
+        viewer.setChecked(fileSet, enabled);
     }
 
     /**

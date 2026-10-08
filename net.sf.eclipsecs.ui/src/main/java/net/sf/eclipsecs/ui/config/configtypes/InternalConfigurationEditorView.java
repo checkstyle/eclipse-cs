@@ -40,11 +40,11 @@ import net.sf.eclipsecs.ui.Messages;
 public final class InternalConfigurationEditorView extends Composite {
 
     /** The config name text field. */
-    private final Text mConfigName;
+    private final Text configName;
     /** The location text field. */
-    private final Text mLocation;
+    private final Text location;
     /** The description text field. */
-    private final Text mDescription;
+    private final Text description;
 
     /**
      * Creates the internal configuration editor view.
@@ -64,28 +64,28 @@ public final class InternalConfigurationEditorView extends Composite {
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         GridDataFactory.swtDefaults().applyTo(lblConfigName);
 
-        mConfigName = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mConfigName);
-        mConfigName.setFocus();
+        configName = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(configName);
+        configName.setFocus();
 
         final Label lblConfigLocation = new Label(this, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
             .applyTo(lblConfigLocation);
 
-        mLocation = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        mLocation.setEditable(false);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mLocation);
+        location = new Text(this, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        location.setEditable(false);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(location);
 
         final Label lblDescription = new Label(this, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
-        mDescription = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
+        description = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
             .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
             .grab(true, true)
-            .applyTo(mDescription);
+            .applyTo(description);
 
         final Button mBtnImport = new Button(this, SWT.PUSH);
         mBtnImport.setText(Messages.InternalConfigurationEditor_btnImport);
@@ -102,7 +102,7 @@ public final class InternalConfigurationEditorView extends Composite {
      * @return the configuration name
      */
     public String getConfigName() {
-        return mConfigName.getText();
+        return configName.getText();
     }
 
     /**
@@ -111,7 +111,7 @@ public final class InternalConfigurationEditorView extends Composite {
      * @return the description
      */
     public String getDescription() {
-        return mDescription.getText();
+        return description.getText();
     }
 
     /**
@@ -121,7 +121,7 @@ public final class InternalConfigurationEditorView extends Composite {
      *            the configuration name to set
      */
     public void setConfigName(String configName) {
-        mConfigName.setText(configName);
+        this.configName.setText(configName);
     }
 
     /**
@@ -131,17 +131,17 @@ public final class InternalConfigurationEditorView extends Composite {
      *            the description to set
      */
     public void setDescription(String description) {
-        mDescription.setText(description);
+        this.description.setText(description);
     }
 
     /**
      * Sets the configuration location.
      *
-     * @param location
+     * @param configLocation
      *            the location to set
      */
-    public void setConfigLocation(String location) {
-        mLocation.setText(location);
+    public void setConfigLocation(String configLocation) {
+        this.location.setText(configLocation);
     }
 
 }

@@ -47,10 +47,10 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
     private static final String CONFIG_LOC = "config_loc";
 
     /** The location of the configuration file. */
-    private final String mConfigLocation;
+    private final String configLocation;
 
     /** The context project. */
-    private IProject mProject;
+    private IProject project;
 
     /**
      * Creates the BuiltInPropertyResolver.
@@ -59,12 +59,12 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
      *            the location of the checkstyle configuration file
      */
     public StandardPropertyResolver(String configLocation) {
-        mConfigLocation = configLocation;
+        this.configLocation = configLocation;
     }
 
     @Override
-    public void setProjectContext(IProject project) {
-        mProject = project;
+    public void setProjectContext(IProject projectContext) {
+        this.project = projectContext;
     }
 
     @Override
@@ -74,13 +74,13 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
         if (WORKSPACE_LOC.equals(property)) {
             value = ResourcesPlugin.getWorkspace().getRoot().getLocation().toString();
         }
-        else if (mProject != null
+        else if (project != null
             && (PROJECT_LOC.equals(property) || BASEDIR_LOC.equals(property))) {
-            value = mProject.getLocation().toString();
+            value = project.getLocation().toString();
         }
-        else if (mConfigLocation != null
+        else if (configLocation != null
             && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
-            final String configLocWOBackslashes = mConfigLocation.replace('\\', '/');
+            final String configLocWOBackslashes = configLocation.replace('\\', '/');
 
             final int lastSlash = configLocWOBackslashes.lastIndexOf("/");
             if (lastSlash > -1) {

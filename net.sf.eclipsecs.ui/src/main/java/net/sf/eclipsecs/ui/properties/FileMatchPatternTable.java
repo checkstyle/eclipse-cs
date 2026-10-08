@@ -48,7 +48,7 @@ import net.sf.eclipsecs.ui.properties.FileMatchPatternControl.FileMatchPatternCo
 public final class FileMatchPatternTable extends Composite {
 
     /** The checkbox table viewer for patterns. */
-    private final CheckboxTableViewer mPatternViewer;
+    private final CheckboxTableViewer patternViewer;
 
     /**
      * Creates the file match pattern table.
@@ -68,24 +68,24 @@ public final class FileMatchPatternTable extends Composite {
         final Table table = createTable(this);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(table);
 
-        this.mPatternViewer = new CheckboxTableViewer(table);
+        this.patternViewer = new CheckboxTableViewer(table);
 
-        mPatternViewer.setLabelProvider(new FileMatchPatternLabelProvider());
-        mPatternViewer.setContentProvider(ArrayContentProvider.getInstance());
-        mPatternViewer.addDoubleClickListener(event -> {
+        patternViewer.setLabelProvider(new FileMatchPatternLabelProvider());
+        patternViewer.setContentProvider(ArrayContentProvider.getInstance());
+        patternViewer.addDoubleClickListener(event -> {
             final FileMatchPattern pattern =
                 (FileMatchPattern) ((IStructuredSelection) event.getSelection()).getFirstElement();
             callbacks.editFileMatchPattern().accept(pattern);
             callbacks.updateMatchView().run();
         });
-        mPatternViewer.addCheckStateListener(event -> {
+        patternViewer.addCheckStateListener(event -> {
             if (event.getElement() instanceof FileMatchPattern pattern) {
                 pattern.setIsIncludePattern(event.getChecked());
-                mPatternViewer.refresh();
+                patternViewer.refresh();
                 callbacks.updateMatchView().run();
             }
         });
-        mPatternViewer.setCheckStateProvider(FileMatchPatternTableCheckStateProvider.INSTANCE);
+        patternViewer.setCheckStateProvider(FileMatchPatternTableCheckStateProvider.INSTANCE);
     }
 
     /**
@@ -94,14 +94,14 @@ public final class FileMatchPatternTable extends Composite {
      * @return the selected file match pattern
      */
     public FileMatchPattern getSelectedPattern() {
-        return (FileMatchPattern) mPatternViewer.getStructuredSelection().getFirstElement();
+        return (FileMatchPattern) patternViewer.getStructuredSelection().getFirstElement();
     }
 
     /**
      * Refreshes the displayed file match patterns.
      */
     public void refresh() {
-        mPatternViewer.refresh();
+        patternViewer.refresh();
     }
 
     /**
@@ -111,7 +111,7 @@ public final class FileMatchPatternTable extends Composite {
      *            the file match patterns to display
      */
     public void setInput(List<FileMatchPattern> fileMatchPatterns) {
-        mPatternViewer.setInput(fileMatchPatterns);
+        patternViewer.setInput(fileMatchPatterns);
     }
 
     /**

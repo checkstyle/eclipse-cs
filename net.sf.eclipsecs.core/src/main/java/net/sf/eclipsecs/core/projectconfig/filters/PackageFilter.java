@@ -43,10 +43,10 @@ public class PackageFilter extends AbstractFilter {
     public static final String RECURSE_OFF_MARKER = "<recurse=false>";
 
     /** The package filter data. */
-    private List<String> mData = new ArrayList<>();
+    private List<String> data = new ArrayList<>();
 
     /** Whether to exclude sub-packages. */
-    private boolean mExcludeSubPackages = true;
+    private boolean excludeSubPackages = true;
 
     /**
      * Creates a filter that filters files by package.
@@ -62,8 +62,8 @@ public class PackageFilter extends AbstractFilter {
      */
     public PackageFilter(PackageFilter other) {
         super(other);
-        mData = new ArrayList<>(other.mData);
-        mExcludeSubPackages = other.mExcludeSubPackages;
+        data = new ArrayList<>(other.data);
+        excludeSubPackages = other.excludeSubPackages;
     }
 
     @Override
@@ -85,12 +85,12 @@ public class PackageFilter extends AbstractFilter {
 
             final IPath projRelativPath = folder.getProjectRelativePath();
 
-            for (String element : mData) {
+            for (String element : data) {
 
                 if (!RECURSE_OFF_MARKER.equals(element)) {
                     final IPath filteredPath = new Path(element);
-                    if (mExcludeSubPackages && filteredPath.isPrefixOf(projRelativPath)
-                        || !mExcludeSubPackages && filteredPath.equals(projRelativPath)) {
+                    if (excludeSubPackages && filteredPath.isPrefixOf(projRelativPath)
+                        || !excludeSubPackages && filteredPath.equals(projRelativPath)) {
                         accept = false;
                         break;
                     }
@@ -102,16 +102,16 @@ public class PackageFilter extends AbstractFilter {
 
     @Override
     public void setFilterData(List<String> filterData) {
-        mData = filterData;
+        data = filterData;
 
-        if (mData.contains(RECURSE_OFF_MARKER)) {
-            mExcludeSubPackages = false;
+        if (data.contains(RECURSE_OFF_MARKER)) {
+            excludeSubPackages = false;
         }
     }
 
     @Override
     public List<String> getFilterData() {
-        return mData;
+        return data;
     }
 
     @Override
@@ -120,8 +120,8 @@ public class PackageFilter extends AbstractFilter {
         final StringBuilder buf = new StringBuilder();
 
         final int size;
-        if (mData != null) {
-            size = mData.size();
+        if (data != null) {
+            size = data.size();
         }
         else {
             size = 0;
@@ -131,7 +131,7 @@ public class PackageFilter extends AbstractFilter {
                 buf.append(", ");
             }
 
-            buf.append(mData.get(index));
+            buf.append(data.get(index));
         }
 
         return buf.toString();
@@ -148,12 +148,12 @@ public class PackageFilter extends AbstractFilter {
         }
 
         final PackageFilter rhs = (PackageFilter) o;
-        return super.equals(o) && Objects.equals(mData, rhs.mData);
+        return super.equals(o) && Objects.equals(data, rhs.data);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), mData);
+        return Objects.hash(super.hashCode(), data);
     }
 
 }

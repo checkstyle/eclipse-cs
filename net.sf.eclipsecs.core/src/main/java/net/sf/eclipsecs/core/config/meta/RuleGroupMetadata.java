@@ -31,22 +31,22 @@ public class RuleGroupMetadata {
     /**
      * Group id, used for online help URL calculation.
      */
-    private final String mGroupId;
+    private final String groupId;
 
     /** The name of the group. */
-    private String mGroupName;
+    private String groupName;
 
     /** The description of the group. */
-    private String mDescription;
+    private String description;
 
     /** Determines if the group is hidden. */
-    private boolean mIsHidden;
+    private boolean isHidden;
 
     /** The priority of the group. */
-    private int mPriority;
+    private int priority;
 
     /** The list of modules belonging to the group. */
-    private List<RuleMetadata> mRuleMetadata = new LinkedList<>();
+    private List<RuleMetadata> ruleMetadata = new LinkedList<>();
 
     /**
      * Creates the metadata for a rule group.
@@ -64,11 +64,11 @@ public class RuleGroupMetadata {
      */
     RuleGroupMetadata(String groupId, String groupName, String groupDesc, boolean hidden,
         int priority) {
-        mGroupId = groupId;
-        mGroupName = groupName;
-        mDescription = groupDesc;
-        mIsHidden = hidden;
-        mPriority = priority;
+        this.groupId = groupId;
+        this.groupName = groupName;
+        this.description = groupDesc;
+        this.isHidden = hidden;
+        this.priority = priority;
     }
 
     /**
@@ -77,7 +77,7 @@ public class RuleGroupMetadata {
      * @return Group name
      */
     public final String getGroupName() {
-        return mGroupName;
+        return groupName;
     }
 
     /**
@@ -86,7 +86,7 @@ public class RuleGroupMetadata {
      * @return the description
      */
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     /**
@@ -95,7 +95,7 @@ public class RuleGroupMetadata {
      * @return <code>true</code> if the module is hidden
      */
     public boolean isHidden() {
-        return mIsHidden;
+        return isHidden;
     }
 
     /**
@@ -104,7 +104,7 @@ public class RuleGroupMetadata {
      * @return the priority
      */
     public int getPriority() {
-        return mPriority;
+        return priority;
     }
 
     /**
@@ -113,7 +113,7 @@ public class RuleGroupMetadata {
      * @return List of <code>RuleMetadata</code> objects.
      */
     public final List<RuleMetadata> getRuleMetadata() {
-        return mRuleMetadata;
+        return ruleMetadata;
     }
 
     /**
@@ -122,7 +122,7 @@ public class RuleGroupMetadata {
      * @return the group id
      */
     public String getGroupId() {
-        return mGroupId;
+        return groupId;
     }
 
 }

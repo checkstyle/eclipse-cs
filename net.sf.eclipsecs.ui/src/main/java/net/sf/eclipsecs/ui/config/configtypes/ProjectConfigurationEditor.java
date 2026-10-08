@@ -69,27 +69,27 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     //
 
     /** The working copy this editor edits. */
-    private CheckConfigurationWorkingCopy mWorkingCopy;
+    private CheckConfigurationWorkingCopy workingCopy;
 
     /** The shell. */
     private Shell shell;
 
     /** The parent dialog element. */
-    private CheckConfigurationPropertiesDialog mCheckConfigDialog;
+    private CheckConfigurationPropertiesDialog checkConfigDialog;
 
     /** The text field containing the config name. */
-    private Text mConfigName;
+    private Text configName;
 
     /** Text field containing the location. */
-    private Text mLocation;
+    private Text locationControl;
 
     /** The text containing the description. */
-    private Text mDescription;
+    private Text description;
 
     /**
      * Check box to set if the configuration file is not editable by the configuration editor.
      */
-    private Button mChkProtectConfig;
+    private Button chkProtectConfig;
 
     //
     // methods
@@ -104,8 +104,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {
-        mWorkingCopy = checkConfiguration;
-        mCheckConfigDialog = dialog;
+        workingCopy = checkConfiguration;
+        checkConfigDialog = dialog;
     }
 
     @Override
@@ -119,43 +119,43 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         GridDataFactory.swtDefaults().applyTo(lblConfigName);
 
-        mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mConfigName);
-        mConfigName.setFocus();
+        configName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(configName);
+        configName.setFocus();
 
-        mLocation = createLocationSection(contents, parentShell);
+        locationControl = createLocationSection(contents, parentShell);
 
         final Label lblDescription = new Label(contents, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
-        mDescription =
+        description =
             new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
             .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
             .grab(true, true)
-            .applyTo(mDescription);
+            .applyTo(description);
 
         final Group advancedGroup = new Group(contents, SWT.NULL);
         advancedGroup.setText(Messages.RemoteConfigurationEditor_titleAdvancedOptions);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(advancedGroup);
 
-        mChkProtectConfig = new Button(advancedGroup, SWT.CHECK);
-        mChkProtectConfig.setText(Messages.ProjectConfigurationEditor_chkProtectConfigFile);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkProtectConfig);
+        chkProtectConfig = new Button(advancedGroup, SWT.CHECK);
+        chkProtectConfig.setText(Messages.ProjectConfigurationEditor_chkProtectConfigFile);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(chkProtectConfig);
 
-        if (mWorkingCopy.getName() != null) {
-            mConfigName.setText(mWorkingCopy.getName());
+        if (workingCopy.getName() != null) {
+            configName.setText(workingCopy.getName());
         }
-        if (mWorkingCopy.getLocation() != null) {
-            mLocation.setText(mWorkingCopy.getLocation());
+        if (workingCopy.getLocation() != null) {
+            locationControl.setText(workingCopy.getLocation());
         }
-        if (mWorkingCopy.getDescription() != null) {
-            mDescription.setText(mWorkingCopy.getDescription());
+        if (workingCopy.getDescription() != null) {
+            description.setText(workingCopy.getDescription());
         }
 
-        mChkProtectConfig.setSelection(Boolean.parseBoolean(mWorkingCopy.getAdditionalData()
+        chkProtectConfig.setSelection(Boolean.parseBoolean(workingCopy.getAdditionalData()
             .get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)));
 
         return contents;
@@ -194,24 +194,24 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
 
     @Override
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-        mWorkingCopy.setName(mConfigName.getText());
-        mWorkingCopy.setDescription(mDescription.getText());
+        workingCopy.setName(configName.getText());
+        workingCopy.setDescription(description.getText());
 
-        mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
-            Boolean.toString(mChkProtectConfig.getSelection()));
+        workingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
+            Boolean.toString(chkProtectConfig.getSelection()));
 
         try {
-            mWorkingCopy.setLocation(mLocation.getText());
+            workingCopy.setLocation(locationControl.getText());
         }
         catch (CheckstylePluginException ex) {
-            String location = mLocation.getText();
+            String location = locationControl.getText();
 
             if (StringUtils.isBlank(location)) {
                 throw ex;
             }
 
             final ICheckConfigurationWorkingSet workingSet =
-                mCheckConfigDialog.getCheckConfigurationWorkingSet();
+                checkConfigDialog.getCheckConfigurationWorkingSet();
             final IPath tmp = IPath.fromOSString(location);
             final boolean isFirstPartProject =
                 ResourcesPlugin.getWorkspace().getRoot().getProject(tmp.segment(0)).exists();
@@ -219,7 +219,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
             if (!isFirstPartProject && workingSet instanceof LocalCheckConfigurationWorkingSet) {
                 location = ((LocalCheckConfigurationWorkingSet) workingSet).getProject()
                     .getFullPath().append(location).toString();
-                mLocation.setText(location);
+                locationControl.setText(location);
             }
             else if (!isFirstPartProject
                 && workingSet instanceof GlobalCheckConfigurationWorkingSet) {
@@ -230,14 +230,14 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
             }
 
             if (ensureFileExists(location)) {
-                mWorkingCopy.setLocation(mLocation.getText());
+                workingCopy.setLocation(locationControl.getText());
             }
             else {
                 throw ex;
             }
         }
 
-        return mWorkingCopy;
+        return workingCopy;
     }
 
     /**
@@ -272,7 +272,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                     }
                     try (OutputStream out =
                         new BufferedOutputStream(Files.newOutputStream(trueFile))) {
-                        ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+                        ConfigurationWriter.writeNewConfiguration(out, workingCopy);
                         file.refreshLocal(IResource.DEPTH_INFINITE, null);
                     }
                 }

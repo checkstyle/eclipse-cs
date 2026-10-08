@@ -46,7 +46,7 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
 public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 
     /** The field name to be used in descriptions. */
-    private String mFieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
+    private String fieldName = Messages.ExplicitInitializationQuickfix_unknownFieldName;
 
     /**
      * Creates a new instance.
@@ -82,7 +82,7 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
             in.read(buffer, 0, buffer.length);
             in.close();
             final String snippet = new String(buffer, resource.getCharset());
-            mFieldName = snippet.substring(0, snippet.indexOf('=')).trim();
+            fieldName = snippet.substring(0, snippet.indexOf('=')).trim();
         }
         catch (final CoreException | IOException | IndexOutOfBoundsException
             | ClassCastException ex) {
@@ -118,12 +118,12 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
 
     @Override
     public String getDescription() {
-        return NLS.bind(Messages.ExplicitInitializationQuickfix_description, mFieldName);
+        return NLS.bind(Messages.ExplicitInitializationQuickfix_description, fieldName);
     }
 
     @Override
     public String getLabel() {
-        return NLS.bind(Messages.ExplicitInitializationQuickfix_label, mFieldName);
+        return NLS.bind(Messages.ExplicitInitializationQuickfix_label, fieldName);
     }
 
     @Override

@@ -46,13 +46,13 @@ import net.sf.eclipsecs.ui.properties.filter.CheckFileOnOpenPartListener;
 public final class ApplicationStartedHandler implements EventHandler {
 
     /** Part listener for check-on-open support. */
-    private final CheckFileOnOpenPartListener mPartListener = new CheckFileOnOpenPartListener();
+    private final CheckFileOnOpenPartListener partListener = new CheckFileOnOpenPartListener();
 
     /** Window listener for the workbench. */
-    private final IWindowListener mWindowListener = new IWindowListener() {
+    private final IWindowListener windowListener = new IWindowListener() {
         @Override
         public void windowOpened(IWorkbenchWindow window) {
-            window.getPartService().addPartListener(mPartListener);
+            window.getPartService().addPartListener(partListener);
         }
 
         @Override
@@ -61,7 +61,7 @@ public final class ApplicationStartedHandler implements EventHandler {
 
         @Override
         public void windowClosed(IWorkbenchWindow window) {
-            window.getPartService().removePartListener(mPartListener);
+            window.getPartService().removePartListener(partListener);
         }
 
         @Override
@@ -98,13 +98,13 @@ public final class ApplicationStartedHandler implements EventHandler {
                     final Set<IWorkbenchPartReference> parts =
                         Arrays.stream(window.getPages()).map(IWorkbenchPage::getEditorReferences)
                             .flatMap(Arrays::stream).collect(Collectors.toSet());
-                    mPartListener.partsOpened(parts);
+                    partListener.partsOpened(parts);
                     // remove listener first for safety,
                     // we don't want to register the same listener twice accidently
-                    window.getPartService().removePartListener(mPartListener);
-                    window.getPartService().addPartListener(mPartListener);
+                    window.getPartService().removePartListener(partListener);
+                    window.getPartService().addPartListener(partListener);
                 }
-                workbench.addWindowListener(mWindowListener);
+                workbench.addWindowListener(windowListener);
             }
         });
     }

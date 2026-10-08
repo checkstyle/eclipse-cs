@@ -53,7 +53,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
     /** The shell. */
     private Shell shell;
     /** The list of file sets. */
-    private List<FileSet> mFileSets;
+    private List<FileSet> fileSets;
 
     /**
      * Creates the ComplexFileSetsEditor.
@@ -67,13 +67,13 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
 
     @Override
     public void setFileSets(List<FileSet> fileSets) {
-        mFileSets = fileSets;
+        this.fileSets = fileSets;
 
     }
 
     @Override
     public List<FileSet> getFileSets() {
-        return mFileSets;
+        return fileSets;
     }
 
     @Override
@@ -81,7 +81,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
         this.shell = parent.getShell();
 
         editorView = new ComplexFileSetsEditorView(parent, SWT.NONE, this::changeEnabledState,
-            this::editFileSet, this::addFileSet, this::removeFileSet, mFileSets);
+            this::editFileSet, this::addFileSet, this::removeFileSet, fileSets);
 
         return editorView;
     }
@@ -100,7 +100,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
                 new FileSetEditDialog(shell, null, propertyPageContext);
             if (Window.OK == dialog.open()) {
                 final FileSet fileSet = dialog.getFileSet();
-                mFileSets.add(fileSet);
+                fileSets.add(fileSet);
                 editorView.refresh();
                 editorView.setChecked(fileSet, fileSet.isEnabled());
 
@@ -126,8 +126,8 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
                     new FileSetEditDialog(shell, new FileSet(fileSet), propertyPageContext);
                 if (Window.OK == dialog.open()) {
                     final FileSet newFileSet = dialog.getFileSet();
-                    mFileSets.remove(fileSet);
-                    mFileSets.add(newFileSet);
+                    fileSets.remove(fileSet);
+                    fileSets.add(newFileSet);
                     editorView.refresh();
                     editorView.setChecked(newFileSet, newFileSet.isEnabled());
 
@@ -149,7 +149,7 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
      */
     private void removeFileSet(FileSet fileSet) {
         if (fileSet != null) {
-            mFileSets.remove(fileSet);
+            fileSets.remove(fileSet);
             editorView.refresh();
             propertyPageContext.updateButtons();
         }

@@ -41,7 +41,7 @@ import net.sf.eclipsecs.ui.Messages;
 public class PropertiesContentAssistProcessor implements ISubjectControlContentAssistProcessor {
 
     /** The context information validator. */
-    private IContextInformationValidator mValidator =
+    private IContextInformationValidator validator =
         new SubjectControlContextInformationValidator(this);
 
     /**
@@ -78,7 +78,7 @@ public class PropertiesContentAssistProcessor implements ISubjectControlContentA
 
     @Override
     public IContextInformationValidator getContextInformationValidator() {
-        return mValidator;
+        return validator;
     }
 
     @Override

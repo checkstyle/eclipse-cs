@@ -37,13 +37,13 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWidget {
 
     /** The config property. */
-    private ConfigProperty mProp;
+    private ConfigProperty prop;
 
     /** The value widget control. */
-    private Control mValueWidget;
+    private Control valueWidget;
 
     /** The parent composite. */
-    private Composite mParent;
+    private Composite parent;
 
     /**
      * Creates the widget for the given property.
@@ -54,18 +54,18 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
      *            the config property
      */
     protected AbstractConfigPropertyWidget(Composite parent, ConfigProperty prop) {
-        mParent = parent;
-        mProp = prop;
+        this.parent = parent;
+        this.prop = prop;
     }
 
     /**
      * Returns the widget containing the values.
      *
-     * @param parent
+     * @param parentComposite
      *            the parent composite
      * @return the widget containing the value
      */
-    protected abstract Control getValueWidget(Composite parent);
+    protected abstract Control getValueWidget(Composite parentComposite);
 
     /**
      * Gets the property's value.
@@ -81,29 +81,29 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
         //
         // Add the property's name.
         //
-        final Label label = new Label(mParent, SWT.NULL);
-        label.setText(mProp.getName() + ":");
+        final Label label = new Label(parent, SWT.NULL);
+        label.setText(prop.getName() + ":");
         GridData gridData = new GridData();
         gridData.verticalAlignment = SWT.BEGINNING;
         label.setLayoutData(gridData);
 
-        mValueWidget = getValueWidget(mParent);
-        gridData = (GridData) mValueWidget.getLayoutData();
-        mValueWidget.setToolTipText(mProp.getMetaData().getDescription());
+        valueWidget = getValueWidget(parent);
+        gridData = (GridData) valueWidget.getLayoutData();
+        valueWidget.setToolTipText(prop.getMetaData().getDescription());
 
         // provide a label that shows a tooltip with the property description
-        final Label lblPropertyInfo = new Label(mParent, SWT.NULL);
+        final Label lblPropertyInfo = new Label(parent, SWT.NULL);
         gridData = new GridData();
         gridData.verticalAlignment = SWT.BEGINNING;
         lblPropertyInfo.setLayoutData(gridData);
         lblPropertyInfo.setImage(CheckstyleUIPluginImages.HELP_ICON.getImage());
-        lblPropertyInfo.setToolTipText(mProp.getMetaData().getDescription());
+        lblPropertyInfo.setToolTipText(prop.getMetaData().getDescription());
         SWTUtil.addTooltipOnPressSupport(lblPropertyInfo);
     }
 
     @Override
     public void setEnabled(boolean enabled) {
-        mValueWidget.setEnabled(enabled);
+        valueWidget.setEnabled(enabled);
     }
 
     /**
@@ -115,14 +115,14 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
      */
     protected String getInitValue() {
         String initValue = null;
-        if (mProp != null) {
-            initValue = mProp.getValue();
+        if (prop != null) {
+            initValue = prop.getValue();
         }
         if (initValue == null) {
-            initValue = mProp.getMetaData().getOverrideDefault();
+            initValue = prop.getMetaData().getOverrideDefault();
         }
         if (initValue == null) {
-            initValue = mProp.getMetaData().getDefaultValue();
+            initValue = prop.getMetaData().getDefaultValue();
         }
         if (initValue == null) {
             initValue = "";
@@ -133,7 +133,7 @@ public abstract class AbstractConfigPropertyWidget implements IConfigPropertyWid
 
     @Override
     public ConfigProperty getConfigProperty() {
-        return mProp;
+        return prop;
     }
 
     @Override

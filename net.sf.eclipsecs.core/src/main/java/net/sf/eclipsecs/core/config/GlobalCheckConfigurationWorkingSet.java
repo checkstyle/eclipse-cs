@@ -55,18 +55,18 @@ import net.sf.eclipsecs.core.util.XMLUtil;
 public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
 
     /** The internal list of working copies belonging to this working set. */
-    private final List<CheckConfigurationWorkingCopy> mWorkingCopies;
+    private final List<CheckConfigurationWorkingCopy> workingCopies;
 
     /** List of working copies that were deleted from the working set. */
-    private final List<CheckConfigurationWorkingCopy> mDeletedConfigurations;
+    private final List<CheckConfigurationWorkingCopy> deletedConfigurations;
 
     /** The default check configuration to be used for unconfigured projects. */
-    private CheckConfigurationWorkingCopy mDefaultCheckConfig;
+    private CheckConfigurationWorkingCopy defaultCheckConfig;
 
     /**
      * The default built-in check configuration to be used for unconfigured projects.
      */
-    private ICheckConfiguration mDefaultBuiltInCheckConfig;
+    private ICheckConfiguration defaultBuiltInCheckConfig;
 
     /**
      * Creates a working set to manage global configurations.
@@ -81,18 +81,18 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     GlobalCheckConfigurationWorkingSet(List<ICheckConfiguration> checkConfigs,
         ICheckConfiguration defaultConfig, ICheckConfiguration defaultBuiltInCheckConfiguration) {
 
-        mWorkingCopies = new ArrayList<>();
-        mDeletedConfigurations = new ArrayList<>();
-        mDefaultBuiltInCheckConfig = defaultBuiltInCheckConfiguration;
+        workingCopies = new ArrayList<>();
+        deletedConfigurations = new ArrayList<>();
+        defaultBuiltInCheckConfig = defaultBuiltInCheckConfiguration;
 
         for (ICheckConfiguration cfg : checkConfigs) {
 
             final CheckConfigurationWorkingCopy workingCopy =
                 new CheckConfigurationWorkingCopy(cfg, this);
-            mWorkingCopies.add(workingCopy);
+            workingCopies.add(workingCopy);
 
             if (cfg == defaultConfig) {
-                mDefaultCheckConfig = workingCopy;
+                defaultCheckConfig = workingCopy;
             }
         }
     }
@@ -109,12 +109,12 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
     @Override
     public CheckConfigurationWorkingCopy[] getWorkingCopies() {
-        return mWorkingCopies.toArray(new CheckConfigurationWorkingCopy[mWorkingCopies.size()]);
+        return workingCopies.toArray(new CheckConfigurationWorkingCopy[workingCopies.size()]);
     }
 
     @Override
     public void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
-        mWorkingCopies.add(checkConfig);
+        workingCopies.add(checkConfig);
     }
 
     /**
@@ -123,7 +123,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
      * @return the default check configuration
      */
     public CheckConfigurationWorkingCopy getDefaultCheckConfig() {
-        return mDefaultCheckConfig;
+        return defaultCheckConfig;
     }
 
     /**
@@ -133,7 +133,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
      *            the default check configuration
      */
     public void setDefaultCheckConfig(CheckConfigurationWorkingCopy defaultCheckConfig) {
-        this.mDefaultCheckConfig = defaultCheckConfig;
+        this.defaultCheckConfig = defaultCheckConfig;
     }
 
     @Override
@@ -144,14 +144,14 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 .isCheckConfigInUse(checkConfig.getSourceCheckConfiguration());
 
             if (!used) {
-                mWorkingCopies.remove(checkConfig);
+                workingCopies.remove(checkConfig);
 
                 // reset default check config
-                if (mDefaultCheckConfig == checkConfig) {
-                    mDefaultCheckConfig = null;
+                if (defaultCheckConfig == checkConfig) {
+                    defaultCheckConfig = null;
                 }
 
-                mDeletedConfigurations.add(checkConfig);
+                deletedConfigurations.add(checkConfig);
             }
         }
         catch (CheckstylePluginException ex) {
@@ -171,8 +171,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     @Override
     public boolean isDirty() {
         boolean dirty = false;
-        if (mDeletedConfigurations.isEmpty()) {
-            for (CheckConfigurationWorkingCopy workingCopy : mWorkingCopies) {
+        if (deletedConfigurations.isEmpty()) {
+            for (CheckConfigurationWorkingCopy workingCopy : workingCopies) {
                 dirty = workingCopy.isDirty();
                 if (dirty) {
                     break;
@@ -190,7 +190,6 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
 
         final Set<IProject> projects = new HashSet<>();
 
-        final CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
         for (CheckConfigurationWorkingCopy workingCopy : workingCopies) {
 
             // skip non dirty configurations
@@ -211,7 +210,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
     public boolean isNameCollision(CheckConfigurationWorkingCopy configuration) {
 
         boolean result = false;
-        for (CheckConfigurationWorkingCopy tmp : mWorkingCopies) {
+        for (CheckConfigurationWorkingCopy tmp : workingCopies) {
             if (tmp != configuration && tmp.getName().equals(configuration.getName())) {
                 result = true;
                 break;
@@ -228,7 +227,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
      */
     private void updateProjectConfigurations() throws CheckstylePluginException {
 
-        for (CheckConfigurationWorkingCopy checkConfig : mWorkingCopies) {
+        for (CheckConfigurationWorkingCopy checkConfig : workingCopies) {
 
             final ICheckConfiguration original = checkConfig.getSourceCheckConfiguration();
 
@@ -279,15 +278,15 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             configPath = configPath.append(CheckConfigurationFactory.CHECKSTYLE_CONFIG_FILE);
             final File configFile = configPath.toFile();
 
-            ICheckConfiguration defaultConfig = mDefaultCheckConfig;
+            ICheckConfiguration defaultConfig = defaultCheckConfig;
 
             // don't store as default when it's already the built-in default
             if (defaultConfig != null
-                && defaultConfig.getName().equals(mDefaultBuiltInCheckConfig.getName())) {
+                && defaultConfig.getName().equals(defaultBuiltInCheckConfig.getName())) {
                 defaultConfig = null;
             }
 
-            final Document doc = createCheckConfigurationsDocument(mWorkingCopies, defaultConfig);
+            final Document doc = createCheckConfigurationsDocument(workingCopies, defaultConfig);
 
             // write to the file after the document creation was successful
             // prevents corrupted files in case of error
@@ -307,7 +306,7 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
      */
     private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
 
-        for (ICheckConfiguration checkConfig : mDeletedConfigurations) {
+        for (ICheckConfiguration checkConfig : deletedConfigurations) {
             checkConfig.getType().notifyCheckConfigRemoved(checkConfig);
         }
     }

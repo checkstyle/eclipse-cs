@@ -35,8 +35,8 @@ import org.eclipse.ui.IWorkbenchPart;
  */
 public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
-    /** The selection that occured in the workspace. */
-    private ISelection mSelection;
+    /** The selection that occurred in the workspace. */
+    private ISelection selection;
 
     /**
      * Creates a new instance.
@@ -45,8 +45,8 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
     }
 
     @Override
-    public void selectionChanged(IAction action, ISelection selection) {
-        mSelection = selection;
+    public void selectionChanged(IAction action, ISelection currentSelection) {
+        this.selection = currentSelection;
     }
 
     @Override
@@ -56,8 +56,9 @@ public class FixCheckstyleMarkersAction implements IObjectActionDelegate {
 
     @Override
     public void run(IAction action) {
-        if (mSelection instanceof IStructuredSelection selection && selection.size() == 1) {
-            final Object element = selection.getFirstElement();
+        if (selection instanceof IStructuredSelection structuredSelection
+            && structuredSelection.size() == 1) {
+            final Object element = structuredSelection.getFirstElement();
             final IFile file = ((IAdaptable) element).getAdapter(IFile.class);
             if (file != null) {
                 // call the fixing job

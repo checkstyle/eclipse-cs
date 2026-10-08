@@ -47,7 +47,7 @@ public class CheckstyleNature implements IProjectNature {
     public static final String NATURE_ID = CheckstylePlugin.PLUGIN_ID + ".CheckstyleNature";
 
     /** The project. */
-    private IProject mProject;
+    private IProject project;
 
     /**
      * Creates a new instance.
@@ -61,7 +61,7 @@ public class CheckstyleNature implements IProjectNature {
         //
         // Add the builder to the project.
         //
-        final IProjectDescription description = mProject.getDescription();
+        final IProjectDescription description = project.getDescription();
         final ICommand[] commands = description.getBuildSpec();
         boolean found = false;
         for (ICommand command : commands) {
@@ -84,7 +84,7 @@ public class CheckstyleNature implements IProjectNature {
 
             ensureProjectFileWritable();
 
-            mProject.setDescription(description, null);
+            project.setDescription(description, null);
         }
     }
 
@@ -95,7 +95,7 @@ public class CheckstyleNature implements IProjectNature {
      *             the file could not be updated
      */
     private void ensureProjectFileWritable() throws CoreException {
-        final IFile projectFile = mProject.getFile(".project");
+        final IFile projectFile = project.getFile(".project");
         if (projectFile.isReadOnly()) {
             final ResourceAttributes attrs =
                 ResourceAttributes.fromFile(projectFile.getFullPath().toFile());
@@ -110,7 +110,7 @@ public class CheckstyleNature implements IProjectNature {
         //
         // Remove the builder from the project.
         //
-        final IProjectDescription description = mProject.getDescription();
+        final IProjectDescription description = project.getDescription();
         final ICommand[] commands = description.getBuildSpec();
         final List<ICommand> newCommandsVec = new ArrayList<>();
         for (ICommand command : commands) {
@@ -127,7 +127,7 @@ public class CheckstyleNature implements IProjectNature {
 
         ensureProjectFileWritable();
 
-        mProject.setDescription(description, new NullProgressMonitor());
+        project.setDescription(description, new NullProgressMonitor());
 
         // remove checkstyle markers from the project
         getProject().deleteMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE);
@@ -136,12 +136,12 @@ public class CheckstyleNature implements IProjectNature {
 
     @Override
     public IProject getProject() {
-        return mProject;
+        return project;
     }
 
     @Override
     public void setProject(IProject project) {
-        mProject = project;
+        this.project = project;
     }
 
     /**

@@ -65,13 +65,13 @@ import net.sf.eclipsecs.ui.Messages;
 public class PackageFilterEditor implements IFilterEditor {
 
     /** The dialog for this editor. */
-    private PackageCheckedTreeSelectionDialog mDialog;
+    private PackageCheckedTreeSelectionDialog dialog;
 
     /** The input for the editor. */
-    private IProject mInputProject;
+    private IProject inputProject;
 
     /** The filter data. */
-    private List<String> mFilterData;
+    private List<String> filterData;
 
     /**
      * Creates a new instance.
@@ -82,7 +82,7 @@ public class PackageFilterEditor implements IFilterEditor {
     @Override
     public int openEditor(Shell parent) {
 
-        this.mDialog = new PackageCheckedTreeSelectionDialog(parent,
+        this.dialog = new PackageCheckedTreeSelectionDialog(parent,
             WorkbenchLabelProvider.getDecoratingWorkbenchLabelProvider(),
             new SourceFolderContentProvider());
 
@@ -90,14 +90,14 @@ public class PackageFilterEditor implements IFilterEditor {
         initCheckedTreeSelectionDialog();
 
         // open the dialog
-        final int retCode = this.mDialog.open();
+        final int retCode = this.dialog.open();
 
         // actualize the filter data
         if (Window.OK == retCode) {
-            this.mFilterData = this.getFilterDataFromDialog();
+            this.filterData = this.getFilterDataFromDialog();
 
-            if (!mDialog.isRecursivelyExcludeSubTree()) {
-                mFilterData.add(PackageFilter.RECURSE_OFF_MARKER);
+            if (!dialog.isRecursivelyExcludeSubTree()) {
+                filterData.add(PackageFilter.RECURSE_OFF_MARKER);
             }
         }
 
@@ -106,17 +106,17 @@ public class PackageFilterEditor implements IFilterEditor {
 
     @Override
     public void setInputProject(IProject input) {
-        this.mInputProject = input;
+        this.inputProject = input;
     }
 
     @Override
     public void setFilterData(List<String> filterData) {
-        this.mFilterData = filterData;
+        this.filterData = filterData;
     }
 
     @Override
     public List<String> getFilterData() {
-        return this.mFilterData;
+        return this.filterData;
     }
 
     /**
@@ -124,21 +124,21 @@ public class PackageFilterEditor implements IFilterEditor {
      */
     private void initCheckedTreeSelectionDialog() {
 
-        this.mDialog.setTitle(Messages.PackageFilterEditor_titleFilterPackages);
-        this.mDialog.setMessage(Messages.PackageFilterEditor_msgFilterPackages);
-        this.mDialog.setBlockOnOpen(true);
+        this.dialog.setTitle(Messages.PackageFilterEditor_titleFilterPackages);
+        this.dialog.setMessage(Messages.PackageFilterEditor_msgFilterPackages);
+        this.dialog.setBlockOnOpen(true);
 
-        this.mDialog.setInput(this.mInputProject);
+        this.dialog.setInput(this.inputProject);
 
         // display the filter data
-        if (this.mInputProject != null && this.mFilterData != null) {
+        if (this.inputProject != null && this.filterData != null) {
 
             final List<IResource> selectedElements = new ArrayList<>();
             final List<IResource> expandedElements = new ArrayList<>();
 
             boolean recurse = true;
 
-            for (String element : mFilterData) {
+            for (String element : filterData) {
                 if (PackageFilter.RECURSE_OFF_MARKER.equals(element)) {
                     recurse = false;
                     continue;
@@ -146,7 +146,7 @@ public class PackageFilterEditor implements IFilterEditor {
 
                 IPath path = new Path(element);
 
-                final IResource selElement = this.mInputProject.findMember(path);
+                final IResource selElement = this.inputProject.findMember(path);
                 if (selElement != null) {
                     selectedElements.add(selElement);
                 }
@@ -155,16 +155,16 @@ public class PackageFilterEditor implements IFilterEditor {
                 while (path.segmentCount() > 0) {
                     path = path.removeLastSegments(1);
 
-                    final IResource expElement = this.mInputProject.findMember(path);
+                    final IResource expElement = this.inputProject.findMember(path);
                     if (expElement != null) {
                         expandedElements.add(expElement);
                     }
                 }
             }
 
-            this.mDialog.setInitialSelections(selectedElements.toArray());
-            this.mDialog.setExpandedElements(expandedElements.toArray());
-            this.mDialog.setRecursivelyExcludeSubTree(recurse);
+            this.dialog.setInitialSelections(selectedElements.toArray());
+            this.dialog.setExpandedElements(expandedElements.toArray());
+            this.dialog.setRecursivelyExcludeSubTree(recurse);
         }
     }
 
@@ -175,7 +175,7 @@ public class PackageFilterEditor implements IFilterEditor {
      */
     private List<String> getFilterDataFromDialog() {
 
-        final Object[] checked = this.mDialog.getResult();
+        final Object[] checked = this.dialog.getResult();
 
         final List<String> result = new ArrayList<>();
         for (Object item : checked) {
@@ -324,13 +324,13 @@ public class PackageFilterEditor implements IFilterEditor {
     public class PackageCheckedTreeSelectionDialog extends CheckedTreeSelectionDialog {
 
         /** The checkbox tree viewer. */
-        private CheckboxTreeViewer mViewer;
+        private CheckboxTreeViewer viewer;
 
         /** The recurse sub-packages checkbox. */
-        private Button mBtnRecurseSubPackages;
+        private Button btnRecurseSubPackages;
 
         /** Flag for recursive exclusion of sub-packages. */
-        private boolean mRecursivelyExcludeSubPackages = true;
+        private boolean recursivelyExcludeSubPackages = true;
 
         /**
          * Constructs an instance of <code>ElementTreeSelectionDialog</code>.
@@ -358,7 +358,7 @@ public class PackageFilterEditor implements IFilterEditor {
          */
         public void setRecursivelyExcludeSubTree(boolean recursivelyExcludeSubTree) {
 
-            mRecursivelyExcludeSubPackages = recursivelyExcludeSubTree;
+            recursivelyExcludeSubPackages = recursivelyExcludeSubTree;
         }
 
         /**
@@ -367,37 +367,37 @@ public class PackageFilterEditor implements IFilterEditor {
          * @return <code>true</code> if subtrees should be excluded
          */
         protected boolean isRecursivelyExcludeSubTree() {
-            return mRecursivelyExcludeSubPackages;
+            return recursivelyExcludeSubPackages;
         }
 
         @Override
         protected CheckboxTreeViewer createTreeViewer(Composite parent) {
 
-            mViewer = super.createTreeViewer(parent);
+            viewer = super.createTreeViewer(parent);
 
-            mViewer.addCheckStateListener(event -> {
+            viewer.addCheckStateListener(event -> {
                 final IContainer element = (IContainer) event.getElement();
 
                 if (isRecursivelyExcludeSubTree() && !isGrayed(element)) {
                     setSubElementsGrayedChecked(element, event.getChecked());
                 }
                 else if (isRecursivelyExcludeSubTree() && isGrayed(element)) {
-                    mViewer.setGrayChecked(element, true);
+                    viewer.setGrayChecked(element, true);
                 }
             });
 
             adaptRecurseBehaviour();
 
-            return mViewer;
+            return viewer;
         }
 
         @Override
         protected void computeResult() {
 
-            final List<Object> checked = Arrays.asList(mViewer.getCheckedElements());
+            final List<Object> checked = Arrays.asList(viewer.getCheckedElements());
 
-            if (mRecursivelyExcludeSubPackages) {
-                final List<Object> grayed = Arrays.asList(mViewer.getGrayedElements());
+            if (recursivelyExcludeSubPackages) {
+                final List<Object> grayed = Arrays.asList(viewer.getGrayedElements());
 
                 final List<Object> pureChecked = new ArrayList<>(checked);
                 pureChecked.removeAll(grayed);
@@ -416,20 +416,20 @@ public class PackageFilterEditor implements IFilterEditor {
             GridLayoutFactory.fillDefaults().numColumns(2).applyTo(composite);
             GridDataFactory.fillDefaults().grab(true, false).applyTo(composite);
 
-            mBtnRecurseSubPackages = new Button(composite, SWT.CHECK);
-            mBtnRecurseSubPackages.setText("Recursively exclude sub-packages");
+            btnRecurseSubPackages = new Button(composite, SWT.CHECK);
+            btnRecurseSubPackages.setText("Recursively exclude sub-packages");
             GridDataFactory.fillDefaults()
                 .align(SWT.BEGINNING, SWT.CENTER)
                 .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN),
                     convertHorizontalDLUsToPixels(IDialogConstants.VERTICAL_MARGIN) * 2)
-                .applyTo(mBtnRecurseSubPackages);
+                .applyTo(btnRecurseSubPackages);
 
-            mBtnRecurseSubPackages.setSelection(mRecursivelyExcludeSubPackages);
-            mBtnRecurseSubPackages.addSelectionListener(new SelectionListener() {
+            btnRecurseSubPackages.setSelection(recursivelyExcludeSubPackages);
+            btnRecurseSubPackages.addSelectionListener(new SelectionListener() {
 
                 @Override
                 public void widgetSelected(SelectionEvent e) {
-                    mRecursivelyExcludeSubPackages = mBtnRecurseSubPackages.getSelection();
+                    recursivelyExcludeSubPackages = btnRecurseSubPackages.getSelection();
                     adaptRecurseBehaviour();
                 }
 
@@ -454,15 +454,15 @@ public class PackageFilterEditor implements IFilterEditor {
 
             if (isRecursivelyExcludeSubTree()) {
 
-                final Object[] checked = mViewer.getCheckedElements();
+                final Object[] checked = viewer.getCheckedElements();
                 for (Object element : checked) {
                     setSubElementsGrayedChecked((IContainer) element, true);
                 }
             }
             else {
-                final Object[] grayed = mViewer.getGrayedElements();
+                final Object[] grayed = viewer.getGrayedElements();
                 for (Object element : grayed) {
-                    mViewer.setGrayChecked(element, false);
+                    viewer.setGrayChecked(element, false);
                 }
             }
         }
@@ -476,7 +476,7 @@ public class PackageFilterEditor implements IFilterEditor {
          */
         private boolean isGrayed(Object element) {
 
-            final Object[] grayed = mViewer.getGrayedElements();
+            final Object[] grayed = viewer.getGrayedElements();
             return Arrays.asList(grayed).contains(element);
         }
 
@@ -509,7 +509,7 @@ public class PackageFilterEditor implements IFilterEditor {
             }
 
             for (IContainer grayedChild : subContainers) {
-                mViewer.setGrayChecked(grayedChild, checked);
+                viewer.setGrayChecked(grayedChild, checked);
             }
         }
     }

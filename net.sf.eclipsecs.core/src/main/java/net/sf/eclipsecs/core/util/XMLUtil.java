@@ -70,7 +70,7 @@ public final class XMLUtil {
     public static class InternalDtdEntityResolver implements EntityResolver {
 
         /** The public-to-internal DTD mapping. */
-        private final Map<String, String> mPublic2InternalDtdMap;
+        private final Map<String, String> public2InternalDtdMap;
 
         /**
          * Creates the entity resolver using a mapping of public DTD name to internal DTD resource.
@@ -79,14 +79,14 @@ public final class XMLUtil {
          *            the public2internal DTD mapping
          */
         public InternalDtdEntityResolver(Map<String, String> public2InternalDtdMap) {
-            mPublic2InternalDtdMap = public2InternalDtdMap;
+            this.public2InternalDtdMap = public2InternalDtdMap;
         }
 
         @Override
         public InputSource resolveEntity(String publicId, String systemId) throws SAXException {
             InputSource inputSource = null;
-            if (mPublic2InternalDtdMap.containsKey(publicId)) {
-                final String dtdResourceName = mPublic2InternalDtdMap.get(publicId);
+            if (public2InternalDtdMap.containsKey(publicId)) {
+                final String dtdResourceName = public2InternalDtdMap.get(publicId);
 
                 final InputStream dtdIS =
                     getClass().getClassLoader().getResourceAsStream(dtdResourceName);

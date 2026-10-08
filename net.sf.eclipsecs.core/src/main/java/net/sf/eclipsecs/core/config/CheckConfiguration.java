@@ -41,31 +41,31 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class CheckConfiguration extends AbstractCheckConfiguration {
 
     /** The displayable name of the configuration. */
-    private final String mName;
+    private final String name;
 
     /** The location of the checkstyle configuration file. */
-    private final String mLocation;
+    private final String location;
 
     /** The description of the configuration. */
-    private final String mDescription;
+    private final String description;
 
     /** The configuration type. */
-    private final IConfigurationType mConfigType;
+    private final IConfigurationType configType;
 
     /** Flags if the configuration is global. */
-    private final boolean mIsGlobal;
+    private final boolean isGlobal;
 
     /** The list of resolvable properties. */
-    private final List<ResolvableProperty> mProperties;
+    private final List<ResolvableProperty> properties;
 
     /** Map containing additional data for this check configuration. */
-    private Map<String, String> mAdditionalData;
+    private Map<String, String> additionalData;
 
     /** Cached data of the Checkstyle configuration file. */
-    private CheckstyleConfigurationFile mCheckstyleConfigurationFile;
+    private CheckstyleConfigurationFile checkstyleConfigurationFile;
 
     /** Time stamp when the cached configuration file data expires. */
-    private Instant mExpirationTime;
+    private Instant expirationTime;
 
     /**
      * Creates a check configuration instance.
@@ -88,70 +88,70 @@ public class CheckConfiguration extends AbstractCheckConfiguration {
     public CheckConfiguration(final String name, final String location, final String description,
         final IConfigurationType type, final boolean global,
         final List<ResolvableProperty> properties, final Map<String, String> additionalData) {
-        mName = name;
-        mLocation = location;
-        mDescription = description;
-        mConfigType = type;
-        mIsGlobal = global;
+        this.name = name;
+        this.location = location;
+        this.description = description;
+        this.configType = type;
+        this.isGlobal = global;
 
         if (additionalData != null) {
-            mAdditionalData = Collections.unmodifiableMap(additionalData);
+            this.additionalData = Collections.unmodifiableMap(additionalData);
         }
         else {
-            mAdditionalData = Collections.unmodifiableMap(new HashMap<String, String>());
+            this.additionalData = Collections.unmodifiableMap(new HashMap<String, String>());
         }
 
         if (properties != null) {
-            mProperties = Collections.unmodifiableList(properties);
+            this.properties = Collections.unmodifiableList(properties);
         }
         else {
-            mProperties = Collections.unmodifiableList(new ArrayList<>());
+            this.properties = Collections.unmodifiableList(new ArrayList<>());
         }
     }
 
     @Override
     public String getName() {
-        return mName;
+        return name;
     }
 
     @Override
     public String getLocation() {
-        return mLocation;
+        return location;
     }
 
     @Override
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     @Override
     public IConfigurationType getType() {
-        return mConfigType;
+        return configType;
     }
 
     @Override
     public Map<String, String> getAdditionalData() {
-        return mAdditionalData;
+        return additionalData;
     }
 
     @Override
     public List<ResolvableProperty> getResolvableProperties() {
-        return mProperties;
+        return properties;
     }
 
     @Override
     public boolean isEditable() {
-        return mConfigType.isEditable();
+        return configType.isEditable();
     }
 
     @Override
     public boolean isConfigurable() {
-        return mConfigType.isConfigurable(this);
+        return configType.isConfigurable(this);
     }
 
     @Override
     public boolean isGlobal() {
-        return mIsGlobal;
+        return isGlobal;
     }
 
     @Override
@@ -164,13 +164,13 @@ public class CheckConfiguration extends AbstractCheckConfiguration {
             throws CheckstylePluginException {
         final Instant currentTime = Instant.now();
 
-        if (mCheckstyleConfigurationFile == null || currentTime.isAfter(mExpirationTime)) {
-            mCheckstyleConfigurationFile = getType().getCheckstyleConfiguration(this);
+        if (checkstyleConfigurationFile == null || currentTime.isAfter(expirationTime)) {
+            checkstyleConfigurationFile = getType().getCheckstyleConfiguration(this);
             // 1 hour
-            mExpirationTime = currentTime.plus(1, ChronoUnit.HOURS);
+            expirationTime = currentTime.plus(1, ChronoUnit.HOURS);
         }
 
-        return mCheckstyleConfigurationFile;
+        return checkstyleConfigurationFile;
     }
 
     @Override

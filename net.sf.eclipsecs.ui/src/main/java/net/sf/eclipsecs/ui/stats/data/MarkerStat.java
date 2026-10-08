@@ -35,17 +35,17 @@ public class MarkerStat implements Comparable<MarkerStat> {
     /**
      * Identifiant du marqueur : dans notre cas, il s'agit du message du marqueur Checkstyle.
      */
-    private String mIdentifiant;
+    private String identifiant;
 
     /**
      * List of the markers of this categories.
      */
-    private Collection<IMarker> mMarkers;
+    private Collection<IMarker> markers;
 
     /**
      * The maximum severity for this marker group.
      */
-    private int mMaxSeverity;
+    private int maxSeverity;
 
     /**
      * Crée un MarkerStat pour un marqueur Checkstyle correspondant à l'identifiant passé en
@@ -55,8 +55,8 @@ public class MarkerStat implements Comparable<MarkerStat> {
      *            : le message du marqueur Checkstyle
      */
     public MarkerStat(String identifiant) {
-        this.mIdentifiant = identifiant;
-        mMarkers = new ArrayList<>();
+        this.identifiant = identifiant;
+        markers = new ArrayList<>();
     }
 
     /**
@@ -66,17 +66,17 @@ public class MarkerStat implements Comparable<MarkerStat> {
      *            : the marker to add to this category
      */
     public void addMarker(IMarker marker) {
-        mMarkers.add(marker);
+        markers.add(marker);
 
         final int severity = MarkerUtilities.getSeverity(marker);
-        if (severity > mMaxSeverity) {
-            mMaxSeverity = severity;
+        if (severity > maxSeverity) {
+            maxSeverity = severity;
         }
     }
 
     @Override
     public int compareTo(MarkerStat stat) {
-        return mIdentifiant.compareTo(stat.getIdentifiant());
+        return identifiant.compareTo(stat.getIdentifiant());
     }
 
     /**
@@ -85,7 +85,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
      * @return a collection of IMarker
      */
     public Collection<IMarker> getMarkers() {
-        return mMarkers;
+        return markers;
     }
 
     /**
@@ -94,7 +94,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
      * @return Returns the count.
      */
     public int getCount() {
-        return mMarkers.size();
+        return markers.size();
     }
 
     /**
@@ -103,7 +103,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
      * @return the maximum severity level
      */
     public int getMaxSeverity() {
-        return mMaxSeverity;
+        return maxSeverity;
     }
 
     /**
@@ -112,7 +112,7 @@ public class MarkerStat implements Comparable<MarkerStat> {
      * @return Returns the identifiant.
      */
     public String getIdentifiant() {
-        return mIdentifiant;
+        return identifiant;
     }
 
 }

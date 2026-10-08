@@ -67,16 +67,16 @@ public abstract class AbstractStatsView extends ViewPart {
     private CheckstyleMarkerFilter filter;
 
     /** The focused resources. */
-    private IResource[] mFocusedResources;
+    private IResource[] focusedResources;
 
     /** The views private set of statistics. */
-    private Stats mStats;
+    private Stats stats;
 
     /** The listener reacting to selection changes in the workspace. */
-    private ISelectionListener mFocusListener;
+    private ISelectionListener focusListener;
 
     /** The listener reacting on resource changes. */
-    private IResourceChangeListener mResourceListener;
+    private IResourceChangeListener resourceListener;
 
     //
     // methods
@@ -124,9 +124,9 @@ public abstract class AbstractStatsView extends ViewPart {
         filter = CheckstyleMarkerFilter.restoreState(getDialogSettings(), new IResource[0]);
 
         // create and register the workspace focus listener
-        mFocusListener = AbstractStatsView.this::focusSelectionChanged;
+        focusListener = AbstractStatsView.this::focusSelectionChanged;
 
-        getSite().getPage().addSelectionListener(mFocusListener);
+        getSite().getPage().addSelectionListener(focusListener);
         final ISelection selection = getSite().getPage().getSelection();
         if (selection == null || selection instanceof TextSelection) {
             focusSelectionChanged(getSite().getPage().getActiveEditor(), null);
@@ -136,7 +136,7 @@ public abstract class AbstractStatsView extends ViewPart {
         }
 
         // create and register the listener for resource changes
-        mResourceListener = event -> {
+        resourceListener = event -> {
             final int numMarkerDeltas =
                 event.findMarkerDeltas(CheckstyleMarker.MARKER_ID, true).length;
             if (numMarkerDeltas > 0) {
@@ -144,7 +144,7 @@ public abstract class AbstractStatsView extends ViewPart {
             }
         };
 
-        ResourcesPlugin.getWorkspace().addResourceChangeListener(mResourceListener);
+        ResourcesPlugin.getWorkspace().addResourceChangeListener(resourceListener);
 
         makeActions();
         initActionBars(getViewSite().getActionBars());
@@ -158,8 +158,8 @@ public abstract class AbstractStatsView extends ViewPart {
     @Override
     public void dispose() {
         // IMPORTANT: Deregister listeners
-        getSite().getPage().removeSelectionListener(mFocusListener);
-        ResourcesPlugin.getWorkspace().removeResourceChangeListener(mResourceListener);
+        getSite().getPage().removeSelectionListener(focusListener);
+        ResourcesPlugin.getWorkspace().removeResourceChangeListener(resourceListener);
 
         super.dispose();
     }
@@ -196,7 +196,7 @@ public abstract class AbstractStatsView extends ViewPart {
      * @return the data of this view
      */
     protected final Stats getStats() {
-        return mStats;
+        return stats;
     }
 
     /**
@@ -225,7 +225,7 @@ public abstract class AbstractStatsView extends ViewPart {
         job.setPriority(Job.DECORATE);
         job.setRule(ResourcesPlugin.getWorkspace().getRoot());
         job.addJobChangeListener(IJobChangeListener.onDone(event -> {
-            mStats = ((CreateStatsJob) event.getJob()).getStats();
+            stats = ((CreateStatsJob) event.getJob()).getStats();
             uiJob.schedule();
         }));
         service.schedule(job, 0, true);
@@ -262,14 +262,14 @@ public abstract class AbstractStatsView extends ViewPart {
     private void focusSelectionChanged(IWorkbenchPart part, ISelection selection) {
         final List<IResource> resources = SelectionTool.resolveSelection(part, selection);
 
-        final IResource[] focusedResources = new IResource[resources.size()];
-        resources.toArray(focusedResources);
+        final IResource[] updatedFocusedResources = new IResource[resources.size()];
+        resources.toArray(updatedFocusedResources);
 
         // check if update necessary -> if so then update
-        final boolean updateNeeded = updateNeeded(mFocusedResources, focusedResources);
+        final boolean updateNeeded = updateNeeded(this.focusedResources, updatedFocusedResources);
         if (updateNeeded) {
-            mFocusedResources = focusedResources;
-            filter = filter.withFocusResources(focusedResources);
+            this.focusedResources = updatedFocusedResources;
+            filter = filter.withFocusResources(updatedFocusedResources);
             refresh();
         }
     }

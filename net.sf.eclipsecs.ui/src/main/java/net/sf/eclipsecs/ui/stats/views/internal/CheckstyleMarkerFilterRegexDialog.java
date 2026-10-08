@@ -49,19 +49,19 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
 
     /** The list viewer. */
-    private ListViewer mListViewer;
+    private ListViewer listViewer;
 
     /** The add button. */
-    private Button mAddButton;
+    private Button addButton;
 
     /** The remove button. */
-    private Button mRemoveButton;
+    private Button removeButton;
 
     /** The regex text input. */
-    private Text mRegexText;
+    private Text regexText;
 
     /** The file types list. */
-    private List<String> mFileTypesList;
+    private List<String> fileTypesList;
 
     /**
      * Creates a file matching pattern editor dialog.
@@ -73,7 +73,7 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
      */
     public CheckstyleMarkerFilterRegexDialog(Shell parentShell, List<String> fileTypes) {
         super(parentShell);
-        mFileTypesList = fileTypes;
+        fileTypesList = fileTypes;
     }
 
     @Override
@@ -95,22 +95,22 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
 
         createButtons(main);
 
-        mRegexText = new Text(controls, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        regexText = new Text(controls, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
         gridData = new GridData(GridData.FILL_HORIZONTAL);
         gridData.grabExcessHorizontalSpace = true;
-        mRegexText.setLayoutData(gridData);
+        regexText.setLayoutData(gridData);
 
-        mListViewer =
+        listViewer =
             new ListViewer(controls, SWT.SINGLE | SWT.H_SCROLL | SWT.V_SCROLL | SWT.BORDER);
-        mListViewer.setLabelProvider(new LabelProvider());
-        mListViewer.setContentProvider(ArrayContentProvider.getInstance());
-        mListViewer.setInput(mFileTypesList);
+        listViewer.setLabelProvider(new LabelProvider());
+        listViewer.setContentProvider(ArrayContentProvider.getInstance());
+        listViewer.setInput(fileTypesList);
         gridData = new GridData(GridData.FILL_BOTH);
         gridData.grabExcessHorizontalSpace = true;
-        mListViewer.getControl().setLayoutData(gridData);
+        listViewer.getControl().setLayoutData(gridData);
 
         // integrate content assist
-        RegexCompletionProposalFactory.createForText(mRegexText);
+        RegexCompletionProposalFactory.createForText(regexText);
 
         this.setTitle(Messages.CheckstyleMarkerFilterDialog_titleRegexEditor);
         this.setMessage(Messages.CheckstyleMarkerFilterDialog_msgEditRegex);
@@ -133,28 +133,28 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
         buttons.setLayout(layout);
         buttons.setLayoutData(new GridData(GridData.FILL_VERTICAL));
 
-        mAddButton = new Button(buttons, SWT.PUSH);
-        mAddButton.setText(Messages.CheckstyleMarkerFilterDialog_btnAdd);
+        addButton = new Button(buttons, SWT.PUSH);
+        addButton.setText(Messages.CheckstyleMarkerFilterDialog_btnAdd);
         GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
         gridData.verticalAlignment = SWT.TOP;
-        mAddButton.setLayoutData(gridData);
-        mAddButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-            final String text = mRegexText.getText();
+        addButton.setLayoutData(gridData);
+        addButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            final String text = regexText.getText();
             if (text.trim().length() > 0 && checkPatternValidity(text)) {
-                mFileTypesList.add(text);
-                mListViewer.refresh();
-                mRegexText.setText("");
+                fileTypesList.add(text);
+                listViewer.refresh();
+                regexText.setText("");
             }
         }));
 
-        mRemoveButton = new Button(buttons, SWT.PUSH);
-        mRemoveButton.setText(Messages.CheckstyleMarkerFilterDialog_btnRemove);
+        removeButton = new Button(buttons, SWT.PUSH);
+        removeButton.setText(Messages.CheckstyleMarkerFilterDialog_btnRemove);
         gridData = new GridData(GridData.FILL_HORIZONTAL);
         gridData.verticalAlignment = SWT.TOP;
-        mRemoveButton.setLayoutData(gridData);
-        mRemoveButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-            mFileTypesList.remove(mListViewer.getStructuredSelection().getFirstElement());
-            mListViewer.refresh();
+        removeButton.setLayoutData(gridData);
+        removeButton.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            fileTypesList.remove(listViewer.getStructuredSelection().getFirstElement());
+            listViewer.refresh();
         }));
 
         return buttons;

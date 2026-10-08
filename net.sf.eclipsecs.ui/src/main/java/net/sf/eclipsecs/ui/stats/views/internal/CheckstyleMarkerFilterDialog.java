@@ -55,16 +55,16 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
     private CheckstyleMarkerFilterDialogView dialogView;
 
     /** The default button. */
-    private Button mBtnDefault;
+    private Button btnDefault;
 
     /** The filter to be edited. */
-    private CheckstyleMarkerFilter mFilter;
+    private CheckstyleMarkerFilter filter;
 
     /** The selected working set. */
-    private IWorkingSet mSelectedWorkingSet;
+    private IWorkingSet selectedWorkingSet;
 
     /** The regular expressions to filter by. */
-    private List<String> mRegularExpressions;
+    private List<String> regularExpressions;
 
     //
     // constructors
@@ -82,7 +82,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
 
         super(shell);
         setHelpAvailable(false);
-        mFilter = filter;
+        this.filter = filter;
     }
 
     //
@@ -95,7 +95,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
      * @return the edited filter
      */
     public CheckstyleMarkerFilter getFilter() {
-        return mFilter;
+        return filter;
     }
 
     @Override
@@ -120,21 +120,21 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
      * Opens the dialog to edit the regular expressions used for filtering.
      */
     private void editRegularExpressions() {
-        final List<String> regex = new ArrayList<>(mRegularExpressions);
+        final List<String> regex = new ArrayList<>(regularExpressions);
         final CheckstyleMarkerFilterRegexDialog regexDialog =
             new CheckstyleMarkerFilterRegexDialog(getShell(), regex);
         if (Window.OK == regexDialog.open()) {
-            mRegularExpressions = regex;
+            regularExpressions = regex;
             initRegexLabel();
         }
     }
 
     @Override
     protected void createButtonsForButtonBar(Composite parent) {
-        mBtnDefault = createButton(parent, IDialogConstants.BACK_ID,
+        btnDefault = createButton(parent, IDialogConstants.BACK_ID,
             Messages.CheckstyleMarkerFilterDialog_btnRestoreDefault, false);
-        mBtnDefault.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
-            mFilter = CheckstyleMarkerFilter.resetState(mFilter.focusResources());
+        btnDefault.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+            filter = CheckstyleMarkerFilter.resetState(filter.focusResources());
             updateUIFromFilter();
         }));
 
@@ -159,36 +159,36 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
      * Updates the ui controls from the filter data.
      */
     private void updateUIFromFilter() {
-        mSelectedWorkingSet = mFilter.workingSet();
+        selectedWorkingSet = filter.workingSet();
         initWorkingSetLabel();
 
-        mRegularExpressions = mFilter.filterRegex();
+        regularExpressions = filter.filterRegex();
         initRegexLabel();
 
-        dialogView.set(mFilter.enabled(), mFilter.onResource(), mFilter.selectBySeverity(),
-            mFilter.severity(), mFilter.filterByRegex());
+        dialogView.set(filter.enabled(), filter.onResource(), filter.selectBySeverity(),
+            filter.severity(), filter.filterByRegex());
     }
 
     /**
      * Updates the filter data from the ui controls.
      */
     private void updateFilterFromUI() {
-        mFilter =
+        filter =
             new CheckstyleMarkerFilter(dialogView.getFilterEnabled(), dialogView.getOnResource(),
-                mSelectedWorkingSet, dialogView.getSelectBySeverity(), dialogView.getSeverity(),
-                dialogView.getSelectByRegex(), mRegularExpressions, mFilter.focusResources());
+                selectedWorkingSet, dialogView.getSelectBySeverity(), dialogView.getSeverity(),
+                dialogView.getSelectByRegex(), regularExpressions, filter.focusResources());
     }
 
     /**
      * Initializes the label for the selected working set.
      */
     private void initWorkingSetLabel() {
-        if (mSelectedWorkingSet == null) {
+        if (selectedWorkingSet == null) {
             dialogView
                 .setWorkingSetLabel(Messages.CheckstyleMarkerFilterDialog_msgNoWorkingSetSelected);
         }
         else {
-            dialogView.setWorkingSetLabel(mSelectedWorkingSet.getName());
+            dialogView.setWorkingSetLabel(selectedWorkingSet.getName());
         }
     }
 
@@ -200,8 +200,8 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
         final StringBuilder buf = new StringBuilder();
 
         final int size;
-        if (mRegularExpressions != null) {
-            size = mRegularExpressions.size();
+        if (regularExpressions != null) {
+            size = regularExpressions.size();
         }
         else {
             size = 0;
@@ -210,7 +210,7 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
             if (index > 0) {
                 buf.append(", ");
             }
-            buf.append(mRegularExpressions.get(index));
+            buf.append(regularExpressions.get(index));
         }
 
         if (size == 0) {
@@ -227,18 +227,18 @@ public class CheckstyleMarkerFilterDialog extends TitleAreaDialog {
         final IWorkingSetSelectionDialog dialog = PlatformUI.getWorkbench().getWorkingSetManager()
             .createWorkingSetSelectionDialog(getShell(), false);
 
-        if (mSelectedWorkingSet != null) {
+        if (selectedWorkingSet != null) {
             dialog.setSelection(new IWorkingSet[] {
-                mSelectedWorkingSet,
+                selectedWorkingSet,
             });
         }
         if (dialog.open() == Window.OK) {
             final IWorkingSet[] result = dialog.getSelection();
             if (result != null && result.length > 0) {
-                mSelectedWorkingSet = result[0];
+                selectedWorkingSet = result[0];
             }
             else {
-                mSelectedWorkingSet = null;
+                selectedWorkingSet = null;
             }
             initWorkingSetLabel();
         }

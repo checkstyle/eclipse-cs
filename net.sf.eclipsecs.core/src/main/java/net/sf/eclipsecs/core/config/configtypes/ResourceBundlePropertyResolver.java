@@ -32,7 +32,7 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 class ResourceBundlePropertyResolver implements PropertyResolver {
 
     /** The resource bundle. */
-    private ResourceBundle mBundle;
+    private ResourceBundle bundle;
 
     /**
      * Creates the property resolver.
@@ -41,7 +41,7 @@ class ResourceBundlePropertyResolver implements PropertyResolver {
      *            the resource bundle
      */
     ResourceBundlePropertyResolver(ResourceBundle bundle) {
-        mBundle = bundle;
+        this.bundle = bundle;
     }
 
     @Override
@@ -49,9 +49,9 @@ class ResourceBundlePropertyResolver implements PropertyResolver {
 
         String value = null;
 
-        if (mBundle != null) {
+        if (bundle != null) {
             try {
-                value = mBundle.getString(property);
+                value = bundle.getString(property);
             }
             catch (MissingResourceException ex) {
                 // ignore

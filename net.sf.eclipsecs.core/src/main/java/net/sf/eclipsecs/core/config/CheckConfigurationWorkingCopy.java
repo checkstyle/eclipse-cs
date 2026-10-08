@@ -56,28 +56,28 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public final class CheckConfigurationWorkingCopy extends AbstractCheckConfiguration {
 
     /** The source check configuration of the working copy. */
-    private final ICheckConfiguration mCheckConfiguration;
+    private final ICheckConfiguration checkConfiguration;
 
     /** The working set this working copy belongs to. */
-    private final ICheckConfigurationWorkingSet mWorkingSet;
+    private final ICheckConfigurationWorkingSet workingSet;
 
     /** The edited name of the configuration. */
-    private String mEditedName;
+    private String editedName;
 
     /** The edited location of the configuration. */
-    private String mEditedLocation;
+    private String editedLocation;
 
     /** The edited description of the configuration. */
-    private String mEditedDescription;
+    private String editedDescription;
 
     /** The list of resolvable properties. */
-    private List<ResolvableProperty> mProperties = new ArrayList<>();
+    private List<ResolvableProperty> properties = new ArrayList<>();
 
     /** The map of additional data for this configuration. */
-    private Map<String, String> mAdditionalData = new HashMap<>();
+    private Map<String, String> additionalData = new HashMap<>();
 
     /** Flags if the configuration is dirty. */
-    private boolean mHasConfigChanged;
+    private boolean hasConfigChanged;
 
     /**
      * Copy constructor.
@@ -86,17 +86,17 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      *            the working copy to copy
      */
     public CheckConfigurationWorkingCopy(CheckConfigurationWorkingCopy other) {
-        mCheckConfiguration = other.mCheckConfiguration;
-        mWorkingSet = other.mWorkingSet;
-        mEditedName = other.mEditedName;
-        mEditedLocation = other.mEditedLocation;
-        mEditedDescription = other.mEditedDescription;
-        mProperties = new ArrayList<>();
-        for (ResolvableProperty prop : other.mProperties) {
-            mProperties.add(new ResolvableProperty(prop));
+        checkConfiguration = other.checkConfiguration;
+        workingSet = other.workingSet;
+        editedName = other.editedName;
+        editedLocation = other.editedLocation;
+        editedDescription = other.editedDescription;
+        properties = new ArrayList<>();
+        for (ResolvableProperty prop : other.properties) {
+            properties.add(new ResolvableProperty(prop));
         }
-        mAdditionalData = new HashMap<>(other.mAdditionalData);
-        mHasConfigChanged = other.mHasConfigChanged;
+        additionalData = new HashMap<>(other.additionalData);
+        hasConfigChanged = other.hasConfigChanged;
     }
 
     /**
@@ -109,14 +109,14 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      */
     public CheckConfigurationWorkingCopy(ICheckConfiguration checkConfigToEdit,
         ICheckConfigurationWorkingSet workingSet) {
-        mCheckConfiguration = checkConfigToEdit;
-        mWorkingSet = workingSet;
+        checkConfiguration = checkConfigToEdit;
+        this.workingSet = workingSet;
 
-        mAdditionalData.putAll(checkConfigToEdit.getAdditionalData());
+        additionalData.putAll(checkConfigToEdit.getAdditionalData());
 
         final List<ResolvableProperty> props = checkConfigToEdit.getResolvableProperties();
         for (ResolvableProperty prop : props) {
-            mProperties.add(new ResolvableProperty(prop));
+            properties.add(new ResolvableProperty(prop));
         }
     }
 
@@ -133,8 +133,8 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
     public CheckConfigurationWorkingCopy(IConfigurationType configType,
         ICheckConfigurationWorkingSet workingSet, boolean global) {
 
-        mWorkingSet = workingSet;
-        mCheckConfiguration =
+        this.workingSet = workingSet;
+        checkConfiguration =
             new CheckConfiguration(null, null, null, configType, global, null, null);
     }
 
@@ -144,7 +144,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      * @return the source check configuration
      */
     public ICheckConfiguration getSourceCheckConfiguration() {
-        return mCheckConfiguration;
+        return checkConfiguration;
     }
 
     /**
@@ -165,11 +165,11 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
         final String oldName = getName();
         if (!name.equals(oldName)) {
 
-            mEditedName = name;
+            editedName = name;
 
             // Check if the new name is in use
-            if (mWorkingSet.isNameCollision(this)) {
-                mEditedName = oldName;
+            if (workingSet.isNameCollision(this)) {
+                editedName = oldName;
                 throw new CheckstylePluginException(NLS.bind(Messages.errorConfigNameInUse, name));
             }
         }
@@ -193,13 +193,13 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
         if (!location.equals(oldLocation)) {
 
             try {
-                mEditedLocation = location;
+                editedLocation = location;
 
                 // test if configuration file exists
                 getCheckstyleConfiguration();
             }
             catch (CheckstylePluginException ex) {
-                mEditedLocation = oldLocation;
+                editedLocation = oldLocation;
                 CheckstylePluginException.rethrow(ex, NLS.bind(Messages.errorResolveConfigLocation,
                     location, ex.getLocalizedMessage()));
             }
@@ -215,7 +215,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
     public void setDescription(String description) {
         final String oldDescription = getDescription();
         if (description == null || !description.equals(oldDescription)) {
-            mEditedDescription = description;
+            editedDescription = description;
         }
     }
 
@@ -227,7 +227,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      *         configuration
      */
     public boolean isDirty() {
-        return !this.equals(mCheckConfiguration);
+        return !this.equals(checkConfiguration);
     }
 
     /**
@@ -237,11 +237,11 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      * @return <code>true</code> if the checkstyle configuration changed.
      */
     public boolean hasConfigurationChanged() {
-        return mHasConfigChanged
-            || !(Objects.equals(getLocation(), mCheckConfiguration.getLocation())
+        return hasConfigChanged
+            || !(Objects.equals(getLocation(), checkConfiguration.getLocation())
                 && Objects.equals(getResolvableProperties(),
-                    mCheckConfiguration.getResolvableProperties())
-                && Objects.equals(getAdditionalData(), mCheckConfiguration.getAdditionalData()));
+                    checkConfiguration.getResolvableProperties())
+                && Objects.equals(getAdditionalData(), checkConfiguration.getAdditionalData()));
     }
 
     /**
@@ -304,7 +304,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
                 }
             }
 
-            mHasConfigChanged = true;
+            hasConfigChanged = true;
 
             // throw away the cached Checkstyle configurations
             CheckConfigurationFactory.refresh();
@@ -317,8 +317,8 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
     @Override
     public String getName() {
         final String name;
-        if (mEditedName != null) {
-            name = mEditedName;
+        if (editedName != null) {
+            name = editedName;
         }
         else {
             name = getSourceCheckConfiguration().getName();
@@ -329,8 +329,8 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
     @Override
     public String getDescription() {
         final String description;
-        if (mEditedDescription != null) {
-            description = mEditedDescription;
+        if (editedDescription != null) {
+            description = editedDescription;
         }
         else {
             description = getSourceCheckConfiguration().getDescription();
@@ -341,8 +341,8 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
     @Override
     public String getLocation() {
         final String location;
-        if (mEditedLocation != null) {
-            location = mEditedLocation;
+        if (editedLocation != null) {
+            location = editedLocation;
         }
         else {
             location = getSourceCheckConfiguration().getLocation();
@@ -357,12 +357,12 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
 
     @Override
     public Map<String, String> getAdditionalData() {
-        return mAdditionalData;
+        return additionalData;
     }
 
     @Override
     public List<ResolvableProperty> getResolvableProperties() {
-        return mProperties;
+        return properties;
     }
 
     @Override
@@ -388,7 +388,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
 
     @Override
     public boolean isGlobal() {
-        return mCheckConfiguration.isGlobal();
+        return checkConfiguration.isGlobal();
     }
 
     @Override

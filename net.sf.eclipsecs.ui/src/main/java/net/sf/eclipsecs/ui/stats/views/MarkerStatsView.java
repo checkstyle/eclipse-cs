@@ -58,10 +58,10 @@ public class MarkerStatsView extends AbstractStatsView {
     //
 
     /** The description label. */
-    private Label mDescLabel;
+    private Label descLabel;
 
     /** The main composite. */
-    private MarkerStatsMainView mMainSection;
+    private MarkerStatsMainView mainSection;
 
     /** The view actions. */
     private MarkerStatsViewActions actions;
@@ -70,7 +70,7 @@ public class MarkerStatsView extends AbstractStatsView {
     private DetailContentProvider detailContentProvider;
 
     /** The state if the view is currently drilled down to details. */
-    private boolean mIsDrilledDown;
+    private boolean isDrilledDown;
 
     //
     // methods
@@ -94,14 +94,14 @@ public class MarkerStatsView extends AbstractStatsView {
         GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(parent);
 
         // the label
-        mDescLabel = new Label(parent, SWT.NONE);
+        descLabel = new Label(parent, SWT.NONE);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false)
-            .applyTo(mDescLabel);
+            .applyTo(descLabel);
 
         // the main section
-        mMainSection = new MarkerStatsMainView(parent, SWT.NONE, providers, getSite(),
+        mainSection = new MarkerStatsMainView(parent, SWT.NONE, providers, getSite(),
             this::updateActions, actions);
-        GridDataFactory.create(GridData.FILL_BOTH).applyTo(mMainSection);
+        GridDataFactory.create(GridData.FILL_BOTH).applyTo(mainSection);
 
         updateActions();
 
@@ -114,7 +114,7 @@ public class MarkerStatsView extends AbstractStatsView {
     @Override
     public void setFocus() {
         super.setFocus();
-        mMainSection.focusTopControl();
+        mainSection.focusTopControl();
     }
 
     @Override
@@ -136,9 +136,9 @@ public class MarkerStatsView extends AbstractStatsView {
 
     @Override
     protected void handleStatsRebuilt() {
-        if (mMainSection != null) {
-            mMainSection.setStats(getStats());
-            if (mIsDrilledDown && detailContentProvider.getMarkerCount() == 0) {
+        if (mainSection != null) {
+            mainSection.setStats(getStats());
+            if (isDrilledDown && detailContentProvider.getMarkerCount() == 0) {
                 drillBack();
             }
             else {
@@ -155,10 +155,10 @@ public class MarkerStatsView extends AbstractStatsView {
         final Action mDrillDownAction = new Action() {
             @Override
             public void run() {
-                mMainSection.getSelectedMarkerCategory().ifPresent(markerStat -> {
-                    mIsDrilledDown = true;
+                mainSection.getSelectedMarkerCategory().ifPresent(markerStat -> {
+                    isDrilledDown = true;
                     detailContentProvider.setCurrentDetailCategory(markerStat.getIdentifiant());
-                    mMainSection.setDetailAsTopControl();
+                    mainSection.setDetailAsTopControl();
 
                     updateActions();
                     updateLabel();
@@ -191,7 +191,7 @@ public class MarkerStatsView extends AbstractStatsView {
         final Action mShowErrorAction = new Action() {
             @Override
             public void run() {
-                mMainSection.getSelectedMarker().ifPresent(marker -> {
+                mainSection.getSelectedMarker().ifPresent(marker -> {
                     try {
                         IDE.openEditor(getSite().getPage(), marker);
                     }
@@ -214,20 +214,20 @@ public class MarkerStatsView extends AbstractStatsView {
      * Helper method to manage the state of the view's actions.
      */
     private void updateActions() {
-        actions.mDrillBackAction().setEnabled(mIsDrilledDown);
+        actions.mDrillBackAction().setEnabled(isDrilledDown);
         actions.mDrillDownAction()
-            .setEnabled(!mIsDrilledDown && !mMainSection.getSelectedMarkerCategory().isEmpty());
+            .setEnabled(!isDrilledDown && !mainSection.getSelectedMarkerCategory().isEmpty());
         actions.mShowErrorAction()
-            .setEnabled(mIsDrilledDown && !mMainSection.getSelectedMarker().isEmpty());
+            .setEnabled(isDrilledDown && !mainSection.getSelectedMarker().isEmpty());
     }
 
     /**
      * Drills back from the detail view to the master view.
      */
     private void drillBack() {
-        mIsDrilledDown = false;
+        isDrilledDown = false;
         detailContentProvider.setCurrentDetailCategory(null);
-        mMainSection.setMasterAsTopControl();
+        mainSection.setMasterAsTopControl();
 
         updateActions();
         updateLabel();
@@ -237,7 +237,7 @@ public class MarkerStatsView extends AbstractStatsView {
      * Helper method to update the label of the view.
      */
     private void updateLabel() {
-        if (!mIsDrilledDown) {
+        if (!isDrilledDown) {
 
             final Stats stats = getStats();
             if (stats != null) {
@@ -247,10 +247,10 @@ public class MarkerStatsView extends AbstractStatsView {
                         Integer.valueOf(stats.getMarkerStats().size()),
                         Integer.valueOf(stats.getMarkerCountAll()),
                     });
-                mDescLabel.setText(text);
+                descLabel.setText(text);
             }
             else {
-                mDescLabel.setText("");
+                descLabel.setText("");
             }
         }
         else {
@@ -259,7 +259,7 @@ public class MarkerStatsView extends AbstractStatsView {
                 detailContentProvider.getCurrentDetailCategory(),
                 Integer.valueOf(detailContentProvider.getMarkerCount()),
             });
-            mDescLabel.setText(text);
+            descLabel.setText(text);
         }
     }
 

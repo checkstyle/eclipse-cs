@@ -34,10 +34,10 @@ import com.puppycrawl.tools.checkstyle.api.Configuration;
 public abstract class AbstractCTransformationClass {
 
     /** The eclipse-configuration for this rule. */
-    private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
+    private final FormatterConfiguration formatterSetting = new FormatterConfiguration();
 
     /** The map of attributes of this rule. */
-    private final Map<String, String> mAttributes = new HashMap<>();
+    private final Map<String, String> attributes = new HashMap<>();
 
     /**
      * Method for transforming the checkstyle-rule this class is associated to. Every
@@ -60,7 +60,7 @@ public abstract class AbstractCTransformationClass {
         final String[] attrs = rule.getAttributeNames();
         for (final String att : attrs) {
             try {
-                mAttributes.put(att, rule.getAttribute(att));
+                attributes.put(att, rule.getAttribute(att));
             }
             catch (CheckstyleException ex) {
                 // shouldn't happen since we only use existing attribute names
@@ -77,7 +77,7 @@ public abstract class AbstractCTransformationClass {
      * @return The value of the attribute.
      */
     public final String getAttribute(final String attribute) {
-        return mAttributes.get(attribute);
+        return attributes.get(attribute);
     }
 
     /**
@@ -89,7 +89,7 @@ public abstract class AbstractCTransformationClass {
      *            The value for the rule.
      */
     public final void userFormatterSetting(final String rule, final String val) {
-        mFormatterSetting.addFormatterSetting("org.eclipse.jdt.core.formatter." + rule, val);
+        formatterSetting.addFormatterSetting("org.eclipse.jdt.core.formatter." + rule, val);
     }
 
     /**
@@ -104,7 +104,7 @@ public abstract class AbstractCTransformationClass {
      *            The value for the rule.
      */
     public final void userFullFormatterSetting(final String settingId, final String val) {
-        mFormatterSetting.addFormatterSetting(settingId, val);
+        formatterSetting.addFormatterSetting(settingId, val);
     }
 
     /**
@@ -116,7 +116,7 @@ public abstract class AbstractCTransformationClass {
      *            The value for the rule.
      */
     public final void useCleanupSetting(final String rule, final boolean val) {
-        mFormatterSetting.addCleanupSetting("cleanup." + rule, String.valueOf(val));
+        formatterSetting.addCleanupSetting("cleanup." + rule, String.valueOf(val));
     }
 
     /**
@@ -125,7 +125,7 @@ public abstract class AbstractCTransformationClass {
      * @return The formatter-settings.
      */
     public FormatterConfiguration getFormatterSetting() {
-        return mFormatterSetting;
+        return formatterSetting;
     }
 
 }

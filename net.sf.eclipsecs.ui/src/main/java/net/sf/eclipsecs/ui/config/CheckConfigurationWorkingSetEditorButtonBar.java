@@ -39,17 +39,17 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
     /** Whether the default button should be shown. */
     private final boolean useDefaultButton;
     /** The edit button. */
-    private final Button mEditButton;
+    private final Button editButton;
     /** The configure button. */
-    private final Button mConfigureButton;
+    private final Button configureButton;
     /** The copy button. */
-    private final Button mCopyButton;
+    private final Button copyButton;
     /** The remove button. */
-    private final Button mRemoveButton;
+    private final Button removeButton;
     /** The default button. */
-    private final Button mDefaultButton;
+    private final Button defaultButton;
     /** The export button. */
-    private final Button mExportButton;
+    private final Button exportButton;
 
     /**
      * Creates the button bar for the working set editor.
@@ -75,36 +75,36 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
             createButton(this, Messages.CheckstylePreferencePage_btnNew, actions.addCheckConfig);
         GridDataFactory.fillDefaults().applyTo(addButton);
 
-        mEditButton = createButton(this, Messages.CheckstylePreferencePage_btnProperties,
+        editButton = createButton(this, Messages.CheckstylePreferencePage_btnProperties,
             actions.editCheckConfig);
-        GridDataFactory.fillDefaults().applyTo(mEditButton);
+        GridDataFactory.fillDefaults().applyTo(editButton);
 
-        mConfigureButton = createButton(this, Messages.CheckstylePreferencePage_btnConfigure,
+        configureButton = createButton(this, Messages.CheckstylePreferencePage_btnConfigure,
             actions.configureCheckConfig);
-        GridDataFactory.fillDefaults().applyTo(mConfigureButton);
+        GridDataFactory.fillDefaults().applyTo(configureButton);
 
-        mCopyButton =
+        copyButton =
             createButton(this, Messages.CheckstylePreferencePage_btnCopy, actions.copyCheckConfig);
-        GridDataFactory.fillDefaults().applyTo(mCopyButton);
+        GridDataFactory.fillDefaults().applyTo(copyButton);
 
-        mRemoveButton = createButton(this, Messages.CheckstylePreferencePage_btnRemove,
+        removeButton = createButton(this, Messages.CheckstylePreferencePage_btnRemove,
             actions.removeCheckConfig);
-        GridDataFactory.fillDefaults().applyTo(mRemoveButton);
+        GridDataFactory.fillDefaults().applyTo(removeButton);
 
         if (useDefaultButton) {
-            mDefaultButton = createButton(this, Messages.CheckstylePreferencePage_btnDefault,
+            defaultButton = createButton(this, Messages.CheckstylePreferencePage_btnDefault,
                 actions.setDefaultCheckConfig());
-            mDefaultButton.setToolTipText(Messages.CheckstylePreferencePage_txtDefault);
-            GridDataFactory.fillDefaults().applyTo(mDefaultButton);
+            defaultButton.setToolTipText(Messages.CheckstylePreferencePage_txtDefault);
+            GridDataFactory.fillDefaults().applyTo(defaultButton);
         }
         else {
-            mDefaultButton = null;
+            defaultButton = null;
         }
 
-        mExportButton = createButton(this, Messages.CheckstylePreferencePage_btnExport,
+        exportButton = createButton(this, Messages.CheckstylePreferencePage_btnExport,
             actions.exportCheckstyleCheckConfig);
         GridDataFactory.fillDefaults().grab(true, true).align(SWT.FILL, SWT.END)
-            .applyTo(mExportButton);
+            .applyTo(exportButton);
     }
 
     /**
@@ -137,13 +137,13 @@ public final class CheckConfigurationWorkingSetEditorButtonBar extends Composite
      */
     public void setSelectionState(boolean configSelected, boolean configEditable,
         boolean configDefault) {
-        mEditButton.setEnabled(configSelected);
-        mConfigureButton.setEnabled(configSelected);
-        mCopyButton.setEnabled(configSelected);
-        mExportButton.setEnabled(configSelected);
-        mRemoveButton.setEnabled(configSelected && configEditable);
+        editButton.setEnabled(configSelected);
+        configureButton.setEnabled(configSelected);
+        copyButton.setEnabled(configSelected);
+        exportButton.setEnabled(configSelected);
+        removeButton.setEnabled(configSelected && configEditable);
         if (useDefaultButton) {
-            mDefaultButton.setEnabled(configSelected && !configDefault);
+            defaultButton.setEnabled(configSelected && !configDefault);
         }
     }
 

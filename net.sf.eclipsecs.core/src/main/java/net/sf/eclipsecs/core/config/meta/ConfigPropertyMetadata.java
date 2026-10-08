@@ -31,22 +31,22 @@ import net.sf.eclipsecs.core.Messages;
 public class ConfigPropertyMetadata {
 
     /** The type of the property data. */
-    private ConfigPropertyType mDatatype;
+    private ConfigPropertyType datatype;
 
     /** The name of the property. */
-    private String mName;
+    private String name;
 
     /** The default value of the property. */
-    private String mDefaultValue;
+    private String defaultValue;
 
     /** A differing default value from the Checkstyle core. */
-    private String mOverrideDefaultValue;
+    private String overrideDefaultValue;
 
     /** The description of the property. */
-    private String mDescription;
+    private String description;
 
     /** The list of possible property values. */
-    private List<String> mEnumeration = new ArrayList<>();
+    private List<String> enumeration = new ArrayList<>();
 
     /**
      * Creates the property metadata.
@@ -62,11 +62,11 @@ public class ConfigPropertyMetadata {
      */
     public ConfigPropertyMetadata(ConfigPropertyType type, String name, String defaultValue,
         String overrideDefaultValue) {
-        mDatatype = type;
-        mName = name;
-        mDefaultValue = defaultValue;
-        mOverrideDefaultValue = overrideDefaultValue;
-        mDescription = Messages.ConfigPropertyMetadata_txtNoDescription;
+        this.datatype = type;
+        this.name = name;
+        this.defaultValue = defaultValue;
+        this.overrideDefaultValue = overrideDefaultValue;
+        this.description = Messages.ConfigPropertyMetadata_txtNoDescription;
     }
 
     /**
@@ -75,7 +75,7 @@ public class ConfigPropertyMetadata {
      * @return The datatype
      */
     public ConfigPropertyType getDatatype() {
-        return mDatatype;
+        return datatype;
     }
 
     /**
@@ -84,7 +84,7 @@ public class ConfigPropertyMetadata {
      * @return The name
      */
     public String getName() {
-        return mName;
+        return name;
     }
 
     /**
@@ -93,7 +93,7 @@ public class ConfigPropertyMetadata {
      * @return The description
      */
     public String getDescription() {
-        return mDescription;
+        return description;
     }
 
     /**
@@ -103,7 +103,7 @@ public class ConfigPropertyMetadata {
      *            the description
      */
     public void setDescription(String description) {
-        mDescription = description;
+        this.description = description;
     }
 
     /**
@@ -112,7 +112,7 @@ public class ConfigPropertyMetadata {
      * @return The default value
      */
     public String getDefaultValue() {
-        return mDefaultValue;
+        return defaultValue;
     }
 
     /**
@@ -121,7 +121,7 @@ public class ConfigPropertyMetadata {
      * @return The differing checkstyle default value.
      */
     public String getOverrideDefault() {
-        return mOverrideDefaultValue;
+        return overrideDefaultValue;
     }
 
     /**
@@ -130,7 +130,7 @@ public class ConfigPropertyMetadata {
      * @return Enumeration of values
      */
     public List<String> getPropertyEnumeration() {
-        return mEnumeration;
+        return enumeration;
     }
 
     /**
@@ -139,7 +139,7 @@ public class ConfigPropertyMetadata {
      * @return boolean
      */
     public boolean isHidden() {
-        return ConfigPropertyType.HIDDEN == mDatatype;
+        return ConfigPropertyType.HIDDEN == datatype;
     }
 
 }

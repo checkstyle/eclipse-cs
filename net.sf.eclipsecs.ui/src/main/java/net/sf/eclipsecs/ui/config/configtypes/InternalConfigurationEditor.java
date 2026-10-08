@@ -59,10 +59,10 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
     //
 
     /** The properties dialog. */
-    private CheckConfigurationPropertiesDialog mDialog;
+    private CheckConfigurationPropertiesDialog dialog;
 
     /** The working copy this editor edits. */
-    private CheckConfigurationWorkingCopy mWorkingCopy;
+    private CheckConfigurationWorkingCopy workingCopy;
 
     /** The editor view. */
     private InternalConfigurationEditorView editorView;
@@ -79,9 +79,9 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
-        CheckConfigurationPropertiesDialog dialog) {
-        mWorkingCopy = checkConfiguration;
-        mDialog = dialog;
+        CheckConfigurationPropertiesDialog initDialog) {
+        workingCopy = checkConfiguration;
+        this.dialog = initDialog;
     }
 
     @Override
@@ -90,14 +90,14 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
             new InternalConfigurationEditorView(parent, SWT.NULL, () -> importConfig(shell));
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(this.editorView);
 
-        if (mWorkingCopy.getName() != null) {
-            editorView.setConfigName(mWorkingCopy.getName());
+        if (workingCopy.getName() != null) {
+            editorView.setConfigName(workingCopy.getName());
         }
-        if (mWorkingCopy.getLocation() != null) {
-            editorView.setConfigLocation(mWorkingCopy.getLocation());
+        if (workingCopy.getLocation() != null) {
+            editorView.setConfigLocation(workingCopy.getLocation());
         }
-        if (mWorkingCopy.getDescription() != null) {
-            editorView.setDescription(mWorkingCopy.getDescription());
+        if (workingCopy.getDescription() != null) {
+            editorView.setDescription(workingCopy.getDescription());
         }
 
         return editorView;
@@ -117,7 +117,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
                 tmpSourceConfig.copyConfiguration(getEditedWorkingCopy());
             }
             catch (CheckstylePluginException ex) {
-                mDialog.setErrorMessage(ex.getLocalizedMessage());
+                dialog.setErrorMessage(ex.getLocalizedMessage());
             }
         });
     }
@@ -145,26 +145,26 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
 
     @Override
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-        mWorkingCopy.setName(editorView.getConfigName());
+        workingCopy.setName(editorView.getConfigName());
 
-        if (mWorkingCopy.getLocation() == null) {
+        if (workingCopy.getLocation() == null) {
 
             final String location = "internal_config_" + System.currentTimeMillis() + ".xml";
             try {
-                mWorkingCopy.setLocation(location);
+                workingCopy.setLocation(location);
             }
             catch (CheckstylePluginException ex) {
                 if (StringUtils.isNotBlank(location) && ensureFileExists(location)) {
-                    mWorkingCopy.setLocation(location);
+                    workingCopy.setLocation(location);
                 }
                 else {
                     throw ex;
                 }
             }
         }
-        mWorkingCopy.setDescription(editorView.getDescription());
+        workingCopy.setDescription(editorView.getDescription());
 
-        return mWorkingCopy;
+        return workingCopy;
     }
 
     /**
@@ -187,7 +187,7 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
                     Files.createDirectories(resolvedLocation.getParent());
                     try (OutputStream out =
                         new BufferedOutputStream(Files.newOutputStream(resolvedLocation))) {
-                        ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+                        ConfigurationWriter.writeNewConfiguration(out, workingCopy);
                     }
                 }
                 catch (IOException ex) {

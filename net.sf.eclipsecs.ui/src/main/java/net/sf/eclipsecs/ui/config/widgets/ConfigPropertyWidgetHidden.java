@@ -31,7 +31,7 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
 public final class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidget {
 
     /** The hidden value. */
-    private String mValue = "";
+    private String value = "";
 
     /**
      * Creates the widget.
@@ -65,7 +65,7 @@ public final class ConfigPropertyWidgetHidden extends AbstractConfigPropertyWidg
 
     @Override
     public String getValue() {
-        return mValue;
+        return value;
     }
 
     @Override
