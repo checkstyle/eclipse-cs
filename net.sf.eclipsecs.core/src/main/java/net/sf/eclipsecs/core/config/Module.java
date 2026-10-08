@@ -92,6 +92,16 @@ public class Module {
     //
 
     /**
+     * Create a module without meta data.
+     *
+     * @param name
+     *            the name of the module
+     */
+    public Module(String name) {
+        mName = name;
+    }
+
+    /**
      * Creates a module with the according meta data.
      *
      * @param metaData
@@ -120,16 +130,6 @@ public class Module {
                 mSeverityLevel = metaData.defaultSeverity();
             }
         }
-    }
-
-    /**
-     * Create a module without meta data.
-     *
-     * @param name
-     *            the name of the module
-     */
-    public Module(String name) {
-        mName = name;
     }
 
     /**

@@ -47,6 +47,13 @@ public class FileSet {
     private List<FileMatchPattern> fileMatchPatterns = new LinkedList<>();
 
     /**
+     * Default constructor.
+     */
+    public FileSet() {
+
+    }
+
+    /**
      * Copy constructor.
      *
      * @param other
@@ -60,13 +67,6 @@ public class FileSet {
         for (FileMatchPattern pattern : other.fileMatchPatterns) {
             this.fileMatchPatterns.add(new FileMatchPattern(pattern));
         }
-    }
-
-    /**
-     * Default constructor.
-     */
-    public FileSet() {
-
     }
 
     /**
