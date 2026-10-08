@@ -66,11 +66,11 @@ public final class CheckstylePropertyPageMainTab extends Composite {
      *            the widget style
      * @param propertyPageContext
      *            the property page context
-     * @param mCheckstyleInitiallyActivated
+     * @param checkstyleInitiallyActivated
      *            whether checkstyle is initially activated
      */
     public CheckstylePropertyPageMainTab(Composite parent, int style,
-        PropertyPageContext propertyPageContext, boolean mCheckstyleInitiallyActivated) {
+        PropertyPageContext propertyPageContext, boolean checkstyleInitiallyActivated) {
         super(parent, style);
         this.propertyPageContext = propertyPageContext;
 
@@ -79,7 +79,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         // create the checkbox to enable/disable checkstyle
         this.chkEnable = new Button(this, SWT.CHECK);
         this.chkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
-        this.chkEnable.setSelection(mCheckstyleInitiallyActivated);
+        this.chkEnable.setSelection(checkstyleInitiallyActivated);
         GridDataFactory.fillDefaults().grab(true, false).applyTo(chkEnable);
 
         // create the checkbox to enable/disable the simple configuration

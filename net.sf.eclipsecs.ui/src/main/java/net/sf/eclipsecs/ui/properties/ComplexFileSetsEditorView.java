@@ -61,12 +61,12 @@ public final class ComplexFileSetsEditorView extends Composite {
      *            the runnable invoked to add a file set
      * @param removeFileSet
      *            the consumer invoked to remove a file set
-     * @param mFileSets
+     * @param fileSets
      *            the list of file sets to display
      */
     public ComplexFileSetsEditorView(Composite parent, int style,
         ICheckStateListener changeEnabledState, Consumer<FileSet> editFileSet, Runnable addFileSet,
-        Consumer<FileSet> removeFileSet, List<FileSet> mFileSets) {
+        Consumer<FileSet> removeFileSet, List<FileSet> fileSets) {
         super(parent, style);
         setLayout(new FillLayout());
 
@@ -75,7 +75,7 @@ public final class ComplexFileSetsEditorView extends Composite {
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(composite);
 
         viewer = new ComplexFileSetsEditorTableView(composite, SWT.NONE, changeEnabledState,
-            editFileSet, mFileSets);
+            editFileSet, fileSets);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(viewer);
 
         //

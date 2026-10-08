@@ -126,17 +126,17 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
      * Binds the given configuration editor into the editor placeholder, removing any previously
      * bound editor.
      *
-     * @param mConfigurationEditor
+     * @param configurationEditor
      *            the configuration editor to bind
      */
-    public void bindEditor(ICheckConfigurationEditor mConfigurationEditor) {
+    public void bindEditor(ICheckConfigurationEditor configurationEditor) {
         // remove old editor
         final Control[] controls = editorPlaceHolder.getChildren();
         for (Control control : controls) {
             control.dispose();
         }
 
-        mConfigurationEditor.createEditorControl(editorPlaceHolder, getShell());
+        configurationEditor.createEditorControl(editorPlaceHolder, getShell());
 
         editorPlaceHolder.redraw();
         editorPlaceHolder.update();

@@ -217,6 +217,7 @@
     <suppress checks="TodoComment" files="PropertyUtil.java"/> 
     <suppress checks="ReturnCount" files="PropertyUtil.java"/>
     <suppress checks="MultipleStringLiterals" files="PropertyUtil.java"/>
+    <suppress checks="ParameterName" files="PropertyUtil.java"/>
     
     <!-- NLS -->
     <suppress files="Messages.java" checks="VisibilityModifier"/>

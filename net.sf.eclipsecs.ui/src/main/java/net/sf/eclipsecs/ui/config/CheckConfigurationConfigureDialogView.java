@@ -69,13 +69,13 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
      *            the SWT style bits
      * @param callbacks
      *            the callbacks used by the dialog view
-     * @param mModules
+     * @param modules
      *            the list of configured modules
      * @param configurable
      *            whether the configuration is editable
      */
     public CheckConfigurationConfigureDialogView(Composite parent, int style,
-        CheckConfigurationConfigureDialogViewCallbacks callbacks, List<Module> mModules,
+        CheckConfigurationConfigureDialogViewCallbacks callbacks, List<Module> modules,
         boolean configurable) {
         super(parent, style);
         GridLayoutFactory.swtDefaults().applyTo(this);
@@ -99,11 +99,11 @@ public final class CheckConfigurationConfigureDialogView extends Composite {
         }));
 
         this.availableModulesViewer = new AvailableModulesViewer(sashForm, SWT.NULL,
-            new AvailableModulesViewerLabelProvider(mModules), configurable, callbacks.newModule,
+            new AvailableModulesViewerLabelProvider(modules), configurable, callbacks.newModule,
             this::changeAvailableModuleSelection);
         GridDataFactory.fillDefaults().applyTo(availableModulesViewer);
 
-        this.configuredModules = new ConfiguredModules(sashForm, SWT.NONE, configurable, mModules,
+        this.configuredModules = new ConfiguredModules(sashForm, SWT.NONE, configurable, modules,
             new ConfiguredModulesCallbacks(callbacks.openModule, callbacks.removeModule,
                 this::setBrowserDescription, callbacks.checkStateChanged));
         GridDataFactory.fillDefaults().applyTo(configuredModules);
