@@ -58,13 +58,13 @@ public final class SimpleFileSetsEditorView extends Composite {
      *            the style of the composite
      * @param manageConfig
      *            the runnable to manage configurations
-     * @param mDefaultFileSet
+     * @param defaultFileSet
      *            the default file set
      * @param propertyPageContext
      *            the property page context
      */
     public SimpleFileSetsEditorView(Composite parent, int style, Runnable manageConfig,
-        FileSet mDefaultFileSet, PropertyPageContext propertyPageContext) {
+        FileSet defaultFileSet, PropertyPageContext propertyPageContext) {
         super(parent, style);
         GridLayoutFactory.fillDefaults().applyTo(this);
 
@@ -100,15 +100,15 @@ public final class SimpleFileSetsEditorView extends Composite {
         comboViewer.addSelectionChangedListener(event -> {
             final ICheckConfiguration config =
                 (ICheckConfiguration) event.getStructuredSelection().getFirstElement();
-            mDefaultFileSet.setCheckConfig(config);
+            defaultFileSet.setCheckConfig(config);
             mTxtConfigDescription.setText(getDescription(config));
             propertyPageContext.updateButtons();
         });
 
         // init the check configuration combo
         comboViewer.setInput(propertyPageContext.configuration());
-        if (mDefaultFileSet.getCheckConfig() != null) {
-            comboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
+        if (defaultFileSet.getCheckConfig() != null) {
+            comboViewer.setSelection(new StructuredSelection(defaultFileSet.getCheckConfig()));
         }
     }
 

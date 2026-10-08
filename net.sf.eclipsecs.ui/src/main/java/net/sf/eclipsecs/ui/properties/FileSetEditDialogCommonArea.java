@@ -135,11 +135,11 @@ public final class FileSetEditDialogCommonArea extends Composite {
     /**
      * Selects the given check configuration in the combo viewer.
      *
-     * @param iCheckConfiguration
+     * @param checkConfiguration
      *            the check configuration to select
      */
-    public void setSelection(ICheckConfiguration iCheckConfiguration) {
-        this.comboViewer.setSelection(new StructuredSelection(iCheckConfiguration));
+    public void setSelection(ICheckConfiguration checkConfiguration) {
+        this.comboViewer.setSelection(new StructuredSelection(checkConfiguration));
     }
 
 }

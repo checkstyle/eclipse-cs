@@ -61,12 +61,12 @@ public final class ComplexFileSetsEditorTableView extends Composite {
      *            the listener for checkbox state changes
      * @param editFileSet
      *            the callback for editing a file set
-     * @param mFileSets
+     * @param fileSets
      *            the file sets to display
      */
     public ComplexFileSetsEditorTableView(Composite parent, int style,
         ICheckStateListener changeEnabledState, Consumer<FileSet> editFileSet,
-        List<FileSet> mFileSets) {
+        List<FileSet> fileSets) {
         super(parent, style);
         GridLayoutFactory.fillDefaults().applyTo(this);
 
@@ -74,9 +74,9 @@ public final class ComplexFileSetsEditorTableView extends Composite {
         viewer.setLabelProvider(FileSetLabelProvider.INSTANCE);
         viewer.setContentProvider(ArrayContentProvider.getInstance());
         viewer.setComparator(FileSetViewerSorter.INSTANCE);
-        viewer.setInput(mFileSets);
+        viewer.setInput(fileSets);
 
-        for (FileSet fileSet : mFileSets) {
+        for (FileSet fileSet : fileSets) {
             viewer.setChecked(fileSet, fileSet.isEnabled());
         }
 
