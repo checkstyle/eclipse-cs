@@ -123,9 +123,9 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
                 status = Status.OK_STATUS;
             }
         }
-        catch (CheckstyleException | CheckstylePluginException ex) {
+        catch (CheckstyleException | CheckstylePluginException exception) {
             throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                IStatus.ERROR, ex.getMessage(), ex));
+                IStatus.ERROR, exception.getMessage(), exception));
         }
         return status;
     }

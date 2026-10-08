@@ -114,16 +114,16 @@ public final class AstQuickfixExecutor {
                         }
                     }
                 }
-                catch (CoreException | MalformedTreeException | BadLocationException ex) {
-                    CheckstyleLog.log(ex, Messages.AbstractASTResolution_msgErrorQuickfix);
+                catch (CoreException | MalformedTreeException | BadLocationException exception) {
+                    CheckstyleLog.log(exception, Messages.AbstractASTResolution_msgErrorQuickfix);
                 }
                 finally {
                     if (bufferManager != null) {
                         try {
                             bufferManager.disconnect(path, LocationKind.IFILE, null);
                         }
-                        catch (CoreException ex) {
-                            CheckstyleLog.log(ex, "Error processing quickfix");
+                        catch (CoreException exception) {
+                            CheckstyleLog.log(exception, "Error processing quickfix");
                         }
                     }
                 }

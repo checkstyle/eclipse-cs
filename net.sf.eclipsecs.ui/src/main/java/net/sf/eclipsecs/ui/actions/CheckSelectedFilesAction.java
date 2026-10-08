@@ -105,8 +105,8 @@ public class CheckSelectedFilesAction extends AbstractHandler implements IObject
                 job.schedule();
             }
         }
-        catch (CoreException ex) {
-            CheckstyleUIPlugin.errorDialog(part.getSite().getShell(), ex, true);
+        catch (CoreException exception) {
+            CheckstyleUIPlugin.errorDialog(part.getSite().getShell(), exception, true);
         }
     }
 

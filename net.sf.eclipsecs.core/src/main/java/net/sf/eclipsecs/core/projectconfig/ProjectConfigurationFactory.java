@@ -89,8 +89,8 @@ public final class ProjectConfigurationFactory {
         try {
             standardFileSet.getFileMatchPatterns().add(new FileMatchPattern(".*"));
         }
-        catch (CheckstylePluginException ex) {
-            throw new RuntimeException(ex);
+        catch (CheckstylePluginException exception) {
+            throw new RuntimeException(exception);
         }
 
         final List<FileSet> fileSets = Arrays.asList(standardFileSet);
@@ -182,8 +182,8 @@ public final class ProjectConfigurationFactory {
             try (InputStream inStream = file.getContents(true)) {
                 configuration = getProjectConfiguration(inStream, project);
             }
-            catch (DocumentException | CoreException | IOException ex) {
-                CheckstylePluginException.rethrow(ex);
+            catch (DocumentException | CoreException | IOException exception) {
+                CheckstylePluginException.rethrow(exception);
             }
         }
         else {

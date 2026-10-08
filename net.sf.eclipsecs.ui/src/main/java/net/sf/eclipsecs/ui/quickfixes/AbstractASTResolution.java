@@ -74,7 +74,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
                 }
             }
         }
-        catch (CoreException ex) {
+        catch (CoreException exception) {
             // ignore
         }
         return canFix;

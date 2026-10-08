@@ -108,8 +108,8 @@ public final class PluginFilters {
 
                 filters.add(filter);
             }
-            catch (CoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (CoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }
 

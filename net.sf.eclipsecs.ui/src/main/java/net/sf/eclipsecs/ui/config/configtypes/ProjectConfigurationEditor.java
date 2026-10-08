@@ -203,11 +203,11 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         try {
             workingCopy.setLocation(locationControl.getText());
         }
-        catch (CheckstylePluginException ex) {
+        catch (CheckstylePluginException exception) {
             String location = locationControl.getText();
 
             if (StringUtils.isBlank(location)) {
-                throw ex;
+                throw exception;
             }
 
             final ICheckConfigurationWorkingSet workingSet =
@@ -226,14 +226,14 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                 throw new CheckstylePluginException(
                     NLS.bind(Messages.ProjectConfigurationEditor_msgNoProjectInWorkspace,
                         tmp.segment(0)),
-                    ex);
+                    exception);
             }
 
             if (ensureFileExists(location)) {
                 workingCopy.setLocation(locationControl.getText());
             }
             else {
-                throw ex;
+                throw exception;
             }
         }
 
@@ -255,8 +255,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         try {
             file = ResourcesPlugin.getWorkspace().getRoot().getFile(IPath.fromOSString(location));
         }
-        catch (IllegalArgumentException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (IllegalArgumentException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
 
         final boolean exists;
@@ -276,8 +276,8 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                         file.refreshLocal(IResource.DEPTH_INFINITE, null);
                     }
                 }
-                catch (CoreException | IOException ex) {
-                    CheckstylePluginException.rethrow(ex);
+                catch (CoreException | IOException exception) {
+                    CheckstylePluginException.rethrow(exception);
                 }
 
                 exists = true;

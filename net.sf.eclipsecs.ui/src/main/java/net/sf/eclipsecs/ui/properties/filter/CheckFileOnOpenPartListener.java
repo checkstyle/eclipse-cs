@@ -98,8 +98,8 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
                 editorFile.deleteMarkers(CheckstyleMarker.MARKER_ID, true,
                     IResource.DEPTH_INFINITE);
             }
-            catch (CoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (CoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }
     }
@@ -151,8 +151,8 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
                 file = input.getFile();
             }
         }
-        catch (PartInitException ex) {
-            throw new RuntimeException(ex);
+        catch (PartInitException exception) {
+            throw new RuntimeException(exception);
         }
         return file;
     }
@@ -194,8 +194,8 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
                 isFileAffected = unOpenedFilesFilterActive && !filtered;
             }
         }
-        catch (CoreException | CheckstylePluginException ex) {
-            CheckstyleLog.log(ex);
+        catch (CoreException | CheckstylePluginException exception) {
+            CheckstyleLog.log(exception);
         }
 
         return isFileAffected;

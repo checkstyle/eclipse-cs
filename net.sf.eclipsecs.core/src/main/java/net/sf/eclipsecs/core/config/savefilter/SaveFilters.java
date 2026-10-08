@@ -69,8 +69,8 @@ public final class SaveFilters {
                     (ISaveFilter) element.createExecutableExtension(ATTR_CLASS);
                 filters.add(filter);
             }
-            catch (CoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (CoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }
 

@@ -114,8 +114,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 loadModules();
             });
         }
-        catch (InvocationTargetException | InterruptedException ex) {
-            CheckstyleLog.log(ex);
+        catch (InvocationTargetException | InterruptedException exception) {
+            CheckstyleLog.log(exception);
         }
 
         dialogView = new CheckConfigurationConfigureDialogView(composite, SWT.NULL,
@@ -154,8 +154,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 configuration.setModules(modules);
             }
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+        catch (CheckstylePluginException exception) {
+            CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
         }
 
         super.okPressed();
@@ -183,8 +183,8 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
                 CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR,
                     ((Button) event.widget).getSelection());
             }
-            catch (BackingStoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (BackingStoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }));
 
@@ -222,9 +222,9 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         try {
             modules = configuration.getModules();
         }
-        catch (CheckstylePluginException ex) {
+        catch (CheckstylePluginException exception) {
             modules = new ArrayList<>();
-            CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+            CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
         }
     }
 

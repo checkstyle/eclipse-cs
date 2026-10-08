@@ -145,8 +145,8 @@ public final class ConfigurationReader {
 
             rules = getModules(document);
         }
-        catch (final DocumentException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (final DocumentException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
 
         if (rules == null) {
@@ -229,7 +229,7 @@ public final class ConfigurationReader {
                 try {
                     module.setSeverity(Severity.fromXmlValue(value));
                 }
-                catch (final IllegalArgumentException ex) {
+                catch (final IllegalArgumentException exception) {
                     module.setSeverity(Severity.INHERIT);
                 }
             }

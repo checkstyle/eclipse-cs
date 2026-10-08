@@ -149,7 +149,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
             try {
                 widget.validate();
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 final String message =
                     NLS.bind(Messages.RuleConfigurationEditDialog_msgInvalidPropertyValue,
                         property.getMetaData().getName());

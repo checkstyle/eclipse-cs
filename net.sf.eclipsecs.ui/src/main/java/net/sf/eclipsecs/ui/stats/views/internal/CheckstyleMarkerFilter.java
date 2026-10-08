@@ -237,7 +237,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
         try {
             parsed = Optional.of(Integer.parseInt(setting));
         }
-        catch (NumberFormatException ex) {
+        catch (NumberFormatException exception) {
             parsed = Optional.empty();
         }
         return parsed;

@@ -92,7 +92,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
         try {
             defaultFileSet.getFileMatchPatterns().add(new FileMatchPattern("."));
         }
-        catch (CheckstylePluginException ex) {
+        catch (CheckstylePluginException exception) {
             // impossible
         }
         fileSets.clear();
@@ -125,11 +125,11 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
                 dialog.setBlockOnOpen(true);
                 dialog.open();
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 CheckstyleUIPlugin.warningDialog(shell,
                     NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
                         propertyPageContext.project(), config.getLocation()),
-                    ex);
+                    exception);
             }
         }
     }

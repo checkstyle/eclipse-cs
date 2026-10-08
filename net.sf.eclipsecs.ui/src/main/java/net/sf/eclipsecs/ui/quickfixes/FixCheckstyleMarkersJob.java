@@ -73,9 +73,9 @@ public class FixCheckstyleMarkersJob extends UIJob {
             }
             status = Status.OK_STATUS;
         }
-        catch (CoreException ex) {
+        catch (CoreException exception) {
             status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
-                ex.getMessage(), ex);
+                exception.getMessage(), exception);
         }
 
         return status;

@@ -188,9 +188,10 @@ public class CheckstyleMarkerFilterRegexDialog extends TitleAreaDialog {
             Pattern.compile(text);
             valid = true;
         }
-        catch (PatternSyntaxException ex) {
+        catch (PatternSyntaxException exception) {
             CheckstyleMarkerFilterRegexDialog.this.setErrorMessage(NLS.bind(
-                Messages.CheckstyleMarkerFilterDialog_msgInvalidRegex, ex.getLocalizedMessage()));
+                Messages.CheckstyleMarkerFilterDialog_msgInvalidRegex,
+                exception.getLocalizedMessage()));
             valid = false;
         }
         return valid;

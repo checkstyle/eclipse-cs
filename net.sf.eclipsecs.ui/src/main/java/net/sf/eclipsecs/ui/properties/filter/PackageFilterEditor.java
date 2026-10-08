@@ -248,10 +248,10 @@ public class PackageFilterEditor implements IFilterEditor {
                         }
 
                     }
-                    catch (JavaModelException ex) {
-                        CheckstyleLog.log(ex);
+                    catch (JavaModelException exception) {
+                        CheckstyleLog.log(exception);
                     }
-                    catch (CoreException ex) {
+                    catch (CoreException exception) {
                         // this should never happen because we call
                         // #isAccessible before invoking #members
                     }
@@ -278,7 +278,7 @@ public class PackageFilterEditor implements IFilterEditor {
                         }
                     }
                 }
-                catch (CoreException ex) {
+                catch (CoreException exception) {
                     // this should never happen because we call
                     // #isAccessible before invoking #members
                 }
@@ -504,8 +504,8 @@ public class PackageFilterEditor implements IFilterEditor {
                     }
                 });
             }
-            catch (CoreException ex) {
-                CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+            catch (CoreException exception) {
+                CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
             }
 
             for (IContainer grayedChild : subContainers) {

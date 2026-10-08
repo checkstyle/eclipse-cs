@@ -99,8 +99,8 @@ public class FilesInSyncFilter extends AbstractFilter {
                 hasChanges = flags == SyncInfo.OUTGOING;
             }
         }
-        catch (TeamException ex) {
-            CheckstyleLog.log(ex);
+        catch (TeamException exception) {
+            CheckstyleLog.log(exception);
         }
         return hasChanges;
     }

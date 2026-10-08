@@ -51,8 +51,8 @@ public class CheckstyleMarkerPropertyTester extends PropertyTester {
                     result = module instanceof String && !((String) module).isBlank();
                 }
             }
-            catch (CoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (CoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }
 

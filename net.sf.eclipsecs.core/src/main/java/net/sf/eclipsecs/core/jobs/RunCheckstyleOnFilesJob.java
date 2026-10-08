@@ -104,9 +104,9 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
                     IncrementalProjectBuilder.INCREMENTAL_BUILD);
             }
         }
-        catch (CheckstylePluginException ex) {
+        catch (CheckstylePluginException exception) {
             final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                IStatus.ERROR, ex.getLocalizedMessage(), ex);
+                IStatus.ERROR, exception.getLocalizedMessage(), exception);
             throw new CoreException(status);
         }
         return Status.OK_STATUS;

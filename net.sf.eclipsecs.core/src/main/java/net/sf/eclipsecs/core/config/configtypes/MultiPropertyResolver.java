@@ -87,8 +87,8 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
                 value = PropertyUtil.replaceProperties(value, this);
             }
         }
-        catch (CheckstyleException ex) {
-            throw new RuntimeException(ex);
+        catch (CheckstyleException exception) {
+            throw new RuntimeException(exception);
         }
 
         return value;

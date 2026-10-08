@@ -108,8 +108,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
                     checkstyleProjects.add(project);
                 }
             }
-            catch (CoreException ex) {
-                CheckstylePluginException.rethrow(ex);
+            catch (CoreException exception) {
+                CheckstylePluginException.rethrow(exception);
             }
         }
 
@@ -140,17 +140,17 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             try {
                 config = ProjectConfigurationFactory.getConfiguration(project);
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 final String message;
-                if (ex.getMessage() != null) {
-                    message = ex.getMessage();
+                if (exception.getMessage() != null) {
+                    message = exception.getMessage();
                 }
                 else {
                     message = Messages.CheckstyleBuilder_msgErrorUnknown;
                 }
                 final Status status =
                     new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID, IStatus.ERROR, message,
-                        ex);
+                        exception);
                 throw new CoreException(status);
             }
 
@@ -253,9 +253,9 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
                 }
             }
         }
-        catch (CheckstylePluginException ex) {
+        catch (CheckstylePluginException exception) {
             final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
-                IStatus.ERROR, ex.getLocalizedMessage(), ex);
+                IStatus.ERROR, exception.getLocalizedMessage(), exception);
             throw new CoreException(status);
         }
     }

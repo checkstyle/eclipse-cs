@@ -151,8 +151,8 @@ public final class FileSetEditDialog extends TitleAreaDialog {
             try {
                 dialogView.setProjectFiles(getFiles(propertyPageContext.project()));
             }
-            catch (CoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (CoreException exception) {
+                CheckstyleLog.log(exception);
             }
         });
 
@@ -309,11 +309,11 @@ public final class FileSetEditDialog extends TitleAreaDialog {
                 dialog.open();
 
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 CheckstyleUIPlugin.warningDialog(getShell(),
                     NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
                         propertyPageContext.project(), config.getLocation()),
-                    ex);
+                    exception);
             }
         }
     }

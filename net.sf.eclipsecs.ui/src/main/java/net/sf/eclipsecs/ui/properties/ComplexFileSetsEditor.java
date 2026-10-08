@@ -107,9 +107,9 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
                 propertyPageContext.updateButtons();
             }
         }
-        catch (CheckstylePluginException ex) {
+        catch (CheckstylePluginException exception) {
             CheckstyleUIPlugin.errorDialog(shell,
-                NLS.bind(Messages.errorFailedAddFileset, ex.getMessage()), ex, true);
+                NLS.bind(Messages.errorFailedAddFileset, exception.getMessage()), exception, true);
         }
     }
 
@@ -134,9 +134,10 @@ public class ComplexFileSetsEditor implements IFileSetsEditor {
                     propertyPageContext.updateButtons();
                 }
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 CheckstyleUIPlugin.errorDialog(shell,
-                    NLS.bind(Messages.errorFailedEditFileset, ex.getMessage()), ex, true);
+                    NLS.bind(Messages.errorFailedEditFileset, exception.getMessage()),
+                    exception, true);
             }
         }
     }

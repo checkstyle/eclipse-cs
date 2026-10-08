@@ -346,9 +346,10 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
 
             config.getLocalCheckConfigWorkingSet().store();
         }
-        catch (CheckstylePluginException | IOException | CoreException ex) {
-            CheckstylePluginException.rethrow(ex,
-                NLS.bind(Messages.errorWritingCheckConfigurations, ex.getLocalizedMessage()));
+        catch (CheckstylePluginException | IOException | CoreException exception) {
+            CheckstylePluginException.rethrow(exception,
+                NLS.bind(Messages.errorWritingCheckConfigurations,
+                    exception.getLocalizedMessage()));
         }
     }
 

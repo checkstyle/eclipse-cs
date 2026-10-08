@@ -154,8 +154,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
                 deletedConfigurations.add(checkConfig);
             }
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleLog.log(ex);
+        catch (CheckstylePluginException exception) {
+            CheckstyleLog.log(exception);
         }
         return !used;
     }
@@ -293,8 +293,8 @@ public class GlobalCheckConfigurationWorkingSet implements ICheckConfigurationWo
             final byte[] data = XMLUtil.toByteArray(doc);
             Files.write(configFile.toPath(), data);
         }
-        catch (IOException ex) {
-            CheckstylePluginException.rethrow(ex, Messages.errorWritingConfigFile);
+        catch (IOException exception) {
+            CheckstylePluginException.rethrow(exception, Messages.errorWritingConfigFile);
         }
     }
 

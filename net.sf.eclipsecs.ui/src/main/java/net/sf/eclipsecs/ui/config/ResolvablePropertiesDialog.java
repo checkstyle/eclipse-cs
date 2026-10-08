@@ -299,8 +299,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
                     Messages.ResolvablePropertiesDialog_msgNoUnresolvedProps);
             }
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+        catch (CheckstylePluginException exception) {
+            CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
         }
     }
 

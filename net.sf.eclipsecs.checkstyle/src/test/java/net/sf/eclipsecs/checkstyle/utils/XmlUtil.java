@@ -62,8 +62,9 @@ public final class XmlUtil {
 
             rawXml = builder.parse(new InputSource(new StringReader(code)));
         }
-        catch (IOException | SAXException ex) {
-            fail(fileName + " has invalid xml (" + ex.getMessage() + "): " + unserializedSource);
+        catch (IOException | SAXException exception) {
+            fail(fileName + " has invalid xml (" + exception.getMessage() + "): "
+                + unserializedSource);
         }
 
         return rawXml;

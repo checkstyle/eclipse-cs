@@ -63,7 +63,7 @@ public class CheckstyleMarkerResolutionGenerator implements IMarkerResolutionGen
         try {
             isCheckstyleMarker = CheckstyleMarker.MARKER_ID.equals(marker.getType());
         }
-        catch (CoreException ex) {
+        catch (CoreException exception) {
             isCheckstyleMarker = false;
         }
         return isCheckstyleMarker;

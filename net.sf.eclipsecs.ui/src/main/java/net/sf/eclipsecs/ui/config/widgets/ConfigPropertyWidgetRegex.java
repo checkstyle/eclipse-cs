@@ -158,8 +158,8 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
             //
             Pattern.compile(textWidget.getText());
         }
-        catch (PatternSyntaxException ex) {
-            CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
+        catch (PatternSyntaxException exception) {
+            CheckstylePluginException.rethrow(exception, exception.getLocalizedMessage());
         }
     }
 
@@ -179,7 +179,7 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
 
             textWidget.setBackground(textBgColor);
         }
-        catch (PatternSyntaxException ex) {
+        catch (PatternSyntaxException exception) {
             textWidget.setBackground(RED);
         }
     }

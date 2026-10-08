@@ -112,8 +112,8 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
         try {
             url = resolveLocation(checkConfiguration);
         }
-        catch (IOException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (IOException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
         return url;
     }
@@ -148,8 +148,8 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
             data.setPropertyResolver(resolver);
 
         }
-        catch (IOException | URISyntaxException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (IOException | URISyntaxException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
 
         return data;
@@ -191,7 +191,7 @@ public abstract class AbstractConfigurationType implements IConfigurationType {
 
             bytes = Optional.of(getBytesFromURLConnection(connection));
         }
-        catch (IOException ex) {
+        catch (IOException exception) {
             // we won't load the bundle then
             // disabled logging bug #1647602
             // CheckstyleLog.log(ioe);

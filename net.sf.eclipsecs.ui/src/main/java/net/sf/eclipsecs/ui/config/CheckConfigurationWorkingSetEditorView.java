@@ -202,8 +202,8 @@ public final class CheckConfigurationWorkingSetEditorView extends Composite {
                     usageView.setInput(ProjectConfigurationFactory
                         .getProjectsUsingConfig(config.getSourceCheckConfiguration()));
                 }
-                catch (CheckstylePluginException ex) {
-                    CheckstyleLog.log(ex);
+                catch (CheckstylePluginException exception) {
+                    CheckstyleLog.log(exception);
                 }
             }
         }

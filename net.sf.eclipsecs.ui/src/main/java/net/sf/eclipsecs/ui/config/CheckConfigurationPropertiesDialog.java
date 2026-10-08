@@ -172,7 +172,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             try {
                 checkConfig.setName(oldName);
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 // NOOP
             }
             checkConfig.setDescription(oldDescr);
@@ -197,8 +197,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                 configurationEditor.getEditedWorkingCopy();
                 new ResolvablePropertiesDialog(getShell(), checkConfig).open();
             }
-            catch (CheckstylePluginException ex) {
-                setErrorMessage(ex.getLocalizedMessage());
+            catch (CheckstylePluginException exception) {
+                setErrorMessage(exception.getLocalizedMessage());
             }
         }));
 
@@ -252,9 +252,9 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                 super.okPressed();
             }
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleLog.log(ex);
-            this.setErrorMessage(ex.getLocalizedMessage());
+        catch (CheckstylePluginException exception) {
+            CheckstyleLog.log(exception);
+            this.setErrorMessage(exception.getLocalizedMessage());
         }
     }
 
@@ -277,8 +277,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
             btnProperties.setEnabled(checkConfig.getType().isEditable());
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+        catch (CheckstylePluginException exception) {
+            CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
         }
     }
 
@@ -348,7 +348,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
                 config.setName(uniqueName);
                 break;
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 uniqueName = checkConfigName + " (" + counter + ")";
                 counter++;
             }

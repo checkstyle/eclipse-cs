@@ -62,9 +62,9 @@ public abstract class AbstractCTransformationClass {
             try {
                 attributes.put(att, rule.getAttribute(att));
             }
-            catch (CheckstyleException ex) {
+            catch (CheckstyleException exception) {
                 // shouldn't happen since we only use existing attribute names
-                throw new RuntimeException(ex);
+                throw new RuntimeException(exception);
             }
         }
     }

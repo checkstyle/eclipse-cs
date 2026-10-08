@@ -110,14 +110,14 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         try {
             workingCopy.setLocation(editorView.getConfigLocation());
         }
-        catch (CheckstylePluginException ex) {
+        catch (CheckstylePluginException exception) {
             final String locationText = editorView.getConfigLocation();
 
             if (StringUtils.isNotBlank(locationText) && ensureFileExists(locationText)) {
                 workingCopy.setLocation(locationText);
             }
             else {
-                throw ex;
+                throw exception;
             }
         }
 

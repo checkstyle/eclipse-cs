@@ -186,9 +186,9 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
                 }
                 status = Status.OK_STATUS;
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
-                    ex.getMessage(), ex);
+                    exception.getMessage(), exception);
             }
             return status;
         }
