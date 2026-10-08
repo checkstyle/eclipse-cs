@@ -85,8 +85,10 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
         col1.getColumn().setText(Messages.CheckstylePreferencePage_colCheckConfig);
         col1.setLabelProvider(ColumnLabelProvider.createTextImageProvider(
             element -> ((ICheckConfiguration) element).getName(),
-            element -> ConfigurationTypesUI.getConfigurationTypeImage(
-                ((ICheckConfiguration) element).getType())));
+            element -> {
+                return ConfigurationTypesUI.getConfigurationTypeImage(
+                    ((ICheckConfiguration) element).getType());
+            }));
         tableColumnLayout.setColumnData(col1.getColumn(), new ColumnWeightData(1));
 
         final TableViewerColumn col2 = new TableViewerColumn(tableViewer, SWT.NULL);

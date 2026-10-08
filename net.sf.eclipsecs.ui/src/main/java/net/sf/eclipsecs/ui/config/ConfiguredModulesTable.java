@@ -95,8 +95,10 @@ public final class ConfiguredModulesTable extends Composite {
 
         createColumns(tableColumnLayout, table);
 
-        tableViewer.addDoubleClickListener(event -> callbacks.openModule()
-            .accept((Module) ((IStructuredSelection) event.getSelection()).getFirstElement()));
+        tableViewer.addDoubleClickListener(event -> {
+            callbacks.openModule()
+                .accept((Module) ((IStructuredSelection) event.getSelection()).getFirstElement());
+        });
         tableViewer.addSelectionChangedListener(event -> {
             String description = null;
             if (event.getStructuredSelection().getFirstElement() instanceof Module module) {

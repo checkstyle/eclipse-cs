@@ -90,11 +90,14 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
         GridDataFactory.swtDefaults().applyTo(mConfigType.getCombo());
         mConfigType.setContentProvider(ArrayContentProvider.getInstance());
         mConfigType.setLabelProvider(LabelProvider.createTextImageProvider(
-            element -> ((IConfigurationType) element).getName(), element -> ConfigurationTypesUI
-                .getConfigurationTypeImage((IConfigurationType) element)));
-        mConfigType.addSelectionChangedListener(event -> changeSelectedConfigurationType.accept(
-            (IConfigurationType) event.getStructuredSelection().getFirstElement(),
-            mConfigType.getCombo().getEnabled()));
+            element -> ((IConfigurationType) element).getName(), element -> {
+                return ConfigurationTypesUI.getConfigurationTypeImage((IConfigurationType) element);
+            }));
+        mConfigType.addSelectionChangedListener(event -> {
+            changeSelectedConfigurationType.accept(
+                (IConfigurationType) event.getStructuredSelection().getFirstElement(),
+                mConfigType.getCombo().getEnabled());
+        });
 
         mEditorPlaceHolder = new Composite(this, SWT.NULL);
         GridLayoutFactory.swtDefaults().equalWidth(true).margins(0, 0).applyTo(mEditorPlaceHolder);
