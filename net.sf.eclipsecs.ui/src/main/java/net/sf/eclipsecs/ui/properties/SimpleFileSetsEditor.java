@@ -77,7 +77,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
 
         ICheckConfiguration config = null;
         if (!mFileSets.isEmpty()) {
-            config = (mFileSets.get(0)).getCheckConfig();
+            config = mFileSets.get(0).getCheckConfig();
         }
 
         if (config == null) {
