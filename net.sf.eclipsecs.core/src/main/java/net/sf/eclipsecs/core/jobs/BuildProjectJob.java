@@ -38,10 +38,10 @@ import net.sf.eclipsecs.core.nature.CheckstyleNature;
 public class BuildProjectJob extends Job {
 
     /** The project to build. */
-    private IProject[] mProjects;
+    private IProject[] projects;
 
     /** The build kind. */
-    private int mKind;
+    private int kind;
 
     /**
      * Creates an operation which builds a project.
@@ -53,10 +53,10 @@ public class BuildProjectJob extends Job {
      */
     public BuildProjectJob(IProject project, int buildKind) {
         super(NLS.bind(Messages.BuildProjectJob_msgBuildProject, project.getName()));
-        mProjects = new IProject[] {
+        projects = new IProject[] {
             project,
         };
-        mKind = buildKind;
+        kind = buildKind;
     }
 
     /**
@@ -70,8 +70,8 @@ public class BuildProjectJob extends Job {
     public BuildProjectJob(IProject[] projects, int buildKind) {
         super(Messages.BuildProjectJob_msgBuildAllProjects);
 
-        mProjects = projects;
-        mKind = buildKind;
+        this.projects = projects;
+        kind = buildKind;
     }
 
     @Override
@@ -81,11 +81,11 @@ public class BuildProjectJob extends Job {
 
         try {
 
-            for (IProject project : mProjects) {
+            for (IProject project : projects) {
 
                 // build only if open and checkstyle active for the project
                 if (project.isOpen() && project.hasNature(CheckstyleNature.NATURE_ID)) {
-                    project.build(mKind, monitor);
+                    project.build(kind, monitor);
                 }
             }
             status = Status.OK_STATUS;

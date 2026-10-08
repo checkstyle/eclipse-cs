@@ -56,9 +56,9 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
     private static final int NUM_WIDGET_COLUMNS = 3;
 
     /** The combo viewer for severity selection. */
-    private final ComboViewer mSeverityCombo;
+    private final ComboViewer severityCombo;
     /** The list of configuration property widgets. */
-    private final List<IConfigPropertyWidget> mConfigPropertyWidgets;
+    private final List<IConfigPropertyWidget> configPropertyWidgets;
 
     /**
      * Creates the general settings composite.
@@ -82,19 +82,19 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
         lblSeverity.setText(Messages.RuleConfigurationEditDialog_lblSeverity);
         GridDataFactory.swtDefaults().applyTo(lblSeverity);
 
-        mSeverityCombo = new ComboViewer(this);
-        mSeverityCombo.setContentProvider(ArrayContentProvider.getInstance());
-        mSeverityCombo.setLabelProvider(
+        severityCombo = new ComboViewer(this);
+        severityCombo.setContentProvider(ArrayContentProvider.getInstance());
+        severityCombo.setLabelProvider(
             LabelProvider.createTextProvider(element -> ((Severity) element).getXmlValue()));
-        GridDataFactory.swtDefaults().applyTo(mSeverityCombo.getControl());
+        GridDataFactory.swtDefaults().applyTo(severityCombo.getControl());
 
-        mSeverityCombo.setInput(Severity.values());
-        mSeverityCombo.getCombo().setEnabled(!readonly);
+        severityCombo.setInput(Severity.values());
+        severityCombo.getCombo().setEnabled(!readonly);
         if (rule.getMetaData().hasSeverity()) {
-            mSeverityCombo.setSelection(new StructuredSelection(rule.getSeverity()));
+            severityCombo.setSelection(new StructuredSelection(rule.getSeverity()));
         }
         else {
-            mSeverityCombo.getCombo().setEnabled(false);
+            severityCombo.getCombo().setEnabled(false);
         }
 
         if (rule.getProperties().size() > 0) {
@@ -102,12 +102,12 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
             GridLayoutFactory.swtDefaults().numColumns(NUM_WIDGET_COLUMNS).applyTo(properties);
             properties.setText(Messages.RuleConfigurationEditDialog_lblProperties);
             GridDataFactory.create(GridData.FILL_BOTH).span(2, 1).applyTo(properties);
-            mConfigPropertyWidgets = rule.getProperties().stream()
+            configPropertyWidgets = rule.getProperties().stream()
                 .map(prop -> ConfigPropertyWidgetFactory.createWidget(properties, prop, getShell()))
                 .peek(widget -> widget.setEnabled(!readonly)).toList();
         }
         else {
-            mConfigPropertyWidgets = Collections.emptyList();
+            configPropertyWidgets = Collections.emptyList();
         }
     }
 
@@ -117,7 +117,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
      * @return the selected severity
      */
     public Severity getSeverity() {
-        return (Severity) mSeverityCombo.getStructuredSelection().getFirstElement();
+        return (Severity) severityCombo.getStructuredSelection().getFirstElement();
     }
 
     /**
@@ -127,14 +127,14 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
      *            the severity to select
      */
     public void setSeverity(Severity severity) {
-        mSeverityCombo.setSelection(new StructuredSelection(severity));
+        severityCombo.setSelection(new StructuredSelection(severity));
     }
 
     /**
      * Restores the default values of all property widgets.
      */
     public void restoreProperties() {
-        mConfigPropertyWidgets.forEach(IConfigPropertyWidget::restorePropertyDefault);
+        configPropertyWidgets.forEach(IConfigPropertyWidget::restorePropertyDefault);
     }
 
     /**
@@ -144,7 +144,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
      */
     public Optional<String> validatePropertyWidgets() {
         Optional<String> errorMessage = Optional.empty();
-        for (IConfigPropertyWidget widget : mConfigPropertyWidgets) {
+        for (IConfigPropertyWidget widget : configPropertyWidgets) {
             final ConfigProperty property = widget.getConfigProperty();
             try {
                 widget.validate();

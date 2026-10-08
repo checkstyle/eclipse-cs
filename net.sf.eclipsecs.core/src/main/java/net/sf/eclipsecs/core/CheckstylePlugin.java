@@ -53,7 +53,7 @@ public class CheckstylePlugin extends Plugin {
     private static CheckstylePlugin plugin;
 
     /** The addon extension class loader. */
-    private ClassLoader mAddonExtensionClassLoader;
+    private ClassLoader addonExtensionClassLoader;
 
     /**
      * The constructor.
@@ -66,7 +66,7 @@ public class CheckstylePlugin extends Plugin {
     public void start(BundleContext context) throws Exception {
         super.start(context);
 
-        mAddonExtensionClassLoader =
+        addonExtensionClassLoader =
             new ExtensionClassLoader(context.getBundle(), ADDON_PROVIDER_EXT_PT_ID);
 
         final Logger checkstyleErrorLog =
@@ -129,7 +129,7 @@ public class CheckstylePlugin extends Plugin {
      * @return the classloader to use when potentially accessing classes from extending plugins.
      */
     public ClassLoader getAddonExtensionClassLoader() {
-        return mAddonExtensionClassLoader;
+        return addonExtensionClassLoader;
     }
 
 }

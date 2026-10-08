@@ -45,7 +45,7 @@ import net.sf.eclipsecs.ui.Messages;
 public class ClearSelectedFilesAction implements IObjectActionDelegate {
 
     /** The structured selection. */
-    private IStructuredSelection mSelection;
+    private IStructuredSelection structuredSelection;
 
     /**
      * Creates a new instance.
@@ -62,7 +62,7 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
     public void selectionChanged(IAction action, ISelection selection) {
 
         if (selection instanceof IStructuredSelection) {
-            mSelection = (IStructuredSelection) selection;
+            structuredSelection = (IStructuredSelection) selection;
         }
     }
 
@@ -70,7 +70,7 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
     @SuppressWarnings("unchecked")
     public void run(IAction action) {
 
-        final List<IResource> resourcesToClear = mSelection.toList();
+        final List<IResource> resourcesToClear = structuredSelection.toList();
 
         final ClearMarkersJob job = new ClearMarkersJob(resourcesToClear);
         job.schedule();
@@ -83,7 +83,7 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
     private static class ClearMarkersJob extends WorkspaceJob {
 
         /** The resources to clear markers from. */
-        private Collection<IResource> mResourcesToClear;
+        private Collection<IResource> resourcesToClear;
 
         /**
          * Creates the job that clears the checkstyle markers from the given resources.
@@ -93,13 +93,13 @@ public class ClearSelectedFilesAction implements IObjectActionDelegate {
          */
         ClearMarkersJob(Collection<IResource> resourcesToClear) {
             super(Messages.ClearSelectedFilesAction_title);
-            this.mResourcesToClear = resourcesToClear;
+            this.resourcesToClear = resourcesToClear;
         }
 
         @Override
         public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-            for (IResource resource : mResourcesToClear) {
+            for (IResource resource : resourcesToClear) {
                 if (resource.isAccessible()) {
                     resource.deleteMarkers(CheckstyleMarker.MARKER_ID, true,
                         IResource.DEPTH_INFINITE);

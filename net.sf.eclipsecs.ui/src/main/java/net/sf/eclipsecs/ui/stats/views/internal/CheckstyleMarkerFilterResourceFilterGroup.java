@@ -46,29 +46,29 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
     private static final int SEVERITY_GROUP_NUM_COLUMS = 4;
 
     /** The filter composite group. */
-    private final Group mFilterComposite;
+    private final Group filterComposite;
     /** The "on any resource" radio button. */
-    private final Button mRadioOnAnyResource;
+    private final Button radioOnAnyResource;
     /** The "any resource in same project" radio button. */
-    private final Button mRadioAnyResourceInSameProject;
+    private final Button radioAnyResourceInSameProject;
     /** The "selected resource" radio button. */
-    private final Button mRadioSelectedResource;
+    private final Button radioSelectedResource;
     /** The "selected resource and children" radio button. */
-    private final Button mRadioSelectedResourceAndChildren;
+    private final Button radioSelectedResourceAndChildren;
     /** The "selected working set" radio button. */
-    private final Button mRadioSelectedWorkingSet;
+    private final Button radioSelectedWorkingSet;
     /** The selected working set label. */
-    private final Label mLblSelectedWorkingSet;
+    private final Label lblSelectedWorkingSet;
     /** The working set button. */
-    private final Button mBtnWorkingSet;
+    private final Button btnWorkingSet;
     /** The severity enabled checkbox. */
-    private final Button mChkSeverityEnabled;
+    private final Button chkSeverityEnabled;
     /** The severity error checkbox. */
-    private final Button mChkSeverityError;
+    private final Button chkSeverityError;
     /** The severity warning checkbox. */
-    private final Button mChkSeverityWarning;
+    private final Button chkSeverityWarning;
     /** The severity info checkbox. */
-    private final Button mChkSeverityInfo;
+    private final Button chkSeverityInfo;
 
     /**
      * Creates the marker filter resource filter group.
@@ -87,61 +87,61 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
         super(parent, style);
         setLayout(new FillLayout());
 
-        mFilterComposite = new Group(this, SWT.NULL);
-        mFilterComposite.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
-        mFilterComposite.setLayout(new GridLayout(NUM_COLUMNS, false));
-        mFilterComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        filterComposite = new Group(this, SWT.NULL);
+        filterComposite.setText(Messages.CheckstyleMarkerFilterDialog_groupResourceSetting);
+        filterComposite.setLayout(new GridLayout(NUM_COLUMNS, false));
+        filterComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        mRadioOnAnyResource = createButton(mFilterComposite, SWT.RADIO,
+        radioOnAnyResource = createButton(filterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnAnyResource,
             GridDataFactory.swtDefaults().span(NUM_COLUMNS, 1));
 
-        mRadioAnyResourceInSameProject = createButton(mFilterComposite, SWT.RADIO,
+        radioAnyResourceInSameProject = createButton(filterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnAnyResourceInSameProject,
             GridDataFactory.swtDefaults().span(NUM_COLUMNS, 1));
 
-        mRadioSelectedResource = createButton(mFilterComposite, SWT.RADIO,
+        radioSelectedResource = createButton(filterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResource,
             GridDataFactory.swtDefaults().span(NUM_COLUMNS, 1));
 
-        mRadioSelectedResourceAndChildren = new Button(mFilterComposite, SWT.RADIO);
-        mRadioSelectedResourceAndChildren
+        radioSelectedResourceAndChildren = new Button(filterComposite, SWT.RADIO);
+        radioSelectedResourceAndChildren
             .setText(Messages.CheckstyleMarkerFilterDialog_btnOnSelectedResourceAndChilds);
         GridDataFactory.swtDefaults().span(NUM_COLUMNS, 1)
-            .applyTo(mRadioSelectedResourceAndChildren);
+            .applyTo(radioSelectedResourceAndChildren);
 
-        mRadioSelectedWorkingSet = createButton(mFilterComposite, SWT.RADIO,
+        radioSelectedWorkingSet = createButton(filterComposite, SWT.RADIO,
             Messages.CheckstyleMarkerFilterDialog_btnOnWorkingSet, GridDataFactory.swtDefaults());
 
-        mLblSelectedWorkingSet = new Label(mFilterComposite, SWT.NULL);
-        mLblSelectedWorkingSet.setLayoutData(
+        lblSelectedWorkingSet = new Label(filterComposite, SWT.NULL);
+        lblSelectedWorkingSet.setLayoutData(
             new GridData(GridData.FILL_HORIZONTAL | GridData.HORIZONTAL_ALIGN_BEGINNING));
 
-        mBtnWorkingSet = createButton(mFilterComposite, SWT.PUSH,
+        btnWorkingSet = createButton(filterComposite, SWT.PUSH,
             Messages.CheckstyleMarkerFilterDialog_btnSelect, GridDataFactory.swtDefaults());
-        mBtnWorkingSet.addSelectionListener(
+        btnWorkingSet.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> selectWorkingSet.run()));
 
-        final Composite severityGroup = new Composite(mFilterComposite, SWT.NULL);
+        final Composite severityGroup = new Composite(filterComposite, SWT.NULL);
         GridLayoutFactory.fillDefaults().numColumns(SEVERITY_GROUP_NUM_COLUMS)
             .applyTo(severityGroup);
         GridDataFactory.fillDefaults().span(NUM_COLUMNS, 1)
             .applyTo(severityGroup);
 
-        mChkSeverityEnabled = createButton(severityGroup, SWT.CHECK,
+        chkSeverityEnabled = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnMarkerSeverity,
             GridDataFactory.create(GridData.FILL_HORIZONTAL));
-        mChkSeverityEnabled.addSelectionListener(
+        chkSeverityEnabled.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> updateControlState.run()));
 
-        mChkSeverityError = createButton(severityGroup, SWT.CHECK,
+        chkSeverityError = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnSeverityError, GridDataFactory.swtDefaults());
 
-        mChkSeverityWarning = createButton(severityGroup, SWT.CHECK,
+        chkSeverityWarning = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnSeverityWarning,
             GridDataFactory.swtDefaults());
 
-        mChkSeverityInfo = createButton(severityGroup, SWT.CHECK,
+        chkSeverityInfo = createButton(severityGroup, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_btnSeverityInfo, GridDataFactory.swtDefaults());
     }
 
@@ -156,20 +156,20 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
      *            the severity bit mask
      */
     public void setFromFilter(int onResource, boolean selectBySeverity, int severity) {
-        mRadioOnAnyResource.setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
-        mRadioAnyResourceInSameProject
+        radioOnAnyResource.setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE);
+        radioAnyResourceInSameProject
             .setSelection(onResource == CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT);
-        mRadioSelectedResource
+        radioSelectedResource
             .setSelection(onResource == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY);
-        mRadioSelectedResourceAndChildren
+        radioSelectedResourceAndChildren
             .setSelection(onResource == CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN);
-        mRadioSelectedWorkingSet.setSelection(onResource == CheckstyleMarkerFilter.ON_WORKING_SET);
+        radioSelectedWorkingSet.setSelection(onResource == CheckstyleMarkerFilter.ON_WORKING_SET);
 
-        mChkSeverityEnabled.setSelection(selectBySeverity);
+        chkSeverityEnabled.setSelection(selectBySeverity);
 
-        mChkSeverityError.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_ERROR) > 0);
-        mChkSeverityWarning.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_WARNING) > 0);
-        mChkSeverityInfo.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
+        chkSeverityError.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_ERROR) > 0);
+        chkSeverityWarning.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_WARNING) > 0);
+        chkSeverityInfo.setSelection((severity & CheckstyleMarkerFilter.SEVERITY_INFO) > 0);
     }
 
     /**
@@ -179,19 +179,19 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
      *            true to enable, false to disable
      */
     public void propagateEnabled(boolean enabled) {
-        mFilterComposite.setEnabled(enabled);
-        mRadioOnAnyResource.setEnabled(enabled);
-        mRadioAnyResourceInSameProject.setEnabled(enabled);
-        mRadioSelectedResource.setEnabled(enabled);
-        mRadioSelectedResourceAndChildren.setEnabled(enabled);
-        mRadioSelectedWorkingSet.setEnabled(enabled);
-        mLblSelectedWorkingSet.setEnabled(enabled);
-        mBtnWorkingSet.setEnabled(enabled);
-        mChkSeverityEnabled.setEnabled(enabled);
+        filterComposite.setEnabled(enabled);
+        radioOnAnyResource.setEnabled(enabled);
+        radioAnyResourceInSameProject.setEnabled(enabled);
+        radioSelectedResource.setEnabled(enabled);
+        radioSelectedResourceAndChildren.setEnabled(enabled);
+        radioSelectedWorkingSet.setEnabled(enabled);
+        lblSelectedWorkingSet.setEnabled(enabled);
+        btnWorkingSet.setEnabled(enabled);
+        chkSeverityEnabled.setEnabled(enabled);
 
-        mChkSeverityError.setEnabled(enabled && mChkSeverityEnabled.getSelection());
-        mChkSeverityWarning.setEnabled(enabled && mChkSeverityEnabled.getSelection());
-        mChkSeverityInfo.setEnabled(enabled && mChkSeverityEnabled.getSelection());
+        chkSeverityError.setEnabled(enabled && chkSeverityEnabled.getSelection());
+        chkSeverityWarning.setEnabled(enabled && chkSeverityEnabled.getSelection());
+        chkSeverityInfo.setEnabled(enabled && chkSeverityEnabled.getSelection());
     }
 
     /**
@@ -201,7 +201,7 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
      *            the text to display
      */
     public void setWorkingSetLabel(String text) {
-        mLblSelectedWorkingSet.setText(text);
+        lblSelectedWorkingSet.setText(text);
     }
 
     /**
@@ -211,16 +211,16 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
      */
     public int getOnResource() {
         final int onResource;
-        if (mRadioSelectedResource.getSelection()) {
+        if (radioSelectedResource.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_ONLY;
         }
-        else if (mRadioSelectedResourceAndChildren.getSelection()) {
+        else if (radioSelectedResourceAndChildren.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_SELECTED_RESOURCE_AND_CHILDREN;
         }
-        else if (mRadioAnyResourceInSameProject.getSelection()) {
+        else if (radioAnyResourceInSameProject.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_ANY_RESOURCE_OF_SAME_PROJECT;
         }
-        else if (mRadioSelectedWorkingSet.getSelection()) {
+        else if (radioSelectedWorkingSet.getSelection()) {
             onResource = CheckstyleMarkerFilter.ON_WORKING_SET;
         }
         else {
@@ -236,13 +236,13 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
      */
     public int getSeverity() {
         int severity = 0;
-        if (mChkSeverityError.getSelection()) {
+        if (chkSeverityError.getSelection()) {
             severity = severity | CheckstyleMarkerFilter.SEVERITY_ERROR;
         }
-        if (mChkSeverityWarning.getSelection()) {
+        if (chkSeverityWarning.getSelection()) {
             severity = severity | CheckstyleMarkerFilter.SEVERITY_WARNING;
         }
-        if (mChkSeverityInfo.getSelection()) {
+        if (chkSeverityInfo.getSelection()) {
             severity = severity | CheckstyleMarkerFilter.SEVERITY_INFO;
         }
         return severity;
@@ -254,7 +254,7 @@ public final class CheckstyleMarkerFilterResourceFilterGroup extends Composite {
      * @return true if filtering is restricted by severity
      */
     public boolean getSelectBySeverity() {
-        return mChkSeverityEnabled.getSelection();
+        return chkSeverityEnabled.getSelection();
     }
 
     /**

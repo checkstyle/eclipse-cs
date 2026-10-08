@@ -33,19 +33,19 @@ import com.google.common.base.MoreObjects;
 public abstract class AbstractFilter implements IFilter {
 
     /** Name of the filter. */
-    private String mFilterName;
+    private String filterName;
 
     /** Internal name of the filter. */
-    private String mInternalName;
+    private String internalName;
 
     /** Description of the filter. */
-    private String mFilterDescription;
+    private String filterDescription;
 
     /** Flags if the filter is selected. */
-    private boolean mSelected;
+    private boolean selected;
 
     /** Flags, if the filter is readonly. */
-    private boolean mReadonly;
+    private boolean readonly;
 
     /**
      * Creates a new abstract filter.
@@ -61,20 +61,20 @@ public abstract class AbstractFilter implements IFilter {
      *            the filter to copy
      */
     protected AbstractFilter(AbstractFilter other) {
-        this.mFilterName = other.mFilterName;
-        this.mInternalName = other.mInternalName;
-        this.mFilterDescription = other.mFilterDescription;
-        this.mSelected = other.mSelected;
-        this.mReadonly = other.mReadonly;
+        this.filterName = other.filterName;
+        this.internalName = other.internalName;
+        this.filterDescription = other.filterDescription;
+        this.selected = other.selected;
+        this.readonly = other.readonly;
     }
 
     @Override
-    public void initialize(String name, String internalName, String desc, boolean readonly) {
-
-        this.mFilterName = name;
-        this.mInternalName = internalName;
-        this.mFilterDescription = desc;
-        this.mReadonly = readonly;
+    public void initialize(String initFilterName, String initInternalName, String initDesc,
+        boolean initReadonly) {
+        this.filterName = initFilterName;
+        this.internalName = initInternalName;
+        this.filterDescription = initDesc;
+        this.readonly = initReadonly;
     }
 
     /**
@@ -84,7 +84,7 @@ public abstract class AbstractFilter implements IFilter {
      */
     @Override
     public final String getName() {
-        return this.mFilterName;
+        return this.filterName;
     }
 
     /**
@@ -94,7 +94,7 @@ public abstract class AbstractFilter implements IFilter {
      */
     @Override
     public final String getInternalName() {
-        return this.mInternalName;
+        return this.internalName;
     }
 
     /**
@@ -104,22 +104,22 @@ public abstract class AbstractFilter implements IFilter {
      */
     @Override
     public final String getDescription() {
-        return this.mFilterDescription;
+        return this.filterDescription;
     }
 
     @Override
     public boolean isEnabled() {
-        return mSelected;
+        return selected;
     }
 
     @Override
-    public void setEnabled(boolean selected) {
-        mSelected = selected;
+    public void setEnabled(boolean enabled) {
+        this.selected = enabled;
     }
 
     @Override
     public boolean isReadonly() {
-        return mReadonly;
+        return readonly;
     }
 
     @Override
@@ -148,22 +148,22 @@ public abstract class AbstractFilter implements IFilter {
         }
 
         final AbstractFilter rhs = (AbstractFilter) o;
-        return Objects.equals(mFilterName, rhs.mFilterName)
-            && Objects.equals(mInternalName, rhs.mInternalName)
-            && Objects.equals(mFilterDescription, rhs.mFilterDescription)
-            && Objects.equals(mSelected, rhs.mSelected) && Objects.equals(mReadonly, rhs.mReadonly);
+        return Objects.equals(filterName, rhs.filterName)
+            && Objects.equals(internalName, rhs.internalName)
+            && Objects.equals(filterDescription, rhs.filterDescription)
+            && Objects.equals(selected, rhs.selected) && Objects.equals(readonly, rhs.readonly);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(mFilterName, mInternalName, mFilterDescription, mSelected, mReadonly);
+        return Objects.hash(filterName, internalName, filterDescription, selected, readonly);
     }
 
     @Override
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("filterName", mFilterName)
-            .add("internalName", mInternalName).add("filterDescription", mFilterDescription)
-            .add("selected", mSelected).add("readonly", mReadonly).toString();
+        return MoreObjects.toStringHelper(this).add("filterName", filterName)
+            .add("internalName", internalName).add("filterDescription", filterDescription)
+            .add("selected", selected).add("readonly", readonly).toString();
     }
 
 }

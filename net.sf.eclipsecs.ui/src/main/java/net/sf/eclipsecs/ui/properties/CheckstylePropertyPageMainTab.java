@@ -48,14 +48,14 @@ public final class CheckstylePropertyPageMainTab extends Composite {
     /** The property page context. */
     private final PropertyPageContext propertyPageContext;
     /** The checkbox for simple configuration. */
-    private final Button mChkSimpleConfig;
+    private final Button chkSimpleConfig;
     /** The checkbox to enable checkstyle. */
-    private final Button mChkEnable;
+    private final Button chkEnable;
     /** The container for file sets editor. */
-    private final Composite mFileSetsContainer;
+    private final Composite fileSetsContainer;
 
     /** The file sets editor. */
-    private IFileSetsEditor mFileSetsEditor;
+    private IFileSetsEditor fileSetsEditor;
 
     /**
      * Creates the main tab of the checkstyle property page.
@@ -77,17 +77,17 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(this);
 
         // create the checkbox to enable/disable checkstyle
-        this.mChkEnable = new Button(this, SWT.CHECK);
-        this.mChkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
-        this.mChkEnable.setSelection(mCheckstyleInitiallyActivated);
-        GridDataFactory.fillDefaults().grab(true, false).applyTo(mChkEnable);
+        this.chkEnable = new Button(this, SWT.CHECK);
+        this.chkEnable.setText(Messages.CheckstylePropertyPage_btnActivateCheckstyle);
+        this.chkEnable.setSelection(mCheckstyleInitiallyActivated);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(chkEnable);
 
         // create the checkbox to enable/disable the simple configuration
-        this.mChkSimpleConfig = new Button(this, SWT.CHECK);
-        this.mChkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
-        this.mChkSimpleConfig.addSelectionListener(new ChkSimpleConfigController());
-        this.mChkSimpleConfig.setSelection(propertyPageContext.configuration().isUseSimpleConfig());
-        GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(mChkSimpleConfig);
+        this.chkSimpleConfig = new Button(this, SWT.CHECK);
+        this.chkSimpleConfig.setText(Messages.CheckstylePropertyPage_btnUseSimpleConfig);
+        this.chkSimpleConfig.addSelectionListener(new ChkSimpleConfigController());
+        this.chkSimpleConfig.setSelection(propertyPageContext.configuration().isUseSimpleConfig());
+        GridDataFactory.fillDefaults().align(SWT.END, SWT.CENTER).applyTo(chkSimpleConfig);
 
         // create the checkbox for formatter syncing
         final Button mChkSyncFormatter = new Button(this, SWT.CHECK);
@@ -99,9 +99,9 @@ public final class CheckstylePropertyPageMainTab extends Composite {
         GridDataFactory.fillDefaults().grab(true, false).applyTo(mChkSyncFormatter);
 
         // create the configuration area
-        mFileSetsContainer = new Composite(this, SWT.NULL);
-        GridDataFactory.fillDefaults().grab(true, true).span(2, 1).applyTo(mFileSetsContainer);
-        createFileSetsArea(mFileSetsContainer);
+        fileSetsContainer = new Composite(this, SWT.NULL);
+        GridDataFactory.fillDefaults().grab(true, true).span(2, 1).applyTo(fileSetsContainer);
+        createFileSetsArea();
 
         // create the filter area
         final Control filterArea = new FilterSettings(this, SWT.NONE,
@@ -116,38 +116,32 @@ public final class CheckstylePropertyPageMainTab extends Composite {
      * @return whether checkstyle is enabled
      */
     public boolean isCheckstyleEnabled() {
-        return mChkEnable.getSelection();
+        return chkEnable.getSelection();
     }
 
     /**
      * Refreshes the file sets editor.
      */
     public void refreshFileSetEditor() {
-        mFileSetsEditor.refresh();
+        fileSetsEditor.refresh();
     }
 
     /**
      * Creates the file sets area.
-     *
-     * @param fileSetsContainer
-     *            the container to add the file sets area to
-     * @return the created control
      */
-    private Control createFileSetsArea(Composite fileSetsContainer) {
+    private void createFileSetsArea() {
         final Control[] controls = fileSetsContainer.getChildren();
         for (Control control : controls) {
             control.dispose();
         }
 
-        this.mFileSetsEditor = FileSetsEditorFactory.createEditor(getShell(), propertyPageContext,
+        this.fileSetsEditor = FileSetsEditorFactory.createEditor(getShell(), propertyPageContext,
             propertyPageContext.configuration().isUseSimpleConfig());
-        mFileSetsEditor.setFileSets(propertyPageContext.configuration().getFileSets());
+        fileSetsEditor.setFileSets(propertyPageContext.configuration().getFileSets());
 
-        mFileSetsEditor.createContents(mFileSetsContainer);
+        fileSetsEditor.createContents(fileSetsContainer);
 
         fileSetsContainer.setLayout(new FillLayout());
-
-        return fileSetsContainer;
     }
 
     /**
@@ -165,7 +159,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
 
         @Override
         public void widgetSelected(SelectionEvent e) {
-            propertyPageContext.configuration().setUseSimpleConfig(mChkSimpleConfig.getSelection());
+            propertyPageContext.configuration().setUseSimpleConfig(chkSimpleConfig.getSelection());
 
             final boolean showWarning =
                 CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
@@ -194,10 +188,10 @@ public final class CheckstylePropertyPageMainTab extends Composite {
 
             }
 
-            createFileSetsArea(mFileSetsContainer);
-            mFileSetsContainer.redraw();
-            mFileSetsContainer.update();
-            mFileSetsContainer.layout();
+            createFileSetsArea();
+            fileSetsContainer.redraw();
+            fileSetsContainer.update();
+            fileSetsContainer.layout();
         }
     }
 

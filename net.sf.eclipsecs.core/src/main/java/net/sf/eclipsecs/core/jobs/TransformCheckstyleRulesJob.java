@@ -57,7 +57,7 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
     /** Selected project in workspace. */
-    private IProject mProject;
+    private IProject project;
 
     /**
      * Job for transforming checkstyle to formatter-rules.
@@ -68,7 +68,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
     public TransformCheckstyleRulesJob(final IProject project) {
         super(Messages.TransformCheckstyleRulesJob_name);
 
-        this.mProject = project;
+        this.project = project;
     }
 
     @Override
@@ -78,7 +78,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
         final IStatus status;
         try {
             final IProjectConfiguration conf =
-                ProjectConfigurationFactory.getConfiguration(mProject);
+                ProjectConfigurationFactory.getConfiguration(project);
 
             final List<Configuration> rules = new ArrayList<>();
 
@@ -95,7 +95,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
                 // set the project context if the property resolver needs the
                 // context
                 if (resolver instanceof IContextAware) {
-                    ((IContextAware) resolver).setProjectContext(mProject);
+                    ((IContextAware) resolver).setProjectContext(project);
                 }
 
                 InputSource input = null;
@@ -118,7 +118,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
             }
             else {
                 final CheckstyleTransformer transformer =
-                    new CheckstyleTransformer(mProject, rules);
+                    new CheckstyleTransformer(project, rules);
                 transformer.transformRules();
                 status = Status.OK_STATUS;
             }

@@ -66,10 +66,10 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     //
 
     /** The check configuration. */
-    private CheckConfigurationWorkingCopy mCheckConfig;
+    private CheckConfigurationWorkingCopy checkConfig;
 
     /** The list of properties. */
-    private List<ResolvableProperty> mResolvableProperties;
+    private List<ResolvableProperty> resolvableProperties;
 
     /** The dialog view managing the UI components. */
     private ResolvablePropertiesDialogView dialogView;
@@ -90,7 +90,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         super(parent);
         setShellStyle(getShellStyle() | SWT.RESIZE | SWT.MAX);
         setHelpAvailable(false);
-        mCheckConfig = checkConfig;
+        this.checkConfig = checkConfig;
     }
 
     //
@@ -103,7 +103,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
      * @return the check configuration
      */
     public CheckConfigurationWorkingCopy getCheckConfiguration() {
-        return mCheckConfig;
+        return checkConfig;
     }
 
     @Override
@@ -175,7 +175,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         // check for properties without value - these must be fixed before
         // OK'ing
         boolean error = false;
-        for (ResolvableProperty prop : mResolvableProperties) {
+        for (ResolvableProperty prop : resolvableProperties) {
             if (StringUtils.isBlank(prop.getValue())) {
                 this.setErrorMessage(
                     NLS.bind(Messages.ResolvablePropertiesDialog_msgMissingPropertyValue,
@@ -186,8 +186,8 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         }
 
         if (!error) {
-            mCheckConfig.getResolvableProperties().clear();
-            mCheckConfig.getResolvableProperties().addAll(mResolvableProperties);
+            checkConfig.getResolvableProperties().clear();
+            checkConfig.getResolvableProperties().addAll(resolvableProperties);
             super.okPressed();
         }
     }
@@ -198,11 +198,11 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     private void initialize() {
         // clone the properties so that changes don't directly reflect back into
         // the configuration
-        mResolvableProperties = new ArrayList<>();
-        for (ResolvableProperty prop : mCheckConfig.getResolvableProperties()) {
-            mResolvableProperties.add(new ResolvableProperty(prop));
+        resolvableProperties = new ArrayList<>();
+        for (ResolvableProperty prop : checkConfig.getResolvableProperties()) {
+            resolvableProperties.add(new ResolvableProperty(prop));
         }
-        dialogView.setResolvableProperties(mResolvableProperties);
+        dialogView.setResolvableProperties(resolvableProperties);
     }
 
     /**
@@ -219,7 +219,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
             final ResolvablePropertyEditDialog dialog =
                 new ResolvablePropertyEditDialog(getShell(), newProp);
             if (Window.OK == dialog.open()) {
-                mResolvableProperties.add(newProp);
+                resolvableProperties.add(newProp);
                 dialogView.refresh();
             }
         }
@@ -235,15 +235,15 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     /**
      * Removes the given resolvable properties after confirmation.
      *
-     * @param resolvableProperties
+     * @param resolvablePropertiesToRemove
      *            the resolvable properties to remove
      */
-    private void removePropertyItems(List<ResolvableProperty> resolvableProperties) {
+    private void removePropertyItems(List<ResolvableProperty> resolvablePropertiesToRemove) {
         final boolean confirm = MessageDialog.openQuestion(getShell(),
             Messages.ResolvablePropertiesDialog_titleRemoveConfirmation,
             Messages.ResolvablePropertiesDialog_msgRemoveConfirmation);
         if (confirm) {
-            mResolvableProperties.removeAll(resolvableProperties);
+            resolvableProperties.removeAll(resolvablePropertiesToRemove);
             dialogView.refresh();
         }
     }
@@ -252,9 +252,9 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
      * Searches for unresolved properties and offers to add them to the dialog.
      */
     private void findPropertyItems() {
-        final CheckConfigurationWorkingCopy clone = new CheckConfigurationWorkingCopy(mCheckConfig);
+        final CheckConfigurationWorkingCopy clone = new CheckConfigurationWorkingCopy(checkConfig);
         clone.getResolvableProperties().clear();
-        clone.getResolvableProperties().addAll(mResolvableProperties);
+        clone.getResolvableProperties().addAll(resolvableProperties);
 
         try {
             final List<ResolvableProperty> unresolvedProps =
@@ -266,7 +266,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
 
                 final ResolvableProperty prop = iter.next();
 
-                final Iterator<ResolvableProperty> it2 = mResolvableProperties.iterator();
+                final Iterator<ResolvableProperty> it2 = resolvableProperties.iterator();
                 while (it2.hasNext()) {
 
                     if (prop.getPropertyName().equals(it2.next().getPropertyName())) {
@@ -289,7 +289,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
                     Messages.ResolvablePropertiesDialog_titleFoundProperties,
                     NLS.bind(Messages.ResolvablePropertiesDialog_msgFoundProperties, buf));
                 if (confirm) {
-                    mResolvableProperties.addAll(unresolvedProps);
+                    resolvableProperties.addAll(unresolvedProps);
                     dialogView.refresh();
                 }
             }

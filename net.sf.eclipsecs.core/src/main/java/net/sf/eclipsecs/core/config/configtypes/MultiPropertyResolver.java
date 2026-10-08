@@ -38,7 +38,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
     /** The list of PropertyResolvers. */
-    private List<PropertyResolver> mChildResolver = new ArrayList<>();
+    private List<PropertyResolver> childResolvers = new ArrayList<>();
 
     /**
      * Creates a new instance.
@@ -53,14 +53,14 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
      *            the PropertyResolver to add
      */
     public void addPropertyResolver(PropertyResolver resolver) {
-        mChildResolver.add(resolver);
+        childResolvers.add(resolver);
     }
 
     @Override
     public void setProjectContext(IProject project) {
 
         // propagate context to the childs
-        for (PropertyResolver childResolver : mChildResolver) {
+        for (PropertyResolver childResolver : childResolvers) {
             if (childResolver instanceof IContextAware) {
                 ((IContextAware) childResolver).setProjectContext(project);
             }
@@ -72,7 +72,7 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
         String value = null;
 
-        for (PropertyResolver childResolver : mChildResolver) {
+        for (PropertyResolver childResolver : childResolvers) {
             value = childResolver.resolve(property);
 
             if (value != null) {

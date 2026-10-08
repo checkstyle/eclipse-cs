@@ -63,11 +63,11 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 public final class MarkerStatsMainView extends Composite {
 
     /** The stack layout. */
-    private final StackLayout mStackLayout;
+    private final StackLayout stackLayout;
     /** The master table viewer. */
-    private final MainTableViewer mMasterViewer;
+    private final MainTableViewer masterViewer;
     /** The detail table viewer. */
-    private final DetailTableViewer mDetailViewer;
+    private final DetailTableViewer detailViewer;
 
     /**
      * Creates the marker statistics main view.
@@ -89,20 +89,20 @@ public final class MarkerStatsMainView extends Composite {
         IWorkbenchPartSite site, Runnable updateActions, MarkerStatsViewActions actions) {
         super(parent, style);
 
-        mStackLayout = new StackLayout();
-        mStackLayout.marginHeight = 0;
-        mStackLayout.marginWidth = 0;
-        setLayout(mStackLayout);
+        stackLayout = new StackLayout();
+        stackLayout.marginHeight = 0;
+        stackLayout.marginWidth = 0;
+        setLayout(stackLayout);
 
         // create the master viewer
-        mMasterViewer = new MainTableViewer(this, SWT.NONE, providers.master(), site, updateActions,
+        masterViewer = new MainTableViewer(this, SWT.NONE, providers.master(), site, updateActions,
             actions.mDrillDownAction());
 
         // create the detail viewer
-        mDetailViewer = new DetailTableViewer(this, SWT.NONE, providers.detail(), site,
+        detailViewer = new DetailTableViewer(this, SWT.NONE, providers.detail(), site,
             updateActions, actions.mDrillBackAction(), actions.mShowErrorAction());
 
-        mStackLayout.topControl = mMasterViewer;
+        stackLayout.topControl = masterViewer;
     }
 
     /**
@@ -112,22 +112,22 @@ public final class MarkerStatsMainView extends Composite {
      *            the statistics
      */
     public void setStats(Stats stats) {
-        mMasterViewer.setStats(stats);
-        mDetailViewer.setStats(stats);
+        masterViewer.setStats(stats);
+        detailViewer.setStats(stats);
     }
 
     /**
      * Shows the master table as the top control.
      */
     public void setMasterAsTopControl() {
-        toggleTopControl(mMasterViewer);
+        toggleTopControl(masterViewer);
     }
 
     /**
      * Shows the detail table as the top control.
      */
     public void setDetailAsTopControl() {
-        toggleTopControl(mDetailViewer);
+        toggleTopControl(detailViewer);
     }
 
     /**
@@ -137,7 +137,7 @@ public final class MarkerStatsMainView extends Composite {
      *            the control to show
      */
     private void toggleTopControl(AbstractStatTableViewer<?> control) {
-        mStackLayout.topControl = control;
+        stackLayout.topControl = control;
         layout();
         control.refresh();
     }
@@ -146,7 +146,7 @@ public final class MarkerStatsMainView extends Composite {
      * Focuses the top control of the stack layout.
      */
     public void focusTopControl() {
-        mStackLayout.topControl.setFocus();
+        stackLayout.topControl.setFocus();
     }
 
     /**
@@ -155,7 +155,7 @@ public final class MarkerStatsMainView extends Composite {
      * @return the selected marker or an empty optional
      */
     public Optional<IMarker> getSelectedMarker() {
-        return mDetailViewer.getSelection();
+        return detailViewer.getSelection();
     }
 
     /**
@@ -164,7 +164,7 @@ public final class MarkerStatsMainView extends Composite {
      * @return the selected marker category or an empty optional
      */
     public Optional<MarkerStat> getSelectedMarkerCategory() {
-        return mMasterViewer.getSelection();
+        return masterViewer.getSelection();
     }
 
     /**

@@ -51,19 +51,19 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
     private static final Color GREEN = new Color(219, 235, 204);
 
     /** The default test message. */
-    private final String mDefaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
+    private final String defaultMessage = Messages.ConfigPropertyWidgetRegex_msgRegexTestString;
 
     /** The contents composite. */
-    private Composite mContents;
+    private Composite contents;
 
     /** The text widget. */
-    private Text mTextWidget;
+    private Text textWidget;
 
     /** The regex test text widget. */
-    private Text mRegexTestWidget;
+    private Text regexTestWidget;
 
     /** The text background color. */
-    private Color mTextBgColor;
+    private Color textBgColor;
 
     /**
      * Creates the widget.
@@ -93,44 +93,44 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
     @Override
     protected Control getValueWidget(Composite parent) {
 
-        if (mContents == null) {
+        if (contents == null) {
 
-            mContents = new Composite(parent, SWT.NULL);
-            mContents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            contents = new Composite(parent, SWT.NULL);
+            contents.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
             final GridLayout layout = new GridLayout(2, true);
             layout.marginWidth = 0;
             layout.marginHeight = 0;
-            mContents.setLayout(layout);
+            contents.setLayout(layout);
 
             //
             // Create a text entry field.
             //
-            mTextWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
-            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            mTextWidget.addKeyListener(new RegexTestListener());
-            mTextBgColor = mTextWidget.getBackground();
+            textWidget = new Text(contents, SWT.SINGLE | SWT.BORDER);
+            textWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            textWidget.addKeyListener(new RegexTestListener());
+            textBgColor = textWidget.getBackground();
 
             // content assist
-            RegexCompletionProposalFactory.createForText(mTextWidget);
+            RegexCompletionProposalFactory.createForText(textWidget);
 
             final String initValue = getInitValue();
             if (initValue != null) {
-                mTextWidget.setText(initValue);
+                textWidget.setText(initValue);
             }
 
-            mRegexTestWidget = new Text(mContents, SWT.SINGLE | SWT.BORDER);
-            mRegexTestWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            mRegexTestWidget.setMessage(mDefaultMessage);
-            mRegexTestWidget.addKeyListener(new RegexTestListener());
+            regexTestWidget = new Text(contents, SWT.SINGLE | SWT.BORDER);
+            regexTestWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            regexTestWidget.setMessage(defaultMessage);
+            regexTestWidget.addKeyListener(new RegexTestListener());
 
         }
 
-        return mTextWidget;
+        return textWidget;
     }
 
     @Override
     public String getValue() {
-        String result = mTextWidget.getText();
+        String result = textWidget.getText();
         if (result == null) {
             result = "";
         }
@@ -147,7 +147,7 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
         if (defaultValue == null) {
             defaultValue = "";
         }
-        mTextWidget.setText(defaultValue);
+        textWidget.setText(defaultValue);
     }
 
     @Override
@@ -156,7 +156,7 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
             //
             // Compile the text to a regex pattern
             //
-            Pattern.compile(mTextWidget.getText());
+            Pattern.compile(textWidget.getText());
         }
         catch (PatternSyntaxException ex) {
             CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
@@ -168,19 +168,19 @@ public final class ConfigPropertyWidgetRegex extends AbstractConfigPropertyWidge
      */
     private void testRegex() {
         try {
-            final Pattern pattern = Pattern.compile(mTextWidget.getText());
-            final Matcher matcher = pattern.matcher(mRegexTestWidget.getText());
+            final Pattern pattern = Pattern.compile(textWidget.getText());
+            final Matcher matcher = pattern.matcher(regexTestWidget.getText());
             if (matcher.find()) {
-                mRegexTestWidget.setBackground(GREEN);
+                regexTestWidget.setBackground(GREEN);
             }
             else {
-                mRegexTestWidget.setBackground(RED);
+                regexTestWidget.setBackground(RED);
             }
 
-            mTextWidget.setBackground(mTextBgColor);
+            textWidget.setBackground(textBgColor);
         }
         catch (PatternSyntaxException ex) {
-            mTextWidget.setBackground(RED);
+            textWidget.setBackground(RED);
         }
     }
 

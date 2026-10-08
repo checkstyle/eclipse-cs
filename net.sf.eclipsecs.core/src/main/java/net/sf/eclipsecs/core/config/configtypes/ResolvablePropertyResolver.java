@@ -33,7 +33,7 @@ import net.sf.eclipsecs.core.config.ResolvableProperty;
 public class ResolvablePropertyResolver implements PropertyResolver {
 
     /** The check configuration to resolve from. */
-    private ICheckConfiguration mCheckConfiguration;
+    private ICheckConfiguration checkConfiguration;
 
     /**
      * Creates the resolver for the given check configuration.
@@ -42,7 +42,7 @@ public class ResolvablePropertyResolver implements PropertyResolver {
      *            the check configuration
      */
     public ResolvablePropertyResolver(ICheckConfiguration checkConfiguration) {
-        mCheckConfiguration = checkConfiguration;
+        this.checkConfiguration = checkConfiguration;
     }
 
     @Override
@@ -51,7 +51,7 @@ public class ResolvablePropertyResolver implements PropertyResolver {
         String value = null;
 
         final List<ResolvableProperty> resolvableProperties =
-            mCheckConfiguration.getResolvableProperties();
+            checkConfiguration.getResolvableProperties();
         for (ResolvableProperty prop : resolvableProperties) {
 
             if (aName.equals(prop.getPropertyName())) {

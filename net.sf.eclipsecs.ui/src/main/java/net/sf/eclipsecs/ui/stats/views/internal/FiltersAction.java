@@ -37,7 +37,7 @@ public class FiltersAction extends Action {
     //
 
     /** The view that uses this action. */
-    private AbstractStatsView mStatsView;
+    private AbstractStatsView statsView;
 
     //
     // constructor
@@ -53,7 +53,7 @@ public class FiltersAction extends Action {
         super(Messages.FiltersAction_text);
         setImageDescriptor(CheckstyleUIPluginImages.FILTER_ICON.getImageDescriptor());
         setToolTipText(Messages.FiltersAction_tooltip);
-        this.mStatsView = view;
+        this.statsView = view;
         setEnabled(true);
     }
 
@@ -66,7 +66,7 @@ public class FiltersAction extends Action {
      */
     @Override
     public void run() {
-        mStatsView.openFiltersDialog();
+        statsView.openFiltersDialog();
     }
 
 }

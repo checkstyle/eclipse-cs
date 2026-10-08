@@ -49,11 +49,11 @@ import net.sf.eclipsecs.ui.Messages;
 public final class RuleConfigurationEditDialogAdvancedSettings extends Composite {
 
     /** The text field for the module comment. */
-    private final Text mCommentText;
+    private final Text commentText;
     /** The text field for the module id. */
-    private final Text mIdText;
+    private final Text idText;
     /** The map of custom message key to text field. */
-    private final Map<String, Text> mCustomMessages;
+    private final Map<String, Text> customMessages;
 
     /**
      * Creates the advanced settings composite.
@@ -73,15 +73,15 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
 
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
 
-        mCommentText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblComment);
-        mIdText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblId);
+        commentText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblComment);
+        idText = createLabeledText(this, Messages.RuleConfigurationEditDialog_lblId);
 
         final Group messagesGroup = new Group(this, SWT.NULL);
         messagesGroup.setText(Messages.RuleConfigurationEditDialog_titleCustMsg);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(messagesGroup);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(messagesGroup);
 
-        mCustomMessages = new HashMap<>();
+        customMessages = new HashMap<>();
 
         // take keys from metadata as well as predefined from the
         // configuration. This way we don't lose keys not defined in metadata.
@@ -105,22 +105,22 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
             }
             msgText.setEnabled(!readonly);
 
-            mCustomMessages.put(msgKey, msgText);
+            customMessages.put(msgKey, msgText);
         }
 
         final String comment = rule.getComment();
         if (comment != null) {
-            mCommentText.setText(comment);
+            commentText.setText(comment);
         }
 
         final String id = rule.getId();
         if (id != null) {
-            mIdText.setText(id);
+            idText.setText(id);
         }
 
-        mIdText.setEnabled(!readonly);
+        idText.setEnabled(!readonly);
         // mCustomMessageText.setEditable(!mReadonly);
-        mCommentText.setEnabled(!readonly);
+        commentText.setEnabled(!readonly);
     }
 
     /**
@@ -129,7 +129,7 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
      * @return the module comment
      */
     public String getComment() {
-        return mCommentText.getText();
+        return commentText.getText();
     }
 
     /**
@@ -138,7 +138,7 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
      * @return the module id
      */
     public String getId() {
-        return mIdText.getText();
+        return idText.getText();
     }
 
     /**
@@ -147,7 +147,7 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
      * @return the custom messages
      */
     public Map<String, String> getCustomMessages() {
-        return mCustomMessages.entrySet().stream()
+        return customMessages.entrySet().stream()
             .collect(Collectors.toMap(Entry::getKey, entry -> entry.getValue().getText()));
     }
 
@@ -155,7 +155,7 @@ public final class RuleConfigurationEditDialogAdvancedSettings extends Composite
      * Resets the module comment.
      */
     public void resetComment() {
-        mCommentText.setText("");
+        commentText.setText("");
     }
 
     /**

@@ -65,16 +65,16 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
         PropertyResourceBundle.getBundle("net.sf.eclipsecs.ui.config.token");
 
     /** The checkbox table viewer. */
-    private CheckboxTableViewer mTable;
+    private CheckboxTableViewer table;
 
     /** Whether to translate tokens. */
-    private boolean mTranslateTokens;
+    private boolean translateTokens;
 
     /** Whether to sort tokens. */
-    private boolean mSortTokens = true;
+    private boolean sortTokens = true;
 
     /** The tokens list. */
-    private List<String> mTokens;
+    private List<String> tokens;
 
     /**
      * Creates the widget.
@@ -86,7 +86,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
      */
     private ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop) {
         super(parent, prop);
-        mTokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
+        tokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
     }
 
     /**
@@ -105,32 +105,32 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
     @Override
     protected Control getValueWidget(Composite parent) {
 
-        if (mTable == null) {
+        if (table == null) {
 
-            mTranslateTokens =
+            translateTokens =
                 CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS);
-            mSortTokens =
+            sortTokens =
                 CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS);
 
             final IEclipsePreferences instanceScope =
                 InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
             instanceScope.addPreferenceChangeListener(this);
 
-            mTable = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
-            mTable.setContentProvider(new ArrayContentProvider());
-            mTable.setLabelProvider(new TokenLabelProvider());
+            table = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
+            table.setContentProvider(new ArrayContentProvider());
+            table.setLabelProvider(new TokenLabelProvider());
 
-            installSorter(mSortTokens);
+            installSorter(sortTokens);
 
-            mTable.setInput(mTokens);
-            mTable.setCheckedElements(tokenize(getInitValue()).toArray());
+            table.setInput(tokens);
+            table.setCheckedElements(tokenize(getInitValue()).toArray());
 
             final GridData gridData = new GridData(GridData.FILL_BOTH);
             gridData.heightHint = WIDGET_HEIGHT;
-            mTable.getControl().setLayoutData(gridData);
+            table.getControl().setLayoutData(gridData);
 
             // deregister the listener on widget dipose
-            mTable.getControl().addDisposeListener(new DisposeListener() {
+            table.getControl().addDisposeListener(new DisposeListener() {
 
                 @Override
                 public void widgetDisposed(DisposeEvent e) {
@@ -141,12 +141,12 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
             });
         }
 
-        return mTable.getControl();
+        return table.getControl();
     }
 
     @Override
     public String getValue() {
-        return Arrays.stream(mTable.getCheckedElements()).map(Object::toString)
+        return Arrays.stream(table.getCheckedElements()).map(Object::toString)
             .collect(Collectors.joining(", "));
     }
 
@@ -159,12 +159,12 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
     private void installSorter(boolean sort) {
         if (sort) {
             final Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
-            mTable.setComparator(new ViewerComparator(collator));
+            table.setComparator(new ViewerComparator(collator));
         }
         else {
-            mTable.setComparator(null);
+            table.setComparator(null);
         }
-        mTable.refresh();
+        table.refresh();
     }
 
     @Override
@@ -184,9 +184,9 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
         }
 
         // clear current checked state
-        mTable.setCheckedElements(new Object[0]);
+        table.setCheckedElements(new Object[0]);
 
-        mTable.setCheckedElements(result.toArray());
+        table.setCheckedElements(result.toArray());
     }
 
     /**
@@ -208,12 +208,12 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
     @Override
     public void preferenceChange(PreferenceChangeEvent event) {
         if (CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS.equals(event.getKey())) {
-            mTranslateTokens = Boolean.parseBoolean((String) event.getNewValue());
-            mTable.refresh(true);
+            translateTokens = Boolean.parseBoolean((String) event.getNewValue());
+            table.refresh(true);
         }
         if (CheckstyleUIPluginPrefs.PREF_SORT_TOKENS.equals(event.getKey())) {
-            mSortTokens = Boolean.parseBoolean((String) event.getNewValue());
-            installSorter(mSortTokens);
+            sortTokens = Boolean.parseBoolean((String) event.getNewValue());
+            installSorter(sortTokens);
         }
     }
 
@@ -232,7 +232,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
         @Override
         public String getText(Object element) {
             String translation = null;
-            if (mTranslateTokens) {
+            if (translateTokens) {
                 try {
                     translation = TOKEN_BUNDLE.getString((String) element);
                 }

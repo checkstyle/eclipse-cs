@@ -51,7 +51,7 @@ import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 public final class ResolvablePropertiesDialogView extends Composite {
 
     /** The table viewer for resolvable properties. */
-    private final TableViewer mTableViewer;
+    private final TableViewer tableViewer;
 
     /**
      * Constructor building the table and the Add/Edit/Remove controls to manage resolvable
@@ -81,14 +81,14 @@ public final class ResolvablePropertiesDialogView extends Composite {
         final TableColumnLayout tableColumnLayout = new TableColumnLayout();
         tableComposite.setLayout(tableColumnLayout);
 
-        mTableViewer = new TableViewer(tableComposite,
+        tableViewer = new TableViewer(tableComposite,
             SWT.BORDER | SWT.MULTI | SWT.FULL_SELECTION);
-        mTableViewer.getTable().setHeaderVisible(true);
-        mTableViewer.getTable().setLinesVisible(true);
-        mTableViewer.setContentProvider(ArrayContentProvider.getInstance());
-        mTableViewer.addDoubleClickListener(
+        tableViewer.getTable().setHeaderVisible(true);
+        tableViewer.getTable().setLinesVisible(true);
+        tableViewer.setContentProvider(ArrayContentProvider.getInstance());
+        tableViewer.addDoubleClickListener(
             event -> openPropertyItemEditor.accept(getSelectedProperties().getFirst()));
-        mTableViewer.getTable().addKeyListener(KeyListener.keyReleasedAdapter(event -> {
+        tableViewer.getTable().addKeyListener(KeyListener.keyReleasedAdapter(event -> {
             if (event.character == SWT.DEL) {
                 removePropertyItems.accept(getSelectedProperties());
             }
@@ -97,19 +97,19 @@ public final class ResolvablePropertiesDialogView extends Composite {
             }
         }));
 
-        final TableViewerColumn nameCol = new TableViewerColumn(mTableViewer, SWT.NONE);
+        final TableViewerColumn nameCol = new TableViewerColumn(tableViewer, SWT.NONE);
         nameCol.getColumn().setText(Messages.ResolvablePropertiesDialog_colName);
         nameCol.setLabelProvider(ColumnLabelProvider.createTextProvider(
             element -> ((ResolvableProperty) element).getPropertyName()));
         tableColumnLayout.setColumnData(nameCol.getColumn(), new ColumnWeightData(1));
 
-        final TableViewerColumn valueCol = new TableViewerColumn(mTableViewer, SWT.NONE);
+        final TableViewerColumn valueCol = new TableViewerColumn(tableViewer, SWT.NONE);
         valueCol.getColumn().setText(Messages.ResolvablePropertiesDialog_colValue);
         valueCol.setLabelProvider(ColumnLabelProvider.createTextProvider(
             element -> ((ResolvableProperty) element).getValue()));
         tableColumnLayout.setColumnData(valueCol.getColumn(), new ColumnWeightData(1));
 
-        TableViewerEnhancer.enhance(mTableViewer, tableSettings, tableColumnLayout);
+        TableViewerEnhancer.enhance(tableViewer, tableSettings, tableColumnLayout);
 
         final Composite buttonBar = new Composite(this, SWT.NULL);
         GridLayoutFactory.swtDefaults().margins(0, 0).applyTo(buttonBar);
@@ -138,7 +138,7 @@ public final class ResolvablePropertiesDialogView extends Composite {
      */
     @SuppressWarnings("unchecked")
     public List<ResolvableProperty> getSelectedProperties() {
-        return mTableViewer.getStructuredSelection().toList();
+        return tableViewer.getStructuredSelection().toList();
     }
 
     /**
@@ -148,14 +148,14 @@ public final class ResolvablePropertiesDialogView extends Composite {
      *            the resolvable properties to show
      */
     public void setResolvableProperties(List<ResolvableProperty> resolvableProperties) {
-        mTableViewer.setInput(resolvableProperties);
+        tableViewer.setInput(resolvableProperties);
     }
 
     /**
      * Refreshes the table viewer.
      */
     public void refresh() {
-        mTableViewer.refresh();
+        tableViewer.refresh();
     }
 
     /**

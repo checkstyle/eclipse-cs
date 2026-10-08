@@ -53,7 +53,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
     //
 
     /** The working set being edited. */
-    private final ICheckConfigurationWorkingSet mWorkingSet;
+    private final ICheckConfigurationWorkingSet workingSet;
     /** The editor view. */
     private final CheckConfigurationWorkingSetEditorView editorView;
 
@@ -75,14 +75,14 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         ICheckConfigurationWorkingSet workingSet) {
         super(parent, style);
 
-        mWorkingSet = workingSet;
+        this.workingSet = workingSet;
 
         GridLayoutFactory.fillDefaults().applyTo(this);
 
-        final boolean global = mWorkingSet instanceof GlobalCheckConfigurationWorkingSet;
+        final boolean global = workingSet instanceof GlobalCheckConfigurationWorkingSet;
 
         final CheckConfigurationWorkingSetEditorModel model =
-            new CheckConfigurationWorkingSetEditorModel(mWorkingSet.getWorkingCopies(), global,
+            new CheckConfigurationWorkingSetEditorModel(workingSet.getWorkingCopies(), global,
                 this::isDefaultConfig, getTableSettings());
 
         editorView = new CheckConfigurationWorkingSetEditorView(this, SWT.NONE, model,
@@ -102,7 +102,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      */
     private boolean isDefaultConfig(CheckConfigurationWorkingCopy config) {
         boolean configDefault = false;
-        if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet) {
+        if (workingSet instanceof GlobalCheckConfigurationWorkingSet globalWorkingSet) {
             final CheckConfigurationWorkingCopy defaultConfig =
                 globalWorkingSet.getDefaultCheckConfig();
             configDefault = defaultConfig != null && defaultConfig.equals(config);
@@ -115,14 +115,14 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      */
     private void addCheckConfig() {
         final CheckConfigurationPropertiesDialog dialog =
-            new CheckConfigurationPropertiesDialog(getShell(), null, mWorkingSet);
+            new CheckConfigurationPropertiesDialog(getShell(), null, workingSet);
         dialog.setBlockOnOpen(true);
         if (Window.OK == dialog.open()) {
 
             final CheckConfigurationWorkingCopy newConfig = dialog.getCheckConfiguration();
-            mWorkingSet.addCheckConfiguration(newConfig);
+            workingSet.addCheckConfiguration(newConfig);
 
-            editorView.setConfigs(mWorkingSet.getWorkingCopies());
+            editorView.setConfigs(workingSet.getWorkingCopies());
             editorView.setSelection(newConfig);
         }
     }
@@ -134,7 +134,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         final CheckConfigurationWorkingCopy config = editorView.getSelectedConfig();
         if (config != null) {
             final CheckConfigurationPropertiesDialog dialog =
-                new CheckConfigurationPropertiesDialog(getShell(), config, mWorkingSet);
+                new CheckConfigurationPropertiesDialog(getShell(), config, workingSet);
             dialog.setBlockOnOpen(true);
             if (Window.OK == dialog.open()) {
                 editorView.refresh();
@@ -179,7 +179,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
 
                 // Open the properties dialog to change default name and description
                 final CheckConfigurationPropertiesDialog dialog =
-                    new CheckConfigurationPropertiesDialog(getShell(), null, mWorkingSet);
+                    new CheckConfigurationPropertiesDialog(getShell(), null, workingSet);
                 dialog.setTemplateConfiguration(sourceConfig);
 
                 dialog.setBlockOnOpen(true);
@@ -190,9 +190,9 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                     // Copy the source configuration into the new internal config
                     sourceConfig.copyConfiguration(newConfig);
 
-                    mWorkingSet.addCheckConfiguration(newConfig);
+                    workingSet.addCheckConfiguration(newConfig);
 
-                    editorView.setConfigs(mWorkingSet.getWorkingCopies());
+                    editorView.setConfigs(workingSet.getWorkingCopies());
                 }
             }
             catch (CheckstylePluginException ex) {
@@ -216,9 +216,9 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                 // Make sure the check config is not in use. Don't let it be
                 // deleted if it is.
                 //
-                if (mWorkingSet.removeCheckConfiguration(checkConfig)) {
+                if (workingSet.removeCheckConfiguration(checkConfig)) {
 
-                    editorView.setConfigs(mWorkingSet.getWorkingCopies());
+                    editorView.setConfigs(workingSet.getWorkingCopies());
                 }
                 else {
                     MessageDialog.openInformation(getShell(),
@@ -236,8 +236,8 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
     private void setDefaultCheckConfig() {
         final CheckConfigurationWorkingCopy checkConfig = editorView.getSelectedConfig();
         if (checkConfig != null) {
-            if (mWorkingSet instanceof GlobalCheckConfigurationWorkingSet) {
-                ((GlobalCheckConfigurationWorkingSet) mWorkingSet)
+            if (workingSet instanceof GlobalCheckConfigurationWorkingSet) {
+                ((GlobalCheckConfigurationWorkingSet) workingSet)
                     .setDefaultCheckConfig(checkConfig);
             }
 
@@ -275,7 +275,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      * @return the dialog settings section for the working set
      */
     private IDialogSettings getTableSettings() {
-        final String concreteViewId = mWorkingSet.getClass().getName();
+        final String concreteViewId = workingSet.getClass().getName();
 
         final IDialogSettings workbenchSettings =
             CheckstyleUIPlugin.getDefault().getDialogSettings();

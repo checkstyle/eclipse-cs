@@ -53,10 +53,10 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     private SimpleFileSetsEditorView editorView;
 
     /** The list of file sets. */
-    private List<FileSet> mFileSets;
+    private List<FileSet> fileSets;
 
     /** The default file set. */
-    private FileSet mDefaultFileSet;
+    private FileSet defaultFileSet;
 
     /**
      * Creates the SimpleFileSetsEditor.
@@ -73,11 +73,11 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
 
     @Override
     public void setFileSets(List<FileSet> fileSets) {
-        mFileSets = fileSets;
+        this.fileSets = fileSets;
 
         ICheckConfiguration config = null;
-        if (!mFileSets.isEmpty()) {
-            config = mFileSets.get(0).getCheckConfig();
+        if (!fileSets.isEmpty()) {
+            config = fileSets.get(0).getCheckConfig();
         }
 
         if (config == null) {
@@ -88,26 +88,26 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
             }
         }
 
-        mDefaultFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset, config);
+        defaultFileSet = new FileSet(Messages.SimpleFileSetsEditor_nameAllFileset, config);
         try {
-            mDefaultFileSet.getFileMatchPatterns().add(new FileMatchPattern("."));
+            defaultFileSet.getFileMatchPatterns().add(new FileMatchPattern("."));
         }
         catch (CheckstylePluginException ex) {
             // impossible
         }
-        mFileSets.clear();
-        mFileSets.add(mDefaultFileSet);
+        fileSets.clear();
+        fileSets.add(defaultFileSet);
     }
 
     @Override
     public List<FileSet> getFileSets() {
-        return mFileSets;
+        return fileSets;
     }
 
     @Override
     public Control createContents(Composite parent) {
         this.editorView = new SimpleFileSetsEditorView(parent, SWT.NONE, this::manageConfig,
-            mDefaultFileSet, propertyPageContext);
+            defaultFileSet, propertyPageContext);
         return editorView;
     }
 
@@ -115,7 +115,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
      * Opens a dialog to configure the check configuration of the default file set.
      */
     private void manageConfig() {
-        final ICheckConfiguration config = mDefaultFileSet.getCheckConfig();
+        final ICheckConfiguration config = defaultFileSet.getCheckConfig();
         if (config != null) {
             try {
                 config.getCheckstyleConfiguration();

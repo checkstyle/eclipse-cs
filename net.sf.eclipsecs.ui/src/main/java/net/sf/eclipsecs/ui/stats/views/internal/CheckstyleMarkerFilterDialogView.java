@@ -42,17 +42,17 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
     private static final int REGEX_GROUP_NUM_COLUMNS = 3;
 
     /** The filter enabled checkbox. */
-    private final Button mChkFilterEnabled;
+    private final Button chkFilterEnabled;
     /** The resource filter group. */
     private final CheckstyleMarkerFilterResourceFilterGroup resourceFilterGroup;
     /** The regex group. */
-    private final Group mGrpRegex;
+    private final Group grpRegex;
     /** The select by regex checkbox. */
-    private final Button mChkSelectByRegex;
+    private final Button chkSelectByRegex;
     /** The regex filter label. */
-    private final Label mLblRegexFilter;
+    private final Label lblRegexFilter;
     /** The edit regex button. */
-    private final Button mBtnEditRegex;
+    private final Button btnEditRegex;
 
     /**
      * Creates the checkstyle marker filter dialog view.
@@ -72,30 +72,30 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
 
         GridLayoutFactory.swtDefaults().applyTo(this);
 
-        mChkFilterEnabled = new Button(this, SWT.CHECK);
-        mChkFilterEnabled.setText(Messages.CheckstyleMarkerFilterDialog_btnEnabled);
-        mChkFilterEnabled.addSelectionListener(
+        chkFilterEnabled = new Button(this, SWT.CHECK);
+        chkFilterEnabled.setText(Messages.CheckstyleMarkerFilterDialog_btnEnabled);
+        chkFilterEnabled.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> updateControlState()));
 
         resourceFilterGroup = new CheckstyleMarkerFilterResourceFilterGroup(this, SWT.NONE,
             this::updateControlState, selectWorkingSet);
         GridDataFactory.fillDefaults().grab(true, false).applyTo(resourceFilterGroup);
 
-        mGrpRegex = new Group(this, SWT.NULL);
-        mGrpRegex.setText(Messages.CheckstyleMarkerFilterDialog_lblExcludeMarkers);
-        GridLayoutFactory.swtDefaults().numColumns(REGEX_GROUP_NUM_COLUMNS).applyTo(mGrpRegex);
-        GridDataFactory.fillDefaults().applyTo(mGrpRegex);
+        grpRegex = new Group(this, SWT.NULL);
+        grpRegex.setText(Messages.CheckstyleMarkerFilterDialog_lblExcludeMarkers);
+        GridLayoutFactory.swtDefaults().numColumns(REGEX_GROUP_NUM_COLUMNS).applyTo(grpRegex);
+        GridDataFactory.fillDefaults().applyTo(grpRegex);
 
-        mChkSelectByRegex = createButton(mGrpRegex, SWT.CHECK,
+        chkSelectByRegex = createButton(grpRegex, SWT.CHECK,
             Messages.CheckstyleMarkerFilterDialog_lblRegex, GridDataFactory.swtDefaults());
 
-        mLblRegexFilter = new Label(mGrpRegex, SWT.NONE);
+        lblRegexFilter = new Label(grpRegex, SWT.NONE);
         GridDataFactory.swtDefaults().align(SWT.FILL, SWT.CENTER).grab(true, false)
-            .applyTo(mLblRegexFilter);
+            .applyTo(lblRegexFilter);
 
-        mBtnEditRegex = createButton(mGrpRegex, SWT.PUSH,
+        btnEditRegex = createButton(grpRegex, SWT.PUSH,
             Messages.CheckstyleMarkerFilterDialog_btnEdit, GridDataFactory.swtDefaults());
-        mBtnEditRegex.addSelectionListener(
+        btnEditRegex.addSelectionListener(
             SelectionListener.widgetSelectedAdapter(event -> editRegularExpressions.run()));
     }
 
@@ -124,11 +124,11 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
      * Updates the enablement state of the controls.
      */
     private void updateControlState() {
-        resourceFilterGroup.propagateEnabled(mChkFilterEnabled.getSelection());
-        mGrpRegex.setEnabled(mChkFilterEnabled.getSelection());
-        mChkSelectByRegex.setEnabled(mChkFilterEnabled.getSelection());
-        mLblRegexFilter.setEnabled(mChkFilterEnabled.getSelection());
-        mBtnEditRegex.setEnabled(mChkFilterEnabled.getSelection());
+        resourceFilterGroup.propagateEnabled(chkFilterEnabled.getSelection());
+        grpRegex.setEnabled(chkFilterEnabled.getSelection());
+        chkSelectByRegex.setEnabled(chkFilterEnabled.getSelection());
+        lblRegexFilter.setEnabled(chkFilterEnabled.getSelection());
+        btnEditRegex.setEnabled(chkFilterEnabled.getSelection());
     }
 
     /**
@@ -147,9 +147,9 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
      */
     public void set(boolean enabled, int onResource, boolean selectBySeverity, int severity,
         boolean filterByRegex) {
-        mChkFilterEnabled.setSelection(enabled);
+        chkFilterEnabled.setSelection(enabled);
         resourceFilterGroup.setFromFilter(onResource, selectBySeverity, severity);
-        mChkSelectByRegex.setSelection(filterByRegex);
+        chkSelectByRegex.setSelection(filterByRegex);
         updateControlState();
     }
 
@@ -170,7 +170,7 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
      *            the regular expression label
      */
     public void setRegexLabel(String label) {
-        mLblRegexFilter.setText(label);
+        lblRegexFilter.setText(label);
     }
 
     /**
@@ -179,7 +179,7 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
      * @return whether the filter is enabled
      */
     public boolean getFilterEnabled() {
-        return mChkFilterEnabled.getSelection();
+        return chkFilterEnabled.getSelection();
     }
 
     /**
@@ -215,7 +215,7 @@ public final class CheckstyleMarkerFilterDialogView extends Composite {
      * @return whether to filter by regular expression
      */
     public boolean getSelectByRegex() {
-        return mChkSelectByRegex.getSelection();
+        return chkSelectByRegex.getSelection();
     }
 
 }

@@ -38,18 +38,18 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class CheckstyleTransformer {
 
     /** An object containing all settings for the eclipse-formatter. */
-    private final FormatterConfiguration mFormatterSetting = new FormatterConfiguration();
+    private final FormatterConfiguration formatterSetting = new FormatterConfiguration();
 
     /** The list of checkstyle-rules delivered in the constructor. */
-    private final List<Configuration> mRules;
+    private final List<Configuration> rules;
 
     /**
      * The list with all TransformationClass-instances loaded in method loadTransformationClasses().
      */
-    private final List<AbstractCTransformationClass> mTransformationClasses = new ArrayList<>();
+    private final List<AbstractCTransformationClass> transformationClasses = new ArrayList<>();
 
     /** The project. */
-    private IProject mProject;
+    private IProject project;
 
     /**
      * Creates a new instance of class CheckstyleTransformer.
@@ -63,11 +63,11 @@ public class CheckstyleTransformer {
      */
     public CheckstyleTransformer(IProject project, final List<Configuration> ruleList)
             throws CheckstylePluginException {
-        mProject = project;
-        mRules = ruleList;
+        this.project = project;
+        rules = ruleList;
 
         final List<String> classnames = new ArrayList<>();
-        final Iterator<Configuration> it = mRules.iterator();
+        final Iterator<Configuration> it = rules.iterator();
 
         while (it.hasNext()) {
             final Configuration item = it.next();
@@ -91,7 +91,7 @@ public class CheckstyleTransformer {
     private void loadTransformationClasses(final List<String> classnames)
             throws CheckstylePluginException {
         final Iterator<String> nameit = classnames.iterator();
-        final Iterator<Configuration> ruleit = mRules.iterator();
+        final Iterator<Configuration> ruleit = rules.iterator();
         String name;
         Configuration rule;
         Class<?> transformationClass;
@@ -105,7 +105,7 @@ public class CheckstyleTransformer {
                     (AbstractCTransformationClass) transformationClass.getDeclaredConstructor()
                         .newInstance();
                 transObj.setRule(rule);
-                mTransformationClasses.add(transObj);
+                transformationClasses.add(transObj);
                 // Logger.writeln("using " + name + " to transform rule \""
                 // + rule.getName() + "\"");
             }
@@ -125,7 +125,7 @@ public class CheckstyleTransformer {
     // FormatterConfigWriter used via side effect on its arguments
     public void transformRules() {
         loadRuleConfigurations();
-        new FormatterConfigWriter(mProject, mFormatterSetting).writeSettings();
+        new FormatterConfigWriter(project, formatterSetting).writeSettings();
     }
 
     /**
@@ -134,10 +134,10 @@ public class CheckstyleTransformer {
      */
     private void loadRuleConfigurations() {
         FormatterConfiguration settings;
-        final Iterator<AbstractCTransformationClass> it = mTransformationClasses.iterator();
+        final Iterator<AbstractCTransformationClass> it = transformationClasses.iterator();
         while (it.hasNext()) {
             settings = it.next().transformRule();
-            mFormatterSetting.addConfiguration(settings);
+            formatterSetting.addConfiguration(settings);
         }
     }
 

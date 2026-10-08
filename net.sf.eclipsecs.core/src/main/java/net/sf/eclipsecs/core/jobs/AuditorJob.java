@@ -41,10 +41,10 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class AuditorJob extends AbstractCheckJob {
 
     /** The project to audit. */
-    private IProject mProject;
+    private IProject project;
 
     /** The auditor. */
-    private Auditor mAuditor;
+    private Auditor auditor;
 
     /**
      * Creates an operation which runs a pre-configured auditor.
@@ -57,8 +57,8 @@ public class AuditorJob extends AbstractCheckJob {
     public AuditorJob(IProject project, Auditor auditor) {
         super(NLS.bind(Messages.AuditorJob_msgBuildProject, project.getName()));
 
-        this.mProject = project;
-        this.mAuditor = auditor;
+        this.project = project;
+        this.auditor = auditor;
     }
 
     @Override
@@ -69,7 +69,7 @@ public class AuditorJob extends AbstractCheckJob {
     @Override
     public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
         try {
-            mAuditor.runAudit(mProject, monitor);
+            auditor.runAudit(project, monitor);
         }
         catch (CheckstylePluginException ex) {
             final Status status = new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,

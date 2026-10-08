@@ -74,19 +74,19 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
     /** The language selection combo. */
     private final Combo languageIf;
     /** The rebuild preference combo. */
-    private final Combo mRebuildIfNeeded;
+    private final Combo rebuildIfNeeded;
     /** The checkbox for warning before losing filesets. */
-    private final Button mWarnBeforeLosingFilesets;
+    private final Button warnBeforeLosingFilesets;
     /** The checkbox to include rule names. */
-    private final Button mIncludeRuleNamesButton;
+    private final Button includeRuleNamesButton;
     /** The checkbox to include module IDs. */
-    private final Button mIncludeModuleIdButton;
+    private final Button includeModuleIdButton;
     /** The checkbox to limit checkstyle markers. */
-    private final Button mLimitCheckstyleMarkers;
+    private final Button limitCheckstyleMarkers;
     /** The text field for the marker limit. */
-    private final Text mTxtMarkerLimit;
+    private final Text txtMarkerLimit;
     /** The checkbox for running in background on full builds. */
-    private final Button mBackgroundFullBuild;
+    private final Button backgroundFullBuild;
 
     /**
      * Creates the general settings section of the Checkstyle preference page.
@@ -109,26 +109,26 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         GridLayoutFactory.swtDefaults().applyTo(group);
 
         languageIf = createLanguageSetting(group);
-        mRebuildIfNeeded = createRebuildSection(group, setRebuildAll);
+        rebuildIfNeeded = createRebuildSection(group, setRebuildAll);
 
         //
         // Create the "Fileset warning" check box.
         //
-        mWarnBeforeLosingFilesets =
+        warnBeforeLosingFilesets =
             makeButton(group, SWT.CHECK, Messages.CheckstylePreferencePage_lblWarnFilesets,
                 CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING));
 
         //
         // Create the "Include rule name" check box.
         //
-        mIncludeRuleNamesButton = makeCheckboxWithRebuildNoteLabel(group,
+        includeRuleNamesButton = makeCheckboxWithRebuildNoteLabel(group,
             Messages.CheckstylePreferencePage_lblIncludeRulenames,
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES));
 
         //
         // Create the "Include rule name" check box.
         //
-        mIncludeModuleIdButton = makeCheckboxWithRebuildNoteLabel(group,
+        includeModuleIdButton = makeCheckboxWithRebuildNoteLabel(group,
             Messages.CheckstylePreferencePage_lblIncludeModuleIds,
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS));
 
@@ -138,15 +138,15 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         final Composite limitMarkersComposite = new Composite(group, SWT.NULL);
         RowLayoutFactory.fillDefaults().applyTo(limitMarkersComposite);
 
-        mLimitCheckstyleMarkers = makeButton(limitMarkersComposite, SWT.CHECK,
+        limitCheckstyleMarkers = makeButton(limitMarkersComposite, SWT.CHECK,
             Messages.CheckstylePreferencePage_lblLimitMarker, CheckstylePluginPrefs
                 .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE));
 
-        mTxtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
-        mTxtMarkerLimit.setTextLimit(MARKER_LIMIT_MAX_DIGITS);
-        SWTUtil.addOnlyDigitInputSupport(mTxtMarkerLimit);
+        txtMarkerLimit = new Text(limitMarkersComposite, SWT.SINGLE | SWT.BORDER);
+        txtMarkerLimit.setTextLimit(MARKER_LIMIT_MAX_DIGITS);
+        SWTUtil.addOnlyDigitInputSupport(txtMarkerLimit);
 
-        mTxtMarkerLimit.setText(Integer.toString(
+        txtMarkerLimit.setText(Integer.toString(
             CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT)));
 
         addRebuildNoteLabel(limitMarkersComposite);
@@ -158,7 +158,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0)
             .applyTo(backgroundFullBuildComposite);
 
-        mBackgroundFullBuild = makeButton(backgroundFullBuildComposite, SWT.CHECK,
+        backgroundFullBuild = makeButton(backgroundFullBuildComposite, SWT.CHECK,
             Messages.CheckstylePreferencePage_txtBackgroundFullBuild0,
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD));
     }
@@ -306,7 +306,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
      * @return the selected rebuild preference
      */
     public String getRebuildIfNeeded() {
-        return mRebuildIfNeeded.getItem(mRebuildIfNeeded.getSelectionIndex());
+        return rebuildIfNeeded.getItem(rebuildIfNeeded.getSelectionIndex());
     }
 
     /**
@@ -315,7 +315,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
      * @return true if the warning is enabled, false otherwise
      */
     public boolean getWarnBeforeLosingFilesets() {
-        return mWarnBeforeLosingFilesets.getSelection();
+        return warnBeforeLosingFilesets.getSelection();
     }
 
     /**
@@ -324,7 +324,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
      * @return true if rule names are included, false otherwise
      */
     public boolean getIncludeRuleNames() {
-        return mIncludeRuleNamesButton.getSelection();
+        return includeRuleNamesButton.getSelection();
     }
 
     /**
@@ -333,7 +333,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
      * @return true if module IDs are included, false otherwise
      */
     public boolean getIncludeModuleIdButton() {
-        return mIncludeModuleIdButton.getSelection();
+        return includeModuleIdButton.getSelection();
     }
 
     /**
@@ -342,7 +342,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
      * @return true if markers are limited, false otherwise
      */
     public boolean getLimitCheckstyleMarkers() {
-        return mLimitCheckstyleMarkers.getSelection();
+        return limitCheckstyleMarkers.getSelection();
     }
 
     /**
@@ -351,7 +351,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
      * @return the marker limit as text
      */
     public String getTxtMarkerLimit() {
-        return mTxtMarkerLimit.getText();
+        return txtMarkerLimit.getText();
     }
 
     /**
@@ -360,7 +360,7 @@ public final class CheckstylePreferencePageGeneralSettings extends Composite {
      * @return true if Checkstyle runs in the background, false otherwise
      */
     public boolean getBackgroundFullBuild() {
-        return mBackgroundFullBuild.getSelection();
+        return backgroundFullBuild.getSelection();
     }
 
 }

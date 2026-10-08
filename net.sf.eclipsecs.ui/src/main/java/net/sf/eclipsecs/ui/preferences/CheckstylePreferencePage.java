@@ -59,11 +59,11 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     /** The working set of check configurations. */
-    private final ICheckConfigurationWorkingSet mWorkingSet;
+    private final ICheckConfigurationWorkingSet workingSet;
     /** The general settings composite. */
     private CheckstylePreferencePageGeneralSettings generalSettings;
     /** Flag indicating whether all projects need a rebuild. */
-    private boolean mRebuildAll;
+    private boolean rebuildAll;
 
     /**
      * Constructor.
@@ -71,7 +71,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
     public CheckstylePreferencePage() {
         setPreferenceStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
 
-        mWorkingSet = CheckConfigurationFactory.newWorkingSet();
+        workingSet = CheckConfigurationFactory.newWorkingSet();
         noDefaultAndApplyButton();
     }
 
@@ -81,7 +81,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         GridDataFactory.fillDefaults().applyTo(header);
 
         this.generalSettings = new CheckstylePreferencePageGeneralSettings(ancestor, SWT.NONE,
-            () -> mRebuildAll = true);
+            () -> rebuildAll = true);
         GridDataFactory.fillDefaults().applyTo(generalSettings);
 
         final Composite configComposite = createCheckConfigContents(ancestor);
@@ -103,7 +103,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         GridLayoutFactory.fillDefaults().applyTo(configComposite);
 
         final Composite editor =
-            new CheckConfigurationWorkingSetEditor(configComposite, SWT.NONE, mWorkingSet);
+            new CheckConfigurationWorkingSetEditor(configComposite, SWT.NONE, workingSet);
         GridDataFactory.fillDefaults().grab(true, true).applyTo(editor);
 
         return configComposite;
@@ -119,7 +119,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             //
             // Save the check configurations.
             //
-            mWorkingSet.store();
+            workingSet.store();
 
             CheckstylePluginPrefs.setString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE,
                 generalSettings.getLanguageIf());
@@ -179,7 +179,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                     limitMarkersHasChanged, markerLimitHasChanged);
 
             // Get projects that need rebuild considering the changes
-            final Collection<IProject> projectsToBuild = mWorkingSet.getAffectedProjects();
+            final Collection<IProject> projectsToBuild = workingSet.getAffectedProjects();
 
             if (needRebuildAllProjects || !projectsToBuild.isEmpty()) {
                 final String promptRebuildPref = CheckstyleUIPluginPrefs
@@ -263,7 +263,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
         boolean includeModuleIdHasChanged, boolean limitMarkersHasChanged,
         boolean markerLimitHasChanged) {
         return includeRuleNamesHasChanged || includeModuleIdHasChanged || limitMarkersHasChanged
-            || markerLimitHasChanged || mRebuildAll;
+            || markerLimitHasChanged || rebuildAll;
     }
 
 }

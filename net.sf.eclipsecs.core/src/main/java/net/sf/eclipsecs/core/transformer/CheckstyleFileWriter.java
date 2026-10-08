@@ -41,7 +41,7 @@ import net.sf.eclipsecs.core.util.XMLUtil;
 public final class CheckstyleFileWriter {
 
     /** An object containing all settings for the checkstyle-file. */
-    private final CheckstyleSetting mCheckstyleSetting;
+    private final CheckstyleSetting checkstyleSetting;
     /** The output file path. */
     private final String file;
 
@@ -54,7 +54,7 @@ public final class CheckstyleFileWriter {
      *            Path where the checkstyle-file should be stored.
      */
     public CheckstyleFileWriter(final CheckstyleSetting setting, final String file) {
-        mCheckstyleSetting = setting;
+        checkstyleSetting = setting;
         this.file = file;
     }
 
@@ -86,12 +86,12 @@ public final class CheckstyleFileWriter {
         checkerElement.addElement(XMLTags.PROPERTY_TAG).addAttribute(XMLTags.NAME_TAG,
             XMLTags.SEVERITY_TAG).addAttribute(XMLTags.VALUE_TAG, "warning");
 
-        writeModules(mCheckstyleSetting.getmCheckerModules(), checkerElement);
+        writeModules(checkstyleSetting.getmCheckerModules(), checkerElement);
 
         final Element treeWalkerElement = checkerElement.addElement(XMLTags.MODULE_TAG)
             .addAttribute(XMLTags.NAME_TAG, XMLTags.TREEWALKER_MODULE);
 
-        writeModules(mCheckstyleSetting.getmTreeWalkerModules(), treeWalkerElement);
+        writeModules(checkstyleSetting.getmTreeWalkerModules(), treeWalkerElement);
 
         outStream.write(XMLUtil.toByteArray(document));
     }

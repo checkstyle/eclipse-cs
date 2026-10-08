@@ -47,7 +47,7 @@ import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
 public final class SimpleFileSetsEditorView extends Composite {
 
     /** The combo viewer for check configuration selection. */
-    private final ComboViewer mComboViewer;
+    private final ComboViewer comboViewer;
 
     /**
      * Creates the simple file sets editor view.
@@ -73,11 +73,11 @@ public final class SimpleFileSetsEditorView extends Composite {
         configArea.setText(Messages.SimpleFileSetsEditor_titleSimpleConfig);
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(configArea);
 
-        mComboViewer = new ComboViewer(configArea);
-        mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
-        mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
-        mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
-        GridDataFactory.fillDefaults().grab(true, false).applyTo(mComboViewer.getControl());
+        comboViewer = new ComboViewer(configArea);
+        comboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
+        comboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
+        comboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(comboViewer.getControl());
 
         final Button mBtnManageConfigs = new Button(configArea, SWT.PUSH);
         mBtnManageConfigs.setText(Messages.SimpleFileSetsEditor_btnManageConfigs);
@@ -97,7 +97,7 @@ public final class SimpleFileSetsEditorView extends Composite {
             .grab(true, true)
             .applyTo(mTxtConfigDescription);
 
-        mComboViewer.addSelectionChangedListener(event -> {
+        comboViewer.addSelectionChangedListener(event -> {
             final ICheckConfiguration config =
                 (ICheckConfiguration) event.getStructuredSelection().getFirstElement();
             mDefaultFileSet.setCheckConfig(config);
@@ -106,9 +106,9 @@ public final class SimpleFileSetsEditorView extends Composite {
         });
 
         // init the check configuration combo
-        mComboViewer.setInput(propertyPageContext.configuration());
+        comboViewer.setInput(propertyPageContext.configuration());
         if (mDefaultFileSet.getCheckConfig() != null) {
-            mComboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
+            comboViewer.setSelection(new StructuredSelection(mDefaultFileSet.getCheckConfig()));
         }
     }
 
@@ -134,7 +134,7 @@ public final class SimpleFileSetsEditorView extends Composite {
      * Refreshes the combo viewer.
      */
     public void refresh() {
-        mComboViewer.refresh();
+        comboViewer.refresh();
     }
 
 }

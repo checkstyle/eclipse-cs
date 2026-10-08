@@ -48,7 +48,7 @@ import net.sf.eclipsecs.ui.properties.ComplexFileSetsEditor.FileSetViewerSorter;
 public final class ComplexFileSetsEditorTableView extends Composite {
 
     /** The checkbox table viewer. */
-    private final CheckboxTableViewer mViewer;
+    private final CheckboxTableViewer viewer;
 
     /**
      * Creates the checkbox table view of file sets.
@@ -70,25 +70,25 @@ public final class ComplexFileSetsEditorTableView extends Composite {
         super(parent, style);
         GridLayoutFactory.fillDefaults().applyTo(this);
 
-        mViewer = new CheckboxTableViewer(createTable(this));
-        mViewer.setLabelProvider(FileSetLabelProvider.INSTANCE);
-        mViewer.setContentProvider(ArrayContentProvider.getInstance());
-        mViewer.setComparator(FileSetViewerSorter.INSTANCE);
-        mViewer.setInput(mFileSets);
+        viewer = new CheckboxTableViewer(createTable(this));
+        viewer.setLabelProvider(FileSetLabelProvider.INSTANCE);
+        viewer.setContentProvider(ArrayContentProvider.getInstance());
+        viewer.setComparator(FileSetViewerSorter.INSTANCE);
+        viewer.setInput(mFileSets);
 
         for (FileSet fileSet : mFileSets) {
-            mViewer.setChecked(fileSet, fileSet.isEnabled());
+            viewer.setChecked(fileSet, fileSet.isEnabled());
         }
 
-        mViewer.addDoubleClickListener(event -> editFileSet.accept(getSelectedFileSet()));
-        mViewer.addCheckStateListener(changeEnabledState);
+        viewer.addDoubleClickListener(event -> editFileSet.accept(getSelectedFileSet()));
+        viewer.addCheckStateListener(changeEnabledState);
     }
 
     /**
      * Refreshes the table viewer.
      */
     public void refresh() {
-        mViewer.refresh();
+        viewer.refresh();
     }
 
     /**
@@ -100,7 +100,7 @@ public final class ComplexFileSetsEditorTableView extends Composite {
      *            the enabled state to set
      */
     public void setChecked(FileSet fileSet, boolean enabled) {
-        mViewer.setChecked(fileSet, enabled);
+        viewer.setChecked(fileSet, enabled);
     }
 
     /**
@@ -109,7 +109,7 @@ public final class ComplexFileSetsEditorTableView extends Composite {
      * @return the selected file set
      */
     public FileSet getSelectedFileSet() {
-        return (FileSet) mViewer.getStructuredSelection().getFirstElement();
+        return (FileSet) viewer.getStructuredSelection().getFirstElement();
     }
 
     /**

@@ -47,13 +47,13 @@ import net.sf.eclipsecs.ui.util.regex.RegexCompletionProposalFactory;
 public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
     /** The include/exclude checkbox. */
-    private Button mIncludeButton;
+    private Button includeButton;
 
     /** The text field for the match pattern. */
-    private Text mFileMatchPatternText;
+    private Text fileMatchPatternText;
 
     /** The file match pattern being edited. */
-    private FileMatchPattern mPattern;
+    private FileMatchPattern pattern;
 
     /**
      * Creates a file matching pattern editor dialog.
@@ -66,7 +66,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
     public FileMatchPatternEditDialog(Shell parentShell, FileMatchPattern pattern) {
         super(parentShell);
         setHelpAvailable(false);
-        mPattern = pattern;
+        this.pattern = pattern;
     }
 
     /**
@@ -75,7 +75,7 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
      * @return the pattern
      */
     public FileMatchPattern getPattern() {
-        return mPattern;
+        return pattern;
     }
 
     @Override
@@ -89,23 +89,23 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
         final Label nameLabel = new Label(dialog, SWT.NULL);
         nameLabel.setText(Messages.FileMatchPatternEditDialog_lblRegex);
 
-        mFileMatchPatternText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
-        mFileMatchPatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        fileMatchPatternText = new Text(dialog, SWT.SINGLE | SWT.BORDER);
+        fileMatchPatternText.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-        mIncludeButton = new Button(dialog, SWT.CHECK);
-        mIncludeButton.setText(Messages.FileMatchPatternEditDialog_chkIncludesFiles);
-        mIncludeButton.setLayoutData(new GridData());
+        includeButton = new Button(dialog, SWT.CHECK);
+        includeButton.setText(Messages.FileMatchPatternEditDialog_chkIncludesFiles);
+        includeButton.setLayoutData(new GridData());
 
         // integrate content assist
-        RegexCompletionProposalFactory.createForText(mFileMatchPatternText);
+        RegexCompletionProposalFactory.createForText(fileMatchPatternText);
 
         // init the controls
-        if (mPattern != null) {
-            mFileMatchPatternText.setText(mPattern.getMatchPattern());
-            mIncludeButton.setSelection(mPattern.isIncludePattern());
+        if (pattern != null) {
+            fileMatchPatternText.setText(pattern.getMatchPattern());
+            includeButton.setSelection(pattern.isIncludePattern());
         }
         else {
-            mIncludeButton.setSelection(true);
+            includeButton.setSelection(true);
         }
 
         this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
@@ -117,22 +117,22 @@ public class FileMatchPatternEditDialog extends TitleAreaDialog {
 
     @Override
     protected void okPressed() {
-        final String pattern = mFileMatchPatternText.getText();
+        final String submittedPattern = fileMatchPatternText.getText();
 
         try {
             //
             // Try compiling the pattern using the regular expression compiler.
             //
-            Pattern.compile(pattern);
+            Pattern.compile(submittedPattern);
 
-            if (mPattern == null) {
-                mPattern = new FileMatchPattern(pattern);
+            if (this.pattern == null) {
+                this.pattern = new FileMatchPattern(submittedPattern);
             }
             else {
-                mPattern.setMatchPattern(pattern);
+                this.pattern.setMatchPattern(submittedPattern);
             }
 
-            mPattern.setIsIncludePattern(mIncludeButton.getSelection());
+            this.pattern.setIsIncludePattern(includeButton.getSelection());
             super.okPressed();
         }
         catch (PatternSyntaxException | CheckstylePluginException ex) {

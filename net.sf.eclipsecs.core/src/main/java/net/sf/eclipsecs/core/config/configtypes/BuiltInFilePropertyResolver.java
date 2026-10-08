@@ -43,7 +43,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
     private static final String CONFIG_LOC = "config_loc";
 
     /** The built-in config file location. */
-    private final String mBuiltInConfigLocation;
+    private final String builtInConfigLocation;
 
     /**
      * Creates the resolver.
@@ -52,7 +52,7 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
      *            the bundle based url of the builtin configuration file
      */
     public BuiltInFilePropertyResolver(String builtInConfigLocation) {
-        mBuiltInConfigLocation = builtInConfigLocation;
+        this.builtInConfigLocation = builtInConfigLocation;
     }
 
     @Override
@@ -60,12 +60,12 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
 
         String value = null;
 
-        if (mBuiltInConfigLocation != null
+        if (builtInConfigLocation != null
             && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
 
-            final int lastSlash = mBuiltInConfigLocation.lastIndexOf("/");
+            final int lastSlash = builtInConfigLocation.lastIndexOf("/");
             if (lastSlash > -1) {
-                value = mBuiltInConfigLocation.substring(0, lastSlash + 1);
+                value = builtInConfigLocation.substring(0, lastSlash + 1);
             }
         }
 

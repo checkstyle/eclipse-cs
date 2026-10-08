@@ -41,13 +41,13 @@ import net.sf.eclipsecs.core.util.CheckstylePluginException;
 public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWorkingSet {
 
     /** The project configuration. */
-    private final IProjectConfiguration mProjectConfig;
+    private final IProjectConfiguration projectConfig;
 
     /** The internal list of working copies belonging to this working set. */
-    private final List<CheckConfigurationWorkingCopy> mWorkingCopies;
+    private final List<CheckConfigurationWorkingCopy> workingCopies;
 
     /** List of working copies that were deleted from the working set. */
-    private final List<CheckConfigurationWorkingCopy> mDeletedConfigurations;
+    private final List<CheckConfigurationWorkingCopy> deletedConfigurations;
 
     /**
      * Creates a working set to manage local configurations.
@@ -60,14 +60,14 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     LocalCheckConfigurationWorkingSet(IProjectConfiguration projectConfig,
         List<ICheckConfiguration> checkConfigs) {
 
-        mProjectConfig = projectConfig;
-        mWorkingCopies = new ArrayList<>();
-        mDeletedConfigurations = new ArrayList<>();
+        this.projectConfig = projectConfig;
+        workingCopies = new ArrayList<>();
+        deletedConfigurations = new ArrayList<>();
 
         for (ICheckConfiguration cfg : checkConfigs) {
             final CheckConfigurationWorkingCopy workingCopy =
                 new CheckConfigurationWorkingCopy(cfg, this);
-            mWorkingCopies.add(workingCopy);
+            workingCopies.add(workingCopy);
         }
     }
 
@@ -83,22 +83,22 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
 
     @Override
     public CheckConfigurationWorkingCopy[] getWorkingCopies() {
-        return mWorkingCopies.toArray(new CheckConfigurationWorkingCopy[mWorkingCopies.size()]);
+        return workingCopies.toArray(new CheckConfigurationWorkingCopy[workingCopies.size()]);
     }
 
     @Override
     public void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
-        mWorkingCopies.add(checkConfig);
+        workingCopies.add(checkConfig);
     }
 
     @Override
     public boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig) {
 
-        final boolean inUse = mProjectConfig.isConfigInUse(checkConfig);
+        final boolean inUse = projectConfig.isConfigInUse(checkConfig);
 
         if (!inUse) {
-            mWorkingCopies.remove(checkConfig);
-            mDeletedConfigurations.add(checkConfig);
+            workingCopies.remove(checkConfig);
+            deletedConfigurations.add(checkConfig);
         }
 
         return !inUse;
@@ -112,8 +112,8 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     @Override
     public boolean isDirty() {
         boolean dirty = false;
-        if (mDeletedConfigurations.isEmpty()) {
-            for (CheckConfigurationWorkingCopy workingCopy : mWorkingCopies) {
+        if (deletedConfigurations.isEmpty()) {
+            for (CheckConfigurationWorkingCopy workingCopy : workingCopies) {
                 dirty = workingCopy.isDirty();
                 if (dirty) {
                     break;
@@ -130,7 +130,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
     public boolean isNameCollision(CheckConfigurationWorkingCopy configuration) {
 
         boolean result = false;
-        for (CheckConfigurationWorkingCopy tmp : mWorkingCopies) {
+        for (CheckConfigurationWorkingCopy tmp : workingCopies) {
             if (tmp != configuration && tmp.getName().equals(configuration.getName())) {
                 result = true;
                 break;
@@ -145,20 +145,19 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
      * @return the project
      */
     public IProject getProject() {
-        return mProjectConfig.getProject();
+        return projectConfig.getProject();
     }
 
     @Override
     public Collection<IProject> getAffectedProjects() {
         final Set<IProject> projects = new HashSet<>();
 
-        final CheckConfigurationWorkingCopy[] workingCopies = this.getWorkingCopies();
         for (CheckConfigurationWorkingCopy workingCopy : workingCopies) {
 
             // skip non dirty configurations
             if (workingCopy.hasConfigurationChanged()
-                && mProjectConfig.isConfigInUse(workingCopy)) {
-                projects.add(mProjectConfig.getProject());
+                && projectConfig.isConfigInUse(workingCopy)) {
+                projects.add(projectConfig.getProject());
                 break;
             }
         }
@@ -173,7 +172,7 @@ public class LocalCheckConfigurationWorkingSet implements ICheckConfigurationWor
      *             an exception while notifiing for deletion
      */
     private void notifyDeletedCheckConfigs() throws CheckstylePluginException {
-        for (ICheckConfiguration checkConfig : mDeletedConfigurations) {
+        for (ICheckConfiguration checkConfig : deletedConfigurations) {
             checkConfig.getType().notifyCheckConfigRemoved(checkConfig);
         }
     }

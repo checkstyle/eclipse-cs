@@ -35,19 +35,19 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
 public class CheckstyleConfigurationFile {
 
     /** The checkstyle configuration file bytes. */
-    private byte[] mCheckConfigFileBytes;
+    private byte[] checkConfigFileBytes;
 
     /** The additional property bundle bytes. */
-    private byte[] mAdditionalPropertyBundleBytes;
+    private byte[] additionalPropertyBundleBytes;
 
     /** The modification timestamp of the configuration file. */
-    private long mModificationStamp;
+    private long modificationStamp;
 
     /** The resolved configuration file URL. */
-    private URL mResolvedConfigFileURL;
+    private URL resolvedConfigFileURL;
 
     /** The property resolver. */
-    private PropertyResolver mPropertyResolver;
+    private PropertyResolver propertyResolver;
 
     /**
      * Creates a new instance.
@@ -61,7 +61,7 @@ public class CheckstyleConfigurationFile {
      * @return the input stream containing the Checkstyle configuration file
      */
     public ByteArrayInputStream getCheckConfigFileStream() {
-        return new ByteArrayInputStream(mCheckConfigFileBytes);
+        return new ByteArrayInputStream(checkConfigFileBytes);
     }
 
     /**
@@ -86,7 +86,7 @@ public class CheckstyleConfigurationFile {
      *            the Checkstyle configuration file contents
      */
     public void setCheckConfigFileBytes(byte[] checkConfigFileBytes) {
-        mCheckConfigFileBytes = checkConfigFileBytes;
+        this.checkConfigFileBytes = checkConfigFileBytes;
     }
 
     /**
@@ -96,8 +96,8 @@ public class CheckstyleConfigurationFile {
      */
     public ByteArrayInputStream getAdditionalPropertiesBundleStream() {
         ByteArrayInputStream stream = null;
-        if (mAdditionalPropertyBundleBytes != null) {
-            stream = new ByteArrayInputStream(mAdditionalPropertyBundleBytes);
+        if (additionalPropertyBundleBytes != null) {
+            stream = new ByteArrayInputStream(additionalPropertyBundleBytes);
         }
         return stream;
     }
@@ -110,7 +110,7 @@ public class CheckstyleConfigurationFile {
      *            the content of the additional property bundle
      */
     public void setAdditionalPropertyBundleBytes(byte[] additionalPropertyBundleBytes) {
-        mAdditionalPropertyBundleBytes = additionalPropertyBundleBytes;
+        this.additionalPropertyBundleBytes = additionalPropertyBundleBytes;
     }
 
     /**
@@ -119,7 +119,7 @@ public class CheckstyleConfigurationFile {
      * @return the modification timestamp of the Checkstyle configuration file
      */
     public long getModificationStamp() {
-        return mModificationStamp;
+        return modificationStamp;
     }
 
     /**
@@ -129,7 +129,7 @@ public class CheckstyleConfigurationFile {
      *            the modification timestamp
      */
     public void setModificationStamp(long modificationStamp) {
-        this.mModificationStamp = modificationStamp;
+        this.modificationStamp = modificationStamp;
     }
 
     /**
@@ -139,7 +139,7 @@ public class CheckstyleConfigurationFile {
      * @return the resolved URL
      */
     public URL getResolvedConfigFileURL() {
-        return mResolvedConfigFileURL;
+        return resolvedConfigFileURL;
     }
 
     /**
@@ -149,7 +149,7 @@ public class CheckstyleConfigurationFile {
      *            the resolved URL
      */
     public void setResolvedConfigFileURL(URL resolvedConfigFileURL) {
-        this.mResolvedConfigFileURL = resolvedConfigFileURL;
+        this.resolvedConfigFileURL = resolvedConfigFileURL;
     }
 
     /**
@@ -158,7 +158,7 @@ public class CheckstyleConfigurationFile {
      * @return the property resolver
      */
     public PropertyResolver getPropertyResolver() {
-        return mPropertyResolver;
+        return propertyResolver;
     }
 
     /**
@@ -168,7 +168,7 @@ public class CheckstyleConfigurationFile {
      *            the property resolver
      */
     public void setPropertyResolver(PropertyResolver propertyResolver) {
-        mPropertyResolver = propertyResolver;
+        this.propertyResolver = propertyResolver;
     }
 
 }

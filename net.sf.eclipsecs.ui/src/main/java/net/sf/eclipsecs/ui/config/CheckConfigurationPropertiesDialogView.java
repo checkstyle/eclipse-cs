@@ -48,9 +48,9 @@ import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
 public final class CheckConfigurationPropertiesDialogView extends Composite {
 
     /** The combo viewer for selecting the configuration type. */
-    private final ComboViewer mConfigType;
+    private final ComboViewer configType;
     /** The placeholder composite for the configuration editor. */
-    private final Composite mEditorPlaceHolder;
+    private final Composite editorPlaceHolder;
 
     /**
      * Constructor building the configuration type selector and the placeholder for the matching
@@ -86,22 +86,22 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
 
         GridDataFactory.swtDefaults().hint(max, SWT.DEFAULT).applyTo(lblConfigType);
 
-        mConfigType = new ComboViewer(this);
-        GridDataFactory.swtDefaults().applyTo(mConfigType.getCombo());
-        mConfigType.setContentProvider(ArrayContentProvider.getInstance());
-        mConfigType.setLabelProvider(LabelProvider.createTextImageProvider(
+        configType = new ComboViewer(this);
+        GridDataFactory.swtDefaults().applyTo(configType.getCombo());
+        configType.setContentProvider(ArrayContentProvider.getInstance());
+        configType.setLabelProvider(LabelProvider.createTextImageProvider(
             element -> ((IConfigurationType) element).getName(), element -> {
                 return ConfigurationTypesUI.getConfigurationTypeImage((IConfigurationType) element);
             }));
-        mConfigType.addSelectionChangedListener(event -> {
+        configType.addSelectionChangedListener(event -> {
             changeSelectedConfigurationType.accept(
                 (IConfigurationType) event.getStructuredSelection().getFirstElement(),
-                mConfigType.getCombo().getEnabled());
+                configType.getCombo().getEnabled());
         });
 
-        mEditorPlaceHolder = new Composite(this, SWT.NULL);
-        GridLayoutFactory.swtDefaults().equalWidth(true).margins(0, 0).applyTo(mEditorPlaceHolder);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mEditorPlaceHolder);
+        editorPlaceHolder = new Composite(this, SWT.NULL);
+        GridLayoutFactory.swtDefaults().equalWidth(true).margins(0, 0).applyTo(editorPlaceHolder);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(editorPlaceHolder);
     }
 
     /**
@@ -111,15 +111,15 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
      *            the configuration types to show
      */
     public void initConfigType(IConfigurationType[] types) {
-        mConfigType.setInput(types);
-        mConfigType.setSelection(new StructuredSelection(types[0]), true);
+        configType.setInput(types);
+        configType.setSelection(new StructuredSelection(types[0]), true);
     }
 
     /**
      * Disables the configuration type combo box.
      */
     public void disable() {
-        mConfigType.getCombo().setEnabled(false);
+        configType.getCombo().setEnabled(false);
     }
 
     /**
@@ -131,16 +131,16 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
      */
     public void bindEditor(ICheckConfigurationEditor mConfigurationEditor) {
         // remove old editor
-        final Control[] controls = mEditorPlaceHolder.getChildren();
+        final Control[] controls = editorPlaceHolder.getChildren();
         for (Control control : controls) {
             control.dispose();
         }
 
-        mConfigurationEditor.createEditorControl(mEditorPlaceHolder, getShell());
+        mConfigurationEditor.createEditorControl(editorPlaceHolder, getShell());
 
-        mEditorPlaceHolder.redraw();
-        mEditorPlaceHolder.update();
-        mEditorPlaceHolder.layout();
+        editorPlaceHolder.redraw();
+        editorPlaceHolder.update();
+        editorPlaceHolder.layout();
     }
 
 }

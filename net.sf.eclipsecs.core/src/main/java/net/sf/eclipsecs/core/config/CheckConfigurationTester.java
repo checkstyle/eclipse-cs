@@ -112,7 +112,7 @@ public final class CheckConfigurationTester {
             "project_loc");
 
         /** The list of unresolved properties. */
-        private List<ResolvableProperty> mUnresolvedProperties = new ArrayList<>();
+        private List<ResolvableProperty> unresolvedProperties = new ArrayList<>();
 
         /**
          * Creates a new instance.
@@ -127,8 +127,8 @@ public final class CheckConfigurationTester {
                 final ResolvableProperty prop = new ResolvableProperty(aName, null);
 
                 // rule out duplicates
-                if (!mUnresolvedProperties.contains(prop)) {
-                    mUnresolvedProperties.add(prop);
+                if (!unresolvedProperties.contains(prop)) {
+                    unresolvedProperties.add(prop);
                 }
             }
             // return warning to prevent hiccups with properties used in module
@@ -142,7 +142,7 @@ public final class CheckConfigurationTester {
          * @return the list of unresolved properties.
          */
         public List<ResolvableProperty> getUnresolvedProperties() {
-            return mUnresolvedProperties;
+            return unresolvedProperties;
         }
     }
 

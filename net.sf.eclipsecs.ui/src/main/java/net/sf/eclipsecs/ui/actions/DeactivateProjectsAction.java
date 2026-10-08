@@ -45,7 +45,7 @@ import net.sf.eclipsecs.ui.Messages;
 public class DeactivateProjectsAction implements IObjectActionDelegate {
 
     /** The selected projects to deactivate Checkstyle on. */
-    private Collection<IProject> mSelectedProjects;
+    private Collection<IProject> selectedProjects;
 
     /**
      * Creates a new instance.
@@ -63,13 +63,13 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
 
         if (selection instanceof IStructuredSelection) {
             final IStructuredSelection sel = (IStructuredSelection) selection;
-            mSelectedProjects = sel.toList();
+            selectedProjects = sel.toList();
         }
     }
 
     @Override
     public void run(IAction action) {
-        final BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
+        final BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(selectedProjects);
         job.schedule();
     }
 
@@ -80,7 +80,7 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
     private static class BulkCheckstyleActivateJob extends WorkspaceJob {
 
         /** The projects to deactivate Checkstyle on. */
-        private Collection<IProject> mProjectsToDeactivate;
+        private Collection<IProject> projectsToDeactivate;
 
         /**
          * Creates the job that deactivates Checkstyle on the given projects.
@@ -90,13 +90,13 @@ public class DeactivateProjectsAction implements IObjectActionDelegate {
          */
         BulkCheckstyleActivateJob(Collection<IProject> projectsToDeactivate) {
             super(Messages.DeactivateProjectsPrintAction_msgDeactivateSelectedProjects);
-            this.mProjectsToDeactivate = projectsToDeactivate;
+            this.projectsToDeactivate = projectsToDeactivate;
         }
 
         @Override
         public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-            for (IProject configurationTarget : mProjectsToDeactivate) {
+            for (IProject configurationTarget : projectsToDeactivate) {
 
                 if (configurationTarget.isOpen()
                     && configurationTarget.hasNature(CheckstyleNature.NATURE_ID)) {

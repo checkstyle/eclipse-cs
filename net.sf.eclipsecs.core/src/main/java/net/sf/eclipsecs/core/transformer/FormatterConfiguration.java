@@ -32,10 +32,10 @@ import java.util.Map;
 public class FormatterConfiguration {
 
     /** Map containing all eclipse editor-settings. */
-    private final Map<String, String> mCleanupSettings = new HashMap<>();
+    private final Map<String, String> cleanupSettings = new HashMap<>();
 
     /** Map containing all eclipse formatter-settings. */
-    private final Map<String, String> mFormatterSettings = new HashMap<>();
+    private final Map<String, String> formatterSettings = new HashMap<>();
 
     /**
      * Creates a new instance.
@@ -52,7 +52,7 @@ public class FormatterConfiguration {
      *            The value of this setting.
      */
     public void addCleanupSetting(final String setting, final String val) {
-        mCleanupSettings.put(setting, val);
+        cleanupSettings.put(setting, val);
     }
 
     /**
@@ -64,7 +64,7 @@ public class FormatterConfiguration {
      *            The value of this setting.
      */
     public void addFormatterSetting(final String setting, final String val) {
-        mFormatterSettings.put(setting, val);
+        formatterSettings.put(setting, val);
     }
 
     /**
@@ -73,7 +73,7 @@ public class FormatterConfiguration {
      * @return Returns the global settings.
      */
     public Map<String, String> getCleanupSettings() {
-        return mCleanupSettings;
+        return cleanupSettings;
     }
 
     /**
@@ -82,7 +82,7 @@ public class FormatterConfiguration {
      * @return Returns the local settings.
      */
     public Map<String, String> getFormatterSettings() {
-        return mFormatterSettings;
+        return formatterSettings;
     }
 
     /**
@@ -99,8 +99,8 @@ public class FormatterConfiguration {
         String local;
         while (localIt.hasNext()) {
             local = localIt.next();
-            if (mFormatterSettings.containsKey(local)) {
-                if (!mFormatterSettings.get(local).equals(localSettings.get(local))) {
+            if (formatterSettings.containsKey(local)) {
+                if (!formatterSettings.get(local).equals(localSettings.get(local))) {
                     // Logger.writeln("already containing local rule " + local
                     // + " with other attributes, it gets overwritten!");
                 }
@@ -115,7 +115,7 @@ public class FormatterConfiguration {
         String global;
         while (globalIt.hasNext()) {
             global = globalIt.next();
-            if (mCleanupSettings.containsKey(global)) {
+            if (cleanupSettings.containsKey(global)) {
                 if (!getCleanupSettings().get(global).equals(globalSettings.get(global))) {
                     // Logger.writeln("already containing global rule " + global
                     // + " with other attributes, it gets overwritten!");

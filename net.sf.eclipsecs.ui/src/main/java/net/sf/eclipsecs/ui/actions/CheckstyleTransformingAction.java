@@ -35,7 +35,7 @@ import net.sf.eclipsecs.core.jobs.TransformCheckstyleRulesJob;
 public class CheckstyleTransformingAction implements IActionDelegate {
 
     /** Selection in workspace. */
-    private ISelection mSelection;
+    private ISelection selection;
 
     /**
      * Creates a new instance.
@@ -46,13 +46,13 @@ public class CheckstyleTransformingAction implements IActionDelegate {
     @Override
     public void run(final IAction arg0) {
         final TransformCheckstyleRulesJob job = new TransformCheckstyleRulesJob(
-            (IProject) ((IStructuredSelection) mSelection).getFirstElement());
+            (IProject) ((IStructuredSelection) selection).getFirstElement());
         job.schedule();
     }
 
     @Override
     public void selectionChanged(final IAction arg0, final ISelection arg1) {
-        mSelection = arg1;
+        selection = arg1;
     }
 
 }

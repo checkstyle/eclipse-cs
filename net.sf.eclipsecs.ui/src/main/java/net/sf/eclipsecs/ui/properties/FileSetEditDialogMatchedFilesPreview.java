@@ -85,7 +85,7 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
         matchesViewer.setContentProvider(ArrayContentProvider.getInstance());
         matchesViewer.setLabelProvider(new LabelProvider() {
 
-            private final WorkbenchLabelProvider mDelegate = new WorkbenchLabelProvider();
+            private final WorkbenchLabelProvider delegate = new WorkbenchLabelProvider();
 
             @Override
             public String getText(Object element) {
@@ -98,7 +98,7 @@ public final class FileSetEditDialogMatchedFilesPreview extends Composite {
 
             @Override
             public Image getImage(Object element) {
-                return mDelegate.getImage(element);
+                return delegate.getImage(element);
             }
         });
         matchesViewer.addFilter(viewerFilter);

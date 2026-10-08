@@ -43,13 +43,13 @@ import net.sf.eclipsecs.core.Messages;
 public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 
     /** The project to be configured/deconfigured. */
-    private IProject mProject;
+    private IProject project;
 
     /** The nature to be configured/deconfigured. */
-    private String mNatureId;
+    private String natureId;
 
     /** The monitor. */
-    private IProgressMonitor mMonitor;
+    private IProgressMonitor monitor;
 
     /**
      * Construktor for this operation.
@@ -61,19 +61,19 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
      */
     public ConfigureDeconfigureNatureJob(IProject project, String natureId) {
         super(NLS.bind(Messages.ConfigureDeconfigureNatureJob_msgTaksAddingNature, natureId));
-        mProject = project;
-        mNatureId = natureId;
+        this.project = project;
+        this.natureId = natureId;
     }
 
     @Override
-    public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
+    public IStatus runInWorkspace(IProgressMonitor progressMonitor) throws CoreException {
 
         IStatus status = null;
 
-        mMonitor = monitor;
+        monitor = progressMonitor;
 
         try {
-            if (mProject.hasNature(mNatureId)) {
+            if (project.hasNature(natureId)) {
                 disableNature();
             }
             else {
@@ -83,7 +83,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
             status = Status.OK_STATUS;
         }
         finally {
-            monitor.done();
+            progressMonitor.done();
         }
         return status;
     }
@@ -97,18 +97,18 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
     private void enableNature() throws CoreException {
 
         // get the description
-        final IProjectDescription desc = mProject.getDescription();
+        final IProjectDescription desc = project.getDescription();
 
         // copy existing natures and add the nature
         final String[] natures = desc.getNatureIds();
 
         final String[] newNatures = new String[natures.length + 1];
         System.arraycopy(natures, 0, newNatures, 0, natures.length);
-        newNatures[natures.length] = mNatureId;
+        newNatures[natures.length] = natureId;
 
         // set natures
         desc.setNatureIds(newNatures);
-        mProject.setDescription(desc, mMonitor);
+        project.setDescription(desc, monitor);
     }
 
     /**
@@ -119,13 +119,13 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
      */
     private void disableNature() throws CoreException {
 
-        final IProjectDescription desc = mProject.getDescription();
+        final IProjectDescription desc = project.getDescription();
         final String[] natures = desc.getNatureIds();
 
         // remove given nature from the array
         final List<String> newNaturesList = new ArrayList<>();
         for (String nature : natures) {
-            if (!mNatureId.equals(nature)) {
+            if (!natureId.equals(nature)) {
                 newNaturesList.add(nature);
             }
         }
@@ -134,7 +134,7 @@ public class ConfigureDeconfigureNatureJob extends WorkspaceJob {
 
         // set natures
         desc.setNatureIds(newNatures);
-        mProject.setDescription(desc, mMonitor);
+        project.setDescription(desc, monitor);
     }
 
 }

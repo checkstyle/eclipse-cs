@@ -209,7 +209,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
     private class PartsOpenedJob extends AbstractCheckJob {
 
         /** The collection of opened workbench parts. */
-        private Collection<IWorkbenchPartReference> mParts;
+        private Collection<IWorkbenchPartReference> parts;
 
         /**
          * Creates the job for the given opened parts.
@@ -219,7 +219,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
          */
         PartsOpenedJob(Collection<IWorkbenchPartReference> parts) {
             super(Messages.PartsOpenedJob_title);
-            this.mParts = parts;
+            this.parts = parts;
         }
 
         @Override
@@ -229,10 +229,10 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
 
         @Override
         public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
-            final SubMonitor subMonitor = SubMonitor.convert(monitor, mParts.size());
+            final SubMonitor subMonitor = SubMonitor.convert(monitor, parts.size());
             final List<IFile> filesToCheck = new ArrayList<>();
 
-            for (IWorkbenchPartReference partRef : mParts) {
+            for (IWorkbenchPartReference partRef : parts) {
                 subMonitor.worked(1);
                 final IFile editorFile = getEditorFile(partRef);
                 if (editorFile != null) {

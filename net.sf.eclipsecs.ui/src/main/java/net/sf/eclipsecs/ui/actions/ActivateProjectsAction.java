@@ -45,7 +45,7 @@ import net.sf.eclipsecs.ui.Messages;
 public class ActivateProjectsAction implements IObjectActionDelegate {
 
     /** The selected projects to activate Checkstyle on. */
-    private Collection<IProject> mSelectedProjects;
+    private Collection<IProject> selectedProjects;
 
     /**
      * Creates a new instance.
@@ -63,13 +63,13 @@ public class ActivateProjectsAction implements IObjectActionDelegate {
 
         if (selection instanceof IStructuredSelection) {
             final IStructuredSelection sel = (IStructuredSelection) selection;
-            mSelectedProjects = sel.toList();
+            selectedProjects = sel.toList();
         }
     }
 
     @Override
     public void run(IAction action) {
-        final BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(mSelectedProjects);
+        final BulkCheckstyleActivateJob job = new BulkCheckstyleActivateJob(selectedProjects);
         job.schedule();
     }
 
@@ -80,7 +80,7 @@ public class ActivateProjectsAction implements IObjectActionDelegate {
     private static class BulkCheckstyleActivateJob extends WorkspaceJob {
 
         /** The projects to activate Checkstyle on. */
-        private Collection<IProject> mProjectsToActivate;
+        private Collection<IProject> projectsToActivate;
 
         /**
          * Creates the job to activate Checkstyle on the given projects.
@@ -90,13 +90,13 @@ public class ActivateProjectsAction implements IObjectActionDelegate {
          */
         BulkCheckstyleActivateJob(Collection<IProject> projectsToActivate) {
             super(Messages.ActivateProjectsPrintAction_msgActivateSelectedProjects);
-            this.mProjectsToActivate = projectsToActivate;
+            this.projectsToActivate = projectsToActivate;
         }
 
         @Override
         public IStatus runInWorkspace(IProgressMonitor monitor) throws CoreException {
 
-            for (IProject configurationTarget : mProjectsToActivate) {
+            for (IProject configurationTarget : projectsToActivate) {
 
                 if (configurationTarget.isOpen()
                     && !configurationTarget.hasNature(CheckstyleNature.NATURE_ID)) {

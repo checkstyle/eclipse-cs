@@ -30,15 +30,15 @@ import java.util.Collection;
 public class Stats {
 
     /** Liste des différentes erreurs. */
-    private Collection<MarkerStat> mMarkerStats;
+    private Collection<MarkerStat> markerStats;
 
     /**
      * Nombre de marqueurs scannés.
      */
-    private int mMarkerCount;
+    private int markerCount;
 
     /** The number of all markers in the workspace. */
-    private int mMarkerCountWhole;
+    private int markerCountWhole;
 
     /**
      * Constructeur.
@@ -51,9 +51,9 @@ public class Stats {
      *            the number of all checkstyle markers in the workspace
      */
     public Stats(Collection<MarkerStat> markerStats, int markerCount, int markerCountWhole) {
-        this.mMarkerStats = markerStats;
-        this.mMarkerCount = markerCount;
-        this.mMarkerCountWhole = markerCountWhole;
+        this.markerStats = markerStats;
+        this.markerCount = markerCount;
+        this.markerCountWhole = markerCountWhole;
     }
 
     /**
@@ -62,7 +62,7 @@ public class Stats {
      * @return Returns the markerStats.
      */
     public Collection<MarkerStat> getMarkerStats() {
-        return mMarkerStats;
+        return markerStats;
     }
 
     /**
@@ -71,7 +71,7 @@ public class Stats {
      * @return Returns the markerCount.
      */
     public int getMarkerCount() {
-        return mMarkerCount;
+        return markerCount;
     }
 
     /**
@@ -80,7 +80,7 @@ public class Stats {
      * @return the number of all Checkstyle markers
      */
     public int getMarkerCountAll() {
-        return mMarkerCountWhole;
+        return markerCountWhole;
     }
 
 }

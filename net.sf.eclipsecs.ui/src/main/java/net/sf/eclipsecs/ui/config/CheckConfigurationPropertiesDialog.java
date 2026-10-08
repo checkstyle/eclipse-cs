@@ -57,19 +57,19 @@ import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
 public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
     /** Button to add the additional properties dialog. */
-    private Button mBtnProperties;
+    private Button btnProperties;
 
     /** The working set. */
-    private ICheckConfigurationWorkingSet mWorkingSet;
+    private ICheckConfigurationWorkingSet workingSet;
 
     /** The check configuration. */
-    private CheckConfigurationWorkingCopy mCheckConfig;
+    private CheckConfigurationWorkingCopy checkConfig;
 
     /** The editor for the configuration location. */
-    private ICheckConfigurationEditor mConfigurationEditor;
+    private ICheckConfigurationEditor configurationEditor;
 
     /** The template configuration for a new config. */
-    private ICheckConfiguration mTemplate;
+    private ICheckConfiguration templateConfiguration;
 
     /** The dialog view managing the UI components. */
     private CheckConfigurationPropertiesDialogView dialogView;
@@ -93,8 +93,8 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
         CheckConfigurationWorkingCopy checkConfig, ICheckConfigurationWorkingSet workingSet) {
         super(parent);
         setHelpAvailable(false);
-        mWorkingSet = workingSet;
-        mCheckConfig = checkConfig;
+        this.workingSet = workingSet;
+        this.checkConfig = checkConfig;
     }
 
     //
@@ -107,7 +107,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
      * @return the check configuration working set
      */
     public ICheckConfigurationWorkingSet getCheckConfigurationWorkingSet() {
-        return mWorkingSet;
+        return workingSet;
     }
 
     /**
@@ -117,7 +117,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
      *            the template configuration
      */
     public void setTemplateConfiguration(ICheckConfiguration template) {
-        this.mTemplate = template;
+        this.templateConfiguration = template;
     }
 
     /**
@@ -126,7 +126,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
      * @return the check configuration
      */
     public CheckConfigurationWorkingCopy getCheckConfiguration() {
-        return mCheckConfig;
+        return checkConfig;
     }
 
     @Override
@@ -166,18 +166,18 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
      */
     private void changeSelectedConfigurationType(IConfigurationType type, boolean isComboEnabled) {
         if (isComboEnabled) {
-            final String oldName = mCheckConfig.getName();
-            final String oldDescr = mCheckConfig.getDescription();
-            mCheckConfig = mWorkingSet.newWorkingCopy(type);
+            final String oldName = checkConfig.getName();
+            final String oldDescr = checkConfig.getDescription();
+            checkConfig = workingSet.newWorkingCopy(type);
             try {
-                mCheckConfig.setName(oldName);
+                checkConfig.setName(oldName);
             }
             catch (CheckstylePluginException ex) {
                 // NOOP
             }
-            mCheckConfig.setDescription(oldDescr);
+            checkConfig.setDescription(oldDescr);
         }
-        createConfigurationEditor(mCheckConfig);
+        createConfigurationEditor(checkConfig);
     }
 
     @Override
@@ -186,16 +186,16 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
         GridLayoutFactory.fillDefaults().numColumns(2).applyTo(composite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(composite);
 
-        mBtnProperties = new Button(composite, SWT.PUSH);
-        mBtnProperties.setText(Messages.CheckConfigurationPropertiesDialog_btnAdditionalProps);
+        btnProperties = new Button(composite, SWT.PUSH);
+        btnProperties.setText(Messages.CheckConfigurationPropertiesDialog_btnAdditionalProps);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.CENTER)
             .indent(convertHorizontalDLUsToPixels(IDialogConstants.HORIZONTAL_MARGIN), 0)
-            .applyTo(mBtnProperties);
+            .applyTo(btnProperties);
 
-        mBtnProperties.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
+        btnProperties.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             try {
-                mConfigurationEditor.getEditedWorkingCopy();
-                new ResolvablePropertiesDialog(getShell(), mCheckConfig).open();
+                configurationEditor.getEditedWorkingCopy();
+                new ResolvablePropertiesDialog(getShell(), checkConfig).open();
             }
             catch (CheckstylePluginException ex) {
                 setErrorMessage(ex.getLocalizedMessage());
@@ -220,10 +220,10 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     protected void okPressed() {
         try {
             // Check if the configuration is valid
-            mCheckConfig = mConfigurationEditor.getEditedWorkingCopy();
+            checkConfig = configurationEditor.getEditedWorkingCopy();
 
             final int numUnresolvedProps =
-                CheckConfigurationTester.getUnresolvedProperties(mCheckConfig).size();
+                CheckConfigurationTester.getUnresolvedProperties(checkConfig).size();
 
             if (numUnresolvedProps > 0) {
 
@@ -241,7 +241,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
 
                 if (result == 0) {
                     final ResolvablePropertiesDialog propsDialog =
-                        new ResolvablePropertiesDialog(getShell(), mCheckConfig);
+                        new ResolvablePropertiesDialog(getShell(), checkConfig);
                     propsDialog.open();
                 }
                 else if (result == 1) {
@@ -267,15 +267,15 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
     private void createConfigurationEditor(CheckConfigurationWorkingCopy config) {
 
         try {
-            mConfigurationEditor = ConfigurationTypesUI.getNewEditor(config.getType());
-            mConfigurationEditor.initialize(config, this);
+            configurationEditor = ConfigurationTypesUI.getNewEditor(config.getType());
+            configurationEditor.initialize(config, this);
 
-            dialogView.bindEditor(mConfigurationEditor);
+            dialogView.bindEditor(configurationEditor);
 
             final Point initialSize = this.getInitialSize();
             getShell().setSize(initialSize);
 
-            mBtnProperties.setEnabled(mCheckConfig.getType().isEditable());
+            btnProperties.setEnabled(checkConfig.getType().isEditable());
         }
         catch (CheckstylePluginException ex) {
             CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
@@ -287,29 +287,30 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
      */
     private void initialize() {
         final IConfigurationType[] types;
-        if (mCheckConfig == null) {
-            if (mTemplate != null) {
+        if (checkConfig == null) {
+            if (templateConfiguration != null) {
                 types = ConfigurationTypes.getConfigurableConfigTypes();
             }
             else {
                 types = ConfigurationTypes.getCreatableConfigTypes();
             }
 
-            mCheckConfig = mWorkingSet.newWorkingCopy(types[0]);
+            checkConfig = workingSet.newWorkingCopy(types[0]);
 
-            if (mTemplate != null) {
+            if (templateConfiguration != null) {
 
                 this.setTitle(
                     NLS.bind(Messages.CheckConfigurationPropertiesDialog_titleCopyConfiguration,
-                        mTemplate.getName()));
+                        templateConfiguration.getName()));
                 this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgCopyConfiguration);
 
                 final String nameProposal =
                     NLS.bind(Messages.CheckConfigurationPropertiesDialog_CopyOfAddition,
-                        mTemplate.getName());
-                setUniqueName(mCheckConfig, nameProposal);
-                mCheckConfig.setDescription(mTemplate.getDescription());
-                mCheckConfig.getResolvableProperties().addAll(mTemplate.getResolvableProperties());
+                        templateConfiguration.getName());
+                setUniqueName(checkConfig, nameProposal);
+                checkConfig.setDescription(templateConfiguration.getDescription());
+                checkConfig.getResolvableProperties()
+                    .addAll(templateConfiguration.getResolvableProperties());
             }
             else {
                 this.setTitle(Messages.CheckConfigurationPropertiesDialog_titleCheckConfig);
@@ -322,11 +323,11 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
             this.setMessage(Messages.CheckConfigurationPropertiesDialog_msgEditCheckConfig);
             dialogView.disable();
             types = new IConfigurationType[] {
-                mCheckConfig.getType(),
+                checkConfig.getType(),
             };
         }
         dialogView.initConfigType(types);
-        createConfigurationEditor(mCheckConfig);
+        createConfigurationEditor(checkConfig);
     }
 
     /**

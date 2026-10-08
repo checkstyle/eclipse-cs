@@ -30,10 +30,10 @@ import java.util.Map;
 public abstract class AbstractFTransformationClass {
 
     /** The checkstyle-configuration for this rule. */
-    private final CheckstyleSetting mCheckstyleSetting = new CheckstyleSetting();
+    private final CheckstyleSetting checkstyleSetting = new CheckstyleSetting();
 
     /** The value of this rule. */
-    private String mValue;
+    private String value;
 
     /**
      * Method for transforming the checkstyle-rule this class is associated to. Every
@@ -51,7 +51,7 @@ public abstract class AbstractFTransformationClass {
      *            The value of the setting.
      */
     protected final void setValue(final String value) {
-        mValue = value;
+        this.value = value;
     }
 
     /**
@@ -60,7 +60,7 @@ public abstract class AbstractFTransformationClass {
      * @return The value of the setting.
      */
     public final String getValue() {
-        return mValue;
+        return value;
     }
 
     /**
@@ -74,7 +74,7 @@ public abstract class AbstractFTransformationClass {
     public final void useTreeWalkerModule(final String name,
         final Map<String, String> properties) {
 
-        mCheckstyleSetting.addTreeWalkerModule(name, properties);
+        checkstyleSetting.addTreeWalkerModule(name, properties);
     }
 
     /**
@@ -88,7 +88,7 @@ public abstract class AbstractFTransformationClass {
     public final void useCheckerModule(final String name,
         final Map<String, String> properties) {
 
-        mCheckstyleSetting.addCheckerModule(name, properties);
+        checkstyleSetting.addCheckerModule(name, properties);
     }
 
     /**
@@ -97,7 +97,7 @@ public abstract class AbstractFTransformationClass {
      * @return The formatter-settings.
      */
     public CheckstyleSetting getCheckstyleSetting() {
-        return mCheckstyleSetting;
+        return checkstyleSetting;
     }
 
 }

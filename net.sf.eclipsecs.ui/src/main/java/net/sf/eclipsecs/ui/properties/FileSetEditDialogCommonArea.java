@@ -49,9 +49,9 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
 public final class FileSetEditDialogCommonArea extends Composite {
 
     /** The text field for the file set name. */
-    private final Text mFileSetNameText;
+    private final Text fileSetNameText;
     /** The combo viewer for check configuration selection. */
-    private final ComboViewer mComboViewer;
+    private final ComboViewer comboViewer;
 
     /**
      * Creates the common area of the file set edit dialog.
@@ -76,8 +76,8 @@ public final class FileSetEditDialogCommonArea extends Composite {
         final Label nameLabel = new Label(composite, SWT.NULL);
         nameLabel.setText(Messages.FileSetEditDialog_lblName);
 
-        mFileSetNameText = new Text(composite, SWT.SINGLE | SWT.BORDER);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mFileSetNameText);
+        fileSetNameText = new Text(composite, SWT.SINGLE | SWT.BORDER);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(fileSetNameText);
 
         final Label lblConfiguration = new Label(composite, SWT.NULL);
         lblConfiguration.setText(Messages.FileSetEditDialog_lblCheckConfig);
@@ -86,12 +86,12 @@ public final class FileSetEditDialogCommonArea extends Composite {
         GridLayoutFactory.swtDefaults().numColumns(2).margins(0, 0).applyTo(comboComposite);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(comboComposite);
 
-        mComboViewer = new ComboViewer(comboComposite);
-        mComboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
-        mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
-        mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mComboViewer.getControl());
-        mComboViewer.addSelectionChangedListener(event -> {
+        comboViewer = new ComboViewer(comboComposite);
+        comboViewer.setContentProvider(CheckConfigurationContentProvider.INSTANCE);
+        comboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
+        comboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(comboViewer.getControl());
+        comboViewer.addSelectionChangedListener(event -> {
             selectionChanged
                 .accept((ICheckConfiguration) event.getStructuredSelection().getFirstElement());
         });
@@ -109,7 +109,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
      * @return the file set name
      */
     public String getText() {
-        return this.mFileSetNameText.getText();
+        return this.fileSetNameText.getText();
     }
 
     /**
@@ -119,7 +119,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
      *            the project configuration working copy
      */
     public void setInput(ProjectConfigurationWorkingCopy configuration) {
-        this.mComboViewer.setInput(configuration);
+        this.comboViewer.setInput(configuration);
     }
 
     /**
@@ -129,7 +129,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
      *            the file set name
      */
     public void setText(String text) {
-        this.mFileSetNameText.setText(text);
+        this.fileSetNameText.setText(text);
     }
 
     /**
@@ -139,7 +139,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
      *            the check configuration to select
      */
     public void setSelection(ICheckConfiguration iCheckConfiguration) {
-        this.mComboViewer.setSelection(new StructuredSelection(iCheckConfiguration));
+        this.comboViewer.setSelection(new StructuredSelection(iCheckConfiguration));
     }
 
 }

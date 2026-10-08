@@ -40,31 +40,31 @@ public class Module {
     //
 
     /** The custom messages for this module. */
-    private final Map<String, String> mCustomMessages = new HashMap<>();
+    private final Map<String, String> customMessages = new HashMap<>();
 
     /** Map containing unknown custom metadata of the module. */
-    private final Map<String, String> mCustomMetaData = new HashMap<>();
+    private final Map<String, String> customMetaData = new HashMap<>();
 
     /** The name of the module. */
-    private String mName;
+    private String name;
 
     /** The meta data associated with the module. */
-    private RuleMetadata mMetaData;
+    private RuleMetadata metaData;
 
     /** The properties of the modules. */
-    private List<ConfigProperty> mProperties = new ArrayList<>();
+    private List<ConfigProperty> properties = new ArrayList<>();
 
     /** The comment of the module. */
-    private String mComment;
+    private String comment;
 
     /** The id of the module. */
     private String id;
 
     /** The severity level. */
-    private Severity mSeverityLevel = Severity.INHERIT;
+    private Severity severityLevel = Severity.INHERIT;
 
     /** The last severity level before setting to ignored. */
-    private Severity mLastEnabledSeverity;
+    private Severity lastEnabledSeverity;
 
     /**
      * Copy constructor.
@@ -73,18 +73,18 @@ public class Module {
      *            the module to copy
      */
     public Module(Module other) {
-        mName = other.mName;
-        mMetaData = other.mMetaData;
-        mProperties = new ArrayList<>();
-        for (ConfigProperty prop : other.mProperties) {
-            mProperties.add(new ConfigProperty(prop));
+        name = other.name;
+        metaData = other.metaData;
+        properties = new ArrayList<>();
+        for (ConfigProperty prop : other.properties) {
+            properties.add(new ConfigProperty(prop));
         }
-        mComment = other.mComment;
+        comment = other.comment;
         id = other.id;
-        mSeverityLevel = other.mSeverityLevel;
-        mLastEnabledSeverity = other.mLastEnabledSeverity;
-        mCustomMessages.putAll(other.mCustomMessages);
-        mCustomMetaData.putAll(other.mCustomMetaData);
+        severityLevel = other.severityLevel;
+        lastEnabledSeverity = other.lastEnabledSeverity;
+        customMessages.putAll(other.customMessages);
+        customMetaData.putAll(other.customMetaData);
     }
 
     //
@@ -98,7 +98,7 @@ public class Module {
      *            the name of the module
      */
     public Module(String name) {
-        mName = name;
+        this.name = name;
     }
 
     /**
@@ -111,7 +111,7 @@ public class Module {
      *            values
      */
     public Module(RuleMetadata metaData, boolean withDefaults) {
-        mMetaData = metaData;
+        this.metaData = metaData;
 
         if (metaData != null) {
 
@@ -127,7 +127,7 @@ public class Module {
             }
 
             if (metaData.defaultSeverity() != null) {
-                mSeverityLevel = metaData.defaultSeverity();
+                severityLevel = metaData.defaultSeverity();
             }
         }
     }
@@ -138,14 +138,14 @@ public class Module {
      * @return the name of the module
      */
     public String getName() {
-        final String name;
-        if (mMetaData != null) {
-            name = mMetaData.identity().ruleName();
+        final String moduleName;
+        if (metaData != null) {
+            moduleName = metaData.identity().ruleName();
         }
         else {
-            name = mName;
+            moduleName = name;
         }
-        return name;
+        return moduleName;
     }
 
     /**
@@ -173,7 +173,7 @@ public class Module {
      * @return the customMessage
      */
     public Map<String, String> getCustomMessages() {
-        return mCustomMessages;
+        return customMessages;
     }
 
     /**
@@ -182,7 +182,7 @@ public class Module {
      * @return the meta data of the module
      */
     public RuleMetadata getMetaData() {
-        return mMetaData;
+        return metaData;
     }
 
     /**
@@ -192,7 +192,7 @@ public class Module {
      *            the meta data
      */
     public void setMetaData(RuleMetadata metaData) {
-        mMetaData = metaData;
+        this.metaData = metaData;
     }
 
     /**
@@ -201,7 +201,7 @@ public class Module {
      * @return the properties
      */
     public List<ConfigProperty> getProperties() {
-        return mProperties;
+        return properties;
     }
 
     /**
@@ -213,7 +213,7 @@ public class Module {
      */
     public ConfigProperty getProperty(String property) {
         ConfigProperty propertyObj = null;
-        for (ConfigProperty tmp : mProperties) {
+        for (ConfigProperty tmp : properties) {
             if (tmp.getName().equals(property)) {
                 propertyObj = tmp;
                 break;
@@ -228,7 +228,7 @@ public class Module {
      * @return the comment
      */
     public String getComment() {
-        return mComment;
+        return comment;
     }
 
     /**
@@ -238,7 +238,7 @@ public class Module {
      *            the comment
      */
     public void setComment(String comment) {
-        mComment = comment;
+        this.comment = comment;
     }
 
     /**
@@ -248,9 +248,9 @@ public class Module {
      */
     public Severity getSeverity() {
         Severity severity = null;
-        if (mMetaData != null && mMetaData.hasSeverity()) {
-            if (mSeverityLevel != null) {
-                severity = mSeverityLevel;
+        if (metaData != null && metaData.hasSeverity()) {
+            if (severityLevel != null) {
+                severity = severityLevel;
             }
             else {
                 severity = getMetaData().defaultSeverity();
@@ -265,7 +265,7 @@ public class Module {
      * @return the last severity level
      */
     public Severity getLastEnabledSeverity() {
-        return mLastEnabledSeverity;
+        return lastEnabledSeverity;
     }
 
     /**
@@ -276,40 +276,40 @@ public class Module {
      *            the severity
      */
     public void setLastEnabledSeverity(Severity severity) {
-        mLastEnabledSeverity = severity;
+        lastEnabledSeverity = severity;
     }
 
     /**
      * Sets the severity level.
      *
-     * @param severityLevel
+     * @param severity
      *            the severity level to set
      */
-    public void setSeverity(Severity severityLevel) {
+    public void setSeverity(Severity severity) {
 
         Severity defaultLevel = null;
 
-        if (mMetaData != null && mMetaData.hasSeverity()) {
+        if (metaData != null && metaData.hasSeverity()) {
             defaultLevel = getMetaData().defaultSeverity();
         }
-        else if (mMetaData == null) {
+        else if (metaData == null) {
             defaultLevel = MetadataFactory.getDefaultSeverity();
         }
 
         if (defaultLevel != null) {
-            if (severityLevel == defaultLevel) {
-                mSeverityLevel = null;
+            if (severity == defaultLevel) {
+                severityLevel = null;
                 setLastEnabledSeverity(null);
             }
-            else if (Severity.IGNORE == severityLevel) {
-                if (mSeverityLevel != null && Severity.IGNORE != mSeverityLevel) {
-                    setLastEnabledSeverity(mSeverityLevel);
+            else if (Severity.IGNORE == severity) {
+                if (severityLevel != null && Severity.IGNORE != severityLevel) {
+                    setLastEnabledSeverity(severityLevel);
                 }
 
-                mSeverityLevel = severityLevel;
+                severityLevel = severity;
             }
             else {
-                mSeverityLevel = severityLevel;
+                severityLevel = severity;
             }
         }
     }
@@ -320,7 +320,7 @@ public class Module {
      * @return the custom metadata
      */
     public Map<String, String> getCustomMetaData() {
-        return mCustomMetaData;
+        return customMetaData;
     }
 
 }

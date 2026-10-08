@@ -54,13 +54,13 @@ public class CreateStatsJob extends Job {
     private static final Pattern REGEXP_QUOTE = Pattern.compile("'+");
 
     /** The filter to analyze. */
-    private final CheckstyleMarkerFilter mFilter;
+    private final CheckstyleMarkerFilter filter;
 
     /** The job family this job belongs to. */
-    private final String mFamily;
+    private final String family;
 
     /** The statistics data object. */
-    private Stats mStats;
+    private Stats stats;
 
     /**
      * Creates the job.
@@ -72,20 +72,20 @@ public class CreateStatsJob extends Job {
      */
     public CreateStatsJob(CheckstyleMarkerFilter filter, String family) {
         super(Messages.CreateStatsJob_msgAnalyzeMarkers);
-        mFilter = filter;
-        mFamily = family;
+        this.filter = filter;
+        this.family = family;
     }
 
     @Override
     public boolean shouldSchedule() {
 
-        final Job[] similarJobs = getJobManager().find(mFamily);
+        final Job[] similarJobs = getJobManager().find(family);
         return similarJobs.length == 0;
     }
 
     @Override
-    public boolean belongsTo(Object family) {
-        return Objects.equals(mFamily, family);
+    public boolean belongsTo(Object otherFamily) {
+        return Objects.equals(family, otherFamily);
     }
 
     @Override
@@ -95,7 +95,7 @@ public class CreateStatsJob extends Job {
             final int wholeAmountOfMarkers = ResourcesPlugin.getWorkspace().getRoot()
                 .findMarkers(CheckstyleMarker.MARKER_ID, true, IResource.DEPTH_INFINITE).length;
 
-            final IMarker[] markers = mFilter.findMarkers(monitor);
+            final IMarker[] markers = filter.findMarkers(monitor);
 
             final Map<String, MarkerStat> markerStats = new HashMap<>();
 
@@ -130,7 +130,7 @@ public class CreateStatsJob extends Job {
                 }
             }
 
-            mStats = new Stats(markerStats.values(), markers.length, wholeAmountOfMarkers);
+            stats = new Stats(markerStats.values(), markers.length, wholeAmountOfMarkers);
             status = Status.OK_STATUS;
         }
         catch (CoreException ex) {
@@ -147,7 +147,7 @@ public class CreateStatsJob extends Job {
      * @return the statistics data
      */
     public Stats getStats() {
-        return mStats;
+        return stats;
     }
 
     /**

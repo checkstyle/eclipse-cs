@@ -54,7 +54,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     //
 
     /** The working copy this editor edits. */
-    private CheckConfigurationWorkingCopy mWorkingCopy;
+    private CheckConfigurationWorkingCopy workingCopy;
 
     /** The shell. */
     private Shell shell;
@@ -75,7 +75,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {
-        mWorkingCopy = checkConfiguration;
+        workingCopy = checkConfiguration;
     }
 
     @Override
@@ -84,17 +84,17 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
         this.editorView = new ExternalFileConfigurationEditorView(parent, SWT.NULL);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(editorView);
 
-        if (mWorkingCopy.getName() != null) {
-            editorView.setConfigName(mWorkingCopy.getName());
+        if (workingCopy.getName() != null) {
+            editorView.setConfigName(workingCopy.getName());
         }
-        if (mWorkingCopy.getLocation() != null) {
-            editorView.setConfigLocation(mWorkingCopy.getLocation());
+        if (workingCopy.getLocation() != null) {
+            editorView.setConfigLocation(workingCopy.getLocation());
         }
-        if (mWorkingCopy.getDescription() != null) {
-            editorView.setDescription(mWorkingCopy.getDescription());
+        if (workingCopy.getDescription() != null) {
+            editorView.setDescription(workingCopy.getDescription());
         }
 
-        editorView.setProtectConfig(Boolean.parseBoolean(mWorkingCopy.getAdditionalData()
+        editorView.setProtectConfig(Boolean.parseBoolean(workingCopy.getAdditionalData()
             .get(ExternalFileConfigurationType.KEY_PROTECT_CONFIG)));
 
         return editorView;
@@ -102,26 +102,26 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
 
     @Override
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
-        mWorkingCopy.setName(editorView.getConfigName());
-        mWorkingCopy.setDescription(editorView.getDescription());
-        mWorkingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
+        workingCopy.setName(editorView.getConfigName());
+        workingCopy.setDescription(editorView.getDescription());
+        workingCopy.getAdditionalData().put(ExternalFileConfigurationType.KEY_PROTECT_CONFIG,
             Boolean.toString(editorView.getProtectConfig()));
 
         try {
-            mWorkingCopy.setLocation(editorView.getConfigLocation());
+            workingCopy.setLocation(editorView.getConfigLocation());
         }
         catch (CheckstylePluginException ex) {
             final String locationText = editorView.getConfigLocation();
 
             if (StringUtils.isNotBlank(locationText) && ensureFileExists(locationText)) {
-                mWorkingCopy.setLocation(locationText);
+                workingCopy.setLocation(locationText);
             }
             else {
                 throw ex;
             }
         }
 
-        return mWorkingCopy;
+        return workingCopy;
     }
 
     /**
@@ -151,7 +151,7 @@ public class ExternalFileConfigurationEditor implements ICheckConfigurationEdito
                 }
 
                 try (OutputStream out = new BufferedOutputStream(new FileOutputStream(file))) {
-                    ConfigurationWriter.writeNewConfiguration(out, mWorkingCopy);
+                    ConfigurationWriter.writeNewConfiguration(out, workingCopy);
                 }
                 catch (IOException ioe) {
                     CheckstylePluginException.rethrow(ioe);

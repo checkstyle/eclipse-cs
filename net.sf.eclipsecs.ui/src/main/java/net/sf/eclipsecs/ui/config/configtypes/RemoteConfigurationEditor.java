@@ -57,25 +57,25 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     //
 
     /** The working copy this editor edits. */
-    private CheckConfigurationWorkingCopy mWorkingCopy;
+    private CheckConfigurationWorkingCopy workingCopy;
 
     /** The text field containing the config name. */
-    private Text mConfigName;
+    private Text configName;
 
     /** Text field containing the location. */
-    private Text mLocation;
+    private Text location;
 
     /** The text containing the description. */
-    private Text mDescription;
+    private Text description;
 
     /** Check box to set if the configuration should be cached. */
-    private Button mChkCacheConfig;
+    private Button chkCacheConfig;
 
     /** The user name text field. */
-    private Text mUserName;
+    private Text userName;
 
     /** The password text field. */
-    private Text mPassword;
+    private Text password;
 
     //
     // methods
@@ -90,7 +90,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     @Override
     public void initialize(CheckConfigurationWorkingCopy checkConfiguration,
         CheckConfigurationPropertiesDialog dialog) {
-        mWorkingCopy = checkConfiguration;
+        workingCopy = checkConfiguration;
     }
 
     @Override
@@ -103,28 +103,28 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         lblConfigName.setText(Messages.CheckConfigurationPropertiesDialog_lblName);
         lblConfigName.setLayoutData(new GridData());
 
-        mConfigName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        mConfigName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        mConfigName.setFocus();
+        configName = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        configName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        configName.setFocus();
 
         final Label lblConfigLocation = new Label(contents, SWT.NULL);
         lblConfigLocation.setText(Messages.CheckConfigurationPropertiesDialog_lblLocation);
         GridDataFactory.swtDefaults().align(SWT.BEGINNING, SWT.BEGINNING)
             .applyTo(lblConfigLocation);
 
-        mLocation = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
-        mLocation.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        location = new Text(contents, SWT.LEFT | SWT.SINGLE | SWT.BORDER);
+        location.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
         final Label lblDescription = new Label(contents, SWT.NULL);
         lblDescription.setText(Messages.CheckConfigurationPropertiesDialog_lblDescription);
         GridDataFactory.swtDefaults().span(2, 1).applyTo(lblDescription);
 
-        mDescription =
+        description =
             new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
             .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
             .grab(true, true)
-            .applyTo(mDescription);
+            .applyTo(description);
 
         createCredentialsGroup(contents);
 
@@ -133,9 +133,9 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(advancedGroup);
         advancedGroup.setLayout(new GridLayout(2, false));
 
-        mChkCacheConfig = new Button(advancedGroup, SWT.CHECK);
-        mChkCacheConfig.setText(Messages.RemoteConfigurationEditor_btnCacheRemoteConfig);
-        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(mChkCacheConfig);
+        chkCacheConfig = new Button(advancedGroup, SWT.CHECK);
+        chkCacheConfig.setText(Messages.RemoteConfigurationEditor_btnCacheRemoteConfig);
+        GridDataFactory.create(GridData.FILL_HORIZONTAL).span(2, 1).applyTo(chkCacheConfig);
 
         init(shell);
 
@@ -158,15 +158,15 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         lblUserName.setText(Messages.RemoteConfigurationEditor_lblUserName);
         lblUserName.setLayoutData(new GridData());
 
-        mUserName = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER);
-        GridDataFactory.fillDefaults().grab(true, false).applyTo(mUserName);
+        userName = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(userName);
 
         final Label lblPassword = new Label(credentialsGroup, SWT.NULL);
         lblPassword.setText(Messages.RemoteConfigurationEditor_lblPassword);
         lblPassword.setLayoutData(new GridData());
 
-        mPassword = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
-        GridDataFactory.fillDefaults().grab(true, false).applyTo(mPassword);
+        password = new Text(credentialsGroup, SWT.SINGLE | SWT.BORDER | SWT.PASSWORD);
+        GridDataFactory.fillDefaults().grab(true, false).applyTo(password);
     }
 
     /**
@@ -176,28 +176,28 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
      *            the parent shell
      */
     private void init(Shell shell) {
-        if (mWorkingCopy.getName() != null) {
-            mConfigName.setText(mWorkingCopy.getName());
+        if (workingCopy.getName() != null) {
+            configName.setText(workingCopy.getName());
         }
-        if (mWorkingCopy.getLocation() != null) {
-            mLocation.setText(mWorkingCopy.getLocation());
+        if (workingCopy.getLocation() != null) {
+            location.setText(workingCopy.getLocation());
         }
-        if (mWorkingCopy.getDescription() != null) {
-            mDescription.setText(mWorkingCopy.getDescription());
+        if (workingCopy.getDescription() != null) {
+            description.setText(workingCopy.getDescription());
         }
 
-        mChkCacheConfig.setSelection(Boolean.parseBoolean(
-            mWorkingCopy.getAdditionalData().get(RemoteConfigurationType.KEY_CACHE_CONFIG)));
+        chkCacheConfig.setSelection(Boolean.parseBoolean(
+            workingCopy.getAdditionalData().get(RemoteConfigurationType.KEY_CACHE_CONFIG)));
 
-        if (mWorkingCopy.getLocation() != null) {
+        if (workingCopy.getLocation() != null) {
             try {
 
                 final RemoteConfigAuthenticator auth = RemoteConfigAuthenticator
-                    .create(mWorkingCopy.getResolvedConfigurationFileURL());
+                    .create(workingCopy.getResolvedConfigurationFileURL());
 
                 if (auth != null) {
-                    mUserName.setText(auth.getUsername());
-                    mPassword.setText(new String(auth.getPassword()));
+                    userName.setText(auth.getUsername());
+                    password.setText(new String(auth.getPassword()));
                 }
             }
             catch (CheckstylePluginException ex) {
@@ -210,43 +210,43 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
     public CheckConfigurationWorkingCopy getEditedWorkingCopy() throws CheckstylePluginException {
 
         // set the cachefile name
-        if (mChkCacheConfig.getSelection() && mWorkingCopy.getAdditionalData()
+        if (chkCacheConfig.getSelection() && workingCopy.getAdditionalData()
             .get(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION) == null) {
 
             final long currentTime = System.currentTimeMillis();
 
-            mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
-                makeCacheFileName(mWorkingCopy.getName(), currentTime, "xml"));
-            mWorkingCopy.getAdditionalData().put(
+            workingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_FILE_LOCATION,
+                makeCacheFileName(workingCopy.getName(), currentTime, "xml"));
+            workingCopy.getAdditionalData().put(
                 RemoteConfigurationType.KEY_CACHE_PROPS_FILE_LOCATION,
-                makeCacheFileName(mWorkingCopy.getName(), currentTime, "properties"));
+                makeCacheFileName(workingCopy.getName(), currentTime, "properties"));
         }
 
         // store credentials if necessary
         try {
-            if (StringUtils.isNotBlank(mUserName.getText())
-                || StringUtils.isNotBlank(mPassword.getText())) {
+            if (StringUtils.isNotBlank(userName.getText())
+                || StringUtils.isNotBlank(password.getText())) {
                 RemoteConfigurationType.RemoteConfigAuthenticator.storeCredentials(
-                    URI.create(mLocation.getText()).toURL(), mUserName.getText(),
-                    mPassword.getText());
+                    URI.create(location.getText()).toURL(), userName.getText(),
+                    password.getText());
             }
             else {
                 RemoteConfigurationType.RemoteConfigAuthenticator
-                    .removeCachedAuthInfo(URI.create(mLocation.getText()).toURL());
+                    .removeCachedAuthInfo(URI.create(location.getText()).toURL());
             }
         }
         catch (MalformedURLException ex) {
             CheckstylePluginException.rethrow(ex);
         }
 
-        mWorkingCopy.setName(mConfigName.getText());
-        mWorkingCopy.setLocation(mLocation.getText());
-        mWorkingCopy.setDescription(mDescription.getText());
+        workingCopy.setName(configName.getText());
+        workingCopy.setLocation(location.getText());
+        workingCopy.setDescription(description.getText());
 
-        mWorkingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
-            Boolean.toString(mChkCacheConfig.getSelection()));
+        workingCopy.getAdditionalData().put(RemoteConfigurationType.KEY_CACHE_CONFIG,
+            Boolean.toString(chkCacheConfig.getSelection()));
 
-        return mWorkingCopy;
+        return workingCopy;
     }
 
     /**

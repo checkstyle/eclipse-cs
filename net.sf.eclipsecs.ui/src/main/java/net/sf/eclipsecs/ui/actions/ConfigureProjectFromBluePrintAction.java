@@ -57,10 +57,10 @@ import net.sf.eclipsecs.ui.Messages;
 public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegate {
 
     /** The workbench part. */
-    private IWorkbenchPart mPart;
+    private IWorkbenchPart part;
 
     /** The selected projects to configure. */
-    private Collection<IProject> mSelectedProjects;
+    private Collection<IProject> selectedProjects;
 
     /**
      * Creates a new instance.
@@ -70,7 +70,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
     @Override
     public void setActivePart(IAction action, IWorkbenchPart targetPart) {
-        mPart = targetPart;
+        part = targetPart;
     }
 
     @Override
@@ -79,7 +79,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
 
         if (selection instanceof IStructuredSelection) {
             final IStructuredSelection sel = (IStructuredSelection) selection;
-            mSelectedProjects = sel.toList();
+            selectedProjects = sel.toList();
         }
     }
 
@@ -89,10 +89,10 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
             Arrays.stream(ResourcesPlugin.getWorkspace().getRoot().getProjects())
                 .filter(IProject::isAccessible).collect(Collectors.toList());
 
-        filteredProjects.removeAll(mSelectedProjects);
+        filteredProjects.removeAll(selectedProjects);
 
         final ElementListSelectionDialog dialog = new ElementListSelectionDialog(
-            mPart.getSite().getShell(), new WorkbenchLabelProvider());
+            part.getSite().getShell(), new WorkbenchLabelProvider());
         dialog.setElements(filteredProjects.toArray(new IProject[0]));
         dialog.setHelpAvailable(false);
         dialog.setMessage(Messages.ConfigureProjectFromBluePrintAction_msgSelectBlueprintProject);
@@ -104,7 +104,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
             if (result.length > 0) {
 
                 final BulkConfigureJob job =
-                    new BulkConfigureJob((IProject) result[0], mSelectedProjects);
+                    new BulkConfigureJob((IProject) result[0], selectedProjects);
                 job.schedule();
             }
 
@@ -118,10 +118,10 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
     private static class BulkConfigureJob extends WorkspaceJob {
 
         /** The blueprint project to copy configuration from. */
-        private final IProject mBlueprint;
+        private final IProject blueprint;
 
         /** The projects to configure from the blueprint. */
-        private final Collection<IProject> mProjectsToConfigure;
+        private final Collection<IProject> projectsToConfigure;
 
         /**
          * Creates the job configuring the given projects from the blueprint project.
@@ -133,8 +133,8 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
          */
         BulkConfigureJob(IProject blueprint, Collection<IProject> projectsToConfigure) {
             super(Messages.ConfigureProjectFromBluePrintAction_msgConfiguringFromBluePrint);
-            this.mBlueprint = blueprint;
-            this.mProjectsToConfigure = projectsToConfigure;
+            this.blueprint = blueprint;
+            this.projectsToConfigure = projectsToConfigure;
         }
 
         @Override
@@ -142,12 +142,12 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
             IStatus status;
             try {
                 final IProjectConfiguration bluePrintConfig =
-                    ProjectConfigurationFactory.getConfiguration(mBlueprint);
+                    ProjectConfigurationFactory.getConfiguration(blueprint);
 
                 final List<ICheckConfiguration> bluePrintLocalConfigs =
                     bluePrintConfig.getLocalCheckConfigurations();
 
-                for (IProject configurationTarget : mProjectsToConfigure) {
+                for (IProject configurationTarget : projectsToConfigure) {
                     final IProjectConfiguration config =
                         ProjectConfigurationFactory.getConfiguration(configurationTarget);
                     final ProjectConfigurationWorkingCopy workingCopy =

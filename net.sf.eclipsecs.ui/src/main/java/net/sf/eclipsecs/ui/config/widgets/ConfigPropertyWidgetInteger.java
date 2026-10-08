@@ -37,7 +37,7 @@ import net.sf.eclipsecs.ui.util.SWTUtil;
 public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWidget {
 
     /** The text widget. */
-    private Text mTextWidget;
+    private Text textWidget;
 
     /**
      * Creates the widget.
@@ -67,27 +67,27 @@ public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWid
     @Override
     protected Control getValueWidget(Composite parent) {
 
-        if (mTextWidget == null) {
+        if (textWidget == null) {
 
             //
             // Create a text entry field.
             //
-            mTextWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
-            mTextWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            SWTUtil.addOnlyDigitInputSupport(mTextWidget);
+            textWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
+            textWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+            SWTUtil.addOnlyDigitInputSupport(textWidget);
 
             final String initValue = getInitValue();
             if (initValue != null) {
-                mTextWidget.setText(initValue);
+                textWidget.setText(initValue);
             }
         }
 
-        return mTextWidget;
+        return textWidget;
     }
 
     @Override
     public String getValue() {
-        String result = mTextWidget.getText();
+        String result = textWidget.getText();
         if (result == null) {
             result = new String();
         }
@@ -104,7 +104,7 @@ public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWid
         if (defaultValue == null) {
             defaultValue = new String();
         }
-        mTextWidget.setText(defaultValue);
+        textWidget.setText(defaultValue);
     }
 
     @Override
@@ -113,7 +113,7 @@ public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWid
             //
             // Parse the value to see if an exception gets thrown.
             //
-            Integer.parseInt(mTextWidget.getText());
+            Integer.parseInt(textWidget.getText());
         }
         catch (NumberFormatException ex) {
             CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());

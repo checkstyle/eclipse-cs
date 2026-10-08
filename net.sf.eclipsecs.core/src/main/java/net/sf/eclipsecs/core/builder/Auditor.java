@@ -69,23 +69,23 @@ public final class Auditor {
     private static final int MONITOR_INTERVAL = 10;
 
     /** The check configuration the auditor uses. */
-    private final ICheckConfiguration mCheckConfiguration;
+    private final ICheckConfiguration checkConfiguration;
 
     /** Map containing the file resources to audit. */
-    private final Map<String, IFile> mFiles = new HashMap<>();
+    private final Map<String, IFile> filesByName = new HashMap<>();
 
     /** Reference to the file buffer manager. */
-    private final ITextFileBufferManager mFileBufferManager =
+    private final ITextFileBufferManager fileBufferManager =
         FileBuffers.getTextFileBufferManager();
 
     /** The progress monitor. */
-    private IProgressMonitor mMonitor;
+    private IProgressMonitor progressMonitor;
 
     /** Add the check rule name to the message. */
-    private boolean mAddRuleName;
+    private boolean addRuleName;
 
     /** Add the check module id to the message. */
-    private boolean mAddModuleId;
+    private boolean addModuleId;
 
     /**
      * Creates an auditor.
@@ -94,14 +94,14 @@ public final class Auditor {
      *            the check configuraton to use during audit.
      */
     public Auditor(ICheckConfiguration checkConfiguration) {
-        mCheckConfiguration = checkConfiguration;
+        this.checkConfiguration = checkConfiguration;
 
         //
         // check wether to include rule names and/or module id
         //
-        mAddRuleName =
+        addRuleName =
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_RULE_NAMES);
-        mAddModuleId =
+        addModuleId =
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_INCLUDE_MODULE_IDS);
     }
 
@@ -117,7 +117,7 @@ public final class Auditor {
      */
     public void runAudit(IProject project, IProgressMonitor monitor)
             throws CheckstylePluginException {
-        mMonitor = monitor;
+        this.progressMonitor = monitor;
 
         Checker checker = null;
         CheckstyleAuditListener listener = null;
@@ -128,11 +128,11 @@ public final class Auditor {
 
             // begin task
             monitor.beginTask(
-                NLS.bind(Messages.Auditor_msgCheckingConfig, mCheckConfiguration.getName()),
+                NLS.bind(Messages.Auditor_msgCheckingConfig, checkConfiguration.getName()),
                 filesToAudit.size());
 
             // create checker
-            checker = CheckerFactory.createChecker(mCheckConfiguration, project);
+            checker = CheckerFactory.createChecker(checkConfiguration, project);
 
             // create and add listener
             listener = new CheckstyleAuditListener(project);
@@ -203,7 +203,7 @@ public final class Auditor {
      *            the file
      */
     public void addFile(IFile file) {
-        mFiles.put(file.getLocation().toString(), file);
+        filesByName.put(file.getLocation().toString(), file);
     }
 
     /**
@@ -212,7 +212,7 @@ public final class Auditor {
      * @return <code>true</code> if at least one file has been added, <code>false</code> otherwise
      */
     public boolean hasFiles() {
-        return !mFiles.isEmpty();
+        return !filesByName.isEmpty();
     }
 
     /**
@@ -223,7 +223,7 @@ public final class Auditor {
      * @return the file resource or <code>null</code>
      */
     private IFile getFile(String fileName) {
-        return mFiles.get(new Path(fileName).toString());
+        return filesByName.get(new Path(fileName).toString());
     }
 
     /**
@@ -233,7 +233,7 @@ public final class Auditor {
      */
     private List<File> getFilesList() {
         final List<File> files = new ArrayList<>();
-        for (IFile file : mFiles.values()) {
+        for (IFile file : filesByName.values()) {
             files.add(file.getLocation().toFile());
         }
         return files;
@@ -247,33 +247,33 @@ public final class Auditor {
     private class CheckstyleAuditListener implements AuditListener {
 
         /** The project. */
-        private final IProject mProject;
+        private final IProject project;
 
         /** Map containing the marker data. */
-        private final Map<String, Object> mMarkerAttributes = new HashMap<>();
+        private final Map<String, Object> markerAttributes = new HashMap<>();
 
         /** Flags if the amount of markers should be limited. */
-        private final boolean mLimitMarkers;
+        private final boolean limitMarkers;
 
         /** The max amount of markers per resource. */
-        private final int mMarkerLimit;
+        private final int markerLimit;
 
         /** The file currently being checked. */
-        private IResource mResource;
+        private IResource resource;
 
         /** Document model of the current file. */
-        private IDocument mDocument;
+        private IDocument document;
 
         /** Internal counter used to time the actualisation of the monitor. */
-        private int mMonitorCounter;
+        private int monitorCounter;
 
         /** The count of markers generated for the current resource. */
-        private int mMarkerCount;
+        private int markerCount;
 
         /**
          * Keep track which file paths have been connected with the BufferManager.
          */
-        private Set<IPath> mConnectedFileBufferPaths = new HashSet<>();
+        private Set<IPath> connectedFileBufferPaths = new HashSet<>();
 
         /**
          * Creates a listener for the checkstyle audit.
@@ -282,52 +282,52 @@ public final class Auditor {
          *            the project to audit
          */
         CheckstyleAuditListener(IProject project) {
-            mProject = project;
+            this.project = project;
 
             // init the marker limitation
-            mLimitMarkers = CheckstylePluginPrefs
+            limitMarkers = CheckstylePluginPrefs
                 .getBoolean(CheckstylePluginPrefs.PREF_LIMIT_MARKERS_PER_RESOURCE);
-            mMarkerLimit =
+            markerLimit =
                 CheckstylePluginPrefs.getInt(CheckstylePluginPrefs.PREF_MARKER_AMOUNT_LIMIT);
         }
 
         @Override
         public void fileStarted(AuditEvent event) {
 
-            if (mMonitor.isCanceled()) {
+            if (progressMonitor.isCanceled()) {
                 throw new OperationCanceledException();
             }
 
             // get the current IFile reference
-            mResource = getFile(event.getFileName());
-            mMarkerCount = 0;
+            resource = getFile(event.getFileName());
+            markerCount = 0;
 
-            if (mResource != null) {
+            if (resource != null) {
 
                 // begin subtask
-                if (mMonitorCounter == 0) {
-                    mMonitor
-                        .subTask(NLS.bind(Messages.Auditor_msgCheckingFile, mResource.getName()));
+                if (monitorCounter == 0) {
+                    progressMonitor
+                        .subTask(NLS.bind(Messages.Auditor_msgCheckingFile, resource.getName()));
                 }
 
                 // increment monitor-counter
-                this.mMonitorCounter++;
+                this.monitorCounter++;
             }
             else {
 
                 final IPath filePath = new Path(event.getFileName());
                 final IPath dirPath = filePath.removeFileExtension().removeLastSegments(1);
 
-                final IPath projectPath = mProject.getLocation();
+                final IPath projectPath = project.getLocation();
                 if (projectPath.isPrefixOf(dirPath)) {
                     // find the resource with a project relative path
-                    mResource = mProject
+                    resource = project
                         .findMember(dirPath.removeFirstSegments(projectPath.segmentCount()));
                 }
                 else {
                     // if the resource is not inside the project, take project
                     // as resource - this should not happen
-                    mResource = mProject;
+                    resource = project;
                 }
             }
         }
@@ -335,11 +335,11 @@ public final class Auditor {
         @Override
         public void addError(AuditEvent error) {
             try {
-                if (!mLimitMarkers || mMarkerCount < mMarkerLimit) {
+                if (!limitMarkers || markerCount < markerLimit) {
 
                     final SeverityLevel severity = error.getSeverityLevel();
 
-                    if (mResource != null && !severity.equals(SeverityLevel.IGNORE)) {
+                    if (resource != null && !severity.equals(SeverityLevel.IGNORE)) {
 
                         RuleMetadata metaData =
                             MetadataFactory.getRuleMetadata(error.getSourceName());
@@ -350,38 +350,38 @@ public final class Auditor {
                             metaData = MetadataFactory.createGenericMetadata(module);
                         }
 
-                        mMarkerAttributes.put(CheckstyleMarker.MODULE_NAME,
+                        markerAttributes.put(CheckstyleMarker.MODULE_NAME,
                             metaData.identity().internalName());
-                        mMarkerAttributes.put(CheckstyleMarker.MESSAGE_KEY,
+                        markerAttributes.put(CheckstyleMarker.MESSAGE_KEY,
                             error.getViolation().getKey());
                         final String moduleId = error.getModuleId();
                         if (StringUtils.isNotBlank(moduleId)) {
-                            mMarkerAttributes.put(CheckstyleMarker.MODULE_ID, moduleId);
+                            markerAttributes.put(CheckstyleMarker.MODULE_ID, moduleId);
                         }
-                        mMarkerAttributes.put(IMarker.PRIORITY,
+                        markerAttributes.put(IMarker.PRIORITY,
                             Integer.valueOf(IMarker.PRIORITY_NORMAL));
-                        mMarkerAttributes.put(IMarker.SEVERITY,
+                        markerAttributes.put(IMarker.SEVERITY,
                             Integer.valueOf(getSeverityValue(severity)));
-                        mMarkerAttributes.put(IMarker.LINE_NUMBER,
+                        markerAttributes.put(IMarker.LINE_NUMBER,
                             Integer.valueOf(error.getLine()));
-                        mMarkerAttributes.put(IMarker.MESSAGE, getMessage(error));
+                        markerAttributes.put(IMarker.MESSAGE, getMessage(error));
 
                         // calculate offset for editor annotations
-                        calculateMarkerOffset(error, mMarkerAttributes);
+                        calculateMarkerOffset(error);
 
                         // enables own category under Java Problem Type
                         // setting for Problems view (RFE 1530366)
-                        mMarkerAttributes.put("categoryId", CheckstyleMarker.CATEGORY_ID);
+                        markerAttributes.put("categoryId", CheckstyleMarker.CATEGORY_ID);
 
                         // create a marker for the actual resource
-                        final IMarker marker = mResource.createMarker(CheckstyleMarker.MARKER_ID);
-                        marker.setAttributes(mMarkerAttributes);
+                        final IMarker marker = resource.createMarker(CheckstyleMarker.MARKER_ID);
+                        marker.setAttributes(markerAttributes);
 
-                        mMarkerCount++;
+                        markerCount++;
 
                         // clear the marker attributes to reuse the map for the
                         // next error
-                        mMarkerAttributes.clear();
+                        markerAttributes.clear();
                     }
                 }
             }
@@ -398,13 +398,13 @@ public final class Auditor {
         @Override
         public void fileFinished(AuditEvent event) {
             // update monitor according to the monitor interval
-            if (mMonitorCounter == MONITOR_INTERVAL) {
-                mMonitor.worked(MONITOR_INTERVAL);
-                mMonitorCounter = 0;
+            if (monitorCounter == MONITOR_INTERVAL) {
+                progressMonitor.worked(MONITOR_INTERVAL);
+                monitorCounter = 0;
             }
 
-            disconnectFileBuffer(mResource);
-            mDocument = null;
+            disconnectFileBuffer();
+            document = null;
         }
 
         @Override
@@ -421,10 +421,10 @@ public final class Auditor {
          */
         public void cleanup() {
 
-            mDocument = null;
+            document = null;
 
             // disconnect any leftover buffer paths, in case of an unexpected abortion
-            mConnectedFileBufferPaths.forEach(this::disconnectFileBuffer);
+            connectedFileBufferPaths.forEach(this::disconnectFileBuffer);
         }
 
         /**
@@ -432,25 +432,23 @@ public final class Auditor {
          *
          * @param error
          *            the audit error
-         * @param markerAttributes
-         *            the marker attributes
          */
-        private void calculateMarkerOffset(AuditEvent error, Map<String, Object> markerAttributes) {
+        private void calculateMarkerOffset(AuditEvent error) {
 
             // lazy create the document for the current file
-            if (mDocument == null) {
-                mDocument = connectFileBuffer(mResource);
+            if (document == null) {
+                connectFileBuffer();
             }
 
             // Provide offset information for the marker to make
             // annotated source code possible
-            if (mDocument != null) {
+            if (document != null) {
                 try {
 
                     final int line = error.getLine();
 
                     final IRegion lineInformation =
-                        mDocument.getLineInformation(Math.max(line - 1, 0));
+                        document.getLineInformation(Math.max(line - 1, 0));
                     final int lineOffset = lineInformation.getOffset();
                     final int lineLength = lineInformation.getLength();
 
@@ -472,35 +470,26 @@ public final class Auditor {
 
         /**
          * Connects the file buffer for the given resource.
-         *
-         * @param resource
-         *            the resource to connect
-         * @return the connected document or <code>null</code>
          */
-        private IDocument connectFileBuffer(IResource resource) {
-            IDocument document = null;
+        private void connectFileBuffer() {
             if (resource instanceof IFile) {
                 try {
                     final IPath path = resource.getFullPath();
-                    mFileBufferManager.connect(path, new NullProgressMonitor());
+                    fileBufferManager.connect(path, new NullProgressMonitor());
 
-                    mConnectedFileBufferPaths.add(path);
-                    document = mFileBufferManager.getTextFileBuffer(path).getDocument();
+                    connectedFileBufferPaths.add(path);
+                    document = fileBufferManager.getTextFileBuffer(path).getDocument();
                 }
                 catch (CoreException ex) {
                     CheckstyleLog.log(ex);
                 }
             }
-            return document;
         }
 
         /**
          * Disconnects the file buffer for the given resource.
-         *
-         * @param resource
-         *            the resource to disconnect
          */
-        private void disconnectFileBuffer(IResource resource) {
+        private void disconnectFileBuffer() {
             if (resource instanceof IFile) {
                 final IPath path = resource.getFullPath();
                 disconnectFileBuffer(path);
@@ -517,9 +506,9 @@ public final class Auditor {
 
             try {
 
-                if (mConnectedFileBufferPaths.contains(path)) {
-                    mFileBufferManager.disconnect(path, new NullProgressMonitor());
-                    mConnectedFileBufferPaths.remove(path);
+                if (connectedFileBufferPaths.contains(path)) {
+                    fileBufferManager.disconnect(path, new NullProgressMonitor());
+                    connectedFileBufferPaths.remove(path);
                 }
             }
             catch (CoreException ex) {
@@ -572,10 +561,10 @@ public final class Auditor {
             final String message = error.getMessage();
 
             final StringBuilder prefix = new StringBuilder();
-            if (mAddRuleName) {
+            if (addRuleName) {
                 prefix.append(getRuleName(error));
             }
-            if (mAddModuleId && error.getModuleId() != null) {
+            if (addModuleId && error.getModuleId() != null) {
                 if (prefix.length() > 0) {
                     prefix.append(" - ");
                 }
