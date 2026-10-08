@@ -109,6 +109,20 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      *
      * @param shell
      *            the shell
+     * @param throwable
+     *            the exception
+     * @param log
+     *            <code>true</code> if the exception should be logged
+     */
+    public static void errorDialog(Shell shell, Throwable throwable, boolean log) {
+        errorDialog(shell, throwable.getLocalizedMessage(), throwable, log);
+    }
+
+    /**
+     * Open an error dialog for an exception that occurred within the plugin.
+     *
+     * @param shell
+     *            the shell
      * @param message
      *            the exception message
      * @param throwable
@@ -131,20 +145,6 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
         if (log) {
             CheckstyleLog.log(throwable);
         }
-    }
-
-    /**
-     * Open an error dialog for an exception that occurred within the plugin.
-     *
-     * @param shell
-     *            the shell
-     * @param throwable
-     *            the exception
-     * @param log
-     *            <code>true</code> if the exception should be logged
-     */
-    public static void errorDialog(Shell shell, Throwable throwable, boolean log) {
-        errorDialog(shell, throwable.getLocalizedMessage(), throwable, log);
     }
 
     /**
