@@ -234,8 +234,8 @@ public final class CheckerFactory {
         try {
             checker.setCharset(project.getDefaultCharset());
         }
-        catch (UnsupportedEncodingException | CoreException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (UnsupportedEncodingException | CoreException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
 
         setLocale(checker, getLocale());

@@ -80,8 +80,8 @@ public class InternalConfigurationType extends AbstractConfigurationType {
                     configFile.delete();
                 }
             }
-            catch (URISyntaxException ex) {
-                CheckstylePluginException.rethrow(ex);
+            catch (URISyntaxException exception) {
+                CheckstylePluginException.rethrow(exception);
             }
         }
     }

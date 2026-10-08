@@ -127,8 +127,8 @@ public final class CheckstylePropertyApplyOperation {
                 }
             }
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleUIPlugin.errorDialog(shell, ex, true);
+        catch (CheckstylePluginException exception) {
+            CheckstyleUIPlugin.errorDialog(shell, exception, true);
         }
         return true;
     }

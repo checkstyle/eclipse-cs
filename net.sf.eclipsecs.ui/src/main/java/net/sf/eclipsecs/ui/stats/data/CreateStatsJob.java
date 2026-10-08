@@ -105,8 +105,8 @@ public class CreateStatsJob extends Job {
                     message = getUnlocalizedMessage(marker);
                     message = cleanMessage(message);
                 }
-                catch (CoreException ex) {
-                    CheckstyleLog.log(ex, Messages.CreateStatsJob_errorAnalyzingMarkers);
+                catch (CoreException exception) {
+                    CheckstyleLog.log(exception, Messages.CreateStatsJob_errorAnalyzingMarkers);
                 }
 
                 // check that the message is not empty
@@ -133,9 +133,9 @@ public class CreateStatsJob extends Job {
             stats = new Stats(markerStats.values(), markers.length, wholeAmountOfMarkers);
             status = Status.OK_STATUS;
         }
-        catch (CoreException ex) {
+        catch (CoreException exception) {
             status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
-                Messages.CreateStatsJob_errorAnalyzingMarkers, ex);
+                Messages.CreateStatsJob_errorAnalyzingMarkers, exception);
         }
 
         return status;

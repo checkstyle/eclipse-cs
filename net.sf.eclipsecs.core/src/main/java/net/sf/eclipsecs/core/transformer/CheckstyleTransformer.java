@@ -109,11 +109,11 @@ public class CheckstyleTransformer {
                 // Logger.writeln("using " + name + " to transform rule \""
                 // + rule.getName() + "\"");
             }
-            catch (final ClassNotFoundException ex) {
+            catch (final ClassNotFoundException exception) {
                 // NOOP there is just no appropriate transformer class
             }
-            catch (final ReflectiveOperationException ex) {
-                CheckstylePluginException.rethrow(ex);
+            catch (final ReflectiveOperationException exception) {
+                CheckstylePluginException.rethrow(exception);
             }
         }
     }

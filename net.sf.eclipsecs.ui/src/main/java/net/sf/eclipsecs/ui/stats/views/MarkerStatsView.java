@@ -195,8 +195,8 @@ public class MarkerStatsView extends AbstractStatsView {
                     try {
                         IDE.openEditor(getSite().getPage(), marker);
                     }
-                    catch (PartInitException ex) {
-                        CheckstyleLog.log(ex, Messages.MarkerStatsView_unableToShowMarker);
+                    catch (PartInitException exception) {
+                        CheckstyleLog.log(exception, Messages.MarkerStatsView_unableToShowMarker);
                     }
                 });
             }

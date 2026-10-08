@@ -278,7 +278,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
                 bytes = Optional.of(getBytesFromURLConnection(connection));
             }
-            catch (IOException ex) {
+            catch (IOException exception) {
                 // we won't load the bundle then
                 // disabled logging bug #1647602
                 // CheckstyleLog.log(ioe);
@@ -310,9 +310,10 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         try {
             Files.write(cacheFile.toPath(), configFileBytes);
         }
-        catch (IOException ex) {
-            CheckstyleLog.log(ex, NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
-                checkConfig.getName(), checkConfig.getLocation()));
+        catch (IOException exception) {
+            CheckstyleLog.log(exception,
+                NLS.bind(Messages.RemoteConfigurationType_msgRemoteCachingFailed,
+                    checkConfig.getName(), checkConfig.getLocation()));
         }
 
         if (bundleBytes != null) {
@@ -327,7 +328,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
             try {
                 Files.write(propsCacheFile.toPath(), bundleBytes);
             }
-            catch (IOException ex) {
+            catch (IOException exception) {
                 // ignore this since there simply might be no properties file
             }
         }
@@ -350,8 +351,8 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
                     try {
                         RemoteConfigAuthenticator.removeCachedAuthInfo(connection.getURL());
                     }
-                    catch (CheckstylePluginException ex) {
-                        CheckstyleLog.log(ex);
+                    catch (CheckstylePluginException exception) {
+                        CheckstyleLog.log(exception);
                     }
 
                     // add to 401ed URLs
@@ -460,8 +461,8 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
                 FAILED_WITH_401_URLS.remove(resolvedCheckConfigurationURL.toString());
             }
-            catch (CheckstylePluginException | StorageException ex) {
-                CheckstyleLog.log(ex);
+            catch (CheckstylePluginException | StorageException exception) {
+                CheckstyleLog.log(exception);
             }
         }
 
@@ -514,8 +515,8 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
                 urlHash = urlHash.replace('/', '_');
                 urlHash = urlHash.replace('\\', '_');
             }
-            catch (NoSuchAlgorithmException | UnsupportedEncodingException ex) {
-                CheckstylePluginException.rethrow(ex);
+            catch (NoSuchAlgorithmException | UnsupportedEncodingException exception) {
+                CheckstylePluginException.rethrow(exception);
             }
             return "eclipse-cs/" + urlHash;
         }

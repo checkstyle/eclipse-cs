@@ -101,8 +101,8 @@ public class FormatterTransformer {
                     targetTransformers.add(transObj);
 
                 }
-                catch (final ReflectiveOperationException ex) {
-                    CheckstylePluginException.rethrow(ex);
+                catch (final ReflectiveOperationException exception) {
+                    CheckstylePluginException.rethrow(exception);
                 }
             }
         }

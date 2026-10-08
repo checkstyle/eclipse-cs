@@ -236,7 +236,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
                 try {
                     translation = TOKEN_BUNDLE.getString((String) element);
                 }
-                catch (MissingResourceException ex) {
+                catch (MissingResourceException exception) {
                     translation = element.toString();
                 }
             }

@@ -166,8 +166,8 @@ public final class CheckConfigurationFactory {
             loadFromPersistence();
 
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleLog.log(ex);
+        catch (CheckstylePluginException exception) {
+            CheckstyleLog.log(exception);
         }
     }
 
@@ -211,8 +211,8 @@ public final class CheckConfigurationFactory {
                 }
             });
         }
-        catch (IllegalStateException | IOException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (IllegalStateException | IOException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
     }
 
@@ -281,8 +281,8 @@ public final class CheckConfigurationFactory {
                         + "not supported anymore.");
                 }
             }
-            catch (IOException | DocumentException ex) {
-                CheckstylePluginException.rethrow(ex, Messages.errorLoadingConfigFile);
+            catch (IOException | DocumentException exception) {
+                CheckstylePluginException.rethrow(exception, Messages.errorLoadingConfigFile);
             }
         }
     }

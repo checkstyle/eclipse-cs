@@ -85,8 +85,8 @@ public class ExplicitInitializationQuickfix extends AbstractASTResolution {
             fieldName = snippet.substring(0, snippet.indexOf('=')).trim();
         }
         catch (final CoreException | IOException | IndexOutOfBoundsException
-            | ClassCastException ex) {
-            handleRetrieveFieldNameException(ex);
+            | ClassCastException exception) {
+            handleRetrieveFieldNameException(exception);
         }
     }
 

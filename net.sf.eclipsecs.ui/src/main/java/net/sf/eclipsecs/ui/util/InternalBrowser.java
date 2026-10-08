@@ -54,8 +54,8 @@ public final class InternalBrowser {
                 .createBrowser(IWorkbenchBrowserSupport.AS_EXTERNAL, null, null, null);
             browser.openURL(new URL(url));
         }
-        catch (PartInitException | MalformedURLException ex) {
-            CheckstyleLog.log(ex);
+        catch (PartInitException | MalformedURLException exception) {
+            CheckstyleLog.log(exception);
         }
     }
 

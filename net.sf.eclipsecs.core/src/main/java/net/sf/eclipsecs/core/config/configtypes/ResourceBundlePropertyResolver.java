@@ -53,7 +53,7 @@ class ResourceBundlePropertyResolver implements PropertyResolver {
             try {
                 value = bundle.getString(property);
             }
-            catch (MissingResourceException ex) {
+            catch (MissingResourceException exception) {
                 // ignore
             }
         }

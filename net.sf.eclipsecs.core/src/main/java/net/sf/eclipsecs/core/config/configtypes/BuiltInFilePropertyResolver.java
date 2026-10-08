@@ -76,8 +76,8 @@ public class BuiltInFilePropertyResolver implements PropertyResolver {
 
                 value = URIUtil.toFile(fileURL.toURI()).getAbsolutePath();
             }
-            catch (IOException | URISyntaxException ex) {
-                throw new RuntimeException(ex.getMessage(), ex);
+            catch (IOException | URISyntaxException exception) {
+                throw new RuntimeException(exception.getMessage(), exception);
             }
         }
 

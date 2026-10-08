@@ -116,8 +116,8 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
             try {
                 tmpSourceConfig.copyConfiguration(getEditedWorkingCopy());
             }
-            catch (CheckstylePluginException ex) {
-                dialog.setErrorMessage(ex.getLocalizedMessage());
+            catch (CheckstylePluginException exception) {
+                dialog.setErrorMessage(exception.getLocalizedMessage());
             }
         });
     }
@@ -153,12 +153,12 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
             try {
                 workingCopy.setLocation(location);
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 if (StringUtils.isNotBlank(location) && ensureFileExists(location)) {
                     workingCopy.setLocation(location);
                 }
                 else {
-                    throw ex;
+                    throw exception;
                 }
             }
         }
@@ -190,8 +190,8 @@ public class InternalConfigurationEditor implements ICheckConfigurationEditor {
                         ConfigurationWriter.writeNewConfiguration(out, workingCopy);
                     }
                 }
-                catch (IOException ex) {
-                    CheckstylePluginException.rethrow(ex);
+                catch (IOException exception) {
+                    CheckstylePluginException.rethrow(exception);
                 }
             }
         }

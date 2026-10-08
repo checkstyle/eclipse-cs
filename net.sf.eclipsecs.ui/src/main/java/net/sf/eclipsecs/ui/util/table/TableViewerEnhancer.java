@@ -137,7 +137,7 @@ public final class TableViewerEnhancer {
                 tableColumnLayout.setColumnData(columns[index], new ColumnPixelData(width));
             }
         }
-        catch (NumberFormatException ex) {
+        catch (NumberFormatException exception) {
             // fall back to the default layout
         }
 
@@ -145,7 +145,7 @@ public final class TableViewerEnhancer {
         try {
             table.select(tableSettings.getInt(TAG_CURRENT_SELECTION));
         }
-        catch (NumberFormatException ex) {
+        catch (NumberFormatException exception) {
             // NOOP
         }
     }
@@ -187,7 +187,7 @@ public final class TableViewerEnhancer {
         try {
             value = tableSettings.getInt(setting);
         }
-        catch (NumberFormatException ex) {
+        catch (NumberFormatException exception) {
             value = def;
         }
         return value;

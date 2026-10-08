@@ -146,7 +146,7 @@ public final class MetadataFactory {
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException
             | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
-            | SecurityException ex) {
+            | SecurityException exception) {
             // Ok we tried... default to TreeWalker
             parent = XMLTags.TREEWALKER_MODULE;
         }
@@ -221,8 +221,8 @@ public final class MetadataFactory {
                                 new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
                         });
             }
-            catch (IOException ex) {
-                CheckstyleLog.log(ex, "Cannot read metadata YML");
+            catch (IOException exception) {
+                CheckstyleLog.log(exception, "Cannot read metadata YML");
             }
         }
         eclipseMetaDataFiles.forEach(
@@ -329,7 +329,7 @@ public final class MetadataFactory {
                     message = resourceBundle.getString(messageKey);
                     break;
                 }
-                catch (MissingResourceException ex) {
+                catch (MissingResourceException exception) {
                     // let's continue to check the other alternative names
                 }
             }
@@ -350,8 +350,8 @@ public final class MetadataFactory {
         try {
             doInitialization();
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleLog.log(ex);
+        catch (CheckstylePluginException exception) {
+            CheckstyleLog.log(exception);
         }
     }
 
@@ -379,8 +379,8 @@ public final class MetadataFactory {
                     parseMetadata(metadataStream, metadataBundle, groupId(metadataFile));
                 }
             }
-            catch (DocumentException | IOException ex) {
-                CheckstyleLog.log(ex, "Could not read metadata " + metadataFile);
+            catch (DocumentException | IOException exception) {
+                CheckstyleLog.log(exception, "Could not read metadata " + metadataFile);
             }
         }
 
@@ -431,8 +431,8 @@ public final class MetadataFactory {
         try {
             packages = PackageNamesLoader.getPackageNames(classLoader);
         }
-        catch (CheckstyleException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (CheckstyleException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
         packageNameSet.addAll(packages);
 
@@ -465,7 +465,7 @@ public final class MetadataFactory {
             resourceBundle =
                 ResourceBundle.getBundle(bundle, CheckstylePlugin.getPlatformLocale(), classLoader);
         }
-        catch (MissingResourceException ex) {
+        catch (MissingResourceException exception) {
             resourceBundle = null;
         }
         return resourceBundle;

@@ -120,8 +120,8 @@ public final class CheckstyleQuickfixes {
                 resolution = (ICheckstyleMarkerResolution) extension;
             }
         }
-        catch (CoreException ex) {
-            CheckstyleLog.log(ex,
+        catch (CoreException exception) {
+            CheckstyleLog.log(exception,
                 "cannot create quickfix for " + element.getAttribute(EXTENSION_CLASS_ATTRIBUTE));
         }
         return resolution;
