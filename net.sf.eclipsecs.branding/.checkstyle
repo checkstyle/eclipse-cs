@@ -10,6 +10,7 @@
     <property name="checkstyle.importcontrol.file" value="${config_loc}/import-control.xml"/>
     <property name="checkstyle.importcontroltest.file" value="${config_loc}/import-control-test.xml"/>
     <property name="checkstyle.header.file" value="${config_loc}/java.header"/>
+    <property name="checkstyle.java.version" value="21"/>
     <additional-data name="protect-config-file" value="false"/>
   </local-check-config>
   <fileset name="all" enabled="true" check-config-name="Eclipse CS configuration" local="true">
