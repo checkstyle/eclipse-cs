@@ -392,8 +392,9 @@ public final class MarkerStatsMainView extends Composite {
             tableColumnLayout.setColumnData(severityCol.getColumn(),
                 new ColumnPixelData(severityCol.getColumn().getWidth()));
             TableViewerEnhancer.setColumnComparator(severityCol.getColumn(),
-                Comparator.comparingInt(marker -> -((IMarker) marker).getAttribute(IMarker.SEVERITY,
-                    Integer.MAX_VALUE)));
+                Comparator.comparingInt(marker -> {
+                    return -((IMarker) marker).getAttribute(IMarker.SEVERITY, Integer.MAX_VALUE);
+                }));
 
             final TableViewerColumn fileCol = new TableViewerColumn(tableViewer, SWT.LEFT);
             fileCol.getColumn().setText(Messages.MarkerStatsView_fileColumn);
@@ -413,8 +414,9 @@ public final class MarkerStatsMainView extends Composite {
 
             final TableViewerColumn lineCol = new TableViewerColumn(tableViewer, SWT.RIGHT);
             lineCol.getColumn().setText(Messages.MarkerStatsView_lineColumn);
-            lineCol.setLabelProvider(ColumnLabelProvider.createTextProvider(element -> String
-                .valueOf(((IMarker) element).getAttribute(IMarker.LINE_NUMBER, 0))));
+            lineCol.setLabelProvider(ColumnLabelProvider.createTextProvider(element -> {
+                return String.valueOf(((IMarker) element).getAttribute(IMarker.LINE_NUMBER, 0));
+            }));
             lineCol.getColumn().pack();
             tableColumnLayout.setColumnData(lineCol.getColumn(),
                 new ColumnPixelData(lineCol.getColumn().getWidth()));

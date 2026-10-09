@@ -202,8 +202,10 @@ public final class ConfigurationWriter {
 
         // write properties of the module
         module.getProperties().stream().filter(property -> property.getValue() != null)
-            .filter(property -> !property.getValue().isEmpty()).filter(property -> !Objects
-                .equals(property.getValue(), property.getMetaData().getDefaultValue()))
+            .filter(property -> !property.getValue().isEmpty()).filter(property -> {
+                return !Objects.equals(property.getValue(),
+                    property.getMetaData().getDefaultValue());
+            })
             .forEach(property -> {
                 final Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
                 propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());

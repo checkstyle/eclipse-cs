@@ -123,11 +123,15 @@ public class FormatterTransformer {
             new ClassGraph().addClassLoader(loader).enableAnnotationInfo().scan()) {
             return scanResult.getClassesWithAnnotation(formatterKeyAnnotation).stream()
                 .collect(Collectors.toUnmodifiableMap(
-                    classInfo -> "org.eclipse.jdt.core.formatter."
-                        + classInfo.getAnnotationInfo(formatterKeyAnnotation).getParameterValues()
-                            .getValue("value"),
-                    classInfo -> (Class<? extends AbstractFTransformationClass>) classInfo
-                        .loadClass()));
+                    classInfo -> {
+                        return "org.eclipse.jdt.core.formatter."
+                            + classInfo.getAnnotationInfo(formatterKeyAnnotation)
+                                .getParameterValues().getValue("value");
+                    },
+                    classInfo -> {
+                        return (Class<? extends AbstractFTransformationClass>) classInfo
+                            .loadClass();
+                    }));
         }
     }
 

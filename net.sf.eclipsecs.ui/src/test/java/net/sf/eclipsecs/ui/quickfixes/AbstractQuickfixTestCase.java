@@ -50,8 +50,10 @@ public abstract class AbstractQuickfixTestCase {
     protected final void testQuickfix(final String testDataXml,
         final AbstractASTResolution quickfix) throws Exception {
         try (InputStream stream = getClass().getResourceAsStream(testDataXml)) {
-            assertThat(stream).withFailMessage(() -> "Cannot find resource " + testDataXml
-                + " in package " + getClass().getPackage().getName()).isNotNull();
+            assertThat(stream).withFailMessage(() -> {
+                return "Cannot find resource " + testDataXml
+                    + " in package " + getClass().getPackage().getName();
+            }).isNotNull();
             testQuickfix(stream, quickfix);
         }
     }

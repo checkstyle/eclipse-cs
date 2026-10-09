@@ -38,68 +38,105 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
 public enum CheckstyleUIPluginImages {
 
     /** Image descriptor for the plugin logo. */
-    PLUGIN_LOGO(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/eclipse-cs-little.png")),
+    PLUGIN_LOGO(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/eclipse-cs-little.png");
+    }),
     /** Image descriptor for the error marker. */
-    MARKER_ERROR(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/checkstyle_error.gif")),
+    MARKER_ERROR(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/checkstyle_error.gif");
+    }),
     /** Image descriptor for the warning marker. */
-    MARKER_WARNING(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/checkstyle_warning.gif")),
+    MARKER_WARNING(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/checkstyle_warning.gif");
+    }),
     /** Image descriptor for the info marker. */
-    MARKER_INFO(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/checkstyle_info.gif")),
+    MARKER_INFO(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/checkstyle_info.gif");
+    }),
     /** Image descriptor for the help icon. */
-    HELP_ICON(() -> PlatformUI.getWorkbench().getSharedImages()
-        .getImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP)),
+    HELP_ICON(() -> {
+        return PlatformUI.getWorkbench().getSharedImages()
+            .getImageDescriptor(ISharedImages.IMG_LCL_LINKTO_HELP);
+    }),
     /** Image descriptor for the add correction icon. */
-    CORRECTION_ADD(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/add_correction.png")),
+    CORRECTION_ADD(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/add_correction.png");
+    }),
     /** Image descriptor for the add braces correction icon. */
-    CORRECTION_ADD_BRACES(() -> AbstractUIPlugin
-        .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, "icons/correction_cast.png")),
+    CORRECTION_ADD_BRACES(() -> {
+        return AbstractUIPlugin
+            .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, "icons/correction_cast.png");
+    }),
     /** Image descriptor for the change correction icon. */
-    CORRECTION_CHANGE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/correction_change.png")),
+    CORRECTION_CHANGE(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/correction_change.png");
+    }),
     /** Image descriptor for the remove correction icon. */
-    CORRECTION_REMOVE(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/remove_correction.png")),
+    CORRECTION_REMOVE(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/remove_correction.png");
+    }),
     /** Image descriptor for the tick icon. */
-    TICK_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/tick.gif")),
+    TICK_ICON(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/tick.gif");
+    }),
 
     /** Image descriptor for the filter icon. */
-    FILTER_ICON(() -> ResourceLocator
-        .imageDescriptorFromBundle("org.eclipse.ui.ide",
-            "platform:/plugin/org.eclipse.ui.ide/icons/full/elcl16/filter_ps.png")
-        .orElse(MARKER_ERROR.getImageDescriptor())),
+    FILTER_ICON(() -> {
+        return ResourceLocator.imageDescriptorFromBundle("org.eclipse.ui.ide",
+                "platform:/plugin/org.eclipse.ui.ide/icons/full/elcl16/filter_ps.png")
+            .orElse(MARKER_ERROR.getImageDescriptor());
+    }),
     /** Image descriptor for the Checkstyle violation view icon. */
-    LIST_VIEW_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/listingView.gif")),
+    LIST_VIEW_ICON(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/listingView.gif");
+    }),
 
     /** Image descriptor for the checked overlay icon. */
-    CHECKED_OVERLAY(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/ovr/checked.png")),
+    CHECKED_OVERLAY(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/ovr/checked.png");
+    }),
     /** Image descriptor for the module group icon. */
-    MODULEGROUP_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/modulegroup.gif")),
+    MODULEGROUP_ICON(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/modulegroup.gif");
+    }),
     /** Image descriptor for the ticked module group icon. */
-    MODULEGROUP_TICKED_ICON(() -> new DecorationOverlayIcon(MODULEGROUP_ICON.getImageDescriptor(),
-        CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
+    MODULEGROUP_TICKED_ICON(() -> {
+        return new DecorationOverlayIcon(MODULEGROUP_ICON.getImageDescriptor(),
+            CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT);
+    }),
     /** Image descriptor for the module icon. */
-    MODULE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/module.gif")),
+    MODULE_ICON(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/module.gif");
+    }),
     /** Image descriptor for the ticked module icon. */
-    MODULE_TICKED_ICON(() -> new DecorationOverlayIcon(MODULE_ICON.getImageDescriptor(),
-        CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT)),
+    MODULE_TICKED_ICON(() -> {
+        return new DecorationOverlayIcon(MODULE_ICON.getImageDescriptor(),
+            CHECKED_OVERLAY.getImageDescriptor(), IDecoration.TOP_LEFT);
+    }),
     /** Image descriptor for the refresh icon. */
-    REFRESH_ICON(() -> ResourceLocator
-        .imageDescriptorFromBundle("org.eclipse.search",
-            "platform:/plugin/org.eclipse.search/icons/full/elcl16/refresh.png")
-        .orElse(MARKER_ERROR.getImageDescriptor())),
+    REFRESH_ICON(() -> {
+        return ResourceLocator
+            .imageDescriptorFromBundle("org.eclipse.search",
+                "platform:/plugin/org.eclipse.search/icons/full/elcl16/refresh.png")
+            .orElse(MARKER_ERROR.getImageDescriptor());
+    }),
     /** Image descriptor for the checkstyle project icon. */
-    CHECKSTYLE_ICON(() -> AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
-        "icons/checkstyle_command.png"));
+    CHECKSTYLE_ICON(() -> {
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+            "icons/checkstyle_command.png");
+    });
 
     /**
      * Lazy creation factory.

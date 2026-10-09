@@ -357,7 +357,7 @@
     </module>
     <module name="NeedBraces">
       <property name="id" value="needBracesForLambda"/>
-      <!-- <property name="tokens" value="LAMBDA"/> -->
+      <property name="tokens" value="LAMBDA"/>
       <property name="allowSingleLineStatement" value="true"/>
     </module>
     <module name="RightCurly">

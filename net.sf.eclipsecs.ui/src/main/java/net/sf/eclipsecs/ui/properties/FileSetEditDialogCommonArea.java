@@ -91,8 +91,10 @@ public final class FileSetEditDialogCommonArea extends Composite {
         mComboViewer.setLabelProvider(CheckConfigurationLabelProvider.INSTANCE);
         mComboViewer.setComparator(CheckConfigurationViewerSorter.INSTANCE);
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(mComboViewer.getControl());
-        mComboViewer.addSelectionChangedListener(event -> selectionChanged
-            .accept((ICheckConfiguration) event.getStructuredSelection().getFirstElement()));
+        mComboViewer.addSelectionChangedListener(event -> {
+            selectionChanged
+                .accept((ICheckConfiguration) event.getStructuredSelection().getFirstElement());
+        });
 
         final Button mConfigureButton = new Button(comboComposite, SWT.PUSH);
         mConfigureButton.setText(Messages.FileSetEditDialog_btnConfigure);

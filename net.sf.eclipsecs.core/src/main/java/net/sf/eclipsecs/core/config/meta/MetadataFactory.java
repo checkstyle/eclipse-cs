@@ -490,10 +490,12 @@ public final class MetadataFactory {
         final Collection<RuleGroupMetadata> groups = MetadataXmlReader.parseMetadata(metadataStream,
             metadataBundle, groupId);
         groups.forEach(
-            group -> ruleGroupMetadata.merge(group.getGroupName(), group, (groupA, groupB) -> {
-                groupA.getRuleMetadata().addAll(groupB.getRuleMetadata());
-                return groupA;
-            }));
+            group -> {
+                ruleGroupMetadata.merge(group.getGroupName(), group, (groupA, groupB) -> {
+                    groupA.getRuleMetadata().addAll(groupB.getRuleMetadata());
+                    return groupA;
+                });
+            });
         for (RuleGroupMetadata group : groups) {
             for (RuleMetadata module : group.getRuleMetadata()) {
                 ruleMetadataByName.put(module.identity().internalName(), module);
