@@ -28,10 +28,6 @@ import org.eclipse.osgi.util.NLS;
  */
 public final class Messages extends NLS {
 
-    public static String PreferencePage_displayJavadocErrors;
-
-    public static String PreferencePage_displayAllCategories;
-
     public static String MarkerStatsView_fileColumn;
 
     public static String MarkerStatsView_lineColumn;
@@ -44,23 +40,9 @@ public final class Messages extends NLS {
 
     public static String MarkerStatsView_displayErrorTooltip;
 
-    public static String StatsViewUtils_checkstyleErrorsCount;
-
-    public static String StatsViewUtils_classElement;
-
-    public static String StatsViewUtils_packageElement;
-
-    public static String StatsViewUtils_fragmentRootElement;
-
-    public static String StatsViewUtils_projectElement;
-
     public static String MarkerStatsView_kindOfErrorColumn;
 
     public static String MarkerStatsView_numberOfErrorsColumn;
-
-    public static String MarkerStatsView_chooseFileToExport;
-
-    public static String MarkerStatsView_reportGenerationFailed;
 
     public static String MarkerStatsView_showDetails;
 

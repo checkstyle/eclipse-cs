@@ -84,8 +84,6 @@ public final class Messages extends NLS {
 
     public static String SimplifyBooleanReturnQuickfix_label;
 
-    public static String MissingSwitchDefaultQuickfix_defaultCaseComment;
-
     public static String MissingSwitchDefaultQuickfix_description;
 
     public static String MissingSwitchDefaultQuickfix_label;

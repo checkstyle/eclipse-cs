@@ -46,8 +46,6 @@ public final class Messages extends NLS {
 
     public static String CheckConfigurationConfigureDialog_colSeverity;
 
-    public static String CheckConfigurationConfigureDialog_defaultFilterText;
-
     public static String CheckConfigurationConfigureDialog_lblConfiguredModules;
 
     public static String CheckConfigurationConfigureDialog_lblDescription;
@@ -123,10 +121,6 @@ public final class Messages extends NLS {
     public static String CheckConfigurationPropertiesDialog_CopyOfAddition;
 
     public static String CheckstylePreferencePage_lblDescription;
-
-    public static String CheckstylePreferencePage_lblDisableClassloader;
-
-    public static String CheckstylePreferencePage_lblDisableClassloaderNote;
 
     public static String CheckstylePreferencePage_lblGeneralSettings;
 
@@ -226,20 +220,6 @@ public final class Messages extends NLS {
 
     public static String DeactivateProjectsPrintAction_msgDeactivateSelectedProjects;
 
-    public static String DuplicatedCodeView_openSourceAction;
-
-    public static String DuplicatedCodeView_openSourceActionTooltip;
-
-    public static String DuplicatedCodeView_openTargetAction;
-
-    public static String DuplicatedCodeView_openTargetActionTooltip;
-
-    public static String DuplicatedCodeView_refreshAction;
-
-    public static String DuplicatedCodeView_refreshActionTooltip;
-
-    public static String DuplicatedCodeView_runningCheckstyleToRefresh;
-
     public static String errorFailedRebuild;
 
     public static String errorFailedSavePreferences;
@@ -337,8 +317,6 @@ public final class Messages extends NLS {
     public static String RuleConfigurationEditDialog_btnTranslateTokens;
 
     public static String RuleConfigurationEditDialog_lblComment;
-
-    public static String RuleConfigurationEditDialog_lblCustomMessage;
 
     public static String RuleConfigurationEditDialog_lblId;
 
@@ -454,8 +432,6 @@ public final class Messages extends NLS {
 
     public static String errorOpeningPropertiesPage;
 
-    public static String errorChangingFilesetEditor;
-
     public static String errorCannotResolveCheckLocation;
 
     public static String msgErrorFailedExportConfig;
@@ -464,19 +440,11 @@ public final class Messages extends NLS {
 
     public static String CheckstyleLog_titleWarning;
 
-    public static String errorWhileBuildingProject;
-
-    public static String errorWhileOpeningEditor;
-
-    public static String errorWhileDisplayingDuplicates;
-
     public static String CheckstylePreferenceTransfer_name;
 
     public static String MarkerPropertyPage_Issue;
 
     public static String MarkerPropertyPage_Module;
-
-    public static String MarkerPropertyPage_SuppressionHint;
 
     public static String MarkerPropertyPage_Group;
 
