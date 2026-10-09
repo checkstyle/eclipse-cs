@@ -68,8 +68,6 @@ public final class Messages extends NLS {
 
     public static String errorWritingConfigFile;
 
-    public static String msgErrorLoadingCheckstyleDTD;
-
     public static String errorLocationEmpty;
 
     public static String errorResolveConfigLocation;
@@ -77,8 +75,6 @@ public final class Messages extends NLS {
     public static String errorConfigNameEmpty;
 
     public static String errorConfigNameInUse;
-
-    public static String errorUnknownClasspathEntry;
 
     public static String errorNoCheckConfig;
 
