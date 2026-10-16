@@ -108,8 +108,8 @@ public final class MetadataXmlReader {
                 try {
                     priority = Integer.parseInt(groupEl.attributeValue(XMLTags.PRIORITY_TAG));
                 }
-                catch (NumberFormatException ex) {
-                    CheckstyleLog.log(ex);
+                catch (NumberFormatException exception) {
+                    CheckstyleLog.log(exception);
                     priority = Integer.MAX_VALUE;
                 }
 
@@ -228,7 +228,7 @@ public final class MetadataXmlReader {
             try {
                 localized = metadataBundle.getString(localizationCandidate.substring(1));
             }
-            catch (MissingResourceException ex) {
+            catch (MissingResourceException exception) {
                 // no-op
             }
         }
@@ -305,8 +305,8 @@ public final class MetadataXmlReader {
                             }
                         }
                     }
-                    catch (ReflectiveOperationException ex) {
-                        CheckstylePluginException.rethrow(ex);
+                    catch (ReflectiveOperationException exception) {
+                        CheckstylePluginException.rethrow(exception);
                     }
 
                 }

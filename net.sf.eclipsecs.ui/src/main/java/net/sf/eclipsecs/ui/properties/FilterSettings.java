@@ -174,8 +174,8 @@ public class FilterSettings extends Composite {
                         }
                     }
                 }
-                catch (CheckstylePluginException ex) {
-                    CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+                catch (CheckstylePluginException exception) {
+                    CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
                 }
             }
         }

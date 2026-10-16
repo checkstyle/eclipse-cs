@@ -65,8 +65,8 @@ public final class CheckstyleFileWriter {
         try (FileOutputStream fw = new FileOutputStream(file)) {
             writeXMLFile(fw);
         }
-        catch (final IOException ex) {
-            CheckstyleLog.log(ex);
+        catch (final IOException exception) {
+            CheckstyleLog.log(exception);
         }
     }
 

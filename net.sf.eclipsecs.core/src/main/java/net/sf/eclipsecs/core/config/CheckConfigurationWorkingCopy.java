@@ -198,10 +198,11 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
                 // test if configuration file exists
                 getCheckstyleConfiguration();
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 editedLocation = oldLocation;
-                CheckstylePluginException.rethrow(ex, NLS.bind(Messages.errorResolveConfigLocation,
-                    location, ex.getLocalizedMessage()));
+                CheckstylePluginException.rethrow(exception,
+                    NLS.bind(Messages.errorResolveConfigLocation,
+                        location, exception.getLocalizedMessage()));
             }
         }
     }
@@ -299,7 +300,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
                 try {
                     file.refreshLocal(IResource.DEPTH_ZERO, new NullProgressMonitor());
                 }
-                catch (CoreException ex) {
+                catch (CoreException exception) {
                     // NOOP - just ignore
                 }
             }
@@ -309,8 +310,8 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
             // throw away the cached Checkstyle configurations
             CheckConfigurationFactory.refresh();
         }
-        catch (IOException | URISyntaxException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (IOException | URISyntaxException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
     }
 

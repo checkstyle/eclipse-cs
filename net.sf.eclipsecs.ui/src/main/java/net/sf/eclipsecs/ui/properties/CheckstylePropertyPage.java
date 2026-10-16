@@ -101,8 +101,8 @@ public class CheckstylePropertyPage extends PropertyPage {
 
             checkstyleInitiallyActivated = project.hasNature(CheckstyleNature.NATURE_ID);
         }
-        catch (CoreException | CheckstylePluginException ex) {
-            handleConfigFileError(ex, project);
+        catch (CoreException | CheckstylePluginException exception) {
+            handleConfigFileError(exception, project);
         }
     }
 
@@ -174,7 +174,7 @@ public class CheckstylePropertyPage extends PropertyPage {
                     try {
                         checkConfig.getCheckstyleConfiguration();
                     }
-                    catch (CheckstylePluginException ex) {
+                    catch (CheckstylePluginException exception) {
                         setErrorMessage(NLS.bind(Messages.errorCannotResolveCheckLocation,
                             checkConfig.getLocation(), checkConfig.getName()));
                         isValid = false;

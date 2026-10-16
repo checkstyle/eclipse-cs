@@ -142,12 +142,12 @@ public final class Auditor {
             checker.process(filesToAudit);
 
         }
-        catch (CheckstyleException ex) {
-            if (ex.getCause() instanceof OperationCanceledException) {
+        catch (CheckstyleException exception) {
+            if (exception.getCause() instanceof OperationCanceledException) {
                 // user requested cancellation, keep silent
             }
             else {
-                handleCheckstyleFailure(project, ex);
+                handleCheckstyleFailure(project, exception);
             }
         }
         finally {
@@ -385,8 +385,8 @@ public final class Auditor {
                     }
                 }
             }
-            catch (CoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (CoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }
 
@@ -460,7 +460,7 @@ public final class Auditor {
                     markerAttributes.put(IMarker.CHAR_END,
                         Integer.valueOf(lineOffset + lineLength));
                 }
-                catch (BadLocationException ex) {
+                catch (BadLocationException exception) {
                     // seems to happen quite often so its no use to log since we
                     // can't do anything about it
                     // CheckstyleLog.log(e);
@@ -480,8 +480,8 @@ public final class Auditor {
                     connectedFileBufferPaths.add(path);
                     document = fileBufferManager.getTextFileBuffer(path).getDocument();
                 }
-                catch (CoreException ex) {
-                    CheckstyleLog.log(ex);
+                catch (CoreException exception) {
+                    CheckstyleLog.log(exception);
                 }
             }
         }
@@ -511,8 +511,8 @@ public final class Auditor {
                     connectedFileBufferPaths.remove(path);
                 }
             }
-            catch (CoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (CoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }
 

@@ -85,7 +85,7 @@ public class ExtensionClassLoader extends ClassLoader {
                     break;
                 }
             }
-            catch (ClassNotFoundException ex) {
+            catch (ClassNotFoundException exception) {
                 // try next
             }
         }

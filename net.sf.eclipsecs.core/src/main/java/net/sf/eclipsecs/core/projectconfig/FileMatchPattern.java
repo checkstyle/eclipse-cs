@@ -92,9 +92,9 @@ public class FileMatchPattern {
             regexPattern = Pattern.compile(pattern);
             patternString = pattern;
         }
-        catch (PatternSyntaxException ex) {
+        catch (PatternSyntaxException exception) {
             // wrap the exception
-            CheckstylePluginException.rethrow(ex);
+            CheckstylePluginException.rethrow(exception);
         }
     }
 

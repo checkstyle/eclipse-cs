@@ -141,8 +141,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS,
                     ((Button) event.widget).getSelection());
             }
-            catch (BackingStoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (BackingStoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }));
 
@@ -161,8 +161,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
                 CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS,
                     ((Button) event.widget).getSelection());
             }
-            catch (BackingStoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (BackingStoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }));
 
@@ -237,8 +237,8 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         try {
             severity = generalSettings.getSeverity();
         }
-        catch (IllegalArgumentException ex) {
-            CheckstyleLog.log(ex);
+        catch (IllegalArgumentException exception) {
+            CheckstyleLog.log(exception);
         }
 
         // Get the comment.

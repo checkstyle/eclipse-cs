@@ -115,8 +115,8 @@ public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWid
             //
             Integer.parseInt(textWidget.getText());
         }
-        catch (NumberFormatException ex) {
-            CheckstylePluginException.rethrow(ex, ex.getLocalizedMessage());
+        catch (NumberFormatException exception) {
+            CheckstylePluginException.rethrow(exception, exception.getLocalizedMessage());
         }
     }
 

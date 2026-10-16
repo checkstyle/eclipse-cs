@@ -112,8 +112,8 @@ public class NonSrcDirsFilter extends AbstractFilter {
                 }
             }
         }
-        catch (CoreException ex) {
-            CheckstyleLog.log(ex);
+        catch (CoreException exception) {
+            CheckstyleLog.log(exception);
         }
 
         return sourceDirs;

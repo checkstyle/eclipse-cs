@@ -83,8 +83,8 @@ public class MarkerPropertyPage extends PropertyPage {
             createIdText(composite);
             createDescriptionText(composite, ruleIdentity);
         }
-        catch (CoreException ex) {
-            CheckstyleLog.log(ex);
+        catch (CoreException exception) {
+            CheckstyleLog.log(exception);
         }
         return composite;
     }

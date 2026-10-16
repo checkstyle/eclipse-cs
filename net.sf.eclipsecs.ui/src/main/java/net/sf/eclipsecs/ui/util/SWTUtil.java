@@ -187,7 +187,7 @@ public final class SWTUtil {
                     Integer.parseInt(e.text);
                     doit = true;
                 }
-                catch (NumberFormatException ex) {
+                catch (NumberFormatException exception) {
                     doit = false;
                 }
             }
@@ -313,7 +313,7 @@ public final class SWTUtil {
                     initialSize = (Point) getInitialSizeMethod.invoke(dialog, (Object) null);
                 }
                 catch (NoSuchMethodException | IllegalAccessException
-                    | InvocationTargetException ex) {
+                    | InvocationTargetException exception) {
                     initialSize = new Point(0, 0);
                 }
                 final Shell shell = (Shell) event.getSource();
@@ -332,7 +332,7 @@ public final class SWTUtil {
                         newBounds = new Rectangle(bounds.getInt(X), bounds.getInt(Y),
                             bounds.getInt(WIDTH), bounds.getInt(HEIGHT));
                     }
-                    catch (NumberFormatException ex) {
+                    catch (NumberFormatException exception) {
                         newBounds = shell.getBounds();
                     }
 

@@ -101,8 +101,8 @@ public final class ConfigurationTypes {
 
                 CONFIGURATION_TYPES.put(internalName, configType);
             }
-            catch (CoreException ex) {
-                CheckstyleLog.log(ex);
+            catch (CoreException exception) {
+                CheckstyleLog.log(exception);
             }
         }
     }

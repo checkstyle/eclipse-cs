@@ -96,8 +96,9 @@ public final class CheckUtil {
             return (AbstractCheck) new PackageObjectFactory(packageNames, classLoader)
                 .createModule(checkName);
         }
-        catch (CheckstyleException ex) {
-            throw new IllegalStateException("exception occured during load of " + checkName, ex);
+        catch (CheckstyleException exception) {
+            throw new IllegalStateException("exception occured during load of "
+                + checkName, exception);
         }
     }
 

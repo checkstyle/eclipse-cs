@@ -74,8 +74,8 @@ public class ExternalFileConfigurationType extends AbstractConfigurationType {
                 newLocation = PropertyUtil.replaceProperties(newLocation, DYNAMIC_LOC_RESOLVER);
             }
         }
-        catch (CheckstyleException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (CheckstyleException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
         return newLocation;
     }
@@ -89,9 +89,9 @@ public class ExternalFileConfigurationType extends AbstractConfigurationType {
         try {
             location = resolveDynamicLocation(location);
         }
-        catch (CheckstylePluginException ex) {
-            CheckstyleLog.log(ex);
-            throw new IOException(ex);
+        catch (CheckstylePluginException exception) {
+            CheckstyleLog.log(exception);
+            throw new IOException(exception);
         }
 
         return new File(location).toURI().toURL();
@@ -116,8 +116,8 @@ public class ExternalFileConfigurationType extends AbstractConfigurationType {
                 // support dynamic locations for external configurations
                 location = resolveDynamicLocation(location);
             }
-            catch (CheckstylePluginException ex) {
-                CheckstyleLog.log(ex);
+            catch (CheckstylePluginException exception) {
+                CheckstyleLog.log(exception);
                 isConfigurable = false;
             }
 

@@ -86,8 +86,8 @@ public final class CheckConfigurationTester {
             input = configFile.getCheckConfigFileInputSource();
             ConfigurationLoader.loadConfiguration(input, resolver, IgnoredModulesOptions.EXECUTE);
         }
-        catch (CheckstyleException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (CheckstyleException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
         finally {
             Closeables.closeQuietly(input.getByteStream());

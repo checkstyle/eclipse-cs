@@ -124,8 +124,8 @@ public final class ConfigurationWriter {
 
             out.write(XMLUtil.toByteArray(doc));
         }
-        catch (IOException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (IOException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
     }
 

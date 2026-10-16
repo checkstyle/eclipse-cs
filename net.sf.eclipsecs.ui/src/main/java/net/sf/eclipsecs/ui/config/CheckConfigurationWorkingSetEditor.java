@@ -160,11 +160,11 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                 dialog.setBlockOnOpen(true);
                 dialog.open();
             }
-            catch (CheckstylePluginException ex) {
+            catch (CheckstylePluginException exception) {
                 CheckstyleUIPlugin.warningDialog(getShell(),
                     NLS.bind(Messages.errorCannotResolveCheckLocation, config.getLocation(),
                         config.getName()),
-                    ex);
+                    exception);
             }
         }
     }
@@ -195,8 +195,8 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                     editorView.setConfigs(workingSet.getWorkingCopies());
                 }
             }
-            catch (CheckstylePluginException ex) {
-                CheckstyleUIPlugin.errorDialog(getShell(), ex, true);
+            catch (CheckstylePluginException exception) {
+                CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
             }
         }
     }
@@ -260,9 +260,9 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                 try {
                     config.exportConfiguration(file);
                 }
-                catch (CheckstylePluginException ex) {
+                catch (CheckstylePluginException exception) {
                     CheckstyleUIPlugin.errorDialog(getShell(), Messages.msgErrorFailedExportConfig,
-                        ex, true);
+                        exception, true);
                 }
             }
         }

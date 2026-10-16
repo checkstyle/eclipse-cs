@@ -44,8 +44,8 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration 
         try (InputStream in = getCheckstyleConfiguration().getCheckConfigFileStream()) {
             Files.copy(in, file.toPath(), StandardCopyOption.REPLACE_EXISTING);
         }
-        catch (IOException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (IOException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
     }
 
@@ -62,8 +62,8 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration 
                 exportConfiguration(targetFile);
             }
         }
-        catch (URISyntaxException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (URISyntaxException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
     }
 

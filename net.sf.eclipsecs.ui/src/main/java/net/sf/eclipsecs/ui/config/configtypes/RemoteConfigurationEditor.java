@@ -200,8 +200,8 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
                     password.setText(new String(auth.getPassword()));
                 }
             }
-            catch (CheckstylePluginException ex) {
-                CheckstyleUIPlugin.errorDialog(shell, ex, true);
+            catch (CheckstylePluginException exception) {
+                CheckstyleUIPlugin.errorDialog(shell, exception, true);
             }
         }
     }
@@ -235,8 +235,8 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
                     .removeCachedAuthInfo(URI.create(location.getText()).toURL());
             }
         }
-        catch (MalformedURLException ex) {
-            CheckstylePluginException.rethrow(ex);
+        catch (MalformedURLException exception) {
+            CheckstylePluginException.rethrow(exception);
         }
 
         workingCopy.setName(configName.getText());
