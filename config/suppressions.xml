@@ -45,6 +45,7 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ResourceBundlePropertyResolver.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]StandardPropertyResolver.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]SystemPropertyResolver.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]AllTokensProvider.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]ConfigPropertyMetadata.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]ConfigPropertyType.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]IOptionProvider.java" />
