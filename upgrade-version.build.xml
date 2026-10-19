@@ -18,14 +18,16 @@ Apply all necessary manual code changes now.
 	<description>upgrade all version numbers</description>
 
 	<target name="upgrade-version" description="upgrade version numbers and dependent files">
-		<property name="fromVersion" value="13.8.0"/>
-		<property name="toVersion" value="13.9.0"/>
+		<property name="fromVersion" value="13.9.0"/>
+		<property name="toVersion" value="13.10.0"/>
 
 		<!-- delete all outdated files, independent of their current version -->
 		<delete>
 			<fileset dir="${basedir}" includes="**/checkstyle-*-all.jar"/>
 			<fileset dir="${basedir}" includes="**/checkstyle-checkstyle-*.zip"/>
 		</delete>
+
+		<replace file="pom.xml" token="plugin-checkstyle-version>${fromVersion}" value="plugin-checkstyle-version>${toVersion}" />
 
 		<!-- replace version number in checkstyle library -->
 		<replace dir="${basedir}/net.sf.eclipsecs.checkstyle" token="${fromVersion}" value="${toVersion}">
