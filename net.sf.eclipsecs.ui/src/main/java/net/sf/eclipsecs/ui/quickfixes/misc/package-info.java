@@ -1,4 +1,4 @@
-//============================================================================
+///////////////////////////////////////////////////////////////////////////////////////////////
 //
 // Copyright (C) 2003-2023 the original author or authors.
 //
@@ -16,7 +16,7 @@
 // License along with this library; if not, write to the Free Software
 // Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
 //
-//============================================================================
+///////////////////////////////////////////////////////////////////////////////////////////////
 
 /**
  * Miscellaneous quickfixes for the Checkstyle Eclipse UI.

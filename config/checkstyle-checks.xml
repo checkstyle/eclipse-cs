@@ -511,7 +511,7 @@
       <message key="matchxpath.match"
                value="Avoid using deprecated method 'DetailAst.branchContains()'."/>
     </module>
-    <!-- <module name="MatchXpath">
+    <module name="MatchXpath">
       <property name="id" value="singleLineCommentStartWithSpace"/>
       <property name="query"
                 value="//SINGLE_LINE_COMMENT[./COMMENT_CONTENT[not(starts-with(@text, ' '))
@@ -519,7 +519,7 @@
                        and not(@text = '\r') and not(ends-with(@text, '//\r'))
                        and not(@text = '\r\n') and not(ends-with(@text, '//\r\n'))]]"/>
       <message key="matchxpath.match" value="Single line comment text should start with space."/>
-    </module> -->
+    </module>
     <module name="MatchXpath">
       <property name="id" value="blockCommentStartWithSpace"/>
       <property name="query"
