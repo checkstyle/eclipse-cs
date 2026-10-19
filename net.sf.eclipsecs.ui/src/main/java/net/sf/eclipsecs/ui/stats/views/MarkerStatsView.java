@@ -44,9 +44,6 @@ import net.sf.eclipsecs.ui.stats.views.internal.FiltersAction;
 
 /**
  * View that displays statistics about checkstyle markers.
- *
- * @author Fabrice BELLINGARD
- * @author Lars Ködderitzsch
  */
 public class MarkerStatsView extends AbstractStatsView {
 

@@ -131,8 +131,6 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
 
     /**
      * Content provider for the master table viewer.
-     *
-     * @author Lars Ködderitzsch
      */
     public static final class MasterContentProvider implements IStructuredContentProvider {
         /** The current marker stats. */
@@ -167,8 +165,6 @@ public record MarkerStatsViewDataProviders(MarkerStatsViewMasterDataProviders ma
 
     /**
      * Content provider for the detail table viewer.
-     *
-     * @author Lars Ködderitzsch
      */
     public static final class DetailContentProvider implements IStructuredContentProvider {
 

@@ -732,6 +732,9 @@
 
     <!-- Javadoc Comments -->
     <module name="AtclauseOrder"/>
+    <module name="IllegalBlockTag">
+      <property name="tag" value="@author"/>
+    </module>
     <module name="InvalidJavadocPosition"/>
     <module name="JavadocBlockTagLocation">
       <!-- default tags -->
@@ -749,6 +752,7 @@
     <module name="JavadocLeadingAsteriskAlign"/>
     <module name="JavadocMissingWhitespaceAfterAsterisk"/>
     <module name="JavadocParagraph"/>
+    <module name="JavadocRegexp"/>
     <module name="JavadocTagContinuationIndentation"/>
     <module name="JavadocType">
       <!-- avoid errors on tag '@noinspection' -->
@@ -764,7 +768,6 @@
     </module>
     <module name="NonEmptyAtclauseDescription"/>
     <module name="SingleLineJavadoc"/>
-    <module name="WriteTag"/>
     <module name="SummaryJavadoc"/>
     <module name="RequireEmptyLineBeforeBlockTagGroup"/>
 
@@ -892,6 +895,9 @@
       <property name="format" value="^(?:id|[a-z][a-z0-9][a-zA-Z0-9]+)$"/>
     </module>
     <module name="MethodName"/>
+    <module name="GoogleMethodName">
+      <property name="severity" value="ignore"/>
+    </module>
     <module name="MethodTypeParameterName"/>
     <module name="PackageName"/>
     <module name="ParameterName">
@@ -939,6 +945,7 @@
     <module name="RecordComponentNumber"/>
 
     <!-- Whitespace -->
+    <module name="ArrayBracketNoWhitespace"/>
     <module name="EmptyForInitializerPad"/>
     <module name="EmptyForIteratorPad"/>
     <module name="EmptyLineSeparator">
@@ -1041,6 +1048,12 @@
     </module>
     <module name="WhitespaceAround"/>
     <module name="WhitespaceBeforeEmptyBody"/>
+    <module name="WriteTag">
+      <property name="tag" value="@author"/>
+      <property name="severity" value="ignore"/>
+      <property name="tagSeverity" value="error"/>
+      <message key="javadoc.writeTag" value="No {0} tags should be used."/>
+    </module>
 
   </module>
 
