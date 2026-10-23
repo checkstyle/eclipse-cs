@@ -54,7 +54,7 @@ import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
 /**
  * Configuration widget for selecting multiple values with check boxes.
  */
-public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigPropertyWidget
+public final class ConfigPropertyMultiCheckWidget extends AbstractConfigPropertyWidget
     implements IPreferenceChangeListener {
 
     /** Height of the widget's table in pixels. */
@@ -84,7 +84,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
      * @param prop
      *            the property
      */
-    private ConfigPropertyWidgetMultiCheck(Composite parent, ConfigProperty prop) {
+    private ConfigPropertyMultiCheckWidget(Composite parent, ConfigProperty prop) {
         super(parent, prop);
         tokens = new ArrayList<>(prop.getMetaData().getPropertyEnumeration());
     }
@@ -98,8 +98,8 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
      *            the property
      * @return the created widget
      */
-    public static ConfigPropertyWidgetMultiCheck create(Composite parent, ConfigProperty prop) {
-        return new ConfigPropertyWidgetMultiCheck(parent, prop);
+    public static ConfigPropertyMultiCheckWidget create(Composite parent, ConfigProperty prop) {
+        return new ConfigPropertyMultiCheckWidget(parent, prop);
     }
 
     @Override
@@ -136,7 +136,7 @@ public final class ConfigPropertyWidgetMultiCheck extends AbstractConfigProperty
                 public void widgetDisposed(DisposeEvent e) {
                     final IEclipsePreferences prefStore =
                         InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
-                    prefStore.removePreferenceChangeListener(ConfigPropertyWidgetMultiCheck.this);
+                    prefStore.removePreferenceChangeListener(ConfigPropertyMultiCheckWidget.this);
                 }
             });
         }

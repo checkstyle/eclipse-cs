@@ -40,7 +40,7 @@ public final class ConfigPropertyWidgetFactory {
             ConfigPropertyType.INTEGER, ConfigPropertyWidgetInteger::create,
             ConfigPropertyType.SINGLE_SELECT, ConfigPropertyWidgetSingleSelect::create,
             ConfigPropertyType.BOOLEAN, ConfigPropertyWidgetBoolean::create,
-            ConfigPropertyType.MULTI_CHECK, ConfigPropertyWidgetMultiCheck::create,
+            ConfigPropertyType.MULTI_CHECK, ConfigPropertyMultiCheckWidget::create,
             ConfigPropertyType.HIDDEN, ConfigPropertyWidgetHidden::create, ConfigPropertyType.FILE,
             ConfigPropertyWidgetFile::create, ConfigPropertyType.REGEX,
             ConfigPropertyWidgetRegex::create);

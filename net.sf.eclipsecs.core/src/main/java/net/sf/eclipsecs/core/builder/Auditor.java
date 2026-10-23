@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.codehaus.plexus.util.StringUtils;
 import org.eclipse.core.filebuffers.FileBuffers;
 import org.eclipse.core.filebuffers.ITextFileBufferManager;
 import org.eclipse.core.resources.IFile;
@@ -355,7 +354,7 @@ public final class Auditor {
                         markerAttributes.put(CheckstyleMarker.MESSAGE_KEY,
                             error.getViolation().getKey());
                         final String moduleId = error.getModuleId();
-                        if (StringUtils.isNotBlank(moduleId)) {
+                        if (moduleId != null) {
                             markerAttributes.put(CheckstyleMarker.MODULE_ID, moduleId);
                         }
                         markerAttributes.put(IMarker.PRIORITY,
