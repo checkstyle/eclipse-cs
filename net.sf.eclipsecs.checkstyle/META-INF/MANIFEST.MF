@@ -35,10 +35,8 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.filefilters,
  com.puppycrawl.tools.checkstyle.filters,
  com.puppycrawl.tools.checkstyle.meta,
- com.puppycrawl.tools.checkstyle.utils,
- org.apache.commons.lang3,
- org.codehaus.plexus.util
+ com.puppycrawl.tools.checkstyle.utils
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ClassPath: .,
- checkstyle-13.10.0-all.jar
+ checkstyle-13.11.0-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle

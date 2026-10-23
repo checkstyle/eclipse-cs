@@ -157,7 +157,7 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetFile.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetHidden.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetInteger.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetMultiCheck.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyMultiCheckWidget.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetRegex.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetSingleSelect.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetString.java" />
