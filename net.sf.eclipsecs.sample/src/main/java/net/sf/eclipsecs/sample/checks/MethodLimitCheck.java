@@ -28,6 +28,7 @@ import com.puppycrawl.tools.checkstyle.api.TokenTypes;
  * Sample Checkstyle check that reports class and interface declarations containing more than the
  * configured maximum number of methods.
  *
+ * @since 5.0.0
  */
 public final class MethodLimitCheck extends AbstractCheck {
 
