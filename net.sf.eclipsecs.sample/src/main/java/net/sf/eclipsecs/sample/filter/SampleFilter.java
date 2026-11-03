@@ -21,7 +21,7 @@
 package net.sf.eclipsecs.sample.filter;
 
 import net.sf.eclipsecs.core.projectconfig.filters.AbstractFilter;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
 
 /**
  * Sample file filter that rejects all files.
@@ -47,7 +47,7 @@ public class SampleFilter extends AbstractFilter {
     }
 
     @Override
-    public IFilter copy() {
+    public AuditFilter copy() {
         return new SampleFilter(this);
     }
 

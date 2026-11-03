@@ -25,13 +25,13 @@ import java.util.Comparator;
 import java.util.List;
 
 import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.config.XmlTags;
 
 /**
  * Save filter that sorts modules in a certain order.
  *
  */
-public class SortingSaveFilter implements ISaveFilter {
+public class SortingSaveFilter implements SaveFilter {
 
     /**
      * Creates a new instance.
@@ -64,12 +64,12 @@ public class SortingSaveFilter implements ISaveFilter {
             final String internalName1 = o1.getMetaData().identity().internalName();
             final String internalName2 = o2.getMetaData().identity().internalName();
             final int comp;
-            if (XMLTags.CHECKER_MODULE.equals(internalName1)
-                || XMLTags.TREEWALKER_MODULE.equals(internalName1)) {
+            if (XmlTags.CHECKER_MODULE.equals(internalName1)
+                || XmlTags.TREEWALKER_MODULE.equals(internalName1)) {
                 comp = -1;
             }
-            else if (XMLTags.CHECKER_MODULE.equals(internalName2)
-                || XMLTags.TREEWALKER_MODULE.equals(internalName2)) {
+            else if (XmlTags.CHECKER_MODULE.equals(internalName2)
+                || XmlTags.TREEWALKER_MODULE.equals(internalName2)) {
                 comp = 1;
             }
             else {

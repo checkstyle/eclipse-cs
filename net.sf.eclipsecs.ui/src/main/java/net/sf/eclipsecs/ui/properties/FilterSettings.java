@@ -41,11 +41,11 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.properties.filter.IFilterEditor;
+import net.sf.eclipsecs.ui.properties.filter.FilterEditor;
 import net.sf.eclipsecs.ui.properties.filter.PluginFilterEditors;
 
 /**
@@ -72,7 +72,7 @@ public class FilterSettings extends Composite {
      * @param markDirty
      *            callback to mark the property page as dirty
      */
-    public FilterSettings(Composite parent, int style, IProject project, List<IFilter> filters,
+    public FilterSettings(Composite parent, int style, IProject project, List<AuditFilter> filters,
         Runnable markDirty) {
         super(parent, style);
         setLayout(new FillLayout());
@@ -99,7 +99,7 @@ public class FilterSettings extends Composite {
             .hint(SWT.DEFAULT, FILTER_LIST_HEIGHT).applyTo(txtFilterDescription);
 
         filterList.addSelectionChangedListener(event -> {
-            if (event.getStructuredSelection().getFirstElement() instanceof IFilter filterDef) {
+            if (event.getStructuredSelection().getFirstElement() instanceof AuditFilter filterDef) {
                 txtFilterDescription.setText(filterDef.getDescription());
                 // activate edit button
                 btnEditFilter.setEnabled(PluginFilterEditors.hasEditor(filterDef));
@@ -135,7 +135,7 @@ public class FilterSettings extends Composite {
         filterList.addDoubleClickListener(
             event -> openFilterEditor(event.getSelection(), filterList, project));
         filterList.addCheckStateListener(event -> {
-            if (event.getElement() instanceof IFilter filter) {
+            if (event.getElement() instanceof AuditFilter filter) {
                 if (filter.isReadonly()) {
                     event.getCheckable().setChecked(event.getElement(), true);
                 }
@@ -160,10 +160,10 @@ public class FilterSettings extends Composite {
     private void openFilterEditor(ISelection selection, CheckboxTableViewer filterList,
         IProject project) {
         if (selection instanceof IStructuredSelection structuredSelection) {
-            if (structuredSelection.getFirstElement() instanceof IFilter filterDef) {
+            if (structuredSelection.getFirstElement() instanceof AuditFilter filterDef) {
                 try {
                     if (PluginFilterEditors.hasEditor(filterDef)) {
-                        final IFilterEditor editableFilter =
+                        final FilterEditor editableFilter =
                             PluginFilterEditors.getNewEditor(filterDef);
                         editableFilter.setInputProject(project);
                         editableFilter.setFilterData(filterDef.getFilterData());
@@ -175,7 +175,7 @@ public class FilterSettings extends Composite {
                     }
                 }
                 catch (CheckstylePluginException exception) {
-                    CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
+                    CheckstyleUiPlugin.errorDialog(getShell(), exception, true);
                 }
             }
         }
@@ -196,7 +196,7 @@ public class FilterSettings extends Composite {
         @Override
         public String getText(Object element) {
             final StringBuilder buf = new StringBuilder();
-            if (element instanceof IFilter filter) {
+            if (element instanceof AuditFilter filter) {
                 buf.append(filter.getName());
                 if (filter.getPresentableFilterData() != null) {
                     buf.append(": ").append(filter.getPresentableFilterData());
@@ -223,12 +223,12 @@ public class FilterSettings extends Composite {
 
         @Override
         public boolean isChecked(Object element) {
-            return ((IFilter) element).isEnabled();
+            return ((AuditFilter) element).isEnabled();
         }
 
         @Override
         public boolean isGrayed(Object element) {
-            return ((IFilter) element).isReadonly();
+            return ((AuditFilter) element).isReadonly();
         }
 
     }

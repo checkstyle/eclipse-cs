@@ -22,7 +22,7 @@ package net.sf.eclipsecs.core.transformer.ctransformerclasses;
 
 import org.eclipse.jdt.core.JavaCore;
 
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
@@ -30,7 +30,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  *
  */
-public class MethodParamPadTransformer extends AbstractCTransformationClass {
+public class MethodParamPadTransformer extends AbstractCheckstyleTransformationClass {
 
     /**
      * Creates a new instance.

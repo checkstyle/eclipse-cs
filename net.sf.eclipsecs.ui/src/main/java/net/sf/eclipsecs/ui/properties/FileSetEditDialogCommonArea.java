@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
@@ -66,7 +66,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
      *            the runnable to configure the file set configuration
      */
     public FileSetEditDialogCommonArea(Composite parent, int style,
-        Consumer<ICheckConfiguration> selectionChanged, Runnable configureFileSetConfig) {
+        Consumer<CheckConfiguration> selectionChanged, Runnable configureFileSetConfig) {
         super(parent, style);
         setLayout(new FillLayout());
 
@@ -93,7 +93,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
         GridDataFactory.create(GridData.FILL_HORIZONTAL).applyTo(comboViewer.getControl());
         comboViewer.addSelectionChangedListener(event -> {
             selectionChanged
-                .accept((ICheckConfiguration) event.getStructuredSelection().getFirstElement());
+                .accept((CheckConfiguration) event.getStructuredSelection().getFirstElement());
         });
 
         final Button mConfigureButton = new Button(comboComposite, SWT.PUSH);
@@ -138,7 +138,7 @@ public final class FileSetEditDialogCommonArea extends Composite {
      * @param checkConfiguration
      *            the check configuration to select
      */
-    public void setSelection(ICheckConfiguration checkConfiguration) {
+    public void setSelection(CheckConfiguration checkConfiguration) {
         this.comboViewer.setSelection(new StructuredSelection(checkConfiguration));
     }
 

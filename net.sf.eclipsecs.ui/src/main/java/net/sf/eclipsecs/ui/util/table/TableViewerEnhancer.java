@@ -36,7 +36,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 
 /**
  * Utility which enhances table viewers with sortable columns, column widths and state
@@ -282,7 +282,7 @@ public final class TableViewerEnhancer {
                 result = columnComparator.compare(e1, e2);
             }
             else {
-                result = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale()).compare(
+                result = Collator.getInstance(CheckstyleUiPlugin.getPlatformLocale()).compare(
                     ((ColumnLabelProvider) ((TableViewer) viewer)
                         .getLabelProvider(colIndex)).getText(e1),
                     ((ColumnLabelProvider) ((TableViewer) viewer)

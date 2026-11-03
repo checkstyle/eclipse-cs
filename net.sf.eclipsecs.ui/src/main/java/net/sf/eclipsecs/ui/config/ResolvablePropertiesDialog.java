@@ -46,10 +46,10 @@ import net.sf.eclipsecs.core.config.CheckConfigurationTester;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.ResolvableProperty;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.SwtUtil;
 
 /**
  * Dialog to show/edit the properties (name, location, description) of a check configuration. Also
@@ -111,7 +111,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         super.create();
         initialize();
 
-        SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
+        SwtUtil.addResizeSupport(this, CheckstyleUiPlugin.getDefault().getDialogSettings(),
             ResolvablePropertiesDialog.class.getName());
     }
 
@@ -124,7 +124,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
     @Override
     protected Control createDialogArea(Composite parent) {
         // set the logo
-        this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+        this.setTitleImage(CheckstyleUiPluginImages.PLUGIN_LOGO.getImage());
         this.setTitle(Messages.ResolvablePropertiesDialog_titleMessageArea);
         this.setMessage(Messages.ResolvablePropertiesDialog_msgAdditionalProperties);
 
@@ -300,7 +300,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
             }
         }
         catch (CheckstylePluginException exception) {
-            CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
+            CheckstyleUiPlugin.errorDialog(getShell(), exception, true);
         }
     }
 
@@ -313,7 +313,7 @@ public class ResolvablePropertiesDialog extends TitleAreaDialog {
         final String concreteViewId = ResolvablePropertiesDialog.class.getName();
 
         final IDialogSettings workbenchSettings =
-            CheckstyleUIPlugin.getDefault().getDialogSettings();
+            CheckstyleUiPlugin.getDefault().getDialogSettings();
         IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
         if (settings == null) {

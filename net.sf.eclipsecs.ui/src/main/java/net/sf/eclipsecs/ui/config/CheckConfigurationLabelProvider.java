@@ -23,9 +23,9 @@ package net.sf.eclipsecs.ui.config;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.swt.graphics.Image;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
+import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUi;
 
 /**
  * Provides the labels for the audit configuration list display.
@@ -46,7 +46,7 @@ public class CheckConfigurationLabelProvider extends LabelProvider {
     @Override
     public String getText(Object element) {
         final String text;
-        if (element instanceof ICheckConfiguration checkConfig) {
+        if (element instanceof CheckConfiguration checkConfig) {
             final String suffix;
             if (checkConfig.isGlobal()) {
                 suffix = Messages.CheckConfigurationLabelProvider_suffixGlobal;
@@ -65,8 +65,8 @@ public class CheckConfigurationLabelProvider extends LabelProvider {
     @Override
     public Image getImage(Object element) {
         Image image = null;
-        if (element instanceof ICheckConfiguration checkConfig) {
-            image = ConfigurationTypesUI.getConfigurationTypeImage(checkConfig.getType());
+        if (element instanceof CheckConfiguration checkConfig) {
+            image = ConfigurationTypesUi.getConfigurationTypeImage(checkConfig.getType());
         }
         return image;
     }

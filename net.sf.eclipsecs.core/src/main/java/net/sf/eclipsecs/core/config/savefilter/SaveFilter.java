@@ -18,32 +18,26 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package net.sf.eclipsecs.ui.quickfixes;
+package net.sf.eclipsecs.core.config.savefilter;
 
-import org.eclipse.core.resources.IMarker;
-import org.eclipse.ui.IMarkerResolution2;
+import java.util.List;
+
+import net.sf.eclipsecs.core.config.Module;
 
 /**
- * Interface for a quickfix implementation for checkstyle markers.
+ * Interface to implement special module logic.
  *
  */
-public interface ICheckstyleMarkerResolution extends IMarkerResolution2 {
+public interface SaveFilter {
 
     /**
-     * Checks if this quickfix can actually fix the marker occurrence.
+     * Post processes the selection of configurad modules. This can be used to add/remove certain
+     * 'special' modules. Implementations are encouraged to manipulate the list of configured
+     * modules.
      *
-     * @param marker
-     *            the marker to potentially be fixed.
-     * @return <code>true</code> if this quickfix can fix the marker, <code>false</code> otherwise.
+     * @param configuredModules
+     *            the configured modules in from this configuration
      */
-    boolean canFix(IMarker marker);
-
-    /**
-     * Sets the module id for this quickfix.
-     *
-     * @param module
-     *            id of the checkstyle module
-     */
-    void setModule(String module);
+    void postProcessConfiguredModules(List<Module> configuredModules);
 
 }

@@ -48,12 +48,12 @@ import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialogView.CheckConfigurationConfigureDialogViewCallbacks;
-import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.SwtUtil;
 
 /**
  * Enhanced checkstyle configuration editor.
@@ -134,7 +134,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     public void create() {
         super.create();
 
-        SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
+        SwtUtil.addResizeSupport(this, CheckstyleUiPlugin.getDefault().getDialogSettings(),
             CheckConfigurationConfigureDialog.class.getName());
     }
 
@@ -155,7 +155,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
             }
         }
         catch (CheckstylePluginException exception) {
-            CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
+            CheckstyleUiPlugin.errorDialog(getShell(), exception, true);
         }
 
         super.okPressed();
@@ -176,11 +176,11 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
 
         // Init the translate tokens preference
         mBtnOpenModuleOnAdd.setSelection(
-            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR));
+            CheckstyleUiPluginPrefs.getBoolean(CheckstyleUiPluginPrefs.PREF_OPEN_MODULE_EDITOR));
         mBtnOpenModuleOnAdd.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             // store translation preference
             try {
-                CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR,
+                CheckstyleUiPluginPrefs.setBoolean(CheckstyleUiPluginPrefs.PREF_OPEN_MODULE_EDITOR,
                     ((Button) event.widget).getSelection());
             }
             catch (BackingStoreException exception) {
@@ -210,7 +210,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         }
 
         // set the logo
-        this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+        this.setTitleImage(CheckstyleUiPluginImages.PLUGIN_LOGO.getImage());
 
         this.dialogView.selectFirstAvailableGroup();
     }
@@ -224,7 +224,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
         }
         catch (CheckstylePluginException exception) {
             modules = new ArrayList<>();
-            CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
+            CheckstyleUiPlugin.errorDialog(getShell(), exception, true);
         }
     }
 
@@ -237,7 +237,7 @@ public class CheckConfigurationConfigureDialog extends TitleAreaDialog {
     private void newModule(List<RuleMetadata> rules) {
         if (configuration.isConfigurable()) {
             final boolean openOnAdd =
-                CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_OPEN_MODULE_EDITOR);
+                CheckstyleUiPluginPrefs.getBoolean(CheckstyleUiPluginPrefs.PREF_OPEN_MODULE_EDITOR);
 
             for (RuleMetadata rule : rules) {
                 if (!rule.isSingleton() || !isAlreadyConfigured(rule)) {

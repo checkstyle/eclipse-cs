@@ -35,12 +35,12 @@ import org.xml.sax.SAXException;
 /**
  * Provides utility methods for XML manipulations.
  */
-public final class XMLUtil {
+public final class XmlUtil {
 
     /**
      * Private constructor to prevent instances.
      */
-    private XMLUtil() {
+    private XmlUtil() {
     }
 
     /**
@@ -88,13 +88,13 @@ public final class XMLUtil {
             if (public2InternalDtdMap.containsKey(publicId)) {
                 final String dtdResourceName = public2InternalDtdMap.get(publicId);
 
-                final InputStream dtdIS =
+                final InputStream dtdInputStream =
                     getClass().getClassLoader().getResourceAsStream(dtdResourceName);
-                if (dtdIS == null) {
+                if (dtdInputStream == null) {
                     // -@cs[IllegalInstantiation] SAXException is in the overridden method signature
                     throw new SAXException("Unable to load internal dtd " + dtdResourceName);
                 }
-                inputSource = new InputSource(dtdIS);
+                inputSource = new InputSource(dtdInputStream);
             }
             return inputSource;
         }

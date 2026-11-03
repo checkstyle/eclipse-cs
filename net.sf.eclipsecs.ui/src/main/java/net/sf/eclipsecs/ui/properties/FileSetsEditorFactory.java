@@ -46,9 +46,9 @@ public final class FileSetsEditorFactory {
      *            whether to use the simple configuration mode
      * @return the created file sets editor
      */
-    public static IFileSetsEditor createEditor(Shell shell, PropertyPageContext propertyPageContext,
+    public static FileSetsEditor createEditor(Shell shell, PropertyPageContext propertyPageContext,
         boolean useSimpleConfig) {
-        final IFileSetsEditor editor;
+        final FileSetsEditor editor;
         if (useSimpleConfig) {
             editor = new SimpleFileSetsEditor(shell, propertyPageContext);
         }

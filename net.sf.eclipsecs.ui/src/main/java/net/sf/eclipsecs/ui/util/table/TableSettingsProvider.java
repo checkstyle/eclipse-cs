@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,26 +18,22 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package net.sf.eclipsecs.core.config.savefilter;
+package net.sf.eclipsecs.ui.util.table;
 
-import java.util.List;
-
-import net.sf.eclipsecs.core.config.Module;
+import org.eclipse.jface.dialogs.IDialogSettings;
 
 /**
- * Interface to implement special module logic.
+ * Interface for implementations that provide settings where the <code>EnhancedTableViewer</code>
+ * can store its current state.
  *
  */
-public interface ISaveFilter {
+public interface TableSettingsProvider {
 
     /**
-     * Post processes the selection of configurad modules. This can be used to add/remove certain
-     * 'special' modules. Implementations are encouraged to manipulate the list of configured
-     * modules.
+     * Provides a settings instance.
      *
-     * @param configuredModules
-     *            the configured modules in from this configuration
+     * @return the settings
      */
-    void postProcessConfiguredModules(List<Module> configuredModules);
+    IDialogSettings getTableSettings();
 
 }

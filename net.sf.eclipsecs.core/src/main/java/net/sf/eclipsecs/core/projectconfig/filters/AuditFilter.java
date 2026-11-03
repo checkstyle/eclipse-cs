@@ -26,7 +26,7 @@ import java.util.List;
  * Interface for a filter.
  *
  */
-public interface IFilter extends Cloneable {
+public interface AuditFilter extends Cloneable {
 
     /**
      * Initializes this filter with common attributes.
@@ -112,7 +112,7 @@ public interface IFilter extends Cloneable {
      *
      * @return the copy
      */
-    IFilter copy();
+    AuditFilter copy();
 
     /**
      * Determines wheter an object passes this filter.

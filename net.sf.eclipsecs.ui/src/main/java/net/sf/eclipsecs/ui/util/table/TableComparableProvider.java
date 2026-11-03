@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,49 +18,25 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package net.sf.eclipsecs.ui.properties;
-
-import java.util.List;
-
-import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-
-import net.sf.eclipsecs.core.projectconfig.FileSet;
+package net.sf.eclipsecs.ui.util.table;
 
 /**
- * Interface for the part of the checkstyle plugin properties page that configures file sets for the
- * project.
+ * Interface used by <code>TableSortSupport</code> to provide comparable values for the single table
+ * columns. This works very similar like ITableLabelProvider except that other comparable objects
+ * than Strings can be returned.
  *
  */
-public interface IFileSetsEditor {
+public interface TableComparableProvider {
 
     /**
-     * Creates the contents of the file set editor.
+     * Returns the comparable for a given table column.
      *
-     * @param parent
-     *            the parent component
-     * @return the control
+     * @param element
+     *            the row object
+     * @param col
+     *            the table column index
+     * @return the comparable value for this columns
      */
-    Control createContents(Composite parent);
-
-    /**
-     * Set the file sets for the editor.
-     *
-     * @param fileSets
-     *            the list of file sets
-     */
-    void setFileSets(List<FileSet> fileSets);
-
-    /**
-     * Returns the file sets.
-     *
-     * @return the list of file sets
-     */
-    List<FileSet> getFileSets();
-
-    /**
-     * Refreshes the view.
-     */
-    void refresh();
+    Comparable<?> getComparableValue(Object element, int col);
 
 }

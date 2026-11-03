@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,25 +18,23 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package net.sf.eclipsecs.ui.util.table;
+package net.sf.eclipsecs.core.config.meta;
+
+import java.util.List;
 
 /**
- * Interface used by <code>TableSortSupport</code> to provide comparable values for the single table
- * columns. This works very similar like ITableLabelProvider except that other comparable objects
- * than Strings can be returned.
+ * Interface for an option provider. This is used to provide dynamic or massive amount of options
+ * which would be too difficult to handle in metadata. For instance this is true for module metadata
+ * that need all token types as options.
  *
  */
-public interface ITableComparableProvider {
+public interface OptionProvider {
 
     /**
-     * Returns the comparable for a given table column.
+     * Returns a list of options.
      *
-     * @param element
-     *            the row object
-     * @param col
-     *            the table column index
-     * @return the comparable value for this columns
+     * @return the options
      */
-    Comparable<?> getComparableValue(Object element, int col);
+    List<String> getOptions();
 
 }

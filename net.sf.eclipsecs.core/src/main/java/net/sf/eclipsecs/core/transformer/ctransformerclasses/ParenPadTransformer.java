@@ -25,14 +25,14 @@ import java.util.List;
 import org.eclipse.jdt.core.JavaCore;
 import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
 
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapperclass for converting the checkstyle-rule ParenPad to appropriate eclipse-formatter-rules.
  *
  */
-public class ParenPadTransformer extends AbstractCTransformationClass {
+public class ParenPadTransformer extends AbstractCheckstyleTransformationClass {
 
     /** Formatter settings to apply for the LPAREN token. */
     private static final List<String> LPAREN_SETTINGS = List.of(

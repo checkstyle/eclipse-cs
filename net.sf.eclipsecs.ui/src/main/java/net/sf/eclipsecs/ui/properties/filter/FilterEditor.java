@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Shell;
  * Interface for a filter editor.
  *
  */
-public interface IFilterEditor {
+public interface FilterEditor {
 
     /**
      * Opens the filter editor dialog (blocking).

@@ -25,7 +25,7 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
 /**
  * Defines XML tages used in configuration files.
  */
-public final class XMLTags {
+public final class XmlTags {
 
     //
     // common tags
@@ -222,7 +222,7 @@ public final class XMLTags {
     /**
      * Utility class, not intended to be instantiated.
      */
-    private XMLTags() {
+    private XmlTags() {
         // NOOP
     }
 

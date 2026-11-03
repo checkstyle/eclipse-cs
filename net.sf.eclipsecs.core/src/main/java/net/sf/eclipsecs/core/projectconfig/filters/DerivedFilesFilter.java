@@ -45,7 +45,7 @@ public class DerivedFilesFilter extends AbstractFilter {
     }
 
     @Override
-    public IFilter copy() {
+    public AuditFilter copy() {
         return new DerivedFilesFilter(this);
     }
 

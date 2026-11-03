@@ -48,8 +48,8 @@ import org.eclipse.swt.widgets.Control;
 
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs;
 
 /**
  * Configuration widget for selecting multiple values with check boxes.
@@ -108,12 +108,12 @@ public final class ConfigPropertyMultiCheckWidget extends AbstractConfigProperty
         if (table == null) {
 
             translateTokens =
-                CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS);
+                CheckstyleUiPluginPrefs.getBoolean(CheckstyleUiPluginPrefs.PREF_TRANSLATE_TOKENS);
             sortTokens =
-                CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS);
+                CheckstyleUiPluginPrefs.getBoolean(CheckstyleUiPluginPrefs.PREF_SORT_TOKENS);
 
             final IEclipsePreferences instanceScope =
-                InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
+                InstanceScope.INSTANCE.getNode(CheckstyleUiPlugin.PLUGIN_ID);
             instanceScope.addPreferenceChangeListener(this);
 
             table = CheckboxTableViewer.newCheckList(parent, SWT.V_SCROLL | SWT.BORDER);
@@ -135,7 +135,7 @@ public final class ConfigPropertyMultiCheckWidget extends AbstractConfigProperty
                 @Override
                 public void widgetDisposed(DisposeEvent e) {
                     final IEclipsePreferences prefStore =
-                        InstanceScope.INSTANCE.getNode(CheckstyleUIPlugin.PLUGIN_ID);
+                        InstanceScope.INSTANCE.getNode(CheckstyleUiPlugin.PLUGIN_ID);
                     prefStore.removePreferenceChangeListener(ConfigPropertyMultiCheckWidget.this);
                 }
             });
@@ -158,7 +158,7 @@ public final class ConfigPropertyMultiCheckWidget extends AbstractConfigProperty
      */
     private void installSorter(boolean sort) {
         if (sort) {
-            final Collator collator = Collator.getInstance(CheckstyleUIPlugin.getPlatformLocale());
+            final Collator collator = Collator.getInstance(CheckstyleUiPlugin.getPlatformLocale());
             table.setComparator(new ViewerComparator(collator));
         }
         else {
@@ -207,11 +207,11 @@ public final class ConfigPropertyMultiCheckWidget extends AbstractConfigProperty
 
     @Override
     public void preferenceChange(PreferenceChangeEvent event) {
-        if (CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS.equals(event.getKey())) {
+        if (CheckstyleUiPluginPrefs.PREF_TRANSLATE_TOKENS.equals(event.getKey())) {
             translateTokens = Boolean.parseBoolean((String) event.getNewValue());
             table.refresh(true);
         }
-        if (CheckstyleUIPluginPrefs.PREF_SORT_TOKENS.equals(event.getKey())) {
+        if (CheckstyleUiPluginPrefs.PREF_SORT_TOKENS.equals(event.getKey())) {
             sortTokens = Boolean.parseBoolean((String) event.getNewValue());
             installSorter(sortTokens);
         }

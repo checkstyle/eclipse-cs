@@ -55,14 +55,14 @@ import org.eclipse.ui.model.WorkbenchLabelProvider;
 
 import net.sf.eclipsecs.core.projectconfig.filters.PackageFilter;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 
 /**
  * Editor dialog for the package filter.
  *
  */
-public class PackageFilterEditor implements IFilterEditor {
+public class PackageFilterEditor implements FilterEditor {
 
     /** The dialog for this editor. */
     private PackageCheckedTreeSelectionDialog dialog;
@@ -505,7 +505,7 @@ public class PackageFilterEditor implements IFilterEditor {
                 });
             }
             catch (CoreException exception) {
-                CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
+                CheckstyleUiPlugin.errorDialog(getShell(), exception, true);
             }
 
             for (IContainer grayedChild : subContainers) {

@@ -41,7 +41,7 @@ import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.RemoteConfigurationType.RemoteConfigAuthenticator;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
 
@@ -50,7 +50,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * input the URL.
  *
  */
-public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
+public class RemoteConfigurationEditor implements CheckConfigurationEditor {
 
     //
     // attributes
@@ -122,7 +122,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
         description =
             new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
-            .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
+            .hint(CheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
             .grab(true, true)
             .applyTo(description);
 
@@ -193,7 +193,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
             try {
 
                 final RemoteConfigAuthenticator auth = RemoteConfigAuthenticator
-                    .create(workingCopy.getResolvedConfigurationFileURL());
+                    .create(workingCopy.getResolvedConfigurationFileUrl());
 
                 if (auth != null) {
                     userName.setText(auth.getUsername());
@@ -201,7 +201,7 @@ public class RemoteConfigurationEditor implements ICheckConfigurationEditor {
                 }
             }
             catch (CheckstylePluginException exception) {
-                CheckstyleUIPlugin.errorDialog(shell, exception, true);
+                CheckstyleUiPlugin.errorDialog(shell, exception, true);
             }
         }
     }

@@ -48,8 +48,8 @@ import org.eclipse.core.runtime.Platform;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.ConfigurationTypes;
-import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
@@ -75,14 +75,14 @@ public final class CheckConfigurationFactory {
     /**
      * List of known check configurations. Synchronized because of possible concurrend access.
      */
-    private static final List<ICheckConfiguration> CONFIGURATIONS =
-        Collections.synchronizedList(new ArrayList<ICheckConfiguration>());
+    private static final List<CheckConfiguration> CONFIGURATIONS =
+        Collections.synchronizedList(new ArrayList<CheckConfiguration>());
 
     /** The default check configuration. */
-    private static ICheckConfiguration defaultCheckConfig;
+    private static CheckConfiguration defaultCheckConfig;
 
     /** The default built-in check configuration. */
-    private static ICheckConfiguration defaultBuiltInConfig;
+    private static CheckConfiguration defaultBuiltInConfig;
 
     static {
         refresh();
@@ -99,7 +99,7 @@ public final class CheckConfigurationFactory {
      *
      * @return a new configuration working set
      */
-    public static ICheckConfigurationWorkingSet newWorkingSet() {
+    public static CheckConfigurationWorkingSet newWorkingSet() {
         return new GlobalCheckConfigurationWorkingSet(CONFIGURATIONS,
             getDefaultCheckConfiguration(), defaultBuiltInConfig);
     }
@@ -111,9 +111,9 @@ public final class CheckConfigurationFactory {
      *            Name of the requested instance.
      * @return The requested instance or <code>null</code> if the named instance could not be found.
      */
-    public static ICheckConfiguration getByName(String name) {
-        ICheckConfiguration result = null;
-        for (ICheckConfiguration config : CONFIGURATIONS) {
+    public static CheckConfiguration getByName(String name) {
+        CheckConfiguration result = null;
+        for (CheckConfiguration config : CONFIGURATIONS) {
             if (config.getName().equals(name)) {
                 result = config;
                 break;
@@ -127,7 +127,7 @@ public final class CheckConfigurationFactory {
      *
      * @return A list containing all instances.
      */
-    public static List<ICheckConfiguration> getCheckConfigurations() {
+    public static List<CheckConfiguration> getCheckConfigurations() {
         return Collections.unmodifiableList(CONFIGURATIONS);
     }
 
@@ -137,8 +137,8 @@ public final class CheckConfigurationFactory {
      *
      * @return the default check configuration to use with unconfigured projects
      */
-    public static ICheckConfiguration getDefaultCheckConfiguration() {
-        final ICheckConfiguration defaultConfig;
+    public static CheckConfiguration getDefaultCheckConfiguration() {
+        final CheckConfiguration defaultConfig;
         if (defaultCheckConfig != null) {
             defaultConfig = defaultCheckConfig;
         }
@@ -260,14 +260,14 @@ public final class CheckConfigurationFactory {
 
                 final Element root = document.getRootElement();
 
-                final String version = root.attributeValue(XMLTags.VERSION_TAG);
+                final String version = root.attributeValue(XmlTags.VERSION_TAG);
                 if (CURRENT_CONFIG_FILE_FORMAT_VERSION.equals(version)) {
                     final String defaultConfigName =
-                        root.attributeValue(XMLTags.DEFAULT_CHECK_CONFIG_TAG);
+                        root.attributeValue(XmlTags.DEFAULT_CHECK_CONFIG_TAG);
 
                     CONFIGURATIONS.addAll(getGlobalCheckConfigurations(root));
 
-                    for (ICheckConfiguration config : CONFIGURATIONS) {
+                    for (CheckConfiguration config : CONFIGURATIONS) {
                         if (config != defaultBuiltInConfig
                             && config.getName().equals(defaultConfigName)) {
                             defaultCheckConfig = config;
@@ -310,14 +310,14 @@ public final class CheckConfigurationFactory {
 
         int currentMaxDefaultWeight = -1;
 
-        ICheckConfiguration defaultBuiltInCheckConfig = null;
+        CheckConfiguration defaultBuiltInCheckConfig = null;
 
         for (IConfigurationElement element : elements) {
-            final String name = element.getAttribute(XMLTags.NAME_TAG);
-            final String description = element.getAttribute(XMLTags.DESCRIPTION_TAG);
-            final String location = element.getAttribute(XMLTags.LOCATION_TAG);
+            final String name = element.getAttribute(XmlTags.NAME_TAG);
+            final String description = element.getAttribute(XmlTags.DESCRIPTION_TAG);
+            final String location = element.getAttribute(XmlTags.LOCATION_TAG);
 
-            final String defaultWeightAsString = element.getAttribute(XMLTags.DEFAULT_WEIGHT);
+            final String defaultWeightAsString = element.getAttribute(XmlTags.DEFAULT_WEIGHT);
             final int defaultWeight;
             if (defaultWeightAsString != null) {
                 defaultWeight = Integer.parseInt(defaultWeightAsString);
@@ -326,20 +326,20 @@ public final class CheckConfigurationFactory {
                 defaultWeight = 0;
             }
 
-            final IConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
+            final ConfigurationType configType = ConfigurationTypes.getByInternalName("builtin");
 
             final Map<String, String> additionalData = new HashMap<>();
             additionalData.put(BuiltInConfigurationType.CONTRIBUTOR_KEY,
                 element.getContributor().getName());
 
             final List<ResolvableProperty> props = new ArrayList<>();
-            final IConfigurationElement[] propEls = element.getChildren(XMLTags.PROPERTY_TAG);
+            final IConfigurationElement[] propEls = element.getChildren(XmlTags.PROPERTY_TAG);
             for (IConfigurationElement propEl : propEls) {
-                props.add(new ResolvableProperty(propEl.getAttribute(XMLTags.NAME_TAG),
-                    propEl.getAttribute(XMLTags.VALUE_TAG)));
+                props.add(new ResolvableProperty(propEl.getAttribute(XmlTags.NAME_TAG),
+                    propEl.getAttribute(XmlTags.VALUE_TAG)));
             }
 
-            final ICheckConfiguration checkConfig = new CheckConfiguration(name, location,
+            final CheckConfiguration checkConfig = new DefaultCheckConfiguration(name, location,
                 description,
                 configType, true, props, additionalData);
             CONFIGURATIONS.add(checkConfig);
@@ -360,42 +360,42 @@ public final class CheckConfigurationFactory {
      *            the root element of the plugins central configuration file
      * @return the global check configurations configured therein
      */
-    private static List<ICheckConfiguration> getGlobalCheckConfigurations(Element root) {
+    private static List<CheckConfiguration> getGlobalCheckConfigurations(Element root) {
 
-        final List<ICheckConfiguration> configs = new ArrayList<>();
+        final List<CheckConfiguration> configs = new ArrayList<>();
 
-        final List<Element> configElements = root.elements(XMLTags.CHECK_CONFIG_TAG);
+        final List<Element> configElements = root.elements(XmlTags.CHECK_CONFIG_TAG);
 
         for (Element configEl : configElements) {
 
-            final String name = configEl.attributeValue(XMLTags.NAME_TAG);
-            final String description = configEl.attributeValue(XMLTags.DESCRIPTION_TAG);
-            final String location = configEl.attributeValue(XMLTags.LOCATION_TAG);
+            final String name = configEl.attributeValue(XmlTags.NAME_TAG);
+            final String description = configEl.attributeValue(XmlTags.DESCRIPTION_TAG);
+            final String location = configEl.attributeValue(XmlTags.LOCATION_TAG);
 
-            final String type = configEl.attributeValue(XMLTags.TYPE_TAG);
-            final IConfigurationType configType = ConfigurationTypes.getByInternalName(type);
+            final String type = configEl.attributeValue(XmlTags.TYPE_TAG);
+            final ConfigurationType configType = ConfigurationTypes.getByInternalName(type);
 
             // get resolvable properties
             final List<ResolvableProperty> props = new ArrayList<>();
-            final List<Element> propertiesElements = configEl.elements(XMLTags.PROPERTY_TAG);
+            final List<Element> propertiesElements = configEl.elements(XmlTags.PROPERTY_TAG);
             for (Element propsEl : propertiesElements) {
 
                 final ResolvableProperty prop =
-                    new ResolvableProperty(propsEl.attributeValue(XMLTags.NAME_TAG),
-                        propsEl.attributeValue(XMLTags.VALUE_TAG));
+                    new ResolvableProperty(propsEl.attributeValue(XmlTags.NAME_TAG),
+                        propsEl.attributeValue(XmlTags.VALUE_TAG));
                 props.add(prop);
             }
 
             // get additional data
             final Map<String, String> additionalData = new HashMap<>();
-            final List<Element> dataElements = configEl.elements(XMLTags.ADDITIONAL_DATA_TAG);
+            final List<Element> dataElements = configEl.elements(XmlTags.ADDITIONAL_DATA_TAG);
             for (Element dataEl : dataElements) {
 
-                additionalData.put(dataEl.attributeValue(XMLTags.NAME_TAG),
-                    dataEl.attributeValue(XMLTags.VALUE_TAG));
+                additionalData.put(dataEl.attributeValue(XmlTags.NAME_TAG),
+                    dataEl.attributeValue(XmlTags.VALUE_TAG));
             }
 
-            final ICheckConfiguration checkConfig = new CheckConfiguration(name, location,
+            final CheckConfiguration checkConfig = new DefaultCheckConfiguration(name, location,
                 description,
                 configType, true, props, additionalData);
             configs.add(checkConfig);

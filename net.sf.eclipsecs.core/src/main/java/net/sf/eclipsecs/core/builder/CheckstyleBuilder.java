@@ -48,14 +48,14 @@ import org.eclipse.osgi.util.NLS;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.Messages;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.jobs.AuditorJob;
 import net.sf.eclipsecs.core.jobs.BuildProjectJob;
 import net.sf.eclipsecs.core.nature.CheckstyleNature;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
@@ -136,7 +136,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
             //
             // get the project configuration
             //
-            IProjectConfiguration config = null;
+            ProjectConfiguration config = null;
             try {
                 config = ProjectConfigurationFactory.getConfiguration(project);
             }
@@ -222,7 +222,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
      *             if the build fails
      */
     public final <T extends IResource> void handleBuildSelection(final Collection<T> resources,
-        final IProjectConfiguration configuration, final IProgressMonitor monitor,
+        final ProjectConfiguration configuration, final IProgressMonitor monitor,
         final IProject project, final int kind) throws CoreException {
         // on full build remove all previous checkstyle markers
         if (kind == IncrementalProjectBuilder.FULL_BUILD) {
@@ -232,7 +232,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         final boolean backgroundFullBuild =
             CheckstylePluginPrefs.getBoolean(CheckstylePluginPrefs.PREF_BACKGROUND_FULL_BUILD);
 
-        final Map<ICheckConfiguration, Auditor> audits =
+        final Map<CheckConfiguration, Auditor> audits =
             resolveAudits(resources, configuration, project);
 
         try {
@@ -276,17 +276,17 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
      * @throws CoreException
      *             if an error occurs
      */
-    private <T extends IResource> Map<ICheckConfiguration, Auditor> resolveAudits(
-        Collection<T> resources, IProjectConfiguration configuration, IProject project)
+    private <T extends IResource> Map<CheckConfiguration, Auditor> resolveAudits(
+        Collection<T> resources, ProjectConfiguration configuration, IProject project)
             throws CoreException {
         final List<FileSet> enabledFileSets =
             configuration.getFileSets().stream().filter(FileSet::isEnabled).toList();
 
         final List<IFile> files = resources.stream().filter(resource -> resource instanceof IFile)
             .map(resource -> (IFile) resource).toList();
-        final Map<ICheckConfiguration, Auditor> audits = new HashMap<>();
+        final Map<CheckConfiguration, Auditor> audits = new HashMap<>();
         for (FileSet fileSet : enabledFileSets) {
-            final ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+            final CheckConfiguration checkConfig = fileSet.getCheckConfig();
             if (checkConfig == null) {
                 throw new CoreException(new Status(IStatus.ERROR, CheckstylePlugin.PLUGIN_ID,
                     NLS.bind(Messages.errorNoCheckConfig, project.getName())));
@@ -334,7 +334,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
      *             an unexpected error occurred
      */
     private Collection<IResource> getResources(final IResourceDelta delta,
-        final List<IFilter> filters) throws CoreException {
+        final List<AuditFilter> filters) throws CoreException {
 
         final List<IResource> resources = new ArrayList<>();
 
@@ -347,7 +347,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
 
                 // filter resources
                 boolean goesThrough = true;
-                for (IFilter filter : filters) {
+                for (AuditFilter filter : filters) {
                     if (filter.isEnabled() && !filter.accept(child)) {
                         goesThrough = false;
                         break;
@@ -385,7 +385,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
      *             an unexpected error occurred
      */
     private Collection<IResource> getResources(final IContainer container,
-        final List<IFilter> filters) throws CoreException {
+        final List<AuditFilter> filters) throws CoreException {
 
         final List<IResource> resources = new ArrayList<>();
 
@@ -393,7 +393,7 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
         for (IResource child : container.members()) {
             // filter resources
             boolean goesThrough = true;
-            for (IFilter filter : filters) {
+            for (AuditFilter filter : filters) {
                 if (filter.isEnabled() && !filter.accept(child)) {
                     goesThrough = false;
                     break;

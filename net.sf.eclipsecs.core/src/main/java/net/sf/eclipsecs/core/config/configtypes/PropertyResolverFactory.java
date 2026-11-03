@@ -29,8 +29,8 @@ import java.util.ResourceBundle;
 import org.eclipse.core.runtime.URIUtil;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**
  * Factory creating the composite {@link PropertyResolver} used when resolving configuration
@@ -59,18 +59,18 @@ public final class PropertyResolverFactory {
      * @throws URISyntaxException
      *             the configuration file URL is malformed
      */
-    public static PropertyResolver getPropertyResolver(ICheckConfiguration config,
+    public static PropertyResolver getPropertyResolver(CheckConfiguration config,
         CheckstyleConfigurationFile configFile) throws IOException, URISyntaxException {
         final MultiPropertyResolver multiResolver = new MultiPropertyResolver();
         multiResolver.addPropertyResolver(new ResolvablePropertyResolver(config));
 
-        final File file = URIUtil.toFile(configFile.getResolvedConfigFileURL().toURI());
+        final File file = URIUtil.toFile(configFile.getResolvedConfigFileUrl().toURI());
         if (file != null) {
             multiResolver.addPropertyResolver(new StandardPropertyResolver(file.toString()));
         }
         else {
             multiResolver.addPropertyResolver(
-                new StandardPropertyResolver(configFile.getResolvedConfigFileURL().toString()));
+                new StandardPropertyResolver(configFile.getResolvedConfigFileUrl().toString()));
         }
 
         multiResolver.addPropertyResolver(new ClasspathVariableResolver());

@@ -29,9 +29,9 @@ import org.dom4j.Document;
 import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
-import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.config.XmlTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.core.util.XMLUtil;
+import net.sf.eclipsecs.core.util.XmlUtil;
 
 /**
  * Class for writing the checkstyle configuration to a xml-file.
@@ -63,7 +63,7 @@ public final class CheckstyleFileWriter {
      */
     public void writeXmlFile() {
         try (FileOutputStream fw = new FileOutputStream(file)) {
-            writeXMLFile(fw);
+            writeXmlFile(fw);
         }
         catch (final IOException exception) {
             CheckstyleLog.log(exception);
@@ -78,22 +78,22 @@ public final class CheckstyleFileWriter {
      * @throws IOException
      *             an I/O exception occurred
      */
-    private void writeXMLFile(final OutputStream outStream) throws IOException {
+    private void writeXmlFile(final OutputStream outStream) throws IOException {
         final Document document = DocumentHelper.createDocument();
 
-        final Element checkerElement = document.addElement(XMLTags.MODULE_TAG)
-            .addAttribute(XMLTags.NAME_TAG, XMLTags.CHECKER_MODULE);
-        checkerElement.addElement(XMLTags.PROPERTY_TAG).addAttribute(XMLTags.NAME_TAG,
-            XMLTags.SEVERITY_TAG).addAttribute(XMLTags.VALUE_TAG, "warning");
+        final Element checkerElement = document.addElement(XmlTags.MODULE_TAG)
+            .addAttribute(XmlTags.NAME_TAG, XmlTags.CHECKER_MODULE);
+        checkerElement.addElement(XmlTags.PROPERTY_TAG).addAttribute(XmlTags.NAME_TAG,
+            XmlTags.SEVERITY_TAG).addAttribute(XmlTags.VALUE_TAG, "warning");
 
         writeModules(checkstyleSetting.getmCheckerModules(), checkerElement);
 
-        final Element treeWalkerElement = checkerElement.addElement(XMLTags.MODULE_TAG)
-            .addAttribute(XMLTags.NAME_TAG, XMLTags.TREEWALKER_MODULE);
+        final Element treeWalkerElement = checkerElement.addElement(XmlTags.MODULE_TAG)
+            .addAttribute(XmlTags.NAME_TAG, XmlTags.TREEWALKER_MODULE);
 
         writeModules(checkstyleSetting.getmTreeWalkerModules(), treeWalkerElement);
 
-        outStream.write(XMLUtil.toByteArray(document));
+        outStream.write(XmlUtil.toByteArray(document));
     }
 
     /**
@@ -108,8 +108,8 @@ public final class CheckstyleFileWriter {
         final Element parentElement) {
 
         for (Map.Entry<String, Map<String, String>> module : modules.entrySet()) {
-            final Element moduleElement = parentElement.addElement(XMLTags.MODULE_TAG);
-            moduleElement.addAttribute(XMLTags.NAME_TAG, module.getKey());
+            final Element moduleElement = parentElement.addElement(XmlTags.MODULE_TAG);
+            moduleElement.addAttribute(XmlTags.NAME_TAG, module.getKey());
 
             if (module.getValue() != null) {
                 writeProperty(module.getValue(), moduleElement);
@@ -129,9 +129,9 @@ public final class CheckstyleFileWriter {
         final Element moduleElement) {
 
         for (Map.Entry<String, String> property : properties.entrySet()) {
-            final Element propertyElement = moduleElement.addElement(XMLTags.PROPERTY_TAG);
-            propertyElement.addAttribute(XMLTags.NAME_TAG, property.getKey());
-            propertyElement.addAttribute(XMLTags.VALUE_TAG, property.getValue());
+            final Element propertyElement = moduleElement.addElement(XmlTags.PROPERTY_TAG);
+            propertyElement.addAttribute(XmlTags.NAME_TAG, property.getKey());
+            propertyElement.addAttribute(XmlTags.VALUE_TAG, property.getValue());
         }
     }
 

@@ -1,0 +1,208 @@
+///////////////////////////////////////////////////////////////////////////////////////////////
+//
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
+//
+// This library is free software; you can redistribute it and/or
+// modify it under the terms of the GNU Lesser General Public
+// License as published by the Free Software Foundation; either
+// version 2.1 of the License, or (at your option) any later version.
+//
+// This library is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+// Lesser General Public License for more details.
+//
+// You should have received a copy of the GNU Lesser General Public
+// License along with this library; if not, write to the Free Software
+// Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301  USA
+//
+///////////////////////////////////////////////////////////////////////////////////////////////
+
+package net.sf.eclipsecs.core.projectconfig;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.Objects;
+
+import org.eclipse.core.resources.IProject;
+
+import com.google.common.base.MoreObjects;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
+
+/**
+ * Represents the configuration for a project. Contains the file sets configured for the project
+ * plus the additional filters.
+ *
+ */
+public class DefaultProjectConfiguration implements ProjectConfiguration {
+
+    /** The project. */
+    private IProject project;
+
+    /** The local check configurations. */
+    private List<CheckConfiguration> localCheckConfigs;
+
+    /** The file sets. */
+    private List<FileSet> fileSets;
+
+    /** The filters. */
+    private List<AuditFilter> filters;
+
+    /** Flags if the simple file set editor should be used. */
+    private boolean useSimpleConfig = true;
+
+    /** If formatter synching is enabled. */
+    private boolean syncFormatter;
+
+    /**
+     * Default constructor.
+     *
+     * @param project
+     *            the project
+     * @param localConfigs
+     *            the list of local check configurations
+     * @param fileSets
+     *            the list of configured file sets
+     * @param filters
+     *            the filters
+     * @param useSimpleConfig
+     *            <code>true</code> if simple configuration is used
+     * @param synchFormatter
+     *            <code>true</code> if the formatter configuration should be synced to the
+     *            Checkstyle settings
+     */
+    public DefaultProjectConfiguration(IProject project, List<CheckConfiguration> localConfigs,
+        List<FileSet> fileSets, List<AuditFilter> filters, boolean useSimpleConfig,
+        boolean synchFormatter) {
+        this.project = project;
+        if (localConfigs != null) {
+            localCheckConfigs = Collections.unmodifiableList(localConfigs);
+        }
+        else {
+            localCheckConfigs = Collections.unmodifiableList(new ArrayList<CheckConfiguration>());
+        }
+        if (fileSets != null) {
+            this.fileSets = Collections.unmodifiableList(fileSets);
+        }
+        else {
+            this.fileSets = Collections.unmodifiableList(new ArrayList<FileSet>());
+        }
+
+        // build list of filters
+        final List<AuditFilter> standardFilters =
+            Arrays.asList(PluginFilters.getConfiguredFilters());
+        this.filters = new ArrayList<>(standardFilters);
+
+        if (filters != null) {
+            // merge with filters configured for the project
+            for (int index = 0, size = this.filters.size(); index < size; index++) {
+
+                final AuditFilter standardFilter = this.filters.get(index);
+
+                for (AuditFilter configuredFilter : filters) {
+                    if (standardFilter.getInternalName()
+                        .equals(configuredFilter.getInternalName())) {
+                        this.filters.set(index, configuredFilter);
+                    }
+                }
+            }
+        }
+
+        this.filters = Collections.unmodifiableList(this.filters);
+
+        this.useSimpleConfig = useSimpleConfig;
+        this.syncFormatter = synchFormatter;
+    }
+
+    @Override
+    public IProject getProject() {
+        return project;
+    }
+
+    @Override
+    public List<CheckConfiguration> getLocalCheckConfigurations() {
+        return localCheckConfigs;
+    }
+
+    @Override
+    public List<FileSet> getFileSets() {
+        return fileSets;
+    }
+
+    @Override
+    public List<AuditFilter> getFilters() {
+        return filters;
+    }
+
+    @Override
+    public boolean isUseSimpleConfig() {
+        return useSimpleConfig;
+    }
+
+    @Override
+    public boolean isSyncFormatter() {
+        return syncFormatter;
+    }
+
+    /**
+     * Checks if this project configuration uses the given checkstyle configuration.
+     *
+     * @param configuration
+     *            the check configuration
+     * @return <code>true</code>, if the project config uses the checkstyle config,
+     *         <code>false</code> otherwise
+     */
+    @Override
+    public boolean isConfigInUse(CheckConfiguration configuration) {
+
+        boolean result = false;
+
+        for (FileSet fileSet : getFileSets()) {
+            final CheckConfiguration checkConfig = fileSet.getCheckConfig();
+            if (configuration.equals(checkConfig)
+                || checkConfig instanceof CheckConfigurationWorkingCopy && configuration.equals(
+                    ((CheckConfigurationWorkingCopy) checkConfig).getSourceCheckConfiguration())) {
+                result = true;
+                break;
+            }
+        }
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+
+        if (obj == null || !(obj instanceof DefaultProjectConfiguration)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        final DefaultProjectConfiguration rhs = (DefaultProjectConfiguration) obj;
+
+        return Objects.equals(project, rhs.project)
+            && Objects.equals(localCheckConfigs, rhs.localCheckConfigs)
+            && Objects.equals(useSimpleConfig, rhs.useSimpleConfig)
+            && Objects.equals(syncFormatter, rhs.syncFormatter)
+            && Objects.equals(fileSets, rhs.fileSets) && Objects.equals(filters, rhs.filters);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(project, localCheckConfigs, useSimpleConfig, syncFormatter, fileSets,
+            filters);
+    }
+
+    @Override
+    public String toString() {
+        return MoreObjects.toStringHelper(this).add("project", project)
+            .add("localCheckConfigs", localCheckConfigs).add("useSimpleConfig", useSimpleConfig)
+            .add("syncFormatter", syncFormatter).add("fileSets", fileSets).add("filters", filters)
+            .toString();
+    }
+
+}

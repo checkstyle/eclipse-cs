@@ -44,7 +44,7 @@ public class CheckstyleConfigurationFile {
     private long modificationStamp;
 
     /** The resolved configuration file URL. */
-    private URL resolvedConfigFileURL;
+    private URL resolvedConfigFileUrl;
 
     /** The property resolver. */
     private PropertyResolver propertyResolver;
@@ -74,7 +74,7 @@ public class CheckstyleConfigurationFile {
     public InputSource getCheckConfigFileInputSource() {
 
         final InputSource input = new InputSource(getCheckConfigFileStream());
-        input.setSystemId(getResolvedConfigFileURL().toString());
+        input.setSystemId(getResolvedConfigFileUrl().toString());
 
         return input;
     }
@@ -138,18 +138,18 @@ public class CheckstyleConfigurationFile {
      *
      * @return the resolved URL
      */
-    public URL getResolvedConfigFileURL() {
-        return resolvedConfigFileURL;
+    public URL getResolvedConfigFileUrl() {
+        return resolvedConfigFileUrl;
     }
 
     /**
      * Sets the resolved URL of the Checkstyle configuration file.
      *
-     * @param resolvedConfigFileURL
+     * @param resolvedConfigFileUrl
      *            the resolved URL
      */
-    public void setResolvedConfigFileURL(URL resolvedConfigFileURL) {
-        this.resolvedConfigFileURL = resolvedConfigFileURL;
+    public void setResolvedConfigFileUrl(URL resolvedConfigFileUrl) {
+        this.resolvedConfigFileUrl = resolvedConfigFileUrl;
     }
 
     /**

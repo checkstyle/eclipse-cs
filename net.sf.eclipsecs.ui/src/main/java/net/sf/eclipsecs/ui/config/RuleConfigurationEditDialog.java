@@ -45,11 +45,11 @@ import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.SwtUtil;
 
 /**
  * Edit dialog for property values.
@@ -134,11 +134,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         // Init the translate tokens preference
         mBtnTranslate.setSelection(
-            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS));
+            CheckstyleUiPluginPrefs.getBoolean(CheckstyleUiPluginPrefs.PREF_TRANSLATE_TOKENS));
         mBtnTranslate.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             // store translation preference
             try {
-                CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_TRANSLATE_TOKENS,
+                CheckstyleUiPluginPrefs.setBoolean(CheckstyleUiPluginPrefs.PREF_TRANSLATE_TOKENS,
                     ((Button) event.widget).getSelection());
             }
             catch (BackingStoreException exception) {
@@ -154,11 +154,11 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         // Init the sort tokens preference
         mBtnSort.setSelection(
-            CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS));
+            CheckstyleUiPluginPrefs.getBoolean(CheckstyleUiPluginPrefs.PREF_SORT_TOKENS));
         mBtnSort.addSelectionListener(SelectionListener.widgetSelectedAdapter(event -> {
             // store translation preference
             try {
-                CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_SORT_TOKENS,
+                CheckstyleUiPluginPrefs.setBoolean(CheckstyleUiPluginPrefs.PREF_SORT_TOKENS,
                     ((Button) event.widget).getSelection());
             }
             catch (BackingStoreException exception) {
@@ -200,7 +200,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
         }
 
         // set the logo
-        this.setTitleImage(CheckstyleUIPluginImages.PLUGIN_LOGO.getImage());
+        this.setTitleImage(CheckstyleUiPluginImages.PLUGIN_LOGO.getImage());
     }
 
     @Override
@@ -294,7 +294,7 @@ public class RuleConfigurationEditDialog extends TitleAreaDialog {
 
         // add resize support - for each different module the settings will be
         // stored separately
-        SWTUtil.addResizeSupport(this, CheckstyleUIPlugin.getDefault().getDialogSettings(),
+        SwtUtil.addResizeSupport(this, CheckstyleUiPlugin.getDefault().getDialogSettings(),
             RuleConfigurationEditDialog.class.getName() + "#"
                 + rule.getMetaData().identity().internalName());
     }

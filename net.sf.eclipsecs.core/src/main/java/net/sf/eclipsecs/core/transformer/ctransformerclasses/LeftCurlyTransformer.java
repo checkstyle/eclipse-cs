@@ -25,14 +25,14 @@ import java.util.List;
 
 import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
 
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
  * Wrapper class for converting the checkstyle-rule LeftCurly to appropriate
  * eclipse-formatter-rules.
  */
-public class LeftCurlyTransformer extends AbstractCTransformationClass {
+public class LeftCurlyTransformer extends AbstractCheckstyleTransformationClass {
 
     /** Formatter settings to apply for the CLASS_DEF token. */
     private static final List<String> CLASS_DEF_SETTINGS = List.of(

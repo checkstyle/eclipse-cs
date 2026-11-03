@@ -40,10 +40,10 @@ import org.osgi.service.prefs.BackingStoreException;
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
 import net.sf.eclipsecs.core.builder.CheckstyleBuilder;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
 
@@ -59,7 +59,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor;
 public class CheckstylePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     /** The working set of check configurations. */
-    private final ICheckConfigurationWorkingSet workingSet;
+    private final CheckConfigurationWorkingSet workingSet;
     /** The general settings composite. */
     private CheckstylePreferencePageGeneralSettings generalSettings;
     /** Flag indicating whether all projects need a rebuild. */
@@ -69,7 +69,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
      * Constructor.
      */
     public CheckstylePreferencePage() {
-        setPreferenceStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
+        setPreferenceStore(CheckstyleUiPlugin.getDefault().getPreferenceStore());
 
         workingSet = CheckConfigurationFactory.newWorkingSet();
         noDefaultAndApplyButton();
@@ -127,14 +127,14 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             //
             // Save the general preferences.
             //
-            CheckstyleUIPluginPrefs.setString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD,
+            CheckstyleUiPluginPrefs.setString(CheckstyleUiPluginPrefs.PREF_ASK_BEFORE_REBUILD,
                 generalSettings.getRebuildIfNeeded());
 
             //
             // fileset warning preference
             //
             final boolean warnFileSetsNow = generalSettings.getWarnBeforeLosingFilesets();
-            CheckstyleUIPluginPrefs.setBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING,
+            CheckstyleUiPluginPrefs.setBoolean(CheckstyleUiPluginPrefs.PREF_FILESET_WARNING,
                 warnFileSetsNow);
 
             //
@@ -182,8 +182,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             final Collection<IProject> projectsToBuild = workingSet.getAffectedProjects();
 
             if (needRebuildAllProjects || !projectsToBuild.isEmpty()) {
-                final String promptRebuildPref = CheckstyleUIPluginPrefs
-                    .getString(CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+                final String promptRebuildPref = CheckstyleUiPluginPrefs
+                    .getString(CheckstyleUiPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
                 boolean rebuild = MessageDialogWithToggle.ALWAYS.equals(promptRebuildPref);
 
@@ -197,8 +197,8 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
                             Messages.CheckstylePreferencePage_titleRebuild,
                             Messages.CheckstylePreferencePage_msgRebuild,
                             Messages.CheckstylePreferencePage_nagRebuild, false,
-                            CheckstyleUIPlugin.getDefault().getPreferenceStore(),
-                            CheckstyleUIPluginPrefs.PREF_ASK_BEFORE_REBUILD);
+                            CheckstyleUiPlugin.getDefault().getPreferenceStore(),
+                            CheckstyleUiPluginPrefs.PREF_ASK_BEFORE_REBUILD);
 
                     rebuild = dialog.getReturnCode() == IDialogConstants.YES_ID;
                 }
@@ -214,7 +214,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
 
                     }
                     catch (CheckstylePluginException exception) {
-                        CheckstyleUIPlugin.errorDialog(getShell(),
+                        CheckstyleUiPlugin.errorDialog(getShell(),
                             NLS.bind(Messages.errorFailedRebuild, exception.getMessage()),
                             exception, true);
                     }
@@ -222,7 +222,7 @@ public class CheckstylePreferencePage extends PreferencePage implements IWorkben
             }
         }
         catch (CheckstylePluginException | BackingStoreException exception) {
-            CheckstyleUIPlugin.errorDialog(getShell(),
+            CheckstyleUiPlugin.errorDialog(getShell(),
                 NLS.bind(Messages.errorFailedSavePreferences,
                     exception.getLocalizedMessage()), exception, true);
         }

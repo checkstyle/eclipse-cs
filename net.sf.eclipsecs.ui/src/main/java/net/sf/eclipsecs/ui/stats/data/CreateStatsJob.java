@@ -37,7 +37,7 @@ import org.eclipse.core.runtime.jobs.Job;
 import net.sf.eclipsecs.core.builder.CheckstyleMarker;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.stats.Messages;
 import net.sf.eclipsecs.ui.stats.views.internal.CheckstyleMarkerFilter;
 
@@ -134,7 +134,7 @@ public class CreateStatsJob extends Job {
             status = Status.OK_STATUS;
         }
         catch (CoreException exception) {
-            status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+            status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK,
                 Messages.CreateStatsJob_errorAnalyzingMarkers, exception);
         }
 

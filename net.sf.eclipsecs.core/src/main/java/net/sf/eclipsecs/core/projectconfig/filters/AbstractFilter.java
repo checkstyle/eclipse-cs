@@ -30,7 +30,7 @@ import com.google.common.base.MoreObjects;
  * Base implementation of a filter.
  *
  */
-public abstract class AbstractFilter implements IFilter {
+public abstract class AbstractFilter implements AuditFilter {
 
     /** Name of the filter. */
     private String filterName;

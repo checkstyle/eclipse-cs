@@ -50,7 +50,7 @@ import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 import net.sf.eclipsecs.core.config.meta.RuleGroupMetadata;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 
 /**
@@ -326,19 +326,19 @@ public final class AvailableModulesViewer extends Composite {
 
             if (element instanceof RuleGroupMetadata) {
                 if (isGroupUsed((RuleGroupMetadata) element)) {
-                    image = CheckstyleUIPluginImages.MODULEGROUP_TICKED_ICON.getImage();
+                    image = CheckstyleUiPluginImages.MODULEGROUP_TICKED_ICON.getImage();
                 }
                 else {
-                    image = CheckstyleUIPluginImages.MODULEGROUP_ICON.getImage();
+                    image = CheckstyleUiPluginImages.MODULEGROUP_ICON.getImage();
                 }
             }
             else if (element instanceof RuleMetadata) {
 
                 if (isMetadataUsed((RuleMetadata) element)) {
-                    image = CheckstyleUIPluginImages.MODULE_TICKED_ICON.getImage();
+                    image = CheckstyleUiPluginImages.MODULE_TICKED_ICON.getImage();
                 }
                 else {
-                    image = CheckstyleUIPluginImages.MODULE_ICON.getImage();
+                    image = CheckstyleUiPluginImages.MODULE_ICON.getImage();
                 }
             }
             return image;
