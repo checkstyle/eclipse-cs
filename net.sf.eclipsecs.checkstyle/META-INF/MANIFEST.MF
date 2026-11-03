@@ -38,5 +38,5 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.utils
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ClassPath: .,
- checkstyle-13.11.0-all.jar
+ checkstyle-14.0.0-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle
