@@ -1,6 +1,6 @@
 ///////////////////////////////////////////////////////////////////////////////////////////////
 //
-// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch, Fabrice Bellingard
+// Copyright (C) 2003-2023  David Schneider, Lars Ködderitzsch
 //
 // This library is free software; you can redistribute it and/or
 // modify it under the terms of the GNU Lesser General Public
@@ -18,22 +18,32 @@
 //
 ///////////////////////////////////////////////////////////////////////////////////////////////
 
-package net.sf.eclipsecs.ui.util.table;
+package net.sf.eclipsecs.ui.quickfixes;
 
-import org.eclipse.jface.dialogs.IDialogSettings;
+import org.eclipse.core.resources.IMarker;
+import org.eclipse.ui.IMarkerResolution2;
 
 /**
- * Interface for implementations that provide settings where the <code>EnhancedTableViewer</code>
- * can store its current state.
+ * Interface for a quickfix implementation for checkstyle markers.
  *
  */
-public interface ITableSettingsProvider {
+public interface CheckstyleMarkerResolution extends IMarkerResolution2 {
 
     /**
-     * Provides a settings instance.
+     * Checks if this quickfix can actually fix the marker occurrence.
      *
-     * @return the settings
+     * @param marker
+     *            the marker to potentially be fixed.
+     * @return <code>true</code> if this quickfix can fix the marker, <code>false</code> otherwise.
      */
-    IDialogSettings getTableSettings();
+    boolean canFix(IMarker marker);
+
+    /**
+     * Sets the module id for this quickfix.
+     *
+     * @param module
+     *            id of the checkstyle module
+     */
+    void setModule(String module);
 
 }

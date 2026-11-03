@@ -67,7 +67,7 @@ public class PackageFilter extends AbstractFilter {
     }
 
     @Override
-    public IFilter copy() {
+    public AuditFilter copy() {
         return new PackageFilter(this);
     }
 

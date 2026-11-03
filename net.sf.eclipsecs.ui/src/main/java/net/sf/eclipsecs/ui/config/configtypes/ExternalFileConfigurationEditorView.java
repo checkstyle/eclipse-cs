@@ -79,7 +79,7 @@ public final class ExternalFileConfigurationEditorView extends Composite {
 
         description = new Text(this, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
-            .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
+            .hint(CheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
             .grab(true, true)
             .applyTo(description);
 

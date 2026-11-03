@@ -42,8 +42,8 @@ import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 import net.sf.eclipsecs.ui.Messages;
+import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidget;
 import net.sf.eclipsecs.ui.config.widgets.ConfigPropertyWidgetFactory;
-import net.sf.eclipsecs.ui.config.widgets.IConfigPropertyWidget;
 
 /**
  * Composite offering the general settings of the module edit dialog, providing the severity combo
@@ -58,7 +58,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
     /** The combo viewer for severity selection. */
     private final ComboViewer severityCombo;
     /** The list of configuration property widgets. */
-    private final List<IConfigPropertyWidget> configPropertyWidgets;
+    private final List<ConfigPropertyWidget> configPropertyWidgets;
 
     /**
      * Creates the general settings composite.
@@ -134,7 +134,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
      * Restores the default values of all property widgets.
      */
     public void restoreProperties() {
-        configPropertyWidgets.forEach(IConfigPropertyWidget::restorePropertyDefault);
+        configPropertyWidgets.forEach(ConfigPropertyWidget::restorePropertyDefault);
     }
 
     /**
@@ -144,7 +144,7 @@ public final class RuleConfigurationEditDialogGeneralSettings extends Composite 
      */
     public Optional<String> validatePropertyWidgets() {
         Optional<String> errorMessage = Optional.empty();
-        for (IConfigPropertyWidget widget : configPropertyWidgets) {
+        for (ConfigPropertyWidget widget : configPropertyWidgets) {
             final ConfigProperty property = widget.getConfigProperty();
             try {
                 widget.validate();

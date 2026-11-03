@@ -48,7 +48,7 @@ public class FilesOlderThanOneDayFilter extends AbstractFilter {
     }
 
     @Override
-    public IFilter copy() {
+    public AuditFilter copy() {
         return new FilesOlderThanOneDayFilter(this);
     }
 

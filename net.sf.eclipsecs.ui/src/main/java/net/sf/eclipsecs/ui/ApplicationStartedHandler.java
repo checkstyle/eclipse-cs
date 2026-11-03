@@ -116,7 +116,7 @@ public final class ApplicationStartedHandler implements EventHandler {
         final IProgressService service = PlatformUI.getWorkbench().getProgressService();
         if (service != null) {
             service.registerIconForFamily(
-                CheckstyleUIPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),
+                CheckstyleUiPluginImages.CHECKSTYLE_ICON.getImageDescriptor(),
                 AbstractCheckJob.CHECKSTYLE_JOB_FAMILY);
         }
     }

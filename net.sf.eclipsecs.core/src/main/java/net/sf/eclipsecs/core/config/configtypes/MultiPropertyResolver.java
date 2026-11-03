@@ -35,7 +35,7 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
  * PropertyResolver adds the property chaining feature, to allow properties within properties.
  *
  */
-public class MultiPropertyResolver implements PropertyResolver, IContextAware {
+public class MultiPropertyResolver implements PropertyResolver, ContextAware {
 
     /** The list of PropertyResolvers. */
     private List<PropertyResolver> childResolvers = new ArrayList<>();
@@ -61,8 +61,8 @@ public class MultiPropertyResolver implements PropertyResolver, IContextAware {
 
         // propagate context to the childs
         for (PropertyResolver childResolver : childResolvers) {
-            if (childResolver instanceof IContextAware) {
-                ((IContextAware) childResolver).setProjectContext(project);
+            if (childResolver instanceof ContextAware) {
+                ((ContextAware) childResolver).setProjectContext(project);
             }
         }
     }

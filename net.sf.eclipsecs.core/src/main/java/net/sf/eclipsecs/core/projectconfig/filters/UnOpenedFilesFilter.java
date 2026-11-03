@@ -51,7 +51,7 @@ public class UnOpenedFilesFilter extends AbstractFilter {
     }
 
     @Override
-    public IFilter copy() {
+    public AuditFilter copy() {
         return new UnOpenedFilesFilter(this);
     }
 

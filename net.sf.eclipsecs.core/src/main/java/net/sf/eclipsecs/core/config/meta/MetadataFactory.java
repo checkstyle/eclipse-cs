@@ -58,7 +58,7 @@ import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
-import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.config.XmlTags;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
@@ -131,20 +131,20 @@ public final class MetadataFactory {
             final Object moduleInstance = checkClass.getDeclaredConstructor().newInstance();
 
             if (moduleInstance instanceof AbstractFileSetCheck) {
-                parent = XMLTags.CHECKER_MODULE;
+                parent = XmlTags.CHECKER_MODULE;
             }
             else {
-                parent = XMLTags.TREEWALKER_MODULE;
+                parent = XmlTags.TREEWALKER_MODULE;
             }
         }
         catch (ClassNotFoundException | InstantiationException | IllegalAccessException
             | IllegalArgumentException | InvocationTargetException | NoSuchMethodException
             | SecurityException exception) {
             // Ok we tried... default to TreeWalker
-            parent = XMLTags.TREEWALKER_MODULE;
+            parent = XmlTags.TREEWALKER_MODULE;
         }
 
-        final RuleGroupMetadata otherGroup = getRuleGroupMetadata(XMLTags.OTHER_GROUP);
+        final RuleGroupMetadata otherGroup = getRuleGroupMetadata(XmlTags.OTHER_GROUP);
         final RuleMetadata ruleMeta = new RuleMetadata(
             new RuleIdentity(module.getName(), module.getName(), parent, otherGroup, null,
                 Collections.emptyList()),

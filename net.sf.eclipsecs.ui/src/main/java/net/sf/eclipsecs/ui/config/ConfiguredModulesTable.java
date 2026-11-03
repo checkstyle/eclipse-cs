@@ -42,7 +42,7 @@ import org.eclipse.swt.widgets.Table;
 import net.sf.eclipsecs.core.config.Module;
 import net.sf.eclipsecs.core.config.Severity;
 import net.sf.eclipsecs.core.config.meta.RuleMetadata;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.ConfiguredModules.ConfiguredModulesCallbacks;
 import net.sf.eclipsecs.ui.util.HtmlUtil;
@@ -209,7 +209,7 @@ public final class ConfiguredModulesTable extends Composite {
         final String concreteViewId = CheckConfigurationConfigureDialog.class.getName();
 
         final IDialogSettings workbenchSettings =
-            CheckstyleUIPlugin.getDefault().getDialogSettings();
+            CheckstyleUiPlugin.getDefault().getDialogSettings();
         IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
         if (settings == null) {

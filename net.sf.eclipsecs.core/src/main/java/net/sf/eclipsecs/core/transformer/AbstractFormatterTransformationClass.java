@@ -27,7 +27,7 @@ import java.util.Map;
  * react on a formatter-setting.
  *
  */
-public abstract class AbstractFTransformationClass {
+public abstract class AbstractFormatterTransformationClass {
 
     /** The checkstyle-configuration for this rule. */
     private final CheckstyleSetting checkstyleSetting = new CheckstyleSetting();

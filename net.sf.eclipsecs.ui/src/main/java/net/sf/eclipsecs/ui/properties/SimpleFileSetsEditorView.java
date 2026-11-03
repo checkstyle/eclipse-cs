@@ -32,12 +32,12 @@ import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationLabelProvider;
 import net.sf.eclipsecs.ui.config.CheckConfigurationViewerSorter;
-import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
+import net.sf.eclipsecs.ui.config.configtypes.CheckConfigurationEditor;
 
 /**
  * View composite of the simple file sets editor, offering a combo box to assign a single check
@@ -93,13 +93,13 @@ public final class SimpleFileSetsEditorView extends Composite {
         final Text mTxtConfigDescription = new Text(configArea,
             SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.READ_ONLY | SWT.BORDER | SWT.V_SCROLL);
         GridDataFactory.fillDefaults().span(2, 1)
-            .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
+            .hint(CheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
             .grab(true, true)
             .applyTo(mTxtConfigDescription);
 
         comboViewer.addSelectionChangedListener(event -> {
-            final ICheckConfiguration config =
-                (ICheckConfiguration) event.getStructuredSelection().getFirstElement();
+            final CheckConfiguration config =
+                (CheckConfiguration) event.getStructuredSelection().getFirstElement();
             defaultFileSet.setCheckConfig(config);
             mTxtConfigDescription.setText(getDescription(config));
             propertyPageContext.updateButtons();
@@ -119,7 +119,7 @@ public final class SimpleFileSetsEditorView extends Composite {
      *            the check configuration
      * @return the configuration description
      */
-    private static String getDescription(ICheckConfiguration config) {
+    private static String getDescription(CheckConfiguration config) {
         final String description;
         if (config.getDescription() != null) {
             description = config.getDescription();

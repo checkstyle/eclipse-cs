@@ -34,8 +34,8 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginPrefs;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginPrefs;
 import net.sf.eclipsecs.ui.Messages;
 
 /**
@@ -55,7 +55,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
     private final Composite fileSetsContainer;
 
     /** The file sets editor. */
-    private IFileSetsEditor fileSetsEditor;
+    private FileSetsEditor fileSetsEditor;
 
     /**
      * Creates the main tab of the checkstyle property page.
@@ -162,7 +162,7 @@ public final class CheckstylePropertyPageMainTab extends Composite {
             propertyPageContext.configuration().setUseSimpleConfig(chkSimpleConfig.getSelection());
 
             final boolean showWarning =
-                CheckstyleUIPluginPrefs.getBoolean(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
+                CheckstyleUiPluginPrefs.getBoolean(CheckstyleUiPluginPrefs.PREF_FILESET_WARNING);
             if (showWarning && propertyPageContext.configuration().isUseSimpleConfig()) {
                 final MessageDialogWithToggle dialog = new MessageDialogWithToggle(getShell(),
                     Messages.CheckstylePropertyPage_titleWarnFilesets, null,
@@ -182,8 +182,8 @@ public final class CheckstylePropertyPageMainTab extends Composite {
                     }
 
                 };
-                dialog.setPrefStore(CheckstyleUIPlugin.getDefault().getPreferenceStore());
-                dialog.setPrefKey(CheckstyleUIPluginPrefs.PREF_FILESET_WARNING);
+                dialog.setPrefStore(CheckstyleUiPlugin.getDefault().getPreferenceStore());
+                dialog.setPrefKey(CheckstyleUiPluginPrefs.PREF_FILESET_WARNING);
                 dialog.open();
 
             }

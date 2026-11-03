@@ -40,11 +40,11 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.configtypes.IContextAware;
+import net.sf.eclipsecs.core.config.configtypes.ContextAware;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.transformer.CheckstyleTransformer;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
@@ -77,7 +77,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
         subMonitor.setWorkRemaining(IProgressMonitor.UNKNOWN);
         final IStatus status;
         try {
-            final IProjectConfiguration conf =
+            final ProjectConfiguration conf =
                 ProjectConfigurationFactory.getConfiguration(project);
 
             final List<Configuration> rules = new ArrayList<>();
@@ -85,7 +85,7 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
             // collect rules from all configured filesets
             for (FileSet fileSet : conf.getFileSets()) {
 
-                final ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+                final CheckConfiguration checkConfig = fileSet.getCheckConfig();
 
                 final CheckstyleConfigurationFile configFile =
                     checkConfig.getCheckstyleConfiguration();
@@ -94,8 +94,8 @@ public class TransformCheckstyleRulesJob extends WorkspaceJob {
 
                 // set the project context if the property resolver needs the
                 // context
-                if (resolver instanceof IContextAware) {
-                    ((IContextAware) resolver).setProjectContext(project);
+                if (resolver instanceof ContextAware) {
+                    ((ContextAware) resolver).setProjectContext(project);
                 }
 
                 InputSource input = null;

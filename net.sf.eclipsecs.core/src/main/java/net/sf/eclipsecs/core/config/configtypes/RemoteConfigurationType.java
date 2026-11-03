@@ -48,8 +48,8 @@ import org.eclipse.osgi.util.NLS;
 import com.google.common.io.ByteStreams;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
@@ -91,7 +91,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
     @Override
     public CheckstyleConfigurationFile getCheckstyleConfiguration(
-        ICheckConfiguration checkConfiguration) throws CheckstylePluginException {
+        CheckConfiguration checkConfiguration) throws CheckstylePluginException {
 
         final boolean useCacheFile =
             Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
@@ -103,7 +103,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         try {
 
             // resolve the true configuration file URL
-            data.setResolvedConfigFileURL(resolveLocation(checkConfiguration));
+            data.setResolvedConfigFileUrl(resolveLocation(checkConfiguration));
 
             boolean originalFileSuccess = false;
             byte[] configurationFileData = null;
@@ -111,16 +111,16 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
             try {
                 System.setProperty(KEY_MAX_REDIRECTS, "3");
 
-                final URLConnection connection = data.getResolvedConfigFileURL().openConnection();
+                final URLConnection connection = data.getResolvedConfigFileUrl().openConnection();
 
                 final RemoteConfigAuthenticator auth =
-                    RemoteConfigAuthenticator.create(data.getResolvedConfigFileURL());
+                    RemoteConfigAuthenticator.create(data.getResolvedConfigFileUrl());
                 if (auth != null) {
                     connection.setRequestProperty("Authorization", auth.basicAuthHeaderValue);
                 }
 
                 // get the configuration file data
-                configurationFileData = getBytesFromURLConnection(connection);
+                configurationFileData = getBytesFromUrlConnection(connection);
 
                 // get last modification timestamp
                 data.setModificationStamp(connection.getLastModified());
@@ -189,10 +189,10 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
      * @return the bundle bytes if available
      */
     private Optional<byte[]> getPropertiesBundle(boolean originalFileSuccess, boolean useCacheFile,
-        CheckstyleConfigurationFile data, ICheckConfiguration checkConfiguration) {
+        CheckstyleConfigurationFile data, CheckConfiguration checkConfiguration) {
         Optional<byte[]> bundle = Optional.empty();
         if (originalFileSuccess) {
-            bundle = getAdditionPropertiesBundleBytes(data.getResolvedConfigFileURL());
+            bundle = getAdditionPropertiesBundleBytes(data.getResolvedConfigFileUrl());
         }
         if (useCacheFile) {
             bundle = getBytesFromCacheBundleFile(checkConfiguration);
@@ -201,18 +201,18 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     }
 
     @Override
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration) throws IOException {
+    protected URL resolveLocation(CheckConfiguration checkConfiguration) throws IOException {
         return new URL(checkConfiguration.getLocation());
     }
 
     @Override
-    public void notifyCheckConfigRemoved(ICheckConfiguration checkConfiguration)
+    public void notifyCheckConfigRemoved(CheckConfiguration checkConfiguration)
             throws CheckstylePluginException {
         super.notifyCheckConfigRemoved(checkConfiguration);
 
         // remove authentication info
         RemoteConfigAuthenticator
-            .removeCachedAuthInfo(checkConfiguration.getResolvedConfigurationFileURL());
+            .removeCachedAuthInfo(checkConfiguration.getResolvedConfigurationFileUrl());
 
         final boolean useCacheFile =
             Boolean.parseBoolean(checkConfiguration.getAdditionalData().get(KEY_CACHE_CONFIG));
@@ -238,7 +238,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
      * @throws IOException
      *             error getting the stream (file does not exist)
      */
-    private byte[] getBytesFromCacheFile(ICheckConfiguration checkConfig) throws IOException {
+    private byte[] getBytesFromCacheFile(CheckConfiguration checkConfig) throws IOException {
         final String cacheFileLocation =
             checkConfig.getAdditionalData().get(KEY_CACHE_FILE_LOCATION);
 
@@ -246,10 +246,10 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         cacheFilePath = cacheFilePath.append(cacheFileLocation);
         final File cacheFile = cacheFilePath.toFile();
 
-        final URL configURL = cacheFile.toURI().toURL();
-        final URLConnection connection = configURL.openConnection();
+        final URL configUrl = cacheFile.toURI().toURL();
+        final URLConnection connection = configUrl.openConnection();
 
-        return getBytesFromURLConnection(connection);
+        return getBytesFromUrlConnection(connection);
     }
 
     /**
@@ -261,7 +261,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
      * @throws IOException
      *             error getting the stream (file does not exist)
      */
-    private Optional<byte[]> getBytesFromCacheBundleFile(ICheckConfiguration checkConfig) {
+    private Optional<byte[]> getBytesFromCacheBundleFile(CheckConfiguration checkConfig) {
         Optional<byte[]> bytes = Optional.empty();
         final String cacheFileLocation =
             checkConfig.getAdditionalData().get(KEY_CACHE_PROPS_FILE_LOCATION);
@@ -273,10 +273,10 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
                 cacheFilePath = cacheFilePath.append(cacheFileLocation);
                 final File cacheFile = cacheFilePath.toFile();
 
-                final URL configURL = cacheFile.toURI().toURL();
-                final URLConnection connection = configURL.openConnection();
+                final URL configUrl = cacheFile.toURI().toURL();
+                final URLConnection connection = configUrl.openConnection();
 
-                bytes = Optional.of(getBytesFromURLConnection(connection));
+                bytes = Optional.of(getBytesFromUrlConnection(connection));
             }
             catch (IOException exception) {
                 // we won't load the bundle then
@@ -297,7 +297,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
      * @param bundleBytes
      *            the addition properties bundle bytes
      */
-    private void writeToCacheFile(ICheckConfiguration checkConfig, byte[] configFileBytes,
+    private void writeToCacheFile(CheckConfiguration checkConfig, byte[] configFileBytes,
         byte[] bundleBytes) {
 
         final String cacheFileLocation =
@@ -335,7 +335,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
     }
 
     @Override
-    protected byte[] getBytesFromURLConnection(URLConnection connection) throws IOException {
+    protected byte[] getBytesFromUrlConnection(URLConnection connection) throws IOException {
         // set timeouts - bug 2941010
         connection.setConnectTimeout(TIMEOUT);
         connection.setReadTimeout(TIMEOUT);
@@ -440,26 +440,26 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         /**
          * Stores the credentials to the key ring.
          *
-         * @param resolvedCheckConfigurationURL
+         * @param resolvedCheckConfigurationUrl
          *            the url
          * @param userName
          *            the user name
          * @param password
          *            the password
          */
-        public static void storeCredentials(URL resolvedCheckConfigurationURL, String userName,
+        public static void storeCredentials(URL resolvedCheckConfigurationUrl, String userName,
             String password) {
 
             try {
 
                 // store authorization info to the internal key ring
                 final ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
-                    .node(getSecureStoragePath(resolvedCheckConfigurationURL));
+                    .node(getSecureStoragePath(resolvedCheckConfigurationUrl));
 
                 prefs.put(KEY_USERNAME, userName, false);
                 prefs.put(KEY_PASSWORD, password, true);
 
-                FAILED_WITH_401_URLS.remove(resolvedCheckConfigurationURL.toString());
+                FAILED_WITH_401_URLS.remove(resolvedCheckConfigurationUrl.toString());
             }
             catch (CheckstylePluginException | StorageException exception) {
                 CheckstyleLog.log(exception);
@@ -469,21 +469,21 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         /**
          * Removes the authentication info from the session cache.
          *
-         * @param resolvedCheckConfigurationURL
+         * @param resolvedCheckConfigurationUrl
          *            the check configuration URL
          * @throws CheckstylePluginException
          *             if the authentication could not be removed
          */
-        public static void removeCachedAuthInfo(URL resolvedCheckConfigurationURL)
+        public static void removeCachedAuthInfo(URL resolvedCheckConfigurationUrl)
                 throws CheckstylePluginException {
-            FAILED_WITH_401_URLS.remove(resolvedCheckConfigurationURL.toString());
+            FAILED_WITH_401_URLS.remove(resolvedCheckConfigurationUrl.toString());
 
-            final String storagePath = getSecureStoragePath(resolvedCheckConfigurationURL);
+            final String storagePath = getSecureStoragePath(resolvedCheckConfigurationUrl);
 
             if (SecurePreferencesFactory.getDefault().nodeExists(storagePath)) {
 
                 final ISecurePreferences prefs = SecurePreferencesFactory.getDefault()
-                    .node(getSecureStoragePath(resolvedCheckConfigurationURL));
+                    .node(getSecureStoragePath(resolvedCheckConfigurationUrl));
                 prefs.removeNode();
             }
         }
@@ -491,13 +491,13 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
         /**
          * Converts the given configuration URL into a secure storage path.
          *
-         * @param resolvedCheckConfigurationURL
+         * @param resolvedCheckConfigurationUrl
          *            the resolved configuration URL
          * @return the secure storage path
          * @throws CheckstylePluginException
          *             an unexpected exception occurred
          */
-        private static String getSecureStoragePath(URL resolvedCheckConfigurationURL)
+        private static String getSecureStoragePath(URL resolvedCheckConfigurationUrl)
                 throws CheckstylePluginException {
 
             // convert the config url to a hash, because storage paths can only
@@ -509,7 +509,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
 
                 final MessageDigest digest = MessageDigest.getInstance("MD5");
                 final byte[] hash =
-                    digest.digest(resolvedCheckConfigurationURL.toExternalForm().getBytes("UTF-8"));
+                    digest.digest(resolvedCheckConfigurationUrl.toExternalForm().getBytes("UTF-8"));
                 urlHash = EncodingUtils.encodeBase64(hash);
 
                 urlHash = urlHash.replace('/', '_');

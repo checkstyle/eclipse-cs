@@ -29,8 +29,8 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 
 import com.puppycrawl.tools.checkstyle.PropertyResolver;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
 
 /**
  * Implementation of the configuration type for a built in check configuration, that is located
@@ -52,7 +52,7 @@ public class BuiltInConfigurationType extends AbstractConfigurationType {
     }
 
     @Override
-    protected URL resolveLocation(ICheckConfiguration checkConfiguration) {
+    protected URL resolveLocation(CheckConfiguration checkConfiguration) {
 
         final String contributorName = checkConfiguration.getAdditionalData().get(CONTRIBUTOR_KEY);
 
@@ -69,14 +69,14 @@ public class BuiltInConfigurationType extends AbstractConfigurationType {
     }
 
     @Override
-    protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigURL) {
+    protected Optional<byte[]> getAdditionPropertiesBundleBytes(URL checkConfigUrl) {
         // just returns empty since additional property file is not needed nor
         // supported
         return Optional.empty();
     }
 
     @Override
-    protected PropertyResolver getPropertyResolver(ICheckConfiguration config,
+    protected PropertyResolver getPropertyResolver(CheckConfiguration config,
         CheckstyleConfigurationFile configFile) {
         final MultiPropertyResolver resolver = new MultiPropertyResolver();
         resolver.addPropertyResolver(new ResolvablePropertyResolver(config));

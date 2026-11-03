@@ -23,7 +23,7 @@ package net.sf.eclipsecs.core.transformer.ftransformerclasses;
 import java.util.HashMap;
 import java.util.Map;
 
-import net.sf.eclipsecs.core.transformer.AbstractFTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractFormatterTransformationClass;
 import net.sf.eclipsecs.core.transformer.CheckstyleSetting;
 import net.sf.eclipsecs.core.transformer.FormatterKey;
 
@@ -33,7 +33,7 @@ import net.sf.eclipsecs.core.transformer.FormatterKey;
  *
  */
 @FormatterKey("insert_space_before_opening_paren_in_method_invocation")
-public class MethodInvocationParenTransformer extends AbstractFTransformationClass {
+public class MethodInvocationParenTransformer extends AbstractFormatterTransformationClass {
 
     /**
      * Creates a new instance.

@@ -28,12 +28,12 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.FileMatchPattern;
 import net.sf.eclipsecs.core.projectconfig.FileSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
 
@@ -42,7 +42,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationConfigureDialog;
  * configuration can be chosen.
  *
  */
-public class SimpleFileSetsEditor implements IFileSetsEditor {
+public class SimpleFileSetsEditor implements FileSetsEditor {
 
     /** The property page context. */
     private final PropertyPageContext propertyPageContext;
@@ -75,7 +75,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
     public void setFileSets(List<FileSet> fileSets) {
         this.fileSets = fileSets;
 
-        ICheckConfiguration config = null;
+        CheckConfiguration config = null;
         if (!fileSets.isEmpty()) {
             config = fileSets.get(0).getCheckConfig();
         }
@@ -115,7 +115,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
      * Opens a dialog to configure the check configuration of the default file set.
      */
     private void manageConfig() {
-        final ICheckConfiguration config = defaultFileSet.getCheckConfig();
+        final CheckConfiguration config = defaultFileSet.getCheckConfig();
         if (config != null) {
             try {
                 config.getCheckstyleConfiguration();
@@ -126,7 +126,7 @@ public class SimpleFileSetsEditor implements IFileSetsEditor {
                 dialog.open();
             }
             catch (CheckstylePluginException exception) {
-                CheckstyleUIPlugin.warningDialog(shell,
+                CheckstyleUiPlugin.warningDialog(shell,
                     NLS.bind(Messages.CheckstylePreferencePage_msgProjectRelativeConfigNoFound,
                         propertyPageContext.project(), config.getLocation()),
                     exception);

@@ -62,7 +62,7 @@ public class NonSrcDirsFilter extends AbstractFilter {
     }
 
     @Override
-    public IFilter copy() {
+    public AuditFilter copy() {
         return new NonSrcDirsFilter(this);
     }
 

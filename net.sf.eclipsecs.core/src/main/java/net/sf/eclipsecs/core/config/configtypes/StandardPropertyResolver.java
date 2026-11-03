@@ -29,7 +29,7 @@ import com.puppycrawl.tools.checkstyle.PropertyResolver;
  * Property resolver that resolves some eclipse standard variables.
  *
  */
-public class StandardPropertyResolver implements PropertyResolver, IContextAware {
+public class StandardPropertyResolver implements PropertyResolver, ContextAware {
 
     /** Constant for the workspace_loc variable. */
     private static final String WORKSPACE_LOC = "workspace_loc";
@@ -80,11 +80,11 @@ public class StandardPropertyResolver implements PropertyResolver, IContextAware
         }
         else if (configLocation != null
             && (SAMEDIR_LOC.equals(property) || CONFIG_LOC.equals(property))) {
-            final String configLocWOBackslashes = configLocation.replace('\\', '/');
+            final String configLocWithoutBackslashes = configLocation.replace('\\', '/');
 
-            final int lastSlash = configLocWOBackslashes.lastIndexOf("/");
+            final int lastSlash = configLocWithoutBackslashes.lastIndexOf("/");
             if (lastSlash > -1) {
-                value = configLocWOBackslashes.substring(0, lastSlash + 1);
+                value = configLocWithoutBackslashes.substring(0, lastSlash + 1);
             }
         }
 

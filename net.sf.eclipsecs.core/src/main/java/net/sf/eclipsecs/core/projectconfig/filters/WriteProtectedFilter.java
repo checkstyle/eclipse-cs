@@ -46,7 +46,7 @@ public class WriteProtectedFilter extends AbstractFilter {
     }
 
     @Override
-    public IFilter copy() {
+    public AuditFilter copy() {
         return new WriteProtectedFilter(this);
     }
 

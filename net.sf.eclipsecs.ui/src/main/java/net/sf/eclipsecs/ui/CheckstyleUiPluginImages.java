@@ -35,26 +35,26 @@ import org.eclipse.ui.plugin.AbstractUIPlugin;
  * Manages and caches images for the plugin.
  *
  */
-public enum CheckstyleUIPluginImages {
+public enum CheckstyleUiPluginImages {
 
     /** Image descriptor for the plugin logo. */
     PLUGIN_LOGO(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/eclipse-cs-little.png");
     }),
     /** Image descriptor for the error marker. */
     MARKER_ERROR(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/checkstyle_error.gif");
     }),
     /** Image descriptor for the warning marker. */
     MARKER_WARNING(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/checkstyle_warning.gif");
     }),
     /** Image descriptor for the info marker. */
     MARKER_INFO(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/checkstyle_info.gif");
     }),
     /** Image descriptor for the help icon. */
@@ -64,27 +64,27 @@ public enum CheckstyleUIPluginImages {
     }),
     /** Image descriptor for the add correction icon. */
     CORRECTION_ADD(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/add_correction.png");
     }),
     /** Image descriptor for the add braces correction icon. */
     CORRECTION_ADD_BRACES(() -> {
         return AbstractUIPlugin
-            .imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID, "icons/correction_cast.png");
+            .imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID, "icons/correction_cast.png");
     }),
     /** Image descriptor for the change correction icon. */
     CORRECTION_CHANGE(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/correction_change.png");
     }),
     /** Image descriptor for the remove correction icon. */
     CORRECTION_REMOVE(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/remove_correction.png");
     }),
     /** Image descriptor for the tick icon. */
     TICK_ICON(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/tick.gif");
     }),
 
@@ -96,18 +96,18 @@ public enum CheckstyleUIPluginImages {
     }),
     /** Image descriptor for the Checkstyle violation view icon. */
     LIST_VIEW_ICON(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/listingView.gif");
     }),
 
     /** Image descriptor for the checked overlay icon. */
     CHECKED_OVERLAY(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/ovr/checked.png");
     }),
     /** Image descriptor for the module group icon. */
     MODULEGROUP_ICON(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/modulegroup.gif");
     }),
     /** Image descriptor for the ticked module group icon. */
@@ -117,7 +117,7 @@ public enum CheckstyleUIPluginImages {
     }),
     /** Image descriptor for the module icon. */
     MODULE_ICON(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/module.gif");
     }),
     /** Image descriptor for the ticked module icon. */
@@ -134,7 +134,7 @@ public enum CheckstyleUIPluginImages {
     }),
     /** Image descriptor for the checkstyle project icon. */
     CHECKSTYLE_ICON(() -> {
-        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUIPlugin.PLUGIN_ID,
+        return AbstractUIPlugin.imageDescriptorFromPlugin(CheckstyleUiPlugin.PLUGIN_ID,
             "icons/checkstyle_command.png");
     });
 
@@ -159,7 +159,7 @@ public enum CheckstyleUIPluginImages {
      * @param factory
      *            the lazy creation factory
      */
-    CheckstyleUIPluginImages(Supplier<ImageDescriptor> factory) {
+    CheckstyleUiPluginImages(Supplier<ImageDescriptor> factory) {
         this.factory = factory;
     }
 
@@ -191,7 +191,7 @@ public enum CheckstyleUIPluginImages {
      * Disposes the cached images.
      */
     public static void clearCachedImages() {
-        for (CheckstyleUIPluginImages value : values()) {
+        for (CheckstyleUiPluginImages value : values()) {
             if (value.image != null) {
                 value.image.dispose();
             }

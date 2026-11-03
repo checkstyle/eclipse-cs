@@ -35,12 +35,12 @@ import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Table;
 
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.ui.CheckstyleUIPluginImages;
+import net.sf.eclipsecs.ui.CheckstyleUiPluginImages;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditor.CheckConfigurationWorkingSetEditorModel;
-import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
+import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUi;
 import net.sf.eclipsecs.ui.util.table.TableViewerEnhancer;
 
 /**
@@ -84,23 +84,23 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
         final TableViewerColumn col1 = new TableViewerColumn(tableViewer, SWT.NULL);
         col1.getColumn().setText(Messages.CheckstylePreferencePage_colCheckConfig);
         col1.setLabelProvider(ColumnLabelProvider.createTextImageProvider(
-            element -> ((ICheckConfiguration) element).getName(),
+            element -> ((CheckConfiguration) element).getName(),
             element -> {
-                return ConfigurationTypesUI.getConfigurationTypeImage(
-                    ((ICheckConfiguration) element).getType());
+                return ConfigurationTypesUi.getConfigurationTypeImage(
+                    ((CheckConfiguration) element).getType());
             }));
         tableColumnLayout.setColumnData(col1.getColumn(), new ColumnWeightData(1));
 
         final TableViewerColumn col2 = new TableViewerColumn(tableViewer, SWT.NULL);
         col2.getColumn().setText(Messages.CheckstylePreferencePage_colLocation);
         col2.setLabelProvider(ColumnLabelProvider.createTextProvider(
-            element -> ((ICheckConfiguration) element).getLocation()));
+            element -> ((CheckConfiguration) element).getLocation()));
         tableColumnLayout.setColumnData(col2.getColumn(), new ColumnWeightData(1));
 
         final TableViewerColumn col3 = new TableViewerColumn(tableViewer, SWT.NULL);
         col3.getColumn().setText(Messages.CheckstylePreferencePage_colType);
         col3.setLabelProvider(ColumnLabelProvider.createTextProvider(
-            element -> ((ICheckConfiguration) element).getType().getName()));
+            element -> ((CheckConfiguration) element).getType().getName()));
         tableColumnLayout.setColumnData(col3.getColumn(), new ColumnWeightData(1));
 
         if (model.global()) {
@@ -112,7 +112,7 @@ public final class CheckConfigurationWorkingSetEditorConfigTable extends Composi
                         (CheckConfigurationWorkingCopy) element;
                     Image image = null;
                     if (model.isDefaultConfig().test(cfg)) {
-                        image = CheckstyleUIPluginImages.TICK_ICON.getImage();
+                        image = CheckstyleUiPluginImages.TICK_ICON.getImage();
                     }
                     return image;
                 }));

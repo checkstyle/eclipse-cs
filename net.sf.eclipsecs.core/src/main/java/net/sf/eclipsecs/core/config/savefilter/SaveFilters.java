@@ -47,7 +47,7 @@ public final class SaveFilters {
     private static final String ATTR_CLASS = "class";
 
     /** The filter prototypes configured to the extension point. */
-    private static final ISaveFilter[] SAVE_FILTERS;
+    private static final SaveFilter[] SAVE_FILTERS;
 
     /*
      * Initialize the configured to the filter extension point.
@@ -59,14 +59,14 @@ public final class SaveFilters {
         final IConfigurationElement[] elements =
             pluginRegistry.getConfigurationElementsFor(FILTER_EXTENSION_POINT);
 
-        final List<ISaveFilter> filters = new ArrayList<>();
+        final List<SaveFilter> filters = new ArrayList<>();
 
         for (IConfigurationElement element : elements) {
 
             try {
 
-                final ISaveFilter filter =
-                    (ISaveFilter) element.createExecutableExtension(ATTR_CLASS);
+                final SaveFilter filter =
+                    (SaveFilter) element.createExecutableExtension(ATTR_CLASS);
                 filters.add(filter);
             }
             catch (CoreException exception) {
@@ -74,7 +74,7 @@ public final class SaveFilters {
             }
         }
 
-        SAVE_FILTERS = filters.toArray(new ISaveFilter[filters.size()]);
+        SAVE_FILTERS = filters.toArray(new SaveFilter[filters.size()]);
     }
 
     /** Hidden default constructor. */
@@ -89,7 +89,7 @@ public final class SaveFilters {
      *            the configured modules of a configuration to be written
      */
     public static void process(List<Module> configuredModules) {
-        for (ISaveFilter filter : SAVE_FILTERS) {
+        for (SaveFilter filter : SAVE_FILTERS) {
             filter.postProcessConfiguredModules(configuredModules);
         }
     }

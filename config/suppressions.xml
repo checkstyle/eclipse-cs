@@ -13,7 +13,7 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]builder[/\\]CheckerFactory.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]builder[/\\]CheckstyleBuilder.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]builder[/\\]CheckstyleMarker.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfiguration.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]DefaultCheckConfiguration.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfigurationFactory.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfigurationTester.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfigurationWorkingCopy.java" />
@@ -22,20 +22,20 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ConfigurationReader.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ConfigurationWriter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]GlobalCheckConfigurationWorkingSet.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ICheckConfiguration.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ICheckConfigurationWorkingSet.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfiguration.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]CheckConfigurationWorkingSet.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]Module.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]ResolvableProperty.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]Severity.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]XMLTags.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]XmlTags.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]BuiltInConfigurationType.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]BuiltInFilePropertyResolver.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ClasspathVariableResolver.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]AbstractConfigurationType.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ConfigurationTypes.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ExternalFileConfigurationType.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]IConfigurationType.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]IContextAware.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ConfigurationType.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ContextAware.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]InternalConfigurationType.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]MultiPropertyResolver.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]configtypes[/\\]ProjectConfigurationType.java" />
@@ -48,12 +48,12 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]AllTokensProvider.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]ConfigPropertyMetadata.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]ConfigPropertyType.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]IOptionProvider.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]OptionProvider.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]MetadataFactory.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]RuleGroupMetadata.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]meta[/\\]RuleMetadata.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]CheckerModuleSaveFilter.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]ISaveFilter.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]SaveFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]SaveFilters.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]SortingSaveFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]config[/\\]savefilter[/\\]SuppressWarningsHolderSaveFilter.java" />
@@ -67,26 +67,26 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]nature[/\\]CheckstyleNature.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]FileMatchPattern.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]FileSet.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]IProjectConfiguration.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]DefaultProjectConfiguration.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]LocalCheckConfigurationWorkingSet.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]PluginFilters.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]ProjectConfiguration.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]ProjectConfigurationFactory.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]ProjectConfigurationWorkingCopy.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]XMLTags.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]XmlTags.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]AbstractFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]DerivedFilesFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]FilesInSyncFilter.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]IFilter.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]AuditFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]NonSrcDirsFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]PackageFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]UnOpenedFilesFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]projectconfig[/\\]filters[/\\]WriteProtectedFilter.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]AbstractCTransformationClass.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]AbstractCheckstyleTransformationClass.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]CheckstyleFileWriter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]CheckstyleSetting.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]CheckstyleTransformer.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]AbstractFTransformationClass.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]AbstractFormatterTransformationClass.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]FormatterConfigWriter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]FormatterConfiguration.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]transformer[/\\]FormatterTransformer.java" />
@@ -121,11 +121,11 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]CheckstylePluginException.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]EclipseLogHandler.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]ExtensionClassLoader.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]XMLUtil.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.core[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]core[/\\]util[/\\]XmlUtil.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleMarkerImageProvider.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUIPlugin.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUIPluginImages.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUIPluginPrefs.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUiPlugin.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUiPluginImages.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]CheckstyleUiPluginPrefs.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]Messages.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]actions[/\\]ActivateProjectsAction.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]actions[/\\]CheckSelectedFilesAction.java" />
@@ -145,9 +145,9 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]ResolvablePropertyEditDialog.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]RuleConfigurationEditDialog.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]BuiltInConfigurationEditor.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ConfigurationTypesUI.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ConfigurationTypesUi.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ExternalFileConfigurationEditor.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ICheckConfigurationEditor.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]CheckConfigurationEditor.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]InternalConfigurationEditor.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]ProjectConfigurationEditor.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]configtypes[/\\]RemoteConfigurationEditor.java" />
@@ -161,7 +161,7 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetRegex.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetSingleSelect.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidgetString.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]IConfigPropertyWidget.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]config[/\\]widgets[/\\]ConfigPropertyWidget.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]preferences[/\\]CheckstylePreferencePage.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]preferences[/\\]CheckstyleSettingsTransfer.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]CheckConfigurationContentProvider.java" />
@@ -169,10 +169,10 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]ComplexFileSetsEditor.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]FileMatchPatternEditDialog.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]FileSetEditDialog.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]IFileSetsEditor.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]FileSetsEditor.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]SimpleFileSetsEditor.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]CheckFileOnOpenPartListener.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]IFilterEditor.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]FilterEditor.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]PackageFilterEditor.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]properties[/\\]filter[/\\]PluginFilterEditors.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]AbstractASTResolution.java" />
@@ -180,7 +180,7 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]FixCheckstyleMarkersAction.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]FixCheckstyleMarkersHandler.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]FixCheckstyleMarkersJob.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]ICheckstyleMarkerResolution.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]CheckstyleMarkerResolution.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]Messages.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]blocks[/\\]AvoidNestedBlocksQuickfix.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]quickfixes[/\\]blocks[/\\]NeedBracesQuickfix.java" />
@@ -210,9 +210,9 @@
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]CheckstyleMarkerFilter.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]CheckstyleMarkerFilterDialog.java" />
     <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]stats[/\\]views[/\\]internal[/\\]FiltersAction.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]SWTUtil.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]ITableComparableProvider.java" />
-    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]ITableSettingsProvider.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]SwtUtil.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]TableComparableProvider.java" />
+    <suppress checks=".*Header" files="[/\\]net.sf.eclipsecs.ui[/\\]src[/\\]main[/\\]java[/\\]net[/\\]sf[/\\]eclipsecs[/\\]ui[/\\]util[/\\]table[/\\]TableSettingsProvider.java" />
 
     <!-- code is copied from ant -->
     <suppress checks="TodoComment" files="PropertyUtil.java"/> 

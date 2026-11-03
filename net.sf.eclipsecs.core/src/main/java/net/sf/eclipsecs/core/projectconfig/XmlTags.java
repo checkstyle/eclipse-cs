@@ -23,7 +23,7 @@ package net.sf.eclipsecs.core.projectconfig;
 /**
  * Defines XML tages used in configuration files.
  */
-public final class XMLTags {
+public final class XmlTags {
 
     /** Common description tag. */
     public static final String DESCRIPTION_TAG = "description";
@@ -91,7 +91,7 @@ public final class XMLTags {
     /**
      * Utility class, not intended to be instantiated.
      */
-    private XMLTags() {
+    private XmlTags() {
         // NOOP
     }
 

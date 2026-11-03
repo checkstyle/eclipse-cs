@@ -40,14 +40,14 @@ import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.dialogs.ElementListSelectionDialog;
 import org.eclipse.ui.model.WorkbenchLabelProvider;
 
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.projectconfig.IProjectConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
+import net.sf.eclipsecs.core.projectconfig.ProjectConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationFactory;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 
 /**
@@ -141,14 +141,14 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
         public IStatus runInWorkspace(IProgressMonitor monitor) {
             IStatus status;
             try {
-                final IProjectConfiguration bluePrintConfig =
+                final ProjectConfiguration bluePrintConfig =
                     ProjectConfigurationFactory.getConfiguration(blueprint);
 
-                final List<ICheckConfiguration> bluePrintLocalConfigs =
+                final List<CheckConfiguration> bluePrintLocalConfigs =
                     bluePrintConfig.getLocalCheckConfigurations();
 
                 for (IProject configurationTarget : projectsToConfigure) {
-                    final IProjectConfiguration config =
+                    final ProjectConfiguration config =
                         ProjectConfigurationFactory.getConfiguration(configurationTarget);
                     final ProjectConfigurationWorkingCopy workingCopy =
                         new ProjectConfigurationWorkingCopy(config);
@@ -158,10 +158,10 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
                     workingCopy.getFilters().clear();
 
                     // clear local configurations
-                    final ICheckConfigurationWorkingSet checkConfigsWorkingSet =
+                    final CheckConfigurationWorkingSet checkConfigsWorkingSet =
                         workingCopy.getLocalCheckConfigWorkingSet();
 
-                    for (ICheckConfiguration localConfig : workingCopy
+                    for (CheckConfiguration localConfig : workingCopy
                         .getLocalCheckConfigurations()) {
 
                         if (localConfig instanceof CheckConfigurationWorkingCopy) {
@@ -171,7 +171,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
                     }
 
                     // add local configurations from blueprint
-                    for (ICheckConfiguration localConfig : bluePrintLocalConfigs) {
+                    for (CheckConfiguration localConfig : bluePrintLocalConfigs) {
                         final CheckConfigurationWorkingCopy newCopy =
                             checkConfigsWorkingSet.newWorkingCopy(localConfig);
                         checkConfigsWorkingSet.addCheckConfiguration(newCopy);
@@ -187,7 +187,7 @@ public class ConfigureProjectFromBluePrintAction implements IObjectActionDelegat
                 status = Status.OK_STATUS;
             }
             catch (CheckstylePluginException exception) {
-                status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+                status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK,
                     exception.getMessage(), exception);
             }
             return status;

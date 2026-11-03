@@ -24,7 +24,7 @@ import java.util.List;
 
 import org.eclipse.jdt.core.formatter.DefaultCodeFormatterConstants;
 
-import net.sf.eclipsecs.core.transformer.AbstractCTransformationClass;
+import net.sf.eclipsecs.core.transformer.AbstractCheckstyleTransformationClass;
 import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
 
 /**
@@ -32,7 +32,7 @@ import net.sf.eclipsecs.core.transformer.FormatterConfiguration;
  * eclipse-formatter-rules.
  *
  */
-public class WhitespaceAroundTransformer extends AbstractCTransformationClass {
+public class WhitespaceAroundTransformer extends AbstractCheckstyleTransformationClass {
 
     /** Formatter settings to apply for assignment-operator tokens. */
     private static final List<String> ASSIGNMENT_SETTINGS = List.of(

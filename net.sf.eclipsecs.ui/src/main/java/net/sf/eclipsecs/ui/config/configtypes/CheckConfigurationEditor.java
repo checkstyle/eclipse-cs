@@ -33,7 +33,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * Interface for the check configuration type specific location editor.
  *
  */
-public interface ICheckConfigurationEditor {
+public interface CheckConfigurationEditor {
 
     /** Size of the checkstyle configuration description box. */
     Point CONFIG_DESCRIPTION_SIZE = new Point(300, 100);

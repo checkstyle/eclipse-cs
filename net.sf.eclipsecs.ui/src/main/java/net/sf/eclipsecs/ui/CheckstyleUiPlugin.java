@@ -38,25 +38,25 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 /**
  * The main plugin class to be used in the desktop.
  */
-public class CheckstyleUIPlugin extends AbstractUIPlugin {
+public class CheckstyleUiPlugin extends AbstractUIPlugin {
 
     /** Identifier of the plug-in. */
     public static final String PLUGIN_ID = "net.sf.eclipsecs.ui";
 
     /** The shared instance. */
-    private static CheckstyleUIPlugin plugin;
+    private static CheckstyleUiPlugin plugin;
 
     /**
      * The constructor.
      */
-    public CheckstyleUIPlugin() {
+    public CheckstyleUiPlugin() {
         plugin = this;
     }
 
     @Override
     public void stop(BundleContext context) throws Exception {
         // free cached images
-        CheckstyleUIPluginImages.clearCachedImages();
+        CheckstyleUiPluginImages.clearCachedImages();
         super.stop(context);
     }
 
@@ -65,7 +65,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      *
      * @return The shared plug-in instance.
      */
-    public static CheckstyleUIPlugin getDefault() {
+    public static CheckstyleUiPlugin getDefault() {
         return plugin;
     }
 
@@ -136,7 +136,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
         if (statusMessage == null) {
             statusMessage = "";
         }
-        final Status status = new Status(IStatus.ERROR, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+        final Status status = new Status(IStatus.ERROR, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK,
             statusMessage, throwable);
 
         final String msg = NLS.bind(Messages.errorDialogMainMessage, message);
@@ -158,7 +158,7 @@ public class CheckstyleUIPlugin extends AbstractUIPlugin {
      *            the exception
      */
     public static void warningDialog(Shell shell, String message, Throwable throwable) {
-        final Status status = new Status(IStatus.WARNING, CheckstyleUIPlugin.PLUGIN_ID, IStatus.OK,
+        final Status status = new Status(IStatus.WARNING, CheckstyleUiPlugin.PLUGIN_ID, IStatus.OK,
             throwable.getLocalizedMessage(), throwable);
 
         ErrorDialog.openError(shell, Messages.CheckstyleLog_titleWarning, message, status);

@@ -46,9 +46,9 @@ import com.puppycrawl.tools.checkstyle.api.CheckstyleException;
 import com.puppycrawl.tools.checkstyle.api.Configuration;
 import net.sf.eclipsecs.core.CheckstylePlugin;
 import net.sf.eclipsecs.core.CheckstylePluginPrefs;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.configtypes.IContextAware;
+import net.sf.eclipsecs.core.config.configtypes.ContextAware;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
@@ -91,7 +91,7 @@ public final class CheckerFactory {
      * @throws CheckstylePluginException
      *             the configuration could not be read
      */
-    public static Checker createChecker(ICheckConfiguration config, IProject project)
+    public static Checker createChecker(CheckConfiguration config, IProject project)
             throws CheckstyleException, CheckstylePluginException {
 
         final String cacheKey = getCacheKey(config, project);
@@ -110,8 +110,8 @@ public final class CheckerFactory {
 
             // set the project context if the property resolver needs the
             // context
-            if (resolver instanceof IContextAware) {
-                ((IContextAware) resolver).setProjectContext(project);
+            if (resolver instanceof ContextAware) {
+                ((ContextAware) resolver).setProjectContext(project);
             }
 
             InputSource input = null;
@@ -154,7 +154,7 @@ public final class CheckerFactory {
      * @throws CheckstylePluginException
      *             error getting configuration file data
      */
-    private static String getCacheKey(ICheckConfiguration config, IProject project)
+    private static String getCacheKey(CheckConfiguration config, IProject project)
             throws CheckstylePluginException {
         final CheckstyleConfigurationFile configFileData = config.getCheckstyleConfiguration();
 
@@ -165,7 +165,7 @@ public final class CheckerFactory {
         else {
             globalVsLocal = "Local";
         }
-        final URL configLocation = configFileData.getResolvedConfigFileURL();
+        final URL configLocation = configFileData.getResolvedConfigFileUrl();
         return String.join("#", project.getName(), configLocation.toString(), config.getName(),
             globalVsLocal);
     }

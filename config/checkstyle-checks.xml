@@ -888,11 +888,11 @@
     <module name="AnnotatedDeclarationVisibility"/>
 
     <!-- Naming Conventions -->
-    <!-- <module name="AbbreviationAsWordInName">
+    <module name="AbbreviationAsWordInName">
       <property name="ignoreFinal" value="false"/>
       <property name="allowedAbbreviationLength" value="0"/>
       <property name="allowedAbbreviations" value="AST"/>
-    </module> -->
+    </module>
     <module name="AbstractClassName"/>
     <module name="ClassTypeParameterName"/>
     <module name="RecordTypeParameterName"/>

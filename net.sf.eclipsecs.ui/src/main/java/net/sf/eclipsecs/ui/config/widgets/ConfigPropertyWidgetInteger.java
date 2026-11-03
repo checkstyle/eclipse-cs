@@ -29,7 +29,7 @@ import org.eclipse.swt.widgets.Text;
 import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyMetadata;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.util.SWTUtil;
+import net.sf.eclipsecs.ui.util.SwtUtil;
 
 /**
  * A string property configuration widget.
@@ -74,7 +74,7 @@ public final class ConfigPropertyWidgetInteger extends AbstractConfigPropertyWid
             //
             textWidget = new Text(parent, SWT.SINGLE | SWT.BORDER);
             textWidget.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-            SWTUtil.addOnlyDigitInputSupport(textWidget);
+            SwtUtil.addOnlyDigitInputSupport(textWidget);
 
             final String initValue = getInitValue();
             if (initValue != null) {

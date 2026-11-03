@@ -36,7 +36,7 @@ import com.google.common.base.Strings;
 import net.sf.eclipsecs.core.Messages;
 import net.sf.eclipsecs.core.config.savefilter.SaveFilters;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
+import net.sf.eclipsecs.core.util.XmlUtil;
 
 /**
  * Writes the modules of a checkstyle configuration to an output stream.
@@ -59,7 +59,7 @@ public final class ConfigurationWriter {
      * @throws CheckstylePluginException
      *             error writing the checkstyle configuration
      */
-    public static void writeNewConfiguration(OutputStream out, ICheckConfiguration checkConfig)
+    public static void writeNewConfiguration(OutputStream out, CheckConfiguration checkConfig)
             throws CheckstylePluginException {
 
         // write an empty list of modules
@@ -80,14 +80,14 @@ public final class ConfigurationWriter {
      *             error writing the checkstyle configuration
      */
     public static void write(OutputStream out, List<Module> modules,
-        ICheckConfiguration checkConfig) throws CheckstylePluginException {
+        CheckConfiguration checkConfig) throws CheckstylePluginException {
 
         try {
             // pass the configured modules through the save filters
             SaveFilters.process(modules);
 
             final Document doc = DocumentHelper.createDocument();
-            doc.addDocType(XMLTags.MODULE_TAG,
+            doc.addDocType(XmlTags.MODULE_TAG,
                 "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN",
                 "https://checkstyle.org/dtds/configuration_1_3.dtd");
 
@@ -122,7 +122,7 @@ public final class ConfigurationWriter {
 
             writeModules(rootModules.get(0), doc, null, modules);
 
-            out.write(XMLUtil.toByteArray(doc));
+            out.write(XmlUtil.toByteArray(doc));
         }
         catch (IOException exception) {
             CheckstylePluginException.rethrow(exception);
@@ -173,31 +173,31 @@ public final class ConfigurationWriter {
      */
     private static Element writeModule(Module module, Branch parent) {
         // Start the module
-        final Element moduleEl = parent.addElement(XMLTags.MODULE_TAG);
-        moduleEl.addAttribute(XMLTags.NAME_TAG, module.getMetaData().identity().internalName());
+        final Element moduleEl = parent.addElement(XmlTags.MODULE_TAG);
+        moduleEl.addAttribute(XmlTags.NAME_TAG, module.getMetaData().identity().internalName());
 
         // Write comment
         if (Strings.emptyToNull(module.getComment()) != null) {
 
-            final Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.COMMENT_ID);
-            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getComment());
+            final Element metaEl = moduleEl.addElement(XmlTags.METADATA_TAG);
+            metaEl.addAttribute(XmlTags.NAME_TAG, XmlTags.COMMENT_ID);
+            metaEl.addAttribute(XmlTags.VALUE_TAG, module.getComment());
         }
 
         // Write severity only if it differs from the parents severity
         if (module.getSeverity() != null && Severity.INHERIT != module.getSeverity()) {
 
-            final Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
-            propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.SEVERITY_TAG);
-            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getSeverity().getXmlValue());
+            final Element propertyEl = moduleEl.addElement(XmlTags.PROPERTY_TAG);
+            propertyEl.addAttribute(XmlTags.NAME_TAG, XmlTags.SEVERITY_TAG);
+            propertyEl.addAttribute(XmlTags.VALUE_TAG, module.getSeverity().getXmlValue());
         }
 
         // write module id
         if (Strings.emptyToNull(module.getId()) != null) {
 
-            final Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
-            propertyEl.addAttribute(XMLTags.NAME_TAG, XMLTags.ID_TAG);
-            propertyEl.addAttribute(XMLTags.VALUE_TAG, module.getId());
+            final Element propertyEl = moduleEl.addElement(XmlTags.PROPERTY_TAG);
+            propertyEl.addAttribute(XmlTags.NAME_TAG, XmlTags.ID_TAG);
+            propertyEl.addAttribute(XmlTags.VALUE_TAG, module.getId());
         }
 
         // write properties of the module
@@ -207,33 +207,33 @@ public final class ConfigurationWriter {
                     property.getMetaData().getDefaultValue());
             })
             .forEach(property -> {
-                final Element propertyEl = moduleEl.addElement(XMLTags.PROPERTY_TAG);
-                propertyEl.addAttribute(XMLTags.NAME_TAG, property.getMetaData().getName());
-                propertyEl.addAttribute(XMLTags.VALUE_TAG, property.getValue());
+                final Element propertyEl = moduleEl.addElement(XmlTags.PROPERTY_TAG);
+                propertyEl.addAttribute(XmlTags.NAME_TAG, property.getMetaData().getName());
+                propertyEl.addAttribute(XmlTags.VALUE_TAG, property.getValue());
             });
 
         // write custom messages
         for (Map.Entry<String, String> entry : module.getCustomMessages().entrySet()) {
 
-            final Element metaEl = moduleEl.addElement(XMLTags.MESSAGE_TAG);
-            metaEl.addAttribute(XMLTags.KEY_TAG, entry.getKey());
-            metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+            final Element metaEl = moduleEl.addElement(XmlTags.MESSAGE_TAG);
+            metaEl.addAttribute(XmlTags.KEY_TAG, entry.getKey());
+            metaEl.addAttribute(XmlTags.VALUE_TAG, entry.getValue());
         }
 
         // write custom metadata
         for (Map.Entry<String, String> entry : module.getCustomMetaData().entrySet()) {
 
-            final Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-            metaEl.addAttribute(XMLTags.NAME_TAG, entry.getKey());
-            metaEl.addAttribute(XMLTags.VALUE_TAG, entry.getValue());
+            final Element metaEl = moduleEl.addElement(XmlTags.METADATA_TAG);
+            metaEl.addAttribute(XmlTags.NAME_TAG, entry.getKey());
+            metaEl.addAttribute(XmlTags.VALUE_TAG, entry.getValue());
         }
 
         // Write last enabled severity level
         if (module.getLastEnabledSeverity() != null) {
 
-            final Element metaEl = moduleEl.addElement(XMLTags.METADATA_TAG);
-            metaEl.addAttribute(XMLTags.NAME_TAG, XMLTags.LAST_ENABLED_SEVERITY_ID);
-            metaEl.addAttribute(XMLTags.VALUE_TAG, module.getLastEnabledSeverity().getXmlValue());
+            final Element metaEl = moduleEl.addElement(XmlTags.METADATA_TAG);
+            metaEl.addAttribute(XmlTags.NAME_TAG, XmlTags.LAST_ENABLED_SEVERITY_ID);
+            metaEl.addAttribute(XmlTags.VALUE_TAG, module.getLastEnabledSeverity().getXmlValue());
         }
 
         return moduleEl;

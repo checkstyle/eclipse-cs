@@ -27,8 +27,8 @@ import java.util.List;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
 import org.eclipse.jface.viewers.Viewer;
 
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
 import net.sf.eclipsecs.core.projectconfig.ProjectConfigurationWorkingCopy;
 
 /**
@@ -51,14 +51,14 @@ public final class CheckConfigurationContentProvider implements IStructuredConte
     @Override
     public Object[] getElements(Object inputElement) {
 
-        final List<ICheckConfiguration> configurations = new ArrayList<>();
+        final List<CheckConfiguration> configurations = new ArrayList<>();
 
         if (inputElement instanceof ProjectConfigurationWorkingCopy) {
-            final ICheckConfiguration[] localConfigs =
+            final CheckConfiguration[] localConfigs =
                 ((ProjectConfigurationWorkingCopy) inputElement).getLocalCheckConfigWorkingSet()
                     .getWorkingCopies();
 
-            final ICheckConfiguration[] globalConfigs =
+            final CheckConfiguration[] globalConfigs =
                 ((ProjectConfigurationWorkingCopy) inputElement).getGlobalCheckConfigWorkingSet()
                     .getWorkingCopies();
 

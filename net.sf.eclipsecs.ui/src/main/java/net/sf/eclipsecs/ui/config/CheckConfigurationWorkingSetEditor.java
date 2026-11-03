@@ -33,12 +33,12 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.FileDialog;
 
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.ui.CheckstyleUIPlugin;
+import net.sf.eclipsecs.ui.CheckstyleUiPlugin;
 import net.sf.eclipsecs.ui.Messages;
 import net.sf.eclipsecs.ui.config.CheckConfigurationWorkingSetEditorButtonBar.ButtonBarActions;
 
@@ -53,7 +53,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
     //
 
     /** The working set being edited. */
-    private final ICheckConfigurationWorkingSet workingSet;
+    private final CheckConfigurationWorkingSet workingSet;
     /** The editor view. */
     private final CheckConfigurationWorkingSetEditorView editorView;
 
@@ -72,7 +72,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      *            the configuration working set to edit
      */
     public CheckConfigurationWorkingSetEditor(Composite parent, int style,
-        ICheckConfigurationWorkingSet workingSet) {
+        CheckConfigurationWorkingSet workingSet) {
         super(parent, style);
 
         this.workingSet = workingSet;
@@ -161,7 +161,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                 dialog.open();
             }
             catch (CheckstylePluginException exception) {
-                CheckstyleUIPlugin.warningDialog(getShell(),
+                CheckstyleUiPlugin.warningDialog(getShell(),
                     NLS.bind(Messages.errorCannotResolveCheckLocation, config.getLocation(),
                         config.getName()),
                     exception);
@@ -173,7 +173,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      * Copy an existing config.
      */
     private void copyCheckConfig() {
-        final ICheckConfiguration sourceConfig = editorView.getSelectedConfig();
+        final CheckConfiguration sourceConfig = editorView.getSelectedConfig();
         if (sourceConfig != null) {
             try {
 
@@ -196,7 +196,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                 }
             }
             catch (CheckstylePluginException exception) {
-                CheckstyleUIPlugin.errorDialog(getShell(), exception, true);
+                CheckstyleUiPlugin.errorDialog(getShell(), exception, true);
             }
         }
     }
@@ -249,7 +249,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
      * Export a configuration.
      */
     private void exportCheckstyleCheckConfig() {
-        final ICheckConfiguration config = editorView.getSelectedConfig();
+        final CheckConfiguration config = editorView.getSelectedConfig();
         if (config != null) {
             final FileDialog dialog = new FileDialog(getShell(), SWT.SAVE);
             dialog.setText(Messages.CheckstylePreferencePage_titleExportConfig);
@@ -261,7 +261,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
                     config.exportConfiguration(file);
                 }
                 catch (CheckstylePluginException exception) {
-                    CheckstyleUIPlugin.errorDialog(getShell(), Messages.msgErrorFailedExportConfig,
+                    CheckstyleUiPlugin.errorDialog(getShell(), Messages.msgErrorFailedExportConfig,
                         exception, true);
                 }
             }
@@ -278,7 +278,7 @@ public final class CheckConfigurationWorkingSetEditor extends Composite {
         final String concreteViewId = workingSet.getClass().getName();
 
         final IDialogSettings workbenchSettings =
-            CheckstyleUIPlugin.getDefault().getDialogSettings();
+            CheckstyleUiPlugin.getDefault().getDialogSettings();
         IDialogSettings settings = workbenchSettings.getSection(concreteViewId);
 
         if (settings == null) {

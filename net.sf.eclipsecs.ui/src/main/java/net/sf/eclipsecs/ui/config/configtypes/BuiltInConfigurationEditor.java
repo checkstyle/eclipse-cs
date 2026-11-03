@@ -40,7 +40,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * show the location.
  *
  */
-public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
+public class BuiltInConfigurationEditor implements CheckConfigurationEditor {
 
     //
     // attributes
@@ -106,7 +106,7 @@ public class BuiltInConfigurationEditor implements ICheckConfigurationEditor {
             new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         description.setEditable(false);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
-            .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE).grab(true, true)
+            .hint(CheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE).grab(true, true)
             .applyTo(description);
 
         if (workingCopy.getName() != null) {

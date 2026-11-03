@@ -35,10 +35,10 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 
-import net.sf.eclipsecs.core.config.configtypes.IConfigurationType;
+import net.sf.eclipsecs.core.config.configtypes.ConfigurationType;
 import net.sf.eclipsecs.ui.Messages;
-import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUI;
-import net.sf.eclipsecs.ui.config.configtypes.ICheckConfigurationEditor;
+import net.sf.eclipsecs.ui.config.configtypes.CheckConfigurationEditor;
+import net.sf.eclipsecs.ui.config.configtypes.ConfigurationTypesUi;
 
 /**
  * Composite building the upper part of the check configuration properties dialog, offering the
@@ -64,7 +64,7 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
      *            the callback invoked when the selected configuration type changes
      */
     public CheckConfigurationPropertiesDialogView(Composite parent, int style,
-        BiConsumer<IConfigurationType, Boolean> changeSelectedConfigurationType) {
+        BiConsumer<ConfigurationType, Boolean> changeSelectedConfigurationType) {
         super(parent, style);
         GridLayoutFactory.swtDefaults().numColumns(2).applyTo(this);
 
@@ -90,12 +90,12 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
         GridDataFactory.swtDefaults().applyTo(configType.getCombo());
         configType.setContentProvider(ArrayContentProvider.getInstance());
         configType.setLabelProvider(LabelProvider.createTextImageProvider(
-            element -> ((IConfigurationType) element).getName(), element -> {
-                return ConfigurationTypesUI.getConfigurationTypeImage((IConfigurationType) element);
+            element -> ((ConfigurationType) element).getName(), element -> {
+                return ConfigurationTypesUi.getConfigurationTypeImage((ConfigurationType) element);
             }));
         configType.addSelectionChangedListener(event -> {
             changeSelectedConfigurationType.accept(
-                (IConfigurationType) event.getStructuredSelection().getFirstElement(),
+                (ConfigurationType) event.getStructuredSelection().getFirstElement(),
                 configType.getCombo().getEnabled());
         });
 
@@ -110,7 +110,7 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
      * @param types
      *            the configuration types to show
      */
-    public void initConfigType(IConfigurationType[] types) {
+    public void initConfigType(ConfigurationType[] types) {
         configType.setInput(types);
         configType.setSelection(new StructuredSelection(types[0]), true);
     }
@@ -129,7 +129,7 @@ public final class CheckConfigurationPropertiesDialogView extends Composite {
      * @param configurationEditor
      *            the configuration editor to bind
      */
-    public void bindEditor(ICheckConfigurationEditor configurationEditor) {
+    public void bindEditor(CheckConfigurationEditor configurationEditor) {
         // remove old editor
         final Control[] controls = editorPlaceHolder.getChildren();
         for (Control control : controls) {

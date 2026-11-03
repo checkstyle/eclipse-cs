@@ -54,7 +54,7 @@ public final class CheckstyleQuickfixes {
     private static final String EXTENSION_MODULE_ATTRIBUTE = "module";
 
     /** The registered quickfixes. */
-    private final Collection<ICheckstyleMarkerResolution> quickfixes;
+    private final Collection<CheckstyleMarkerResolution> quickfixes;
 
     /**
      * Constructor reading the registered quickfixes from the registry.
@@ -77,7 +77,7 @@ public final class CheckstyleQuickfixes {
      *
      * @return the quickfixes
      */
-    public Collection<ICheckstyleMarkerResolution> getQuickfixes() {
+    public Collection<CheckstyleMarkerResolution> getQuickfixes() {
         return quickfixes;
     }
 
@@ -86,8 +86,8 @@ public final class CheckstyleQuickfixes {
      *
      * @return all registered quickfixes
      */
-    private Collection<ICheckstyleMarkerResolution> readRegistry() {
-        final List<ICheckstyleMarkerResolution> result = new ArrayList<>();
+    private Collection<CheckstyleMarkerResolution> readRegistry() {
+        final List<CheckstyleMarkerResolution> result = new ArrayList<>();
         final IExtensionRegistry registry = Platform.getExtensionRegistry();
         final IConfigurationElement[] elements =
             registry.getConfigurationElementsFor(QUICKFIX_EXTENSION_POINT);
@@ -112,12 +112,12 @@ public final class CheckstyleQuickfixes {
      *            the configuration element describing the quickfix
      * @return the quickfix resolution, or null if it could not be created
      */
-    private ICheckstyleMarkerResolution toClass(IConfigurationElement element) {
-        ICheckstyleMarkerResolution resolution = null;
+    private CheckstyleMarkerResolution toClass(IConfigurationElement element) {
+        CheckstyleMarkerResolution resolution = null;
         try {
             final var extension = element.createExecutableExtension(EXTENSION_CLASS_ATTRIBUTE);
-            if (extension instanceof ICheckstyleMarkerResolution) {
-                resolution = (ICheckstyleMarkerResolution) extension;
+            if (extension instanceof CheckstyleMarkerResolution) {
+                resolution = (CheckstyleMarkerResolution) extension;
             }
         }
         catch (CoreException exception) {

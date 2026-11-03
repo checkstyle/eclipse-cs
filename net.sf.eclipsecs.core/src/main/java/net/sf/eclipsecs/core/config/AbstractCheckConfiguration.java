@@ -33,11 +33,11 @@ import org.eclipse.core.runtime.URIUtil;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
- * Abstract base implementation of {@link ICheckConfiguration} providing common export and copy
+ * Abstract base implementation of {@link CheckConfiguration} providing common export and copy
  * behavior.
  *
  */
-public abstract class AbstractCheckConfiguration implements ICheckConfiguration {
+public abstract class AbstractCheckConfiguration implements CheckConfiguration {
 
     @Override
     public void exportConfiguration(File file) throws CheckstylePluginException {
@@ -50,12 +50,12 @@ public abstract class AbstractCheckConfiguration implements ICheckConfiguration 
     }
 
     @Override
-    public void copyConfiguration(ICheckConfiguration target) throws CheckstylePluginException {
+    public void copyConfiguration(CheckConfiguration target) throws CheckstylePluginException {
         try {
             // use the export function ;-)
             final File targetFile =
-                URIUtil.toFile(target.getResolvedConfigurationFileURL().toURI());
-            final File sourceFile = URIUtil.toFile(getResolvedConfigurationFileURL().toURI());
+                URIUtil.toFile(target.getResolvedConfigurationFileUrl().toURI());
+            final File sourceFile = URIUtil.toFile(getResolvedConfigurationFileUrl().toURI());
 
             // copying from a file to the same file will destroy it.
             if (!Objects.equals(targetFile, sourceFile)) {

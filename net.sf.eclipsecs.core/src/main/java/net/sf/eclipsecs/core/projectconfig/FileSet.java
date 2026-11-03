@@ -27,7 +27,7 @@ import java.util.Objects;
 import org.eclipse.core.resources.IFile;
 
 import com.google.common.base.MoreObjects;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 
 /**
  * A File Set is a collection of files audited with a common set of audit rules.
@@ -38,7 +38,7 @@ public class FileSet {
     private String name;
 
     /** The check configuration. */
-    private ICheckConfiguration checkConfig;
+    private CheckConfiguration checkConfig;
 
     /** Whether this file set is enabled. */
     private boolean enabled = true;
@@ -78,7 +78,7 @@ public class FileSet {
      *            The name of the <code>CheckConfiguration</code> used to check this
      *            <code>FileSet</code>.
      */
-    public FileSet(String name, ICheckConfiguration checkConfig) {
+    public FileSet(String name, CheckConfiguration checkConfig) {
         this.name = name;
         this.checkConfig = checkConfig;
     }
@@ -107,7 +107,7 @@ public class FileSet {
      *
      * @return The check configuration used to audit files in the file set.
      */
-    public ICheckConfiguration getCheckConfig() {
+    public CheckConfiguration getCheckConfig() {
         return checkConfig;
     }
 
@@ -117,7 +117,7 @@ public class FileSet {
      * @param checkConfig
      *            the check configuration
      */
-    public void setCheckConfig(ICheckConfiguration checkConfig) {
+    public void setCheckConfig(CheckConfiguration checkConfig) {
         this.checkConfig = checkConfig;
     }
 

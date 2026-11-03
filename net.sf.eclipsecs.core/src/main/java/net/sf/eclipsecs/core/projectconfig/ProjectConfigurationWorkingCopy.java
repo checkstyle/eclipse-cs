@@ -43,37 +43,37 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.osgi.util.NLS;
 
 import net.sf.eclipsecs.core.Messages;
+import net.sf.eclipsecs.core.config.CheckConfiguration;
 import net.sf.eclipsecs.core.config.CheckConfigurationFactory;
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.CheckConfigurationXmlWriter;
-import net.sf.eclipsecs.core.config.ICheckConfiguration;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.configtypes.BuiltInConfigurationType;
 import net.sf.eclipsecs.core.config.configtypes.ProjectConfigurationType;
-import net.sf.eclipsecs.core.projectconfig.filters.IFilter;
+import net.sf.eclipsecs.core.projectconfig.filters.AuditFilter;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
-import net.sf.eclipsecs.core.util.XMLUtil;
+import net.sf.eclipsecs.core.util.XmlUtil;
 
 /**
  * A modifiable project configuration implementation.
  *
  */
-public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
+public class ProjectConfigurationWorkingCopy implements ProjectConfiguration {
 
     /** The original, unmodified project configuration. */
-    private final IProjectConfiguration projectConfig;
+    private final ProjectConfiguration projectConfig;
 
     /** The local check configurations. */
-    private final ICheckConfigurationWorkingSet localConfigWorkingSet;
+    private final CheckConfigurationWorkingSet localConfigWorkingSet;
 
     /** The global check configurations. */
-    private final ICheckConfigurationWorkingSet globalConfigWorkingSet;
+    private final CheckConfigurationWorkingSet globalConfigWorkingSet;
 
     /** The file sets. */
     private List<FileSet> fileSets = new LinkedList<>();
 
     /** The filters. */
-    private List<IFilter> filters = new LinkedList<>();
+    private List<AuditFilter> filters = new LinkedList<>();
 
     /** Flags if the simple file set editor should be used. */
     private boolean useSimpleConfig;
@@ -87,7 +87,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
      * @param projectConfig
      *            the project configuration
      */
-    public ProjectConfigurationWorkingCopy(IProjectConfiguration projectConfig) {
+    public ProjectConfigurationWorkingCopy(ProjectConfiguration projectConfig) {
         this.projectConfig = projectConfig;
 
         localConfigWorkingSet = new LocalCheckConfigurationWorkingSet(this,
@@ -101,16 +101,17 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
         }
 
         // build list of filters
-        final List<IFilter> standardFilters = Arrays.asList(PluginFilters.getConfiguredFilters());
+        final List<AuditFilter> standardFilters =
+            Arrays.asList(PluginFilters.getConfiguredFilters());
         filters = new ArrayList<>(standardFilters);
 
         // merge with filters configured for the project
-        final List<IFilter> configuredFilters = projectConfig.getFilters();
+        final List<AuditFilter> configuredFilters = projectConfig.getFilters();
         for (int index = 0, size = filters.size(); index < size; index++) {
 
-            final IFilter standardFilter = filters.get(index);
+            final AuditFilter standardFilter = filters.get(index);
 
-            for (IFilter configuredFilter : configuredFilters) {
+            for (AuditFilter configuredFilter : configuredFilters) {
                 if (standardFilter.getInternalName().equals(configuredFilter.getInternalName())) {
                     filters.set(index, configuredFilter.copy());
                 }
@@ -126,7 +127,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
      *
      * @return the local configurations working set
      */
-    public ICheckConfigurationWorkingSet getLocalCheckConfigWorkingSet() {
+    public CheckConfigurationWorkingSet getLocalCheckConfigWorkingSet() {
         return localConfigWorkingSet;
     }
 
@@ -135,7 +136,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
      *
      * @return the local configurations working set
      */
-    public ICheckConfigurationWorkingSet getGlobalCheckConfigWorkingSet() {
+    public CheckConfigurationWorkingSet getGlobalCheckConfigWorkingSet() {
         return globalConfigWorkingSet;
     }
 
@@ -147,10 +148,10 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
      * @return the check configuration or <code>null</code>, if no local configuration with this
      *         name exists
      */
-    public ICheckConfiguration getLocalCheckConfigByName(String name) {
-        ICheckConfiguration config = null;
-        final ICheckConfiguration[] configs = localConfigWorkingSet.getWorkingCopies();
-        for (ICheckConfiguration conf : configs) {
+    public CheckConfiguration getLocalCheckConfigByName(String name) {
+        CheckConfiguration config = null;
+        final CheckConfiguration[] configs = localConfigWorkingSet.getWorkingCopies();
+        for (CheckConfiguration conf : configs) {
             if (conf.getName().equals(name)) {
                 config = conf;
                 break;
@@ -168,10 +169,10 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
      * @return the check configuration or <code>null</code>, if no local configuration with this
      *         name exists
      */
-    public ICheckConfiguration getGlobalCheckConfigByName(String name) {
-        ICheckConfiguration config = null;
-        final ICheckConfiguration[] configs = globalConfigWorkingSet.getWorkingCopies();
-        for (ICheckConfiguration conf : configs) {
+    public CheckConfiguration getGlobalCheckConfigByName(String name) {
+        CheckConfiguration config = null;
+        final CheckConfiguration[] configs = globalConfigWorkingSet.getWorkingCopies();
+        for (CheckConfiguration conf : configs) {
             if (conf.getName().equals(name)) {
                 config = conf;
                 break;
@@ -241,9 +242,9 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
     }
 
     @Override
-    public List<ICheckConfiguration> getLocalCheckConfigurations() {
+    public List<CheckConfiguration> getLocalCheckConfigurations() {
 
-        final List<ICheckConfiguration> list = new ArrayList<>();
+        final List<CheckConfiguration> list = new ArrayList<>();
         Collections.addAll(list, localConfigWorkingSet.getWorkingCopies());
 
         return list;
@@ -255,7 +256,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
     }
 
     @Override
-    public List<IFilter> getFilters() {
+    public List<AuditFilter> getFilters() {
         return filters;
     }
 
@@ -270,12 +271,12 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
     }
 
     @Override
-    public boolean isConfigInUse(ICheckConfiguration configuration) {
+    public boolean isConfigInUse(CheckConfiguration configuration) {
 
         boolean result = false;
 
         for (FileSet fileSet : getFileSets()) {
-            final ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+            final CheckConfiguration checkConfig = fileSet.getCheckConfig();
             if (configuration.equals(checkConfig)
                 || checkConfig instanceof CheckConfigurationWorkingCopy && configuration.equals(
                     ((CheckConfigurationWorkingCopy) checkConfig).getSourceCheckConfiguration())) {
@@ -289,13 +290,13 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
     @Override
     public boolean equals(Object obj) {
 
-        if (obj == null || !(obj instanceof IProjectConfiguration)) {
+        if (obj == null || !(obj instanceof ProjectConfiguration)) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        final IProjectConfiguration rhs = (IProjectConfiguration) obj;
+        final ProjectConfiguration rhs = (ProjectConfiguration) obj;
         return Objects.equals(getProject(), rhs.getProject())
             && isUseSimpleConfig() == rhs.isUseSimpleConfig()
             && isSyncFormatter() == rhs.isSyncFormatter()
@@ -322,7 +323,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
         try {
 
             final Document docu = writeProjectConfig(config);
-            final byte[] data = XMLUtil.toByteArray(docu);
+            final byte[] data = XmlUtil.toByteArray(docu);
             final InputStream pipeIn = new ByteArrayInputStream(data);
 
             // create or overwrite the .checkstyle file
@@ -367,15 +368,15 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
 
         final Document doc = DocumentHelper.createDocument();
 
-        final Element root = doc.addElement(XMLTags.FILESET_CONFIG_TAG);
-        root.addAttribute(XMLTags.FORMAT_VERSION_TAG,
+        final Element root = doc.addElement(XmlTags.FILESET_CONFIG_TAG);
+        root.addAttribute(XmlTags.FORMAT_VERSION_TAG,
             ProjectConfigurationFactory.CURRENT_FILE_FORMAT_VERSION);
-        root.addAttribute(XMLTags.SIMPLE_CONFIG_TAG, Boolean.toString(config.isUseSimpleConfig()));
-        root.addAttribute(XMLTags.SYNC_FORMATTER_TAG, Boolean.toString(config.isSyncFormatter()));
+        root.addAttribute(XmlTags.SIMPLE_CONFIG_TAG, Boolean.toString(config.isUseSimpleConfig()));
+        root.addAttribute(XmlTags.SYNC_FORMATTER_TAG, Boolean.toString(config.isSyncFormatter()));
 
-        final ICheckConfiguration[] workingCopies =
+        final CheckConfiguration[] workingCopies =
             config.getLocalCheckConfigWorkingSet().getWorkingCopies();
-        for (ICheckConfiguration workingCopy : workingCopies) {
+        for (CheckConfiguration workingCopy : workingCopies) {
             writeLocalConfiguration(workingCopy, root);
         }
 
@@ -384,7 +385,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
         }
 
         // write filters
-        for (IFilter filter : config.getFilters()) {
+        for (AuditFilter filter : config.getFilters()) {
             writeFilter(filter, root);
         }
 
@@ -399,7 +400,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
      * @param docRoot
      *            the root element of the project configuration
      */
-    private void writeLocalConfiguration(ICheckConfiguration checkConfig, Element docRoot) {
+    private void writeLocalConfiguration(CheckConfiguration checkConfig, Element docRoot) {
 
         // don't store built-in configurations to persistence or local
         // configurations
@@ -421,7 +422,7 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
             }
 
             CheckConfigurationXmlWriter.writeCheckConfiguration(docRoot, checkConfig, location,
-                XMLTags.CHECK_CONFIG_TAG);
+                XmlTags.CHECK_CONFIG_TAG);
         }
     }
 
@@ -445,21 +446,21 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
                 fileSet.getName(), project.getName()));
         }
 
-        final Element fileSetEl = docRoot.addElement(XMLTags.FILESET_TAG);
-        fileSetEl.addAttribute(XMLTags.NAME_TAG, fileSet.getName());
-        fileSetEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(fileSet.isEnabled()));
+        final Element fileSetEl = docRoot.addElement(XmlTags.FILESET_TAG);
+        fileSetEl.addAttribute(XmlTags.NAME_TAG, fileSet.getName());
+        fileSetEl.addAttribute(XmlTags.ENABLED_TAG, Boolean.toString(fileSet.isEnabled()));
 
-        final ICheckConfiguration checkConfig = fileSet.getCheckConfig();
+        final CheckConfiguration checkConfig = fileSet.getCheckConfig();
         if (checkConfig != null) {
 
-            fileSetEl.addAttribute(XMLTags.CHECK_CONFIG_NAME_TAG, checkConfig.getName());
-            fileSetEl.addAttribute(XMLTags.LOCAL_TAG, Boolean.toString(!checkConfig.isGlobal()));
+            fileSetEl.addAttribute(XmlTags.CHECK_CONFIG_NAME_TAG, checkConfig.getName());
+            fileSetEl.addAttribute(XmlTags.LOCAL_TAG, Boolean.toString(!checkConfig.isGlobal()));
         }
 
         // write patterns
         for (FileMatchPattern pattern : fileSet.getFileMatchPatterns()) {
 
-            final Element patternEl = fileSetEl.addElement(XMLTags.FILE_MATCH_PATTERN_TAG);
+            final Element patternEl = fileSetEl.addElement(XmlTags.FILE_MATCH_PATTERN_TAG);
             final String matchPattern;
             if (pattern.getMatchPattern() != null) {
                 matchPattern = pattern.getMatchPattern();
@@ -467,8 +468,8 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
             else {
                 matchPattern = "";
             }
-            patternEl.addAttribute(XMLTags.MATCH_PATTERN_TAG, matchPattern);
-            patternEl.addAttribute(XMLTags.INCLUDE_PATTERN_TAG,
+            patternEl.addAttribute(XmlTags.MATCH_PATTERN_TAG, matchPattern);
+            patternEl.addAttribute(XmlTags.INCLUDE_PATTERN_TAG,
                 Boolean.toString(pattern.isIncludePattern()));
         }
     }
@@ -481,19 +482,19 @@ public class ProjectConfigurationWorkingCopy implements IProjectConfiguration {
      * @param docRoot
      *            the root element of the project configuration
      */
-    private void writeFilter(IFilter filter, Element docRoot) {
+    private void writeFilter(AuditFilter filter, Element docRoot) {
         // write only filters that are actually changed
         // (enabled or contain data)
-        final IFilter prototype = PluginFilters.getByInternalName(filter.getInternalName());
+        final AuditFilter prototype = PluginFilters.getByInternalName(filter.getInternalName());
         if (!prototype.equals(filter)) {
-            final Element filterEl = docRoot.addElement(XMLTags.FILTER_TAG);
-            filterEl.addAttribute(XMLTags.NAME_TAG, filter.getInternalName());
-            filterEl.addAttribute(XMLTags.ENABLED_TAG, Boolean.toString(filter.isEnabled()));
+            final Element filterEl = docRoot.addElement(XmlTags.FILTER_TAG);
+            filterEl.addAttribute(XmlTags.NAME_TAG, filter.getInternalName());
+            filterEl.addAttribute(XmlTags.ENABLED_TAG, Boolean.toString(filter.isEnabled()));
 
             final List<String> data = filter.getFilterData();
             for (String item : data) {
-                final Element dataEl = filterEl.addElement(XMLTags.FILTER_DATA_TAG);
-                dataEl.addAttribute(XMLTags.VALUE_TAG, item);
+                final Element dataEl = filterEl.addElement(XmlTags.FILTER_DATA_TAG);
+                dataEl.addAttribute(XmlTags.VALUE_TAG, item);
             }
         }
     }

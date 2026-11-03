@@ -48,9 +48,9 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import net.sf.eclipsecs.core.config.CheckConfigurationWorkingCopy;
+import net.sf.eclipsecs.core.config.CheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.ConfigurationWriter;
 import net.sf.eclipsecs.core.config.GlobalCheckConfigurationWorkingSet;
-import net.sf.eclipsecs.core.config.ICheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.config.configtypes.ExternalFileConfigurationType;
 import net.sf.eclipsecs.core.projectconfig.LocalCheckConfigurationWorkingSet;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
@@ -62,7 +62,7 @@ import net.sf.eclipsecs.ui.config.CheckConfigurationPropertiesDialog;
  * and a 'Browse...' button opening a file dialog.
  *
  */
-public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
+public class ProjectConfigurationEditor implements CheckConfigurationEditor {
 
     //
     // attributes
@@ -132,7 +132,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
         description =
             new Text(contents, SWT.LEFT | SWT.WRAP | SWT.MULTI | SWT.BORDER | SWT.VERTICAL);
         GridDataFactory.create(GridData.FILL_BOTH).span(2, 1)
-            .hint(ICheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
+            .hint(CheckConfigurationEditor.CONFIG_DESCRIPTION_SIZE)
             .grab(true, true)
             .applyTo(description);
 
@@ -210,7 +210,7 @@ public class ProjectConfigurationEditor implements ICheckConfigurationEditor {
                 throw exception;
             }
 
-            final ICheckConfigurationWorkingSet workingSet =
+            final CheckConfigurationWorkingSet workingSet =
                 checkConfigDialog.getCheckConfigurationWorkingSet();
             final IPath tmp = IPath.fromOSString(location);
             final boolean isFirstPartProject =

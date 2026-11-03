@@ -23,14 +23,14 @@ package net.sf.eclipsecs.core.config.savefilter;
 import java.util.List;
 
 import net.sf.eclipsecs.core.config.Module;
-import net.sf.eclipsecs.core.config.XMLTags;
+import net.sf.eclipsecs.core.config.XmlTags;
 import net.sf.eclipsecs.core.config.meta.MetadataFactory;
 
 /**
  * Special module logic for the SuppressWarningsHolder module.
  *
  */
-public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
+public class SuppressWarningsHolderSaveFilter implements SaveFilter {
 
     /**
      * Creates a new instance.
@@ -50,11 +50,11 @@ public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
         for (Module module : configuredModules) {
             final String internalName = module.getMetaData().identity().internalName();
 
-            if (XMLTags.SUPPRESSWARNINGSHOLDER_MODULE.equals(internalName)) {
+            if (XmlTags.SUPPRESSWARNINGSHOLDER_MODULE.equals(internalName)) {
                 containsSuppressWarningsHolderModule = true;
                 configuredSuppressWarningsHolder = module;
             }
-            else if (XMLTags.SUPPRESSWARNINGSFILTER_MODULE.equals(internalName)) {
+            else if (XmlTags.SUPPRESSWARNINGSFILTER_MODULE.equals(internalName)) {
                 needsSuppressWarningsHolderModule = true;
             }
 
@@ -66,7 +66,7 @@ public class SuppressWarningsHolderSaveFilter implements ISaveFilter {
         // add the SuppressWarningsHolder if needed
         if (!containsSuppressWarningsHolderModule && needsSuppressWarningsHolderModule) {
             final Module fileContentsHolder = new Module(
-                MetadataFactory.getRuleMetadata(XMLTags.SUPPRESSWARNINGSHOLDER_MODULE), false);
+                MetadataFactory.getRuleMetadata(XmlTags.SUPPRESSWARNINGSHOLDER_MODULE), false);
             configuredModules.add(0, fileContentsHolder);
         }
         else if (containsSuppressWarningsHolderModule && !needsSuppressWarningsHolderModule) {
