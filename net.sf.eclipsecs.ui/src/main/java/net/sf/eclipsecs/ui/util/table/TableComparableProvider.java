@@ -21,7 +21,7 @@
 package net.sf.eclipsecs.ui.util.table;
 
 /**
- * Interface used by <code>TableSortSupport</code> to provide comparable values for the single table
+ * Interface used by {@code TableSortSupport} to provide comparable values for the single table
  * columns. This works very similar like ITableLabelProvider except that other comparable objects
  * than Strings can be returned.
  *

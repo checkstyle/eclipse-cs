@@ -437,6 +437,7 @@
     <module name="EqualsAvoidNull"/>
     <module name="EqualsHashCode"/>
     <module name="ExplicitInitialization"/>
+    <module name="ExpressionOverBlockLambda"/>
     <module name="FallThrough"/>
     <module name="FinalLocalVariable"/>
     <module name="HiddenField">
@@ -615,13 +616,14 @@
                        SL_ASSIGN, SR_ASSIGN, STAR_ASSIGN, LAMBDA, TEXT_BLOCK_LITERAL_BEGIN, LAND,
                        LOR, LITERAL_INSTANCEOF, GT, LT, GE, LE, EQUAL, NOT_EQUAL, UNARY_MINUS,
                        UNARY_PLUS, INC, DEC, LNOT, BNOT, POST_INC, POST_DEC, DOT, INDEX_OP,
-                       LITERAL_NEW, BOR, BXOR, BAND, QUESTION"/>
+                       LITERAL_NEW, BOR, BXOR, BAND, QUESTION, TYPECAST"/>
     </module>
     <module name="UnnecessarySemicolonAfterOuterTypeDeclaration"/>
     <module name="UnnecessarySemicolonAfterTypeMemberDeclaration"/>
     <module name="UnnecessarySemicolonInEnumeration"/>
     <module name="UnnecessarySemicolonInTryWithResources"/>
     <module name="UnnecessaryTypeArgumentsWithRecordPattern"/>
+    <module name="UnusedPrivateField"/>
     <module name="UnusedCatchParameterShouldBeUnnamed">
       <!--
         Unnamed catch parameters will not compile on java versions between 9 and 21. As
@@ -712,6 +714,7 @@
     </module>
 
     <!-- Imports -->
+    <module name="AvoidModuleImport"/>
     <module name="AvoidStarImport"/>
     <module name="AvoidStaticImport"/>
     <module name="CustomImportOrder">
@@ -741,7 +744,9 @@
       <property name="option" value="top"/>
       <property name="sortStaticImportsAlphabetically" value="true"/>
     </module>
+    <module name="ModuleImportOrder"/>
     <module name="RedundantImport"/>
+    <module name="UnnecessaryFullyQualifiedType"/>
     <module name="UnusedImports"/>
 
     <!-- Javadoc Comments -->
@@ -749,6 +754,9 @@
     <module name="IllegalBlockTag">
       <property name="tag" value="@author"/>
     </module>
+    <module name="InappropriateJavadocBlockTagsOnField"/>
+    <module name="InappropriateJavadocBlockTagsOnPackage"/>
+    <module name="InappropriateJavadocBlockTagsOnType"/>
     <module name="InvalidJavadocPosition"/>
     <module name="JavadocBlockTagLocation">
       <!-- default tags -->
@@ -759,15 +767,21 @@
       <property name="tags" value="noinspection"/>
     </module>
     <module name="JavadocContentLocation"/>
+    <module name="JavadocEndCommentDelimiter"/>
     <module name="JavadocMethod">
       <property name="validateThrows" value="true"/>
     </module>
-    <module name="JavadocMissingLeadingAsterisk"/>
+    <module name="JavadocLinkWellKnownApi"/>
     <module name="JavadocLeadingAsteriskAlign"/>
+    <module name="JavadocLinkFirstOccurrence"/>
+    <module name="JavadocMissingLeadingAsterisk"/>
     <module name="JavadocMissingWhitespaceAfterAsterisk"/>
+    <module name="JavadocNoErrorInThrowsTag"/>
     <module name="JavadocParagraph"/>
+    <module name="JavadocParamOrder"/>
     <module name="JavadocRegexp"/>
     <module name="JavadocTagContinuationIndentation"/>
+    <module name="JavadocThrowsOrder"/>
     <module name="JavadocType">
       <!-- avoid errors on tag '@noinspection' -->
       <property name="allowUnknownTags" value="true"/>
@@ -782,6 +796,7 @@
       <property name="scope" value="private"/>
     </module>
     <module name="NonEmptyAtclauseDescription"/>
+    <module name="PreferCodeOrSnippetJavadocInlineTag"/>
     <module name="SingleLineJavadoc"/>
     <module name="SummaryJavadoc"/>
     <module name="RequireEmptyLineBeforeBlockTagGroup"/>
@@ -886,6 +901,9 @@
       <property name="jdkVersion" value="${checkstyle.java.version}"/>
     </module>
     <module name="AnnotatedDeclarationVisibility"/>
+
+    <!-- Modules -->
+    <module name="ModuleDirectiveOrder"/>
 
     <!-- Naming Conventions -->
     <module name="AbbreviationAsWordInName">

@@ -139,7 +139,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
      *
      * @param partRef
      *            the workbench part in question
-     * @return the editors file or <code>null</code> if the workbench part is no file based editor
+     * @return the editors file or {@code null} if the workbench part is no file based editor
      * @throws RuntimeException
      *             an unexpected runtime exception occurred
      */
@@ -163,7 +163,7 @@ public class CheckFileOnOpenPartListener implements IPartListener2 {
      *
      * @param file
      *            the file to check
-     * @return <code>true</code> if the file is affected, <code>false</code> otherwise
+     * @return {@code true} if the file is affected, {@code false} otherwise
      */
     private boolean isFileAffected(IFile file) {
         boolean isFileAffected = false;

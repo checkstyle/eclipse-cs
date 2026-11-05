@@ -282,7 +282,7 @@ public abstract class AbstractStatsView extends ViewPart {
      *            the previously selected resources.
      * @param newResources
      *            the currently selected resources
-     * @return <code>true</code> if an update of the statistics data is needed
+     * @return {@code true} if an update of the statistics data is needed
      */
     private boolean updateNeeded(IResource[] oldResources, IResource[] newResources) {
         boolean updateNeeded = false;

@@ -29,7 +29,7 @@ import net.sf.eclipsecs.core.config.ConfigProperty;
 import net.sf.eclipsecs.core.config.meta.ConfigPropertyType;
 
 /**
- * Create <code>ConfigPropertyWidget</code> instances based on provided metadata.
+ * Create {@code ConfigPropertyWidget} instances based on provided metadata.
  */
 public final class ConfigPropertyWidgetFactory {
 
@@ -60,7 +60,7 @@ public final class ConfigPropertyWidgetFactory {
      *            the property
      * @param shell
      *            the parent shell
-     * @return the widget or <code>null</code> if the property type is unknown
+     * @return the widget or {@code null} if the property type is unknown
      */
     public static ConfigPropertyWidget createWidget(Composite parent, ConfigProperty prop,
         Shell shell) {

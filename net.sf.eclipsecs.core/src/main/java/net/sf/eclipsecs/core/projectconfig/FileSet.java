@@ -73,10 +73,10 @@ public class FileSet {
      * Default constructor.
      *
      * @param name
-     *            The name of the <code>FileSet</code>
+     *            The name of the {@code FileSet}
      * @param checkConfig
-     *            The name of the <code>CheckConfiguration</code> used to check this
-     *            <code>FileSet</code>.
+     *            The name of the {@code CheckConfiguration} used to check this
+     *            {@code FileSet}.
      */
     public FileSet(String name, CheckConfiguration checkConfig) {
         this.name = name;
@@ -84,7 +84,7 @@ public class FileSet {
     }
 
     /**
-     * Returns a list of <code>FileMatchPattern</code> objects.
+     * Returns a list of {@code FileMatchPattern} objects.
      *
      * @return List
      */
@@ -93,7 +93,7 @@ public class FileSet {
     }
 
     /**
-     * Set the list of <code>FileMatchPattern</code> objects.
+     * Set the list of {@code FileMatchPattern} objects.
      *
      * @param fileMatchPatterns
      *            The new list of pattern objects.
@@ -164,7 +164,7 @@ public class FileSet {
      *
      * @param file
      *            The file to test.
-     * @return <code>true</code>= the file is included in the file set, <code>false</code>= the file
+     * @return {@code true}= the file is included in the file set, {@code false}= the file
      *         is not included in the file set.
      */
     public boolean includesFile(IFile file) {

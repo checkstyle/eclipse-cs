@@ -33,6 +33,7 @@ import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.IProgressService;
 import org.osgi.service.component.annotations.Component;
+import org.osgi.service.event.Event;
 import org.osgi.service.event.EventConstants;
 import org.osgi.service.event.EventHandler;
 
@@ -76,7 +77,7 @@ public final class ApplicationStartedHandler implements EventHandler {
     }
 
     @Override
-    public void handleEvent(org.osgi.service.event.Event event) {
+    public void handleEvent(Event event) {
         if (UIEvents.UILifeCycle.APP_STARTUP_COMPLETE.equals(event.getTopic())) {
             registerListener();
             registerProgressIcon();

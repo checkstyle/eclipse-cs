@@ -209,7 +209,7 @@ public class Module {
      *
      * @param property
      *            the property name
-     * @return the coresponding property or <code>null</code>
+     * @return the coresponding property or {@code null}
      */
     public ConfigProperty getProperty(String property) {
         ConfigProperty propertyObj = null;

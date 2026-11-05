@@ -154,7 +154,7 @@ public class ConfigProperty implements Comparable<ConfigProperty> {
     /**
      * Returns if the property value is/contains a ${}-style property reference.
      *
-     * @return <code>true</code> if the value is a property reference, <code>false</code> otherwise
+     * @return {@code true} if the value is a property reference, {@code false} otherwise
      */
     public boolean isPropertyReference() {
         return propertyReference;
@@ -164,7 +164,7 @@ public class ConfigProperty implements Comparable<ConfigProperty> {
      * Sets if the property value is/contains a ${}-style property reference.
      *
      * @param propertyReference
-     *            <code>true</code> if the value is a property reference, <code>false</code>
+     *            {@code true} if the value is a property reference, {@code false}
      *            otherwise
      */
     public void setPropertyReference(boolean propertyReference) {

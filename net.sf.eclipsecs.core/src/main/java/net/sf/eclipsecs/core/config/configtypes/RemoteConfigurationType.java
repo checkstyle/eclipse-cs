@@ -412,7 +412,7 @@ public class RemoteConfigurationType extends AbstractConfigurationType {
          *
          * @param resolvedCheckConfigurationUrl
          *            the configuration URL
-         * @return the authentication object or <code>null</code> if none is stored
+         * @return the authentication object or {@code null} if none is stored
          */
         public static RemoteConfigAuthenticator create(URL resolvedCheckConfigurationUrl) {
             RemoteConfigAuthenticator auth = null;

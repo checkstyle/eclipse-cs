@@ -70,9 +70,9 @@ public class DefaultProjectConfiguration implements ProjectConfiguration {
      * @param filters
      *            the filters
      * @param useSimpleConfig
-     *            <code>true</code> if simple configuration is used
+     *            {@code true} if simple configuration is used
      * @param synchFormatter
-     *            <code>true</code> if the formatter configuration should be synced to the
+     *            {@code true} if the formatter configuration should be synced to the
      *            Checkstyle settings
      */
     public DefaultProjectConfiguration(IProject project, List<CheckConfiguration> localConfigs,
@@ -153,8 +153,8 @@ public class DefaultProjectConfiguration implements ProjectConfiguration {
      *
      * @param configuration
      *            the check configuration
-     * @return <code>true</code>, if the project config uses the checkstyle config,
-     *         <code>false</code> otherwise
+     * @return {@code true}, if the project config uses the checkstyle config,
+     *         {@code false} otherwise
      */
     @Override
     public boolean isConfigInUse(CheckConfiguration configuration) {

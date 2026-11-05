@@ -69,7 +69,7 @@ public final class CheckstyleMarker {
      *
      * @param marker
      *            the marker to check
-     * @return <code>true</code> if the marker is a checkstyle marker
+     * @return {@code true} if the marker is a checkstyle marker
      */
     public static boolean isCheckstyleMarker(IMarker marker) {
         boolean isCheckstyleMarker;

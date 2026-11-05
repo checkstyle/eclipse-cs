@@ -51,7 +51,7 @@ public interface ConfigPropertyWidget {
      * Enables/disables the widget.
      *
      * @param enabled
-     *            <code>true</code> if the widget should be enabled, <code>false</code> otherwise
+     *            {@code true} if the widget should be enabled, {@code false} otherwise
      */
     void setEnabled(boolean enabled);
 

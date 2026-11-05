@@ -339,7 +339,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
      *
      * @param item
      *            the marker
-     * @return <code>true</code> if the marker is selected
+     * @return {@code true} if the marker is selected
      */
     private boolean doSelectBySeverity(IMarker item) {
         boolean select = true;
@@ -367,7 +367,7 @@ public record CheckstyleMarkerFilter(boolean enabled, int onResource, IWorkingSe
      *
      * @param item
      *            the marker
-     * @return <code>true</code> if the marker is selected
+     * @return {@code true} if the marker is selected
      */
     private boolean selectByRegex(IMarker item) {
         boolean select = true;

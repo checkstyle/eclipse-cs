@@ -128,7 +128,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      * @param workingSet
      *            the working set this working copy belongs to
      * @param global
-     *            <code>true</code> if the new configuration is a global configuration
+     *            {@code true} if the new configuration is a global configuration
      */
     public CheckConfigurationWorkingCopy(ConfigurationType configType,
         CheckConfigurationWorkingSet workingSet, boolean global) {
@@ -153,7 +153,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      * @param name
      *            the new name
      * @throws CheckstylePluginException
-     *             if name is <code>null</code> or empty or a name collision with an existing check
+     *             if name is {@code null} or empty or a name collision with an existing check
      *             configuration exists
      */
     public void setName(String name) throws CheckstylePluginException {
@@ -181,7 +181,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      * @param location
      *            the new location of Checkstyle configuration file
      * @throws CheckstylePluginException
-     *             if location is <code>null</code> or empty or the Checkstyle configuration file
+     *             if location is {@code null} or empty or the Checkstyle configuration file
      *             cannot be resolved
      */
     public void setLocation(String location) throws CheckstylePluginException {
@@ -224,7 +224,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      * Flags if the working copy changed compared to the original check configuration and needs to
      * be saved.
      *
-     * @return <code>true</code> if the working copy has changes over the original check
+     * @return {@code true} if the working copy has changes over the original check
      *         configuration
      */
     public boolean isDirty() {
@@ -235,7 +235,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
      * Determines if the checkstyle configuration of this working copy changed. This is used to
      * determine if specific projects need to rebuild afterwards.
      *
-     * @return <code>true</code> if the checkstyle configuration changed.
+     * @return {@code true} if the checkstyle configuration changed.
      */
     public boolean hasConfigurationChanged() {
         return hasConfigChanged
@@ -247,7 +247,7 @@ public final class CheckConfigurationWorkingCopy extends AbstractCheckConfigurat
 
     /**
      * Reads the Checkstyle configuration file and builds the list of configured modules. Elements
-     * are of type <code>net.sf.eclipsecs.core.config.Module</code>.
+     * are of type {@code net.sf.eclipsecs.core.config.Module}.
      *
      * @return the list of configured modules in this Checkstyle configuration
      * @throws CheckstylePluginException

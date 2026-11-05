@@ -186,7 +186,7 @@ public class MarkerPropertyPage extends PropertyPage {
      *
      * @param severity
      *            issue severity
-     * @return Image or <code>null</code>
+     * @return Image or {@code null}
      */
     public static Image getSeverityImage(int severity) {
         final ISharedImages sharedImages = PlatformUI.getWorkbench().getSharedImages();

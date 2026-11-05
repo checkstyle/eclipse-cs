@@ -54,26 +54,26 @@ import net.sf.eclipsecs.ui.quickfixes.Messages;
  * Quickfix implementation which simplifies a boolean if/return statement. It transforms an if
  * statement like
  *
- * <pre>
+ * {@snippet :
  * if (condition) {
  *     return true;
  * }
  * else {
  *     return false;
  * }
- * </pre>
+ * }
  * into a return statement like
- * <pre>
+ * {@snippet :
  * return condition;
- * </pre>
+ * }
  *
  */
 public class SimplifyBooleanReturnQuickfix extends AbstractASTResolution {
 
     /**
      * If the condition is of one of these expression types, the parentheses are not necessary when
-     * negated. I.e the replacement can be written as <code>!condition</code> instead of
-     * <code>!(condition)</code>.
+     * negated. I.e the replacement can be written as {@code !condition} instead of
+     * {@code !(condition)}.
      */
     private static final Collection<Class<? extends Expression>> OMIT_PARANETHESES_CLASSES =
         Arrays.asList(BooleanLiteral.class, FieldAccess.class, MethodInvocation.class,

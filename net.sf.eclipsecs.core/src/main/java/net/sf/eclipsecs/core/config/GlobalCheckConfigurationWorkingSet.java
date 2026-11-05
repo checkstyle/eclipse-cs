@@ -118,7 +118,7 @@ public class GlobalCheckConfigurationWorkingSet implements CheckConfigurationWor
     }
 
     /**
-     * Returns the default check configuration or <code>null</code> if none is set.
+     * Returns the default check configuration or {@code null} if none is set.
      *
      * @return the default check configuration
      */

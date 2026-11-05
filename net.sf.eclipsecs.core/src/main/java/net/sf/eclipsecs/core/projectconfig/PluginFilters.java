@@ -145,7 +145,7 @@ public final class PluginFilters {
      *
      * @param internalName
      *            the filters internal name
-     * @return the filter prototype or <code>null</code>
+     * @return the filter prototype or {@code null}
      */
     public static AuditFilter getByInternalName(String internalName) {
 

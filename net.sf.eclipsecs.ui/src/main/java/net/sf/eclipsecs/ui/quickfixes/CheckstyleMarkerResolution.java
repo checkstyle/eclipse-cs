@@ -34,7 +34,7 @@ public interface CheckstyleMarkerResolution extends IMarkerResolution2 {
      *
      * @param marker
      *            the marker to potentially be fixed.
-     * @return <code>true</code> if this quickfix can fix the marker, <code>false</code> otherwise.
+     * @return {@code true} if this quickfix can fix the marker, {@code false} otherwise.
      */
     boolean canFix(IMarker marker);
 

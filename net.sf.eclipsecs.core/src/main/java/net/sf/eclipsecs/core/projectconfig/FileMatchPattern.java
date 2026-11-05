@@ -56,7 +56,7 @@ public class FileMatchPattern {
     }
 
     /**
-     * Construct a new <code>FileMatchPattern</code>.
+     * Construct a new {@code FileMatchPattern}.
      *
      * @param pattern
      *            The new pattern.
@@ -103,7 +103,7 @@ public class FileMatchPattern {
      *
      * @param fileName
      *            File name to be tested.
-     * @return <code>true</code>= match, <code>false</code>= no match.
+     * @return {@code true}= match, {@code false}= no match.
      */
     public boolean isMatch(String fileName) {
         boolean result = false;

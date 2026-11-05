@@ -294,7 +294,7 @@ public final class CheckerFactory {
     /**
      * Returns the configured locale language.
      *
-     * @return the configured language or <code>null</code> if the default should be used
+     * @return the configured language or {@code null} if the default should be used
      */
     private static String getLocale() {
         String lang = CheckstylePluginPrefs.getString(CheckstylePluginPrefs.PREF_LOCALE_LANGUAGE);

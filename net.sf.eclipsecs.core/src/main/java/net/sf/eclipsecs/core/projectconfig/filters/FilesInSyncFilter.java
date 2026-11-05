@@ -83,7 +83,7 @@ public class FilesInSyncFilter extends AbstractFilter {
      *            the file to check
      * @param subscriber
      *            the repository subscriber
-     * @return <code>true</code> if the file has changes
+     * @return {@code true} if the file has changes
      */
     private boolean hasChanges(IFile file, Subscriber subscriber) {
         boolean hasChanges = false;

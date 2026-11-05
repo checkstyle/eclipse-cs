@@ -54,7 +54,7 @@ import net.sf.eclipsecs.core.util.CheckstyleLog;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
- * Used to manage the life cycle of <code>CheckConfiguration</code> objects.
+ * Used to manage the life cycle of {@code CheckConfiguration} objects.
  */
 public final class CheckConfigurationFactory {
 
@@ -105,11 +105,11 @@ public final class CheckConfigurationFactory {
     }
 
     /**
-     * Get an <code>CheckConfiguration</code> instance by its name.
+     * Get an {@code CheckConfiguration} instance by its name.
      *
      * @param name
      *            Name of the requested instance.
-     * @return The requested instance or <code>null</code> if the named instance could not be found.
+     * @return The requested instance or {@code null} if the named instance could not be found.
      */
     public static CheckConfiguration getByName(String name) {
         CheckConfiguration result = null;
