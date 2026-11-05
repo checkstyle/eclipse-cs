@@ -64,7 +64,7 @@ public class FixCheckstyleMarkersHandler extends AbstractHandler {
     }
 
     /**
-     * Returns the active text editor or <code>null</code> if none is active.
+     * Returns the active text editor or {@code null} if none is active.
      *
      * @return the active text editor
      */

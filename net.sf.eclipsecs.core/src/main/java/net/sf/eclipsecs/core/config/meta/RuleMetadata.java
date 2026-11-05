@@ -32,13 +32,13 @@ import net.sf.eclipsecs.core.config.Severity;
  * @param defaultSeverity
  *          the default severity level
  * @param hidden
- *          <code>true</code> if the rule should be hidden from the user
+ *          {@code true} if the rule should be hidden from the user
  * @param hasSeverity
- *          <code>true</code> if the rule has a severity level
+ *          {@code true} if the rule has a severity level
  * @param deletable
- *          <code>true</code> if the rule is deletable
+ *          {@code true} if the rule is deletable
  * @param isSingleton
- *          <code>true</code> if the rule is a singleton
+ *          {@code true} if the rule is a singleton
  * @param messageKeys
  *          the message keys supported by the rule
  * @param configPropMetadata

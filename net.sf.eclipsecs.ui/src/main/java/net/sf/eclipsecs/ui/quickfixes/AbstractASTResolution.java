@@ -108,7 +108,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
      *            the ASTNode
      * @param position
      *            the position to check for
-     * @return <code>true</code> if the position is within the ASTNode
+     * @return {@code true} if the position is within the ASTNode
      */
     protected boolean containsPosition(ASTNode node, int position) {
         return node.getStartPosition() <= position
@@ -122,7 +122,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
      *            the region
      * @param position
      *            the position to check for
-     * @return <code>true</code> if the position is within the region
+     * @return {@code true} if the position is within the region
      */
     protected boolean containsPosition(IRegion region, int position) {
         return region.getOffset() <= position
@@ -136,19 +136,19 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
      *
      * <p>
      * Source range information on the original nodes is automatically copied to the new nodes.
-     * Client properties ( <code>properties</code>) are not carried over.
+     * Client properties ( {@code properties}) are not carried over.
      * </p>
      *
      * <p>
-     * The node's <code>AST</code> and the target <code>AST</code> must support the same API level.
+     * The node's {@code AST} and the target {@code AST} must support the same API level.
      * </p>
      *
      * @param <T>
      *            the AST node type
      * @param node
-     *            the node to copy, or <code>null</code> if none
+     *            the node to copy, or {@code null} if none
      *
-     * @return the copied node, or <code>null</code> if <code>node</code> is <code>null</code>
+     * @return the copied node, or {@code null} if {@code node} is {@code null}
      */
     @SuppressWarnings("unchecked")
     protected <T extends ASTNode> T copy(final T node) {
@@ -163,7 +163,7 @@ public abstract class AbstractASTResolution extends WorkbenchMarkerResolution
      *            The node to replace.
      * @param replacement
      *            The replacement node.
-     * @return <code>true</code> if the node was successfully replaced.
+     * @return {@code true} if the node was successfully replaced.
      */
     protected static boolean replace(final ASTNode node, final ASTNode replacement) {
         boolean replaced = false;

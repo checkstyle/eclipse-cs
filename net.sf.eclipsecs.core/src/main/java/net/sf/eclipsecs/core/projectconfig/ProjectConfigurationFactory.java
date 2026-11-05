@@ -108,11 +108,11 @@ public final class ProjectConfigurationFactory {
     }
 
     /**
-     * Get the <code>ProjectConfiguration</code> object for the specified project.
+     * Get the {@code ProjectConfiguration} object for the specified project.
      *
      * @param project
-     *            The project to get <code>FileSet</code>'s for.
-     * @return The <code>ProjectConfiguration</code> instance.
+     *            The project to get {@code FileSet}'s for.
+     * @return The {@code ProjectConfiguration} instance.
      * @throws CheckstylePluginException
      *             Error during processing.
      */
@@ -126,7 +126,7 @@ public final class ProjectConfigurationFactory {
      *
      * @param checkConfig
      *            The check configuration to check for.
-     * @return <code>true</code>= in use, <code>false</code>= not in use.
+     * @return {@code true}= in use, {@code false}= not in use.
      * @throws CheckstylePluginException
      *             Error during processing.
      */
@@ -201,10 +201,10 @@ public final class ProjectConfigurationFactory {
      * @param project
      *            the project
      * @return the project configuration
-     * @throws DocumentException
-     *             the configuration document could not be read
      * @throws CheckstylePluginException
      *             an unexpected exception occurred
+     * @throws DocumentException
+     *             the configuration document could not be read
      */
     private static ProjectConfiguration getProjectConfiguration(InputStream input,
         IProject project) throws DocumentException, CheckstylePluginException {

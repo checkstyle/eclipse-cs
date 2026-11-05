@@ -23,7 +23,7 @@ package net.sf.eclipsecs.ui.util.table;
 import org.eclipse.jface.dialogs.IDialogSettings;
 
 /**
- * Interface for implementations that provide settings where the <code>EnhancedTableViewer</code>
+ * Interface for implementations that provide settings where the {@code EnhancedTableViewer}
  * can store its current state.
  *
  */

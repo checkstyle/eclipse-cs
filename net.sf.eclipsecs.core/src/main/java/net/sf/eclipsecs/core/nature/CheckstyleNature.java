@@ -150,8 +150,8 @@ public class CheckstyleNature implements IProjectNature {
      *
      * @param project
      *            the project to check
-     * @return <code>true</code> if the builder order for this project is correct,
-     *         <code>false</code> otherwise
+     * @return {@code true} if the builder order for this project is correct,
+     *         {@code false} otherwise
      * @throws CoreException
      *             error getting project description
      */

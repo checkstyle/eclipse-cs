@@ -79,7 +79,7 @@ public interface CheckConfiguration {
     /**
      * Determines if the configuration properties are editable by the user.
      *
-     * @return <code>true</code>, if the configuration is editable
+     * @return {@code true}, if the configuration is editable
      */
     boolean isEditable();
 
@@ -87,7 +87,7 @@ public interface CheckConfiguration {
      * Determines if the checkstyle configuration associates with this check configuration can be
      * configured.
      *
-     * @return <code>true</code> if the checkstyle configuration can be configured.
+     * @return {@code true} if the checkstyle configuration can be configured.
      */
     boolean isConfigurable();
 
@@ -95,7 +95,7 @@ public interface CheckConfiguration {
      * Returns if the check configuration is a global configuration, configured for the workspace,
      * or a local configuration for a single project.
      *
-     * @return <code>true</code> if the check configuration is configured globally
+     * @return {@code true} if the check configuration is configured globally
      */
     boolean isGlobal();
 

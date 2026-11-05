@@ -208,7 +208,7 @@ public final class Auditor {
     /**
      * Determines whether files have been added to the audit.
      *
-     * @return <code>true</code> if at least one file has been added, <code>false</code> otherwise
+     * @return {@code true} if at least one file has been added, {@code false} otherwise
      */
     public boolean hasFiles() {
         return !filesByName.isEmpty();
@@ -219,7 +219,7 @@ public final class Auditor {
      *
      * @param fileName
      *            the file name
-     * @return the file resource or <code>null</code>
+     * @return the file resource or {@code null}
      */
     private IFile getFile(String fileName) {
         return filesByName.get(new Path(fileName).toString());

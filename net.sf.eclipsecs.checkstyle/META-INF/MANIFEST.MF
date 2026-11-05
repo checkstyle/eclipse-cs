@@ -28,6 +28,7 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.checks.javadoc.utils,
  com.puppycrawl.tools.checkstyle.checks.metrics,
  com.puppycrawl.tools.checkstyle.checks.modifier,
+ com.puppycrawl.tools.checkstyle.checks.modules,
  com.puppycrawl.tools.checkstyle.checks.naming,
  com.puppycrawl.tools.checkstyle.checks.regexp,
  com.puppycrawl.tools.checkstyle.checks.sizes,
@@ -38,5 +39,5 @@ Export-Package: .,
  com.puppycrawl.tools.checkstyle.utils
 Require-Bundle: org.eclipse.core.runtime
 Bundle-ClassPath: .,
- checkstyle-14.0.0-all.jar
+ checkstyle-14.1.0-all.jar
 Automatic-Module-Name: net.sf.eclipsecs.checkstyle

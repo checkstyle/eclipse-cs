@@ -17,6 +17,7 @@
       <package name="javadoc"/>
       <package name="metrics"/>
       <package name="modifier"/>
+      <package name="modules"/>
       <package name="naming"/>
       <package name="regexp"/>
       <package name="sizes"/>

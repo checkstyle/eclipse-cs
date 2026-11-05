@@ -84,7 +84,7 @@ public class CheckConfigurationPropertiesDialog extends TitleAreaDialog {
      * @param parent
      *            the parent shell
      * @param checkConfig
-     *            the check configuration or <code>null</code> if a new check config should be
+     *            the check configuration or {@code null} if a new check config should be
      *            created
      * @param workingSet
      *            the working set the check config is changed in

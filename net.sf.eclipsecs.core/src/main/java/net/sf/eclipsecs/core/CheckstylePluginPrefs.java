@@ -31,7 +31,7 @@ import org.osgi.service.prefs.BackingStoreException;
 import net.sf.eclipsecs.core.util.CheckstyleLog;
 
 /**
- * Class for handling preferences of the <code>net.sf.eclipsecs.core</code> plugin.
+ * Class for handling preferences of the {@code net.sf.eclipsecs.core} plugin.
  *
  */
 public class CheckstylePluginPrefs extends AbstractPreferenceInitializer {

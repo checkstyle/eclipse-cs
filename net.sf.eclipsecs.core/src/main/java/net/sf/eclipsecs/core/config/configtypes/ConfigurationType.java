@@ -42,11 +42,11 @@ public interface ConfigurationType {
      * @param definingPluginId
      *            the plugin id the configuration type was defined in
      * @param isCreatable
-     *            <code>true</code> if a configuration of this type can be created by the user.
+     *            {@code true} if a configuration of this type can be created by the user.
      * @param isEditable
-     *            <code>true</code> if a configuration of this type can be edited by the user.
+     *            {@code true} if a configuration of this type can be edited by the user.
      * @param isConfigurable
-     *            <code>true</code> if a configuration of this type can be configured by the user.
+     *            {@code true} if a configuration of this type can be configured by the user.
      */
     void initialize(String name, String internalName, String definingPluginId, boolean isCreatable,
         boolean isEditable, boolean isConfigurable);
@@ -68,15 +68,15 @@ public interface ConfigurationType {
     /**
      * Return if a check configuration of this type can be created by the user.
      *
-     * @return <code>true</code> if the check configuration type is creatable, otherwise
-     *         <code>false</code>
+     * @return {@code true} if the check configuration type is creatable, otherwise
+     *         {@code false}
      */
     boolean isCreatable();
 
     /**
      * Determines if the configuration properties are editable by the user.
      *
-     * @return <code>true</code>, if the configuration is editable
+     * @return {@code true}, if the configuration is editable
      */
     boolean isEditable();
 
@@ -86,7 +86,7 @@ public interface ConfigurationType {
      *
      * @param checkConfiguration
      *            the actual check configuration
-     * @return <code>true</code> if the checkstyle configuration can be configured.
+     * @return {@code true} if the checkstyle configuration can be configured.
      */
     boolean isConfigurable(CheckConfiguration checkConfiguration);
 

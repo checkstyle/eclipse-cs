@@ -277,6 +277,7 @@ public class CheckstyleMetadataAdapter {
         packageToGroupName.put("javadoc", "Javadoc Comments");
         packageToGroupName.put("metrics", "Metrics");
         packageToGroupName.put("modifier", "Modifiers");
+        packageToGroupName.put("modules", "Modules");
         packageToGroupName.put("naming", "Naming Conventions");
         packageToGroupName.put("regexp", "Regexp");
         packageToGroupName.put("sizes", "Size Violations");

@@ -145,7 +145,7 @@ public class ProjectConfigurationWorkingCopy implements ProjectConfiguration {
      *
      * @param name
      *            the configurations name
-     * @return the check configuration or <code>null</code>, if no local configuration with this
+     * @return the check configuration or {@code null}, if no local configuration with this
      *         name exists
      */
     public CheckConfiguration getLocalCheckConfigByName(String name) {
@@ -166,7 +166,7 @@ public class ProjectConfigurationWorkingCopy implements ProjectConfiguration {
      *
      * @param name
      *            the configurations name
-     * @return the check configuration or <code>null</code>, if no local configuration with this
+     * @return the check configuration or {@code null}, if no local configuration with this
      *         name exists
      */
     public CheckConfiguration getGlobalCheckConfigByName(String name) {
@@ -206,7 +206,7 @@ public class ProjectConfigurationWorkingCopy implements ProjectConfiguration {
     /**
      * Determines if the project configuration changed.
      *
-     * @return <code>true</code> if changed
+     * @return {@code true} if changed
      */
     public boolean isDirty() {
         return !this.equals(projectConfig) || localConfigWorkingSet.isDirty();
@@ -216,7 +216,7 @@ public class ProjectConfigurationWorkingCopy implements ProjectConfiguration {
      * Determines if a rebuild is needed for the project of this project configuration. A rebuild is
      * not needed when only some local config was added which is not used by the project.
      *
-     * @return <code>true</code> if rebuild is needed.
+     * @return {@code true} if rebuild is needed.
      * @throws CheckstylePluginException
      *             an unexpected exception occurred
      */
