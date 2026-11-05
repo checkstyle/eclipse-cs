@@ -68,7 +68,7 @@ public class ModifierOrderQuickfix extends AbstractASTResolution {
     }
 
     /**
-     * Reorders the given list of <code>Modifier</code> nodes into their suggested order by the JLS.
+     * Reorders the given list of {@code Modifier} nodes into their suggested order by the JLS.
      *
      * @param modifiers
      *            the list of modifiers to reorder

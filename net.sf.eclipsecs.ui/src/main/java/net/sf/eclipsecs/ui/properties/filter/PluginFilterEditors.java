@@ -88,7 +88,7 @@ public final class PluginFilterEditors {
      *
      * @param filter
      *            the filter
-     * @return <code>true</code> if the filter has an editor, <code>false</code> otherwise.
+     * @return {@code true} if the filter has an editor, {@code false} otherwise.
      */
     public static boolean hasEditor(AuditFilter filter) {
         return FILTER_EDITOR_CLASSES.containsKey(filter.getInternalName());

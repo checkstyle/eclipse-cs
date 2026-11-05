@@ -151,7 +151,7 @@ public final class ConfigurationTypes {
      *
      * @param name
      *            the configuration type internal name
-     * @return the configuration type or <code>null</code>
+     * @return the configuration type or {@code null}
      */
     public static ConfigurationType getByInternalName(String name) {
         return CONFIGURATION_TYPES.get(name);
@@ -162,7 +162,7 @@ public final class ConfigurationTypes {
      *
      * @param name
      *            the configuration type name
-     * @return the configuration type or <code>null</code>
+     * @return the configuration type or {@code null}
      */
     public static ConfigurationType getByName(String name) {
         ConfigurationType result = null;

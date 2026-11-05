@@ -239,7 +239,7 @@ public final class MetadataFactory {
     /**
      * Get a list of metadata objects for all rule groups.
      *
-     * @return List of <code>RuleGroupMetadata</code> objects.
+     * @return List of {@code RuleGroupMetadata} objects.
      */
     public static List<RuleGroupMetadata> getRuleGroupMetadata() {
         final List<RuleGroupMetadata> groups = new ArrayList<>(ruleGroupMetadata.values());
@@ -252,7 +252,7 @@ public final class MetadataFactory {
      *
      * @param name
      *            the group name
-     * @return the RuleGroupMetadata object or <code>null</code>
+     * @return the RuleGroupMetadata object or {@code null}
      */
     private static RuleGroupMetadata getRuleGroupMetadata(String name) {
         return ruleGroupMetadata.get(name);
@@ -468,7 +468,7 @@ public final class MetadataFactory {
      *            the metadata xml file
      * @param classLoader
      *            the class loader to use
-     * @return the corresponding ResourceBundle for the metadata file or <code>null</code> if none
+     * @return the corresponding ResourceBundle for the metadata file or {@code null} if none
      *         exists
      */
     private static ResourceBundle getMetadataI18nBundle(String metadataFile,
@@ -495,10 +495,10 @@ public final class MetadataFactory {
      *            the resource bundle for localization
      * @param groupId
      *            the id of the rule group
-     * @throws DocumentException
-     *             the metadata document could not be read
      * @throws CheckstylePluginException
      *             an unexpected exception occurred
+     * @throws DocumentException
+     *             the metadata document could not be read
      */
     private static void parseMetadata(InputStream metadataStream, ResourceBundle metadataBundle,
         String groupId) throws DocumentException, CheckstylePluginException {

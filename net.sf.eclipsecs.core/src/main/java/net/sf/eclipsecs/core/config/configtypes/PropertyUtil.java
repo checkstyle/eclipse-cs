@@ -62,21 +62,21 @@ public final class PropertyUtil {
     }
 
     /**
-     * Replaces <code>${xxx}</code> style constructions in the given value with the string value of
+     * Replaces {@code ${xxx}} style constructions in the given value with the string value of
      * the corresponding data types. The method is package visible to facilitate testing.
      *
      * @param aValue
-     *            The string to be scanned for property references. May be <code>null</code>, in
+     *            The string to be scanned for property references. May be {@code null}, in
      *            which case this method returns immediately with no effect.
      * @param aProps
      *            Mapping (String to String) of property names to their values. Must not be
-     *            <code>null</code>.
-     * @return the original string with the properties replaced, or <code>null</code> if the
-     *         original string is <code>null</code>. Code copied from ant -
+     *            {@code null}.
+     * @return the original string with the properties replaced, or {@code null} if the
+     *         original string is {@code null}. Code copied from ant -
      *         http://cvs.apache.org/viewcvs/jakarta-ant/src/main/org/apache/tools/ant/ProjectHelper.java
      * @throws CheckstyleException
-     *             if the string contains an opening <code>${</code> without a closing
-     *             <code>}</code>
+     *             if the string contains an opening {@code ${} without a closing
+     *             {@code }}
      */
     public static String replaceProperties(String aValue, PropertyResolver aProps)
             throws CheckstyleException {
@@ -108,20 +108,20 @@ public final class PropertyUtil {
     }
 
     /**
-     * Parses a string containing <code>${xxx}</code> style property references into two lists. The
+     * Parses a string containing {@code ${xxx}} style property references into two lists. The
      * first list is a collection of text fragments, while the other is a set of string property
-     * names. <code>null</code> entries in the first list indicate a property reference from the
+     * names. {@code null} entries in the first list indicate a property reference from the
      * second list.
      *
      * @param aValue
-     *            Text to parse. Must not be <code>null</code>.
+     *            Text to parse. Must not be {@code null}.
      * @param aFragments
-     *            List to add text fragments to. Must not be <code>null</code>.
+     *            List to add text fragments to. Must not be {@code null}.
      * @param aPropertyRefs
-     *            List to add property names to. Must not be <code>null</code>.
+     *            List to add property names to. Must not be {@code null}.
      * @throws CheckstyleException
-     *             if the string contains an opening <code>${</code> without a closing
-     *             <code>}</code> Code copied from ant -
+     *             if the string contains an opening {@code ${} without a closing
+     *             {@code }} Code copied from ant -
      *             http://cvs.apache.org/viewcvs/jakarta-ant/src/main/org/apache/tools/ant/ProjectHelper.java
      */
     private static void parsePropertyString(String aValue, List<String> aFragments,

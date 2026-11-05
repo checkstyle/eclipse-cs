@@ -36,7 +36,7 @@ import net.sf.eclipsecs.core.config.CheckstyleConfigurationFile;
 import net.sf.eclipsecs.core.util.CheckstylePluginException;
 
 /**
- * Base implementation of <code>IConfigurationType</code>.
+ * Base implementation of {@code IConfigurationType}.
  *
  */
 public abstract class AbstractConfigurationType implements ConfigurationType {
@@ -160,7 +160,7 @@ public abstract class AbstractConfigurationType implements ConfigurationType {
      * configuration.
      *
      * <p>
-     * This method attempts to find a <code>.properties</code> file with the same base name as the
+     * This method attempts to find a {@code .properties} file with the same base name as the
      * provided configuration URL.
      * </p>
      *
@@ -219,7 +219,7 @@ public abstract class AbstractConfigurationType implements ConfigurationType {
     }
 
     /**
-     * Reads and returns all bytes from the provided <code>URLConnection</code>.
+     * Reads and returns all bytes from the provided {@code URLConnection}.
      *
      * @param connection
      *            the connection to read from

@@ -66,7 +66,7 @@ public interface ProjectConfiguration {
     /**
      * Returns if the simple configuration should be used.
      *
-     * @return <code>true</code>, if this project uses the simple configuration, <code>false</code>
+     * @return {@code true}, if this project uses the simple configuration, {@code false}
      *         otherwise
      */
     boolean isUseSimpleConfig();
@@ -76,15 +76,15 @@ public interface ProjectConfiguration {
      *
      * @param configuration
      *          the check configuration
-     * @return <code>true</code>, if the project config uses the checkstyle config,
-     *         <code>false</code> otherwise
+     * @return {@code true}, if the project config uses the checkstyle config,
+     *         {@code false} otherwise
      */
     boolean isConfigInUse(CheckConfiguration configuration);
 
     /**
      * Returns if the formatter synching feature is enabled.
      *
-     * @return <code>true</code> if checkstyle settings are synched into formatter settings.
+     * @return {@code true} if checkstyle settings are synched into formatter settings.
      */
     boolean isSyncFormatter();
 

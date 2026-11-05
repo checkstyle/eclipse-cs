@@ -54,7 +54,7 @@ public class RunCheckstyleOnFilesJob extends AbstractCheckJob {
     private List<IFile> filesToCheck;
 
     /**
-     * Creates the job for a list of <code>IFile</code> objects.
+     * Creates the job for a list of {@code IFile} objects.
      *
      * @param files
      *            the files to check

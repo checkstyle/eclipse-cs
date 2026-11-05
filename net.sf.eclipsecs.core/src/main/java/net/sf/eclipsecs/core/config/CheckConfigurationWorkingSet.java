@@ -68,7 +68,7 @@ public interface CheckConfigurationWorkingSet {
      *
      * @param configuration
      *            the working copy to check
-     * @return <code>true</code> if there is a collision, <code>false</code> otherwise
+     * @return {@code true} if there is a collision, {@code false} otherwise
      */
     boolean isNameCollision(CheckConfigurationWorkingCopy configuration);
 
@@ -81,12 +81,12 @@ public interface CheckConfigurationWorkingSet {
     void addCheckConfiguration(CheckConfigurationWorkingCopy checkConfig);
 
     /**
-     * Removes a working copy from the working set. Returns <code>true</code> if the configuration
-     * could be removed, <code>false</code> if it could not be removed because it is being used.
+     * Removes a working copy from the working set. Returns {@code true} if the configuration
+     * could be removed, {@code false} if it could not be removed because it is being used.
      *
      * @param checkConfig
      *            the working copy to remove
-     * @return <code>true</code> if the configuration was removed, <code>false</code> if it is being
+     * @return {@code true} if the configuration was removed, {@code false} if it is being
      *         used and therefor cannot be removed
      */
     boolean removeCheckConfiguration(CheckConfigurationWorkingCopy checkConfig);
@@ -102,7 +102,7 @@ public interface CheckConfigurationWorkingSet {
     /**
      * Determines if the working set changed.
      *
-     * @return <code>true</code> if the working set changed, <code>false</code> otherwise
+     * @return {@code true} if the working set changed, {@code false} otherwise
      */
     boolean isDirty();
 

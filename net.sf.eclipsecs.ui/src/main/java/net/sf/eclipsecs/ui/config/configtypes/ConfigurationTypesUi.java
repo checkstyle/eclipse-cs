@@ -139,7 +139,7 @@ public final class ConfigurationTypesUi {
      *
      * @param configType
      *            the configuration type
-     * @return the image representing the configuration type or <code>null</code> if no image is
+     * @return the image representing the configuration type or {@code null} if no image is
      *         registered
      */
     public static Image getConfigurationTypeImage(ConfigurationType configType) {

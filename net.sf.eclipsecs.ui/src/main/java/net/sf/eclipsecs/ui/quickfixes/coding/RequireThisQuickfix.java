@@ -42,7 +42,7 @@ import net.sf.eclipsecs.ui.quickfixes.AbstractASTResolution;
 import net.sf.eclipsecs.ui.quickfixes.Messages;
 
 /**
- * Quickfix implementation which adds the <code>this</code> qualifier to a field access or method
+ * Quickfix implementation which adds the {@code this} qualifier to a field access or method
  * invocation.
  *
  */
@@ -87,7 +87,7 @@ public class RequireThisQuickfix extends AbstractASTResolution {
      *            the AST node to search in
      * @param typeLevel
      *            the current type level
-     * @return the replacement expression or <code>null</code>
+     * @return the replacement expression or {@code null}
      */
     private Expression findFieldReplacement(final SimpleName name, final ASTNode node,
         int typeLevel) {
@@ -123,10 +123,10 @@ public class RequireThisQuickfix extends AbstractASTResolution {
     }
 
     /**
-     * Creates a field access replacement qualified with <code>this</code>.
+     * Creates a field access replacement qualified with {@code this}.
      *
      * @param type
-     *            the type to qualify with or <code>null</code>
+     *            the type to qualify with or {@code null}
      * @param name
      *            the name of the field
      * @return the created field access
@@ -155,7 +155,7 @@ public class RequireThisQuickfix extends AbstractASTResolution {
      *            the original method invocation
      * @param typeLevel
      *            the current type level
-     * @return the replacement expression or <code>null</code>
+     * @return the replacement expression or {@code null}
      */
     private Expression findMethodReplacement(final SimpleName name, ASTNode contextNode,
         final MethodInvocation node, int typeLevel) {
@@ -184,10 +184,10 @@ public class RequireThisQuickfix extends AbstractASTResolution {
     }
 
     /**
-     * Creates a method invocation replacement qualified with <code>this</code>.
+     * Creates a method invocation replacement qualified with {@code this}.
      *
      * @param type
-     *            the type to qualify with or <code>null</code>
+     *            the type to qualify with or {@code null}
      * @param origMethodInvocation
      *            the original method invocation
      * @return the created method invocation

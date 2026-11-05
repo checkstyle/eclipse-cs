@@ -92,7 +92,7 @@ public class RuleGroupMetadata {
     /**
      * Determine if the module is to be hidden from the users sight.
      *
-     * @return <code>true</code> if the module is hidden
+     * @return {@code true} if the module is hidden
      */
     public boolean isHidden() {
         return isHidden;
@@ -110,7 +110,7 @@ public class RuleGroupMetadata {
     /**
      * Returns a list of the group's rule metadata.
      *
-     * @return List of <code>RuleMetadata</code> objects.
+     * @return List of {@code RuleMetadata} objects.
      */
     public final List<RuleMetadata> getRuleMetadata() {
         return ruleMetadata;

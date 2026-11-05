@@ -206,6 +206,8 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
     /**
      * Builds the selected resources.
      *
+     * @param <T>
+     *            the resource type parameter
      * @param resources
      *            the resources to build
      * @param configuration
@@ -216,8 +218,6 @@ public class CheckstyleBuilder extends IncrementalProjectBuilder {
      *            the built project
      * @param kind
      *            the kind of build
-     * @param <T>
-     *            the resource type parameter
      * @throws CoreException
      *             if the build fails
      */

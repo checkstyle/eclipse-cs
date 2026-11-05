@@ -112,7 +112,7 @@ public class CheckstyleUiPlugin extends AbstractUIPlugin {
      * @param throwable
      *            the exception
      * @param log
-     *            <code>true</code> if the exception should be logged
+     *            {@code true} if the exception should be logged
      */
     public static void errorDialog(Shell shell, Throwable throwable, boolean log) {
         errorDialog(shell, throwable.getLocalizedMessage(), throwable, log);
@@ -128,7 +128,7 @@ public class CheckstyleUiPlugin extends AbstractUIPlugin {
      * @param throwable
      *            the exception
      * @param log
-     *            <code>true</code> if the exception should be logged
+     *            {@code true} if the exception should be logged
      */
     public static void errorDialog(Shell shell, String message, Throwable throwable, boolean log) {
 

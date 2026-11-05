@@ -349,7 +349,7 @@ public final class AvailableModulesViewer extends Composite {
          *
          * @param group
          *            the rule group metadata
-         * @return <code>true</code> if all modules of the group are used
+         * @return {@code true} if all modules of the group are used
          */
         private boolean isGroupUsed(RuleGroupMetadata group) {
             boolean used = true;
@@ -369,7 +369,7 @@ public final class AvailableModulesViewer extends Composite {
          *
          * @param metadata
          *            the rule metadata
-         * @return <code>true</code> if a configured module matches the metadata
+         * @return {@code true} if a configured module matches the metadata
          */
         private boolean isMetadataUsed(RuleMetadata metadata) {
             boolean used = false;

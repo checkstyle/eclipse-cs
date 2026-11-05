@@ -90,7 +90,7 @@ public class CheckstyleConfigurationFile {
     }
 
     /**
-     * Returns an <code>ByteArrayInputStream</code> of the addional property bundle.
+     * Returns an {@code ByteArrayInputStream} of the addional property bundle.
      *
      * @return the stream containing the bundle data
      */
@@ -153,7 +153,7 @@ public class CheckstyleConfigurationFile {
     }
 
     /**
-     * Returns the property resolver or <code>null</code> if none has been set.
+     * Returns the property resolver or {@code null} if none has been set.
      *
      * @return the property resolver
      */

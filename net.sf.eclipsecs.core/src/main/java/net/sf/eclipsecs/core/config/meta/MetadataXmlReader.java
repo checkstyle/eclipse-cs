@@ -72,10 +72,10 @@ public final class MetadataXmlReader {
      * @param groupId
      *            the id of the rule group
      * @return the parsed rule groups
-     * @throws DocumentException
-     *             the metadata document could not be read
      * @throws CheckstylePluginException
      *             an unexpected exception occurred
+     * @throws DocumentException
+     *             the metadata document could not be read
      */
     public static Collection<RuleGroupMetadata> parseMetadata(InputStream metadataStream,
         ResourceBundle metadataBundle, String groupId)

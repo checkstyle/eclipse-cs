@@ -333,7 +333,7 @@ public class PackageFilterEditor implements FilterEditor {
         private boolean recursivelyExcludeSubPackages = true;
 
         /**
-         * Constructs an instance of <code>ElementTreeSelectionDialog</code>.
+         * Constructs an instance of {@code ElementTreeSelectionDialog}.
          *
          * @param parent
          *            The shell to parent from.
@@ -364,7 +364,7 @@ public class PackageFilterEditor implements FilterEditor {
         /**
          * Returns if the subtrees should be recursively excluded.
          *
-         * @return <code>true</code> if subtrees should be excluded
+         * @return {@code true} if subtrees should be excluded
          */
         protected boolean isRecursivelyExcludeSubTree() {
             return recursivelyExcludeSubPackages;
