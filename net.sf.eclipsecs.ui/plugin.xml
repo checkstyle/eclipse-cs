@@ -342,8 +342,11 @@
                     name="xbatch"/>
             </menu>
             <visibility>
-                <objectClass
-                    name="org.eclipse.core.resources.IProject"/>
+                <and>
+                    <objectClass
+                        name="org.eclipse.core.resources.IProject"/>
+                    <objectState name="open" value="true"/>
+                </and>
             </visibility>
             <action
                 label="%DeactivateProjectsPrintAction.label"
@@ -408,12 +411,24 @@
                 menubarPath="Checkstyle.menu/ondemand"
                 tooltip="%CheckstyleTransformingAction.tooltip"
                 id="net.sf.eclipsecs.actions.CheckstyleTransformingAction"/>
+            <visibility>
+                <objectState name="open" value="true"/>
+            </visibility>
         </objectContribution>
 
         <objectContribution
             objectClass="org.eclipse.core.resources.IResource"
             adaptable="true"
             id="net.sf.eclipsecs.ondemand">
+            <visibility>
+                <not>
+                    <and>
+                        <objectClass
+                            name="org.eclipse.core.resources.IProject"/>
+                        <objectState name="open" value="false"/>
+                    </and>
+                </not>
+            </visibility>
             <menu
                 id="Checkstyle.menu"
                 label="%Checkstyle.menu"
