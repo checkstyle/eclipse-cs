@@ -9,7 +9,7 @@ Bundle-Activator: net.sf.eclipsecs.core.CheckstylePlugin
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: %Bundle-Vendor
 Require-Bundle: net.sf.eclipsecs.checkstyle;visibility:=reexport,
- io.github.classgraph.classgraph;bundle-version="4.8.168"
+ io.github.classgraph.classgraph;bundle-version="[5.0.2,6.0.0)"
 Eclipse-BuddyPolicy: registered
 Export-Package: net.sf.eclipsecs.core,
  net.sf.eclipsecs.core.builder,

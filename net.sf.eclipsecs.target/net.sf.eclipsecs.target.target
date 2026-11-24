@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <?pde?>
 <!-- generated with https://github.com/eclipse-cbi/targetplatform-dsl -->
-<target name="Eclipse Checkstyle" sequenceNumber="1773723784">
+<target name="Eclipse Checkstyle" sequenceNumber="1795593323">
   <locations>
     <location includeMode="slicer" includeAllPlatforms="false" includeSource="true" includeConfigurePhase="true" type="InstallableUnit">
       <unit id="org.eclipse.jdt.feature.group" version="3.20.100.v20250228-0140"/>
@@ -135,12 +135,42 @@
         </dependency>
       </dependencies>
     </location>
+    <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="ClassgraphVirtualFilesystem">
+      <dependencies>
+        <dependency>
+          <groupId>io.github.classgraph</groupId>
+          <artifactId>classgraph-vfs</artifactId>
+          <version>5.0.2</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
+    </location>
+    <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="ClassgraphClasspath">
+      <dependencies>
+        <dependency>
+          <groupId>io.github.classgraph</groupId>
+          <artifactId>classgraph-classpath</artifactId>
+          <version>5.0.2</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
+    </location>
+    <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="ClassgraphBase">
+      <dependencies>
+        <dependency>
+          <groupId>io.github.classgraph</groupId>
+          <artifactId>classgraph-base</artifactId>
+          <version>5.0.2</version>
+          <type>jar</type>
+        </dependency>
+      </dependencies>
+    </location>
     <location includeDependencyDepth="none" includeDependencyScopes="compile" includeSource="true" missingManifest="generate" type="Maven" label="Classgraph">
       <dependencies>
         <dependency>
           <groupId>io.github.classgraph</groupId>
           <artifactId>classgraph</artifactId>
-          <version>4.8.179</version>
+          <version>5.0.2</version>
           <type>jar</type>
         </dependency>
       </dependencies>

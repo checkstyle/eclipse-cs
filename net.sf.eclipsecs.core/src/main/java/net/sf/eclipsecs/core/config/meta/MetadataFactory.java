@@ -222,7 +222,7 @@ public final class MetadataFactory {
         try (ScanResult scanResult = new ClassGraph().acceptPackages(rootPackages).scan()) {
             try {
                 scanResult.getResourcesWithLeafName(ECLIPSE_EXTENSION_CONFIG_FILE)
-                    .forEachInputStreamThrowingIOException(
+                    .forEachInputStream(
                         (Resource res, InputStream inputStream) -> {
                             eclipseMetaDataFiles.add(
                                 new String(inputStream.readAllBytes(), StandardCharsets.UTF_8));
