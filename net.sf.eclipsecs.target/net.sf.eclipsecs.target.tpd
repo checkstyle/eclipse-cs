@@ -149,7 +149,43 @@ maven Classgraph
 	dependency {
 		groupId="io.github.classgraph"
 		artifactId="classgraph"
-		version="4.8.179"
+		version="5.0.2"
+	}
+}
+maven ClassgraphBase
+	scope=compile
+	dependencyDepth=none
+	missingManifest=generate
+	includeSources
+{
+	dependency {
+		groupId="io.github.classgraph"
+		artifactId="classgraph-base"
+		version="5.0.2"
+	}
+}
+maven ClassgraphClasspath
+	scope=compile
+	dependencyDepth=none
+	missingManifest=generate
+	includeSources
+{
+	dependency {
+		groupId="io.github.classgraph"
+		artifactId="classgraph-classpath"
+		version="5.0.2"
+	}
+}
+maven ClassgraphVirtualFilesystem
+	scope=compile
+	dependencyDepth=none
+	missingManifest=generate
+	includeSources
+{
+	dependency {
+		groupId="io.github.classgraph"
+		artifactId="classgraph-vfs"
+		version="5.0.2"
 	}
 }
 maven DOM4J

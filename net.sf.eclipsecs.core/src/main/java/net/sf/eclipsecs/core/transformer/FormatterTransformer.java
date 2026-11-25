@@ -121,17 +121,21 @@ public class FormatterTransformer {
         final String formatterKeyAnnotation = FormatterKey.class.getName();
         final ClassLoader loader = CheckstylePlugin.getDefault().getAddonExtensionClassLoader();
         try (ScanResult scanResult =
-            new ClassGraph().addClassLoader(loader).enableAnnotationInfo().scan()) {
+            new ClassGraph().enableClassLoaders(loader).enableAnnotationInfo().scan()) {
             return scanResult.getClassesWithAnnotation(formatterKeyAnnotation).stream()
                 .collect(Collectors.toUnmodifiableMap(
                     classInfo -> {
                         return "org.eclipse.jdt.core.formatter."
-                            + classInfo.getAnnotationInfo(formatterKeyAnnotation)
+                            + classInfo.getAllAnnotationInfo(formatterKeyAnnotation)
                                 .getParameterValues().getValue("value");
                     },
                     classInfo -> {
-                        return (Class<? extends AbstractFormatterTransformationClass>) classInfo
-                            .loadClass();
+                        String className = classInfo.getName();
+                        try {
+                            return (Class<? extends AbstractFormatterTransformationClass>) Class.forName(className, false, loader);
+                        } catch (ClassNotFoundException e) {
+                            throw new IllegalArgumentException("Could not load class " + className, e);
+                        }
                     }));
         }
     }
